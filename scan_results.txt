@@ -1,0 +1,4 @@
+e:/Program Files/xampp/htdocs/test/appointmentsystem/docappointment - Copy/resources/views\appointment-requests\index.blade.php
+e:/Program Files/xampp/htdocs/test/appointmentsystem/docappointment - Copy/resources/views\appointments\manager.blade.php
+e:/Program Files/xampp/htdocs/test/appointmentsystem/docappointment - Copy/resources/views\doctors\partials\actions.blade.php
+e:/Program Files/xampp/htdocs/test/appointmentsystem/docappointment - Copy/resources/views\invoices\pos.blade.php

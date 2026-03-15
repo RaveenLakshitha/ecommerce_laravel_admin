@@ -1,0 +1,339 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+#docapp-table {
+    @apply w-full border-collapse;
+}
+
+/* Outer wrapper – clean card style */
+#docapp-table_wrapper {
+    @apply border border-gray-200 dark:border-gray-700 
+           rounded-md 
+           bg-white dark:bg-gray-900 
+           shadow-lg 
+           p-3;
+}
+
+/* Inner table border */
+#docapp-table,
+#docapp-table_wrapper .dataTables_scrollBody table {
+    @apply border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden;
+}
+
+/* Header */
+#docapp-table thead th {
+    @apply bg-gray-50 dark:bg-gray-800;
+}
+
+#docapp-table thead th {
+    @apply px-6 py-4 
+           text-left text-xs font-bold uppercase tracking-wider
+           text-gray-700 dark:text-gray-300
+           border-b-2 border-gray-200 dark:border-gray-700
+           relative pr-12;
+}
+
+/* Vertical column borders */
+#docapp-table thead th,
+#docapp-table tbody td {
+    @apply border-r border-gray-200 dark:border-gray-700;
+}
+#docapp-table thead th:last-child,
+#docapp-table tbody td:last-child {
+    @apply border-r-0;
+}
+
+/* Body */
+#docapp-table tbody td {
+    @apply  text-sm 
+           text-gray-900 dark:text-gray-100
+           bg-white dark:bg-transparent
+           border-b border-gray-200 dark:border-gray-700;
+}
+
+#docapp-table tbody tr:hover {
+    @apply bg-gray-50 dark:bg-gray-700/60 transition-all duration-200;
+}
+
+#docapp-table tbody tr:last-child td {
+    @apply border-b-0;
+}
+
+/* ─────────────────────── MAIN SORTING ARROWS (RIGHT CORNER) ─────────────────────── */
+#docapp-table_wrapper .sorting,
+#docapp-table_wrapper .sorting_asc,
+#docapp-table_wrapper .sorting_desc {
+    @apply relative pr-8;
+}
+
+#docapp-table_wrapper .sorting:after,
+#docapp-table_wrapper .sorting_asc:after,
+#docapp-table_wrapper .sorting_desc:after {
+    @apply absolute right-3 top-1/2 -translate-y-1/2 text-xs font-black;
+}
+
+#docapp-table_wrapper .sorting:after {
+    content: "UpDown";
+    @apply text-gray-400 dark:text-gray-500 opacity-60;
+}
+
+#docapp-table_wrapper .sorting_asc:after {
+    content: "Up";
+    @apply text-blue-600 dark:text-blue-400;
+}
+
+#docapp-table_wrapper .sorting_desc:after {
+    content: "Down";
+    @apply text-blue-600 dark:text-blue-400;
+}
+
+/* ─────────────────────── COLUMN ORDER BUTTONS (NO CIRCLE – CLEAN & VISIBLE) ─────────────────────── */
+#docapp-table_wrapper .dt-column-order {
+    @apply absolute right-1 top-1/2 -translate-y-1/2 
+           w-6 h-6 flex items-center justify-center
+           text-sm font-bold
+           text-gray-500 dark:text-gray-400
+           hover:text-gray-800 dark:hover:text-white
+           hover:scale-125 transition-all;
+}
+
+#docapp-table_wrapper .dt-column-order.dt-ordering-asc,
+#docapp-table_wrapper .dt-column-order.dt-ordering-desc {
+    @apply text-blue-600 dark:text-blue-400 scale-150;
+}
+
+/* ─────────────────────── FIX: "SHOW ENTRIES" DROPDOWN – NO OVERLAP EVER AGAIN ─────────────────────── */
+#docapp-table_wrapper .dataTables_length {
+    @apply mb-6;
+}
+
+#docapp-table_wrapper .dataTables_length label {
+    @apply flex flex-wrap items-center gap-3 text-sm font-medium text-gray-700 dark:text-gray-300;
+}
+
+#docapp-table_wrapper .dataTables_length select {
+    @apply min-w-24 px-4 py-2.5 
+           text-sm font-medium
+           border border-gray-300 dark:border-gray-600 
+           bg-white dark:bg-gray-900 
+           text-gray-900 dark:text-gray-100 
+           rounded-lg 
+           focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400
+           cursor-pointer;
+}
+
+/* ─────────────────────── SEARCH BOX & PAGINATION – CLEAN & MODERN ─────────────────────── */
+#docapp-table_wrapper .dataTables_filter input {
+    @apply w-full max-w-xs px-4 py-2.5 
+           border border-gray-300 dark:border-gray-600 
+           bg-white dark:bg-gray-900 
+           text-gray-900 dark:text-gray-100 
+           rounded-lg 
+           focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400;
+}
+
+#docapp-table_wrapper .dataTables_paginate .paginate_button {
+    @apply px-3 py-1.5 mx-0.5 rounded 
+           text-sm font-medium 
+           text-gray-700 dark:text-gray-300
+           hover:bg-gray-100 dark:hover:bg-gray-700;
+}
+
+#docapp-table_wrapper .dataTables_paginate .paginate_button.current {
+    @apply bg-blue-600 dark:bg-blue-500 text-white font-bold;
+}
+
+#docapp-table_wrapper .dataTables_info,
+#docapp-table_wrapper .dataTables_length label {
+    @apply text-sm text-gray-600 dark:text-gray-400;
+}
+
+#toggle-sidebar {
+    position: relative;
+}
+#toggle-sidebar svg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* ─────────────────────── RESPONSIVE DATATABLE STYLES ─────────────────────── */
+
+/* Control column (expand/collapse icon) */
+table.dataTable.dtr-inline.collapsed > tbody > tr > td.dtr-control,
+table.dataTable.dtr-inline.collapsed > tbody > tr > th.dtr-control {
+    position: relative;
+    padding-left: 30px;
+    cursor: pointer;
+}
+
+table.dataTable.dtr-inline.collapsed > tbody > tr > td.dtr-control:before,
+table.dataTable.dtr-inline.collapsed > tbody > tr > th.dtr-control:before {
+    position: absolute;
+    top: 50%;
+    left: 8px;
+    width: 16px;
+    height: 16px;
+    margin-top: -8px;
+    content: '+';
+    text-align: center;
+    line-height: 16px;
+    font-weight: bold;
+    font-size: 16px;
+    border-radius: 3px;
+    box-sizing: border-box;
+    @apply bg-indigo-600 text-white border-2 border-indigo-600;
+}
+
+table.dataTable.dtr-inline.collapsed > tbody > tr.parent > td.dtr-control:before,
+table.dataTable.dtr-inline.collapsed > tbody > tr.parent > th.dtr-control:before {
+    content: '-';
+    @apply bg-red-600 border-red-600;
+}
+
+/* Child row (expanded details) */
+table.dataTable > tbody > tr.child {
+    @apply bg-gray-50 dark:bg-gray-800/50;
+}
+
+table.dataTable > tbody > tr.child:hover {
+    @apply bg-gray-100 dark:bg-gray-700/50;
+}
+
+table.dataTable > tbody > tr.child ul.dtr-details {
+    display: block;
+    width: 100%;
+    padding: 1rem;
+    margin: 0;
+    list-style: none;
+}
+
+table.dataTable > tbody > tr.child ul.dtr-details > li {
+    padding: 0.75rem 0;
+    @apply border-b border-gray-200 dark:border-gray-700;
+}
+
+table.dataTable > tbody > tr.child ul.dtr-details > li:last-child {
+    @apply border-b-0;
+}
+
+table.dataTable > tbody > tr.child span.dtr-title {
+    display: inline-block;
+    min-width: 120px;
+    font-weight: 600;
+    @apply text-gray-700 dark:text-gray-300;
+}
+
+table.dataTable > tbody > tr.child span.dtr-data {
+    @apply text-gray-900 dark:text-gray-100;
+}
+
+/* For Webkit browsers (Chrome, Safari, Edge) */
+#sidebar nav::-webkit-scrollbar {
+    @apply w-2;
+}
+
+#sidebar nav::-webkit-scrollbar-track {
+    @apply bg-gray-100 dark:bg-gray-800 rounded-lg;
+}
+
+#sidebar nav::-webkit-scrollbar-thumb {
+    @apply bg-gray-300 dark:bg-gray-600 rounded-lg hover:bg-gray-400 dark:hover:bg-gray-500 transition-colors;
+}
+
+/* For Firefox */
+#sidebar nav {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(209 213 219) rgb(243 244 246); /* thumb track (light mode) */
+}
+
+@media (prefers-color-scheme: dark) {
+    #sidebar nav {
+        scrollbar-color: rgb(75 85 99) rgb(31 41 55); /* thumb track (dark mode) */
+    }
+}
+
+/* Mobile responsive adjustments */
+@media screen and (max-width: 768px) {
+    #docapp-table_wrapper {
+        @apply p-2;
+    }
+    
+    #docapp-table thead th {
+        @apply px-3 py-3 text-[10px];
+    }
+    
+    #docapp-table tbody td {
+        @apply px-3 py-2;
+    }
+    
+    .dataTables_wrapper .dataTables_length,
+    .dataTables_wrapper .dataTables_filter {
+        float: none !important;
+        text-align: left;
+        margin-bottom: 1rem;
+    }
+    
+    .dataTables_wrapper .dataTables_info,
+    .dataTables_wrapper .dataTables_paginate {
+        float: none !important;
+        text-align: center;
+        margin-top: 1rem;
+    }
+    
+    div.dt-buttons {
+        float: none !important;
+        text-align: center;
+        margin-bottom: 1rem;
+    }
+    
+    #docapp-table_wrapper .dataTables_filter input {
+        @apply w-full max-w-full;
+    }
+    
+    /* Ensure table doesn't overflow */
+    #docapp-table {
+        @apply text-xs;
+    }
+    
+    /* Reduce padding in child rows on mobile */
+    table.dataTable > tbody > tr.child ul.dtr-details {
+        padding: 0.5rem;
+    }
+    
+    table.dataTable > tbody > tr.child ul.dtr-details > li {
+        padding: 0.5rem 0;
+        font-size: 0.875rem;
+    }
+    
+    table.dataTable > tbody > tr.child span.dtr-title {
+        display: block;
+        min-width: 100%;
+        margin-bottom: 0.25rem;
+        font-size: 0.75rem;
+    }
+}
+
+/* Extra small screens */
+@media screen and (max-width: 480px) {
+    #docapp-table_wrapper {
+        @apply p-1;
+    }
+    
+    #docapp-table thead th {
+        @apply px-2 py-2;
+    }
+}
+
+/* Utility to hide scrollbar but keep functionality */
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
