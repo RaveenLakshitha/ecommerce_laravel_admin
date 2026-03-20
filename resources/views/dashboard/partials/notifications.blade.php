@@ -3,7 +3,7 @@ Requires: $notifications (collection), $unreadCount, $primary_color
 --}}
 <div class="max-w-3xl">
     <div class="flex items-center justify-between mb-6">
-        <h2 class="text-xl font-bold text-gray-900 dark:text-white">
+        <h2 class="text-xl font-bold text-gray-900 dark:text-primary-a0">
             {{ __('file.notifications') ?? 'Notifications' }}
         </h2>
         @if($unreadCount > 0)
@@ -16,7 +16,7 @@ Requires: $notifications (collection), $unreadCount, $primary_color
 
     @if($notifications->isEmpty())
         <div
-            class="bg-white dark:bg-gray-800 rounded-2xl p-12 text-center border border-gray-200 dark:border-gray-700 shadow-sm">
+            class="bg-white dark:bg-surface-tonal-a20 rounded-2xl p-12 text-center border border-gray-200 dark:border-surface-tonal-a30 shadow-sm">
             <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4"
                 style="background:{{ $primary_color }}15">
                 <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -25,7 +25,7 @@ Requires: $notifications (collection), $unreadCount, $primary_color
                         d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                 </svg>
             </div>
-            <h3 class="text-base font-semibold text-gray-900 dark:text-white">
+            <h3 class="text-base font-semibold text-gray-900 dark:text-primary-a0">
                 {{ __('file.no_notifications') ?? 'No notifications yet' }}
             </h3>
             <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
@@ -52,7 +52,7 @@ Requires: $notifications (collection), $unreadCount, $primary_color
                             $url = $nData['url'] ?? ($nData['action_url'] ?? '#');
                             $icon = $nData['icon'] ?? 'bell';
                         @endphp
-                        <div class="notification-item group bg-white dark:bg-gray-800 rounded-2xl border transition-all {{ $isUnread ? 'border-l-4 shadow-sm' : 'border-gray-200 dark:border-gray-700' }} hover:border-gray-300 dark:hover:border-gray-600"
+                        <div class="notification-item group bg-white dark:bg-surface-tonal-a20 rounded-2xl border transition-all {{ $isUnread ? 'border-l-4 shadow-sm' : 'border-gray-200 dark:border-surface-tonal-a30' }} hover:border-gray-300 dark:hover:border-gray-600"
                             data-id="{{ $notification->id }}"
                             style="{{ $isUnread ? 'border-left-color:' . $primary_color . '; border-color:' . $primary_color . '40' : '' }}">
                             <div class="{{ $isCondensed ? 'p-3' : 'p-4' }} flex items-start gap-4">
@@ -65,7 +65,7 @@ Requires: $notifications (collection), $unreadCount, $primary_color
                                 {{-- Content --}}
                                 <div class="flex-1 min-w-0">
                                     <div class="flex items-start justify-between gap-2">
-                                        <p class="text-sm font-semibold text-gray-900 dark:text-white truncate">
+                                        <p class="text-sm font-semibold text-gray-900 dark:text-primary-a0 truncate">
                                             {{ $title }}
                                         </p>
                                         <div class="flex items-center gap-2 flex-shrink-0">
@@ -115,7 +115,7 @@ Requires: $notifications (collection), $unreadCount, $primary_color
                             </div>
                         </div>
                 @empty
-                    <div class="text-center py-8 px-4 bg-gray-50 dark:bg-gray-800/50 rounded-2xl border border-dashed border-gray-300 dark:border-gray-700">
+                    <div class="text-center py-8 px-4 bg-gray-50 dark:bg-surface-tonal-a20/50 rounded-2xl border border-dashed border-gray-300 dark:border-surface-tonal-a30">
                         <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('file.no_notifications') ?? 'No notifications' }}</p>
                     </div>
                 @endforelse
@@ -211,7 +211,7 @@ Requires: $notifications (collection), $unreadCount, $primary_color
                         if (data.success) {
                             // Update UI
                             card.classList.remove('border-l-4', 'shadow-sm');
-                            card.classList.add('border-gray-200', 'dark:border-gray-700', 'opacity-60');
+                            card.classList.add('border-gray-200', 'dark:border-surface-tonal-a30', 'opacity-60');
                             card.style.borderLeftColor = '';
                             card.style.borderColor = '';
 
@@ -290,7 +290,7 @@ Requires: $notifications (collection), $unreadCount, $primary_color
                             const cards = document.querySelectorAll('.group.border-l-4');
                             cards.forEach(card => {
                                 card.classList.remove('border-l-4', 'shadow-sm');
-                                card.classList.add('border-gray-200', 'dark:border-gray-700', 'opacity-60');
+                                card.classList.add('border-gray-200', 'dark:border-surface-tonal-a30', 'opacity-60');
                                 card.style.borderLeftColor = '';
                                 card.style.borderColor = '';
                                 const dot = card.querySelector('.rounded-full');
@@ -327,3 +327,4 @@ Requires: $notifications (collection), $unreadCount, $primary_color
         </script>
     @endpush
 @endonce
+

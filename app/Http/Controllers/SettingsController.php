@@ -20,13 +20,13 @@ class SettingsController extends Controller
     public function general(): View
     {
         $setting = Setting::firstOrCreate([], [
-            'clinic_name' => config('app.name', 'Clinic Name'),
+            'site_name' => config('app.name', 'Clinic Name'),
             'primary_color' => '#1e40af',
             'currency' => 'USD',
             'logo_path' => null,
         ]);
 
-        return view('settings.general', compact('setting'));
+        return view('admin.settings.general', compact('setting'));
     }
 
     public function edit(): View

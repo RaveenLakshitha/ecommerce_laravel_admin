@@ -16,7 +16,7 @@ class RegisteredUserController extends Controller
 {
     public function create(): \Illuminate\View\View
     {
-        return view('auth.register');
+        return view('frontend.auth.register');
     }
 
     public function store(Request $request): RedirectResponse

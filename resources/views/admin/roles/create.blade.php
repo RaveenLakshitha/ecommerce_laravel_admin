@@ -17,7 +17,7 @@
             <span class="font-medium">{{ __('file.create_role') }}</span>
         </nav>
         <div>
-            <h1 class="text-3xl font-bold text-gray-900 dark:text-white">
+            <h1 class="text-3xl font-bold text-gray-900 dark:text-primary-a0">
                 {{ __('file.create_new_role') }}
             </h1>
             <p class="text-gray-600 dark:text-gray-400 mt-1">
@@ -30,9 +30,9 @@
         @csrf
 
         <!-- Role Name Card -->
-        <div class="bg-white dark:bg-gray-800 rounded-xl shadow border border-gray-200 dark:border-gray-700 overflow-hidden">
-            <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-transparent">
-                <h2 class="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+        <div class="bg-white dark:bg-surface-tonal-a20 rounded-xl shadow border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
+            <div class="px-6 py-4 border-b border-gray-200 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-transparent">
+                <h2 class="text-lg font-semibold text-gray-900 dark:text-primary-a0 flex items-center gap-2">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
                     </svg>
@@ -48,7 +48,7 @@
                            name="name"
                            id="role_name"
                            value="{{ old('name') }}"
-                           class="w-full px-4 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                           class="w-full px-4 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-surface-tonal-a10 text-gray-900 dark:text-primary-a0 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
                            placeholder="{{ __('file.role_name_placeholder') }}"
                            required autofocus>
                     @error('name')
@@ -60,9 +60,9 @@
         </div>
 
         <!-- Permissions Matrix Card -->
-        <div class="bg-white dark:bg-gray-800 rounded-xl shadow border border-gray-200 dark:border-gray-700 overflow-hidden">
-            <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-transparent flex items-center justify-between">
-                <h2 class="text-lg font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+        <div class="bg-white dark:bg-surface-tonal-a20 rounded-xl shadow border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
+            <div class="px-6 py-4 border-b border-gray-200 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-transparent flex items-center justify-between">
+                <h2 class="text-lg font-semibold text-gray-900 dark:text-primary-a0 flex items-center gap-2">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
                     </svg>
@@ -87,7 +87,7 @@
             <div class="overflow-x-auto">
                 <table class="min-w-full">
                     <thead>
-                        <tr class="bg-gray-50 dark:bg-gray-900/50 border-b border-gray-200 dark:border-gray-700">
+                        <tr class="bg-gray-50 dark:bg-surface-tonal-a10/50 border-b border-gray-200 dark:border-surface-tonal-a30">
                             <th class="px-5 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider w-48">
                                 {{ __('file.perm_resource') }}
                             </th>
@@ -139,7 +139,7 @@
                                                        class="perm-cb h-5 w-5 rounded border-gray-300 dark:border-gray-600 text-blue-600 focus:ring-blue-500 cursor-pointer transition">
                                             </label>
                                         @else
-                                            <span class="inline-block w-5 h-5 rounded bg-gray-100 dark:bg-gray-700/50 border border-dashed border-gray-200 dark:border-gray-600"
+                                            <span class="inline-block w-5 h-5 rounded bg-gray-100 dark:bg-surface-tonal-a30/50 border border-dashed border-gray-200 dark:border-gray-600"
                                                   title="{{ __('file.perm_not_available') }}"></span>
                                         @endif
                                     </td>
@@ -174,14 +174,14 @@
         </div>
 
         <!-- Action Buttons -->
-        <div class="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-gray-700 mt-8">
+        <div class="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-surface-tonal-a30 mt-8">
             <a href="{{ route('roles.index') }}"
                class="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition">
                 ← {{ __('file.back_to_roles') }}
             </a>
             <div class="flex gap-4">
                 <a href="{{ route('roles.index') }}"
-                   class="px-6 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition">
+                   class="px-6 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-surface-tonal-a20 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition">
                     {{ __('file.cancel') }}
                 </a>
                 <button type="submit"
@@ -211,3 +211,4 @@ function toggleColumn(action) {
 }
 </script>
 @endsection
+

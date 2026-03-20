@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ $clinic_name ?? __('messages.Medical Center') }}</title>
+    <title>{{ $site_name ?? __('messages.Medical Center') }}</title>
 
-    <link rel="icon" href="{{ $clinic_logo ?? asset('images/default-logo.png') }}" type="image/png">
+    <link rel="icon" href="{{ $site_logo ?? asset('images/default-logo.png') }}" type="image/png">
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -149,8 +149,8 @@
             <div class="image-content text-white p-12 max-w-xl w-full">
                 <div class="glass-panel p-8 rounded-3xl shadow-2xl transform transition-transform duration-700 hover:scale-[1.02]">
                     <div class="flex items-center space-x-4 mb-8">
-                        @if($clinic_logo)
-                            <img src="{{ $clinic_logo }}" alt="{{ $clinic_name }}" class="w-16 h-16 rounded-2xl object-cover shadow-lg ring-4 ring-white/20">
+                        @if($site_logo)
+                            <img src="{{ $site_logo }}" alt="{{ $site_name }}" class="w-16 h-16 rounded-2xl object-cover shadow-lg ring-4 ring-white/20">
                         @else
                             <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center p-3 shadow-lg">
                                 <svg class="w-10 h-10 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -158,7 +158,7 @@
                                 </svg>
                             </div>
                         @endif
-                        <h2 class="text-3xl font-bold tracking-tight">{{ $clinic_name ?? __('messages.Medical Center') }}</h2>
+                        <h2 class="text-3xl font-bold tracking-tight">{{ $site_name ?? __('messages.Medical Center') }}</h2>
                     </div>
                 </div>
             </div>
@@ -190,3 +190,4 @@
     @endphp
 </body>
 </html>
+

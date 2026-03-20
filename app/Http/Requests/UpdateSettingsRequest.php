@@ -18,12 +18,12 @@ class UpdateSettingsRequest extends FormRequest
         $settingId = Setting::first()?->id;
 
         return [
-            'clinic_name'     => 'required|string|max:255',
-            'clinic_id'       => [
+            'site_name'     => 'required|string|max:255',
+            'site_id'       => [
                 'required',
                 'string',
                 'max:50',
-                Rule::unique('settings', 'clinic_id')->ignore($settingId),
+                Rule::unique('settings', 'site_id')->ignore($settingId),
             ],
             'email'           => 'required|email',
             'phone'           => 'required|string|min:7|max:15',

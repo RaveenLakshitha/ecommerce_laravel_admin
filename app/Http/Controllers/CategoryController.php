@@ -24,7 +24,7 @@ class CategoryController extends Controller
                 ->with('error', __('file.module_access_denied'));
         }
 
-        return view('categories.index');
+        return view('admin.categories.index');
     }
 
     public function datatable(Request $request)
@@ -40,7 +40,7 @@ class CategoryController extends Controller
 
         $query = Category::query()
             ->select('categories.*')
-            ->with('parent:id,name,deleted_at')
+            ->with('parent:id,name')
             ->when($searchValue !== '', function ($q) use ($searchValue) {
                 $q->where('name', 'like', "%{$searchValue}%")
                     ->orWhere('description', 'like', "%{$searchValue}%");
@@ -84,9 +84,7 @@ class CategoryController extends Controller
                 'id' => $category->id,
                 'name' => $category->name,
                 'description' => $category->description ?? '—',
-                'parent_name' => $category->parent?->deleted_at
-                    ? ($category->parent?->name . ' ' . __('file.deleted_suffix'))
-                    : ($category->parent?->name ?? '—'),
+                'parent_name' => $category->parent?->name ?? '—',
                 'parent_id' => $category->parent_id,
                 'is_active' => $category->is_active,
                 'status_html' => $statusHtml,
@@ -115,7 +113,7 @@ class CategoryController extends Controller
             ->orderBy('name')
             ->get();
 
-        return view('categories.create', compact('parents'));
+        return view('admin.categories.create', compact('parents'));
     }
 
     public function store(Request $request)
@@ -129,7 +127,7 @@ class CategoryController extends Controller
                 'required', 
                 'string', 
                 'max:255', 
-                Rule::unique('categories', 'name')->whereNull('deleted_at')
+                Rule::unique('categories', 'name')
             ],
             'description' => 'nullable|string',
             'parent_id' => 'nullable|exists:categories,id',
@@ -138,13 +136,7 @@ class CategoryController extends Controller
 
         $validated['is_active'] = $request->boolean('is_active', true);
 
-        $category = Category::withTrashed()->where('name', $request->name)->first();
-        if ($category && $category->trashed()) {
-            $category->restore();
-            $category->update($validated);
-        } else {
-            Category::create($validated);
-        }
+        Category::create($validated);
 
         return redirect()->route('categories.index')
             ->with('success', __('file.category_created_successfully'));
@@ -162,7 +154,7 @@ class CategoryController extends Controller
             'children' => fn($q) => $q->orderBy('name')
         ]);
 
-        return view('categories.show', compact('category'));
+        return view('admin.categories.show', compact('category'));
     }
 
     public function details(Category $category)
@@ -198,7 +190,7 @@ class CategoryController extends Controller
             ->orderBy('name')
             ->get();
 
-        return view('categories.edit', compact('category', 'parents'));
+        return view('admin.categories.edit', compact('category', 'parents'));
     }
 
     public function update(Request $request, Category $category)
@@ -211,7 +203,7 @@ class CategoryController extends Controller
         }
 
         $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255', Rule::unique('categories')->ignore($category->id)->whereNull('deleted_at')],
+            'name' => ['required', 'string', 'max:255', Rule::unique('categories')->ignore($category->id)],
             'description' => 'nullable|string',
             'parent_id' => [
                 'nullable',

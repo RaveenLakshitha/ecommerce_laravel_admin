@@ -1,6 +1,6 @@
 {{-- resources/views/partials/navbar.blade.php --}}
 <header
-    class="bg-white dark:bg-gray-800 shadow-sm border-b dark:border-gray-700 transition-colors fixed top-0 left-0 right-0 z-50">
+    class="bg-white dark:bg-surface-tonal-a20 shadow-sm border-b dark:border-surface-tonal-a30 transition-colors fixed top-0 left-0 right-0 z-50">
     <div class="max-w-full px-4 sm:px-6 flex items-center justify-between h-16">
 
         {{-- Left: sidebar toggle --}}
@@ -58,7 +58,7 @@
                 <div x-show="open" x-cloak @click.away="open = false"
                     x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 scale-95"
                     x-transition:enter-end="opacity-100 scale-100" x-transition:leave="transition ease-in duration-150"
-                    x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95" class="absolute right-0 mt-2 w-36 origin-top-right bg-white dark:bg-gray-800
+                    x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95" class="absolute right-0 mt-2 w-36 origin-top-right bg-white dark:bg-surface-tonal-a20
                             rounded-md shadow-lg ring-1 ring-black ring-opacity-5 z-50 overflow-hidden">
                     <form method="POST" action="{{ route('language.switch') }}">
                         @csrf
@@ -110,119 +110,7 @@
                 </svg>
             </button>
 
-            {{-- ── NOTIFICATIONS BELL ─────────────────────────────────────────── --}}
-            @auth
-                <div class="relative" x-data="{ open: false }" x-init="open = false">
-                    <button @click="open = !open" id="notif-btn" aria-label="Notifications" class="relative p-2 rounded-md text-gray-500 hover:text-gray-700 hover:bg-gray-100
-                                                               dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-gray-700
-                                                               focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2
-                                                               dark:focus:ring-offset-gray-800 transition">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-                        </svg>
-                        @php
-                            $unreadNotifCount = auth()->user()->unreadNotifications()->count();
-                        @endphp
-                        @if($unreadNotifCount > 0)
-                            <span
-                                class="absolute top-1 right-1 inline-flex items-center justify-center w-4 h-4 text-xs font-bold text-white bg-red-500 rounded-full leading-none">
-                                {{ $unreadNotifCount > 9 ? '9+' : $unreadNotifCount }}
-                            </span>
-                        @endif
-                    </button>
 
-                    {{-- Dropdown panel — fixed width, sticks to right on all screen sizes --}}
-                    <div x-show="open" x-cloak @click.away="open = false"
-                        x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 scale-95"
-                        x-transition:enter-end="opacity-100 scale-100" x-transition:leave="transition ease-in duration-150"
-                        x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95" class="fixed sm:absolute top-16 sm:top-auto sm:mt-2 left-1/2 sm:left-auto right-auto sm:right-0 -translate-x-1/2 sm:translate-x-0
-                                                            w-[calc(100vw-1rem)] sm:w-96 max-w-sm
-                                                            origin-top-right bg-white dark:bg-gray-800
-                                                            rounded-xl shadow-xl ring-1 ring-black ring-opacity-10
-                                                            dark:ring-gray-700 z-50 overflow-hidden">
-
-                        {{-- Header --}}
-                        <div
-                            class="flex items-center justify-between px-4 py-3 border-b border-gray-100 dark:border-gray-700">
-                            <h3 class="text-sm font-semibold text-gray-900 dark:text-white">
-                                {{ __('file.notifications') ?? 'Notifications' }}
-                                @if($unreadNotifCount > 0)
-                                    <span
-                                        class="ml-1.5 inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-500 rounded-full">
-                                        {{ $unreadNotifCount }}
-                                    </span>
-                                @endif
-                            </h3>
-                            @if($unreadNotifCount > 0)
-                                <button type="button"
-                                    onclick="typeof markAllAsReadGlobal === 'function' ? markAllAsReadGlobal(this) : window.location.reload()"
-                                    class="text-xs text-indigo-600 dark:text-indigo-400 hover:underline font-medium">
-                                    {{ __('file.mark_all_read') ?? 'Mark all read' }}
-                                </button>
-                            @endif
-                        </div>
-
-                        {{-- Notification list --}}
-                        <div class="overflow-y-auto max-h-80 divide-y divide-gray-100 dark:divide-gray-700">
-                            @php
-                                $headerNotifs = auth()->user()->notifications()->latest()->take(10)->get();
-                            @endphp
-                            @forelse($headerNotifs as $notif)
-                                @php
-                                    $nData = $notif->data ?? [];
-                                    $nTitle = $nData['title'] ?? class_basename($notif->type);
-                                    $nMsg = $nData['message'] ?? ($nData['body'] ?? '');
-                                    $nUrl = $nData['url'] ?? ($nData['link'] ?? '#');
-                                    $isUnread = is_null($notif->read_at);
-                                @endphp
-                                <div
-                                    class="flex items-start gap-3 px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition {{ $isUnread ? 'bg-indigo-50 dark:bg-indigo-900/10' : '' }}">
-                                    {{-- Unread dot --}}
-                                    <div class="mt-1 flex-shrink-0">
-                                        @if($isUnread)
-                                            <span class="inline-block w-2 h-2 rounded-full bg-indigo-500"></span>
-                                        @else
-                                            <span class="inline-block w-2 h-2 rounded-full bg-transparent"></span>
-                                        @endif
-                                    </div>
-                                    <div class="flex-1 min-w-0">
-                                        <p class="text-xs font-semibold text-gray-900 dark:text-white truncate">{{ $nTitle }}
-                                        </p>
-                                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5 line-clamp-2">{{ $nMsg }}</p>
-                                        <p class="text-xs text-gray-400 mt-0.5">{{ $notif->created_at->diffForHumans() }}</p>
-                                    </div>
-                                    @if($nUrl !== '#')
-                                        <a href="{{ $nUrl }}"
-                                            class="flex-shrink-0 text-xs text-indigo-600 dark:text-indigo-400 hover:underline mt-1">
-                                            {{ __('file.view') ?? 'View' }}
-                                        </a>
-                                    @endif
-                                </div>
-                            @empty
-                                <div class="px-4 py-8 text-center">
-                                    <svg class="w-10 h-10 mx-auto text-gray-300 dark:text-gray-600 mb-2" fill="none"
-                                        stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                            d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-                                    </svg>
-                                    <p class="text-sm text-gray-500 dark:text-gray-400">
-                                        {{ __('file.no_notifications') ?? 'No notifications' }}
-                                    </p>
-                                </div>
-                            @endforelse
-                        </div>
-
-                        {{-- Footer: link to full notifications on dashboard --}}
-                        <div class="px-4 py-3 border-t border-gray-100 dark:border-gray-700 text-center">
-                            <a href="{{ route('dashboard') }}"
-                                class="text-xs font-medium text-indigo-600 dark:text-indigo-400 hover:underline">
-                                {{ __('file.view_all_notifications') ?? 'View all notifications' }}
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            @endauth
 
             {{-- User menu --}}
             <div class="relative" x-data="{ open: false }" x-cloak x-init="open = false">
@@ -238,7 +126,7 @@
                 <div x-show="open" @click.away="open = false" x-transition:enter="transition ease-out duration-200"
                     x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100"
                     x-transition:leave="transition ease-in duration-150"
-                    x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95" class="absolute right-0 mt-2 w-48 origin-top-right bg-white dark:bg-gray-800
+                    x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95" class="absolute right-0 mt-2 w-48 origin-top-right bg-white dark:bg-surface-tonal-a20
                             rounded-md shadow-lg ring-1 ring-black ring-opacity-5 z-50 overflow-hidden">
 
                     <form method="POST" action="{{ route('logout') }}" class="block">
@@ -253,3 +141,4 @@
         </div>
     </div>
 </header>
+

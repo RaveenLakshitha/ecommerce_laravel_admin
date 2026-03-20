@@ -1,0 +1,25 @@
+
+   INFO  Seeding database.  
+
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[42S22]: Column not found: 1054 Unknown column 'sale_price' in 'field list' (Connection: mysql, Host: 127.0.0.1, Port: 3307, Database: ecommerce, SQL: insert into `variants` (`sku`, `price`, `sale_price`, `stock_quantity`, `is_default`, `weight_grams`, `product_id`, `updated_at`, `created_at`) values (NK-TS-BLK-S, 39.99, 32.99, 48, 1, 180, 5, 2026-03-18 17:12:13, 2026-03-18 17:12:13))
+
+  at vendor\laravel\framework\src\Illuminate\Database\Connection.php:838
+    834▕             $exceptionType = $this->isUniqueConstraintError($e)
+    835▕                 ? UniqueConstraintViolationException::class
+    836▕                 : QueryException::class;
+    837▕ 
+  ➜ 838▕             throw new $exceptionType(
+    839▕                 $this->getNameWithReadWriteType(),
+    840▕                 $query,
+    841▕                 $this->prepareBindings($bindings),
+    842▕                 $e,
+
+  1   vendor\laravel\framework\src\Illuminate\Database\MySqlConnection.php:47
+      PDOException::("SQLSTATE[42S22]: Column not found: 1054 Unknown column 'sale_price' in 'field list'")
+
+  2   vendor\laravel\framework\src\Illuminate\Database\MySqlConnection.php:47
+      PDO::prepare("insert into `variants` (`sku`, `price`, `sale_price`, `stock_quantity`, `is_default`, `weight_grams`, `product_id`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?, ?, ?, ?, ?)")
+

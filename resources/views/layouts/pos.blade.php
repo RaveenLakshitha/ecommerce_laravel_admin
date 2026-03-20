@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@if(View::hasSection('title'))@yield('title') | {{ $clinic_name }}@else{{ $clinic_name }}@endif</title>
+    <title>@if(View::hasSection('title'))@yield('title') | {{ $site_name }}@else{{ $site_name }}@endif</title>
 
-    <link rel="icon" href="{{ $clinic_logo ?? asset('images/default-logo.png') }}" type="image/png">
+    <link rel="icon" href="{{ $site_logo ?? asset('images/default-logo.png') }}" type="image/png">
 
 
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -74,7 +74,7 @@
 </head>
 
 <body
-    class="h-screen overflow-hidden bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
+    class="h-screen overflow-hidden bg-gray-100 dark:bg-surface-tonal-a10 text-gray-900 dark:text-gray-100 transition-colors duration-300">
     <div class="flex h-screen overflow-hidden">
 
 
@@ -84,7 +84,7 @@
 
 
             @if (isset($header))
-                <header class="bg-white dark:bg-gray-800 shadow-sm border-b dark:border-gray-700 flex-shrink-0">
+                <header class="bg-white dark:bg-surface-tonal-a20 shadow-sm border-b dark:border-surface-tonal-a30 flex-shrink-0">
                     <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                         {{ $header }}
                     </div>
@@ -287,3 +287,4 @@
 </body>
 
 </html>
+

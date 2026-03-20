@@ -5,9 +5,14 @@
     <meta charset="UTF-8">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@if(View::hasSection('title'))@yield('title') | {{ $clinic_name }}@else{{ $clinic_name }}@endif</title>
+    <title>@if(View::hasSection('title'))@yield('title') | {{ $site_name }}@else{{ $site_name }}@endif</title>
 
-    <link rel="icon" href="{{ $clinic_logo ?? asset('images/default-logo.png') }}" type="image/png">
+    <link rel="icon" href="{{ $site_logo ?? asset('images/default-logo.png') }}" type="image/png">
+
+    {{-- DRAPE theme fonts --}}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 
 
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -27,34 +32,35 @@
 
     <style>
         :root {
-            --primary-color:
-                {{ $primary_color }}
-            ;
-            --primary-color-hover:
-                {{ $primary_color }}
-                15;
-            --primary-color-active:
-                {{ $primary_color }}
-            ;
-            --primary-shadow: 0 4px 15px
-                {{ $primary_color }}
-                40;
+            --primary-color: #e8c547;
+            --primary-color-hover: rgba(232,197,71,0.12);
+            --primary-color-active: #e8c547;
+            --primary-shadow: 0 4px 15px rgba(232,197,71,0.25);
         }
 
         .sidebar-item-active {
-            background-color: var(--primary-color-active) !important;
-            color: #ffffff !important;
-            box-shadow: var(--primary-shadow) !important;
+            background-color: rgba(232,197,71,0.12) !important;
+            color: #e8c547 !important;
+            box-shadow: none !important;
+            border-radius: 0.5rem;
+            border-left: 2px solid #e8c547;
         }
 
         .sidebar-item-hover:hover {
-            background-color: var(--primary-color-hover) !important;
-            color: var(--primary-color) !important;
+            background-color: #f4f4f5 !important;
+            color: #27272a !important;
+            border-radius: 0.5rem;
+        }
+        .dark .sidebar-item-hover:hover {
+            background-color: #18181b !important;
+            color: #f0f0f2 !important;
         }
 
         .sidebar-sub-active {
-            background-color: var(--primary-color-hover) !important;
-            color: var(--primary-color) !important;
+            background-color: rgba(232,197,71,0.08) !important;
+            color: #e8c547 !important;
+            border-radius: 0.5rem;
+            font-weight: 600;
         }
 
         [data-tooltip] {
@@ -455,115 +461,10 @@
                 font-size: 13px;
             }
         }
-
-        /* Global Responsive DataTable Card Layout */
-        @media (max-width: 767px) {
-            .overflow-x-auto {
-                overflow-x: visible !important;
-            }
-
-            #docapp-table {
-                border: 0 !important;
-                width: 100% !important;
-                table-layout: fixed !important;
-                display: block !important;
-            }
-
-            #docapp-table thead {
-                display: none !important;
-            }
-
-            #docapp-table tbody {
-                display: block !important;
-                width: 100% !important;
-            }
-
-            #docapp-table tr {
-                display: block !important;
-                margin-bottom: 1.5rem !important;
-                background: white !important;
-                border: 1px solid #e5e7eb !important;
-                border-radius: 0.75rem !important;
-                padding: 0.5rem !important;
-                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
-                width: 100% !important;
-            }
-
-            .dark #docapp-table tr {
-                background: #1f2937 !important;
-                border-color: #374151 !important;
-            }
-
-            #docapp-table td {
-                display: flex !important;
-                justify-content: space-between !important;
-                align-items: center !important;
-                padding: 0.75rem 1rem !important;
-                border-bottom: 1px solid #f3f4f6 !important;
-                text-align: right !important;
-                font-size: 0.875rem !important;
-                white-space: normal !important;
-                word-break: break-all !important;
-                min-height: 3rem !important;
-            }
-
-            .dark #docapp-table td {
-                border-bottom-color: #374151 !important;
-            }
-
-            #docapp-table td:last-child {
-                border-bottom: 0 !important;
-                justify-content: center !important;
-                background: #f9fafb !important;
-                margin-top: 0.75rem !important;
-                border-radius: 0.5rem !important;
-                padding: 1rem !important;
-            }
-
-            .dark #docapp-table td:last-child {
-                background: #111827 !important;
-            }
-
-            #docapp-table td:before {
-                content: attr(data-label);
-                font-weight: 700 !important;
-                text-transform: uppercase !important;
-                font-size: 0.7rem !important;
-                color: #4b5563 !important;
-                padding-right: 1.5rem !important;
-                text-align: left !important;
-                flex: 0 0 40% !important;
-                max-width: 40% !important;
-                letter-spacing: 0.025em !important;
-            }
-
-            .dark #docapp-table td:before {
-                color: #9ca3af !important;
-            }
-
-            /* Handle checkboxes/first column */
-            #docapp-table td:first-child {
-                justify-content: flex-start !important;
-                background: #fefce8 !important;
-                border-top-left-radius: 0.5rem !important;
-                border-top-right-radius: 0.5rem !important;
-                border-bottom: 1px solid #fde047 !important;
-            }
-
-            .dark #docapp-table td:first-child {
-                background: rgba(254, 252, 232, 0.05) !important;
-                border-bottom-color: #422006 !important;
-            }
-
-            #docapp-table td:first-child:before {
-                flex: 0 0 auto !important;
-                margin-right: 1rem !important;
-            }
-        }
     </style>
 </head>
 
-<body class="min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
+<body class="min-h-screen bg-gray-50 dark:bg-surface-tonal-a10 text-gray-900 dark:text-gray-50 transition-colors duration-300" style="font-family:'DM Sans',system-ui,sans-serif;">
 
     <div id="notification-container"></div>
 
@@ -574,43 +475,27 @@
     <div id="main-content" class="transition-all duration-300 lg:ml-64" style="margin-left: 0;">
 
         <nav id="navbar"
-            class="fixed top-0 h-16 bg-white dark:bg-gray-800 shadow-sm border-b dark:border-gray-700 z-40 flex items-center justify-between px-6 transition-all duration-300 left-0 right-0 lg:left-64">
+            class="fixed top-0 h-16 bg-white dark:bg-surface-tonal-a20 shadow-sm border-b border-gray-200 dark:border-surface-tonal-a30 z-40 flex items-center justify-between px-6 transition-all duration-300 left-0 right-0 lg:left-64">
             <button id="mobile-menu-btn"
-                class="lg:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                class="lg:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-gray-600 dark:text-gray-200">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
             </button>
 
-            <div class="flex items-center space-x-4"></div>
+            <div class="flex items-center space-x-4">
+                <a href="{{ route('orders.manager') }}"
+                   class="hidden sm:inline-flex items-center px-4 py-2 bg-accent border border-transparent rounded-lg font-semibold text-xs text-gray-900 uppercase tracking-widest hover:bg-accent-dim focus:outline-none focus:ring-2 focus:ring-accent/50 transition shadow-sm">
+                   <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                   Order Manager
+                </a>
+            </div>
 
             <div class="flex items-center space-x-4">
-                {{-- Appointment Manager Link --}}
-                <a href="{{ route('appointments.manager') }}" title="{{ __('Appointment Manager') }}"
-                    class="p-2 rounded-md text-gray-500 hover:text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                    </svg>
-                </a>
-
-
-                @can('invoices.index')
-                    {{-- POS Link --}}
-                    <a href="{{ route('invoices.pos') }}" title="{{ __('file.pos') ?? 'POS' }}" class="p-2 rounded-md text-gray-500 hover:text-gray-700 hover:bg-gray-100
-                                   dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-gray-700
-                                   focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2
-                                   dark:focus:ring-offset-gray-800 transition">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                        </svg>
-                    </a>
-                @endcan
 
                 <div x-data="{ open: false }" x-init="open = false" class="relative">
                     <button @click="open = !open"
-                        class="flex items-center space-x-1 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary-400 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:focus:ring-offset-gray-800 rounded-md px-2 py-1 transition">
+                        class="flex items-center space-x-1 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-accent focus:outline-none focus:ring-2 focus:ring-accent/30 rounded-md px-2 py-1 transition">
                         <span>{{ strtoupper(app()->getLocale()) }}</span>
                         <svg class="w-4 h-4 transition-transform" :class="{ 'rotate-180': open }" fill="none"
                             stroke="currentColor" viewBox="0 0 24 24">
@@ -623,7 +508,7 @@
                         x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100"
                         x-transition:leave="transition ease-in duration-150"
                         x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"
-                        class="absolute right-0 mt-2 w-36 origin-top-right bg-white dark:bg-gray-800 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 z-50 overflow-hidden">
+                        class="absolute right-0 mt-2 w-36 origin-top-right bg-white dark:bg-surface-tonal-a20 rounded-md shadow-lg ring-1 ring-gray-200 dark:ring-gray-700 z-50 overflow-hidden border border-gray-200 dark:border-surface-tonal-a30">
                         <form method="POST" action="{{ route('language.switch') }}">
                             @csrf
                             <input type="hidden" name="locale" value="en">
@@ -644,7 +529,7 @@
                 </div>
 
                 <button id="theme-toggle"
-                    class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                    class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-gray-600 dark:text-gray-200">
                     <svg id="sun-icon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
@@ -656,7 +541,7 @@
                 </button>
 
                 <button id="fullscreen-toggle" aria-label="Toggle fullscreen"
-                    class="p-2 rounded-md text-gray-500 hover:text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition">
+                    class="p-2 rounded-md text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-50 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-accent/50 transition">
                     <svg id="enter-fullscreen-icon" class="w-5 h-5" fill="none" stroke="currentColor"
                         viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -669,93 +554,10 @@
                     </svg>
                 </button>
 
-                <div class="relative" x-data="notificationsDropdown" x-init="init" x-cloak>
-
-                    <button @click="open = !open; if (open) fetchNotifications()"
-                        class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors relative focus:outline-none focus:ring-2 focus:ring-primary"
-                        aria-label="Notifications">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
-                        </svg>
-
-                        <!-- Badge – show only if unread > 0 -->
-                        <template x-if="unreadCount > 0">
-                            <span
-                                class="absolute top-0 right-0 inline-flex items-center justify-center px-1.5 py-0.5 text-xs font-bold leading-none text-white transform translate-x-1/2 -translate-y-1/2 bg-red-500 rounded-full"
-                                x-text="unreadCount > 99 ? '99+' : unreadCount">
-                            </span>
-                        </template>
-                    </button>
-
-                    <!-- Dropdown panel -->
-                    <div x-show="open" @click.away="open = false" x-transition:enter="transition ease-out duration-200"
-                        x-transition:enter-start="opacity-0 translate-y-1 scale-95"
-                        x-transition:enter-end="opacity-100 translate-y-0 scale-100"
-                        x-transition:leave="transition ease-in duration-150"
-                        x-transition:leave-start="opacity-100 translate-y-0 scale-100"
-                        x-transition:leave-end="opacity-0 translate-y-1 scale-95"
-                        class="fixed sm:absolute top-16 sm:top-auto sm:mt-3 left-1/2 sm:left-auto right-auto sm:right-0 -translate-x-1/2 sm:translate-x-0 w-[calc(100vw-2rem)] sm:w-96 bg-white dark:bg-gray-800 rounded-xl shadow-2xl ring-1 ring-black/5 dark:ring-white/10 overflow-hidden z-50 max-h-[80vh] overflow-y-auto">
-                        <div class="p-4 border-b border-gray-200 dark:border-gray-700">
-                            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">Notifications</h3>
-                        </div>
-
-                        <div class="divide-y divide-gray-200 dark:divide-gray-700">
-                            <template x-if="notifications.length === 0">
-                                <div class="p-8 text-center text-gray-500 dark:text-gray-400">
-                                    <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
-                                    </svg>
-                                    <p class="mt-2 text-sm">No new notifications</p>
-                                </div>
-                            </template>
-
-                            <template x-for="notification in notifications" :key="notification.id">
-                                <div class="p-4 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition"
-                                    :class="{ 'bg-blue-50 dark:bg-blue-900/20': !notification.read_at }">
-                                    <div class="flex items-start space-x-4">
-                                        <!-- Icon / Avatar -->
-                                        <div class="flex-shrink-0">
-                                            <div
-                                                class="w-10 h-10 rounded-full bg-primary-100 dark:bg-primary-900 flex items-center justify-center text-primary-600 dark:text-primary-400">
-                                                <svg class="w-6 h-6" fill="none" stroke="currentColor"
-                                                    viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2"
-                                                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                                </svg>
-                                            </div>
-                                        </div>
-
-                                        <!-- Content -->
-                                        <div class="flex-1 min-w-0">
-                                            <p class="text-sm font-medium text-gray-900 dark:text-white"
-                                                x-text="notification.data.message || 'New notification'"></p>
-                                            <p class="mt-1 text-sm text-gray-600 dark:text-gray-400"
-                                                x-text="notification.data.patient_name || ''"></p>
-                                            <p class="mt-1 text-xs text-gray-500 dark:text-gray-400"
-                                                x-text="new Date(notification.created_at).toLocaleString()"></p>
-                                        </div>
-
-                                        <!-- Action -->
-                                        <button @click="markAsRead(notification.id)"
-                                            class="text-xs text-blue-600 dark:text-blue-400 hover:underline whitespace-nowrap"
-                                            x-show="!notification.read_at">
-                                            Mark read
-                                        </button>
-                                    </div>
-                                </div>
-                            </template>
-                        </div>
-
-                    </div>
-                </div>
 
                 <div class="relative" x-data="{ open: false }" x-cloak x-init="open = false">
                     <button id="user-menu-button" @click="open = !open"
-                        class="flex items-center space-x-3 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary-400 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:focus:ring-offset-gray-800 rounded-md px-2 py-1 transition">
+                        class="flex items-center space-x-3 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-accent focus:outline-none focus:ring-2 focus:ring-accent/30 rounded-md px-2 py-1 transition">
                         <img class="h-8 w-8 rounded-full object-cover ring-2 ring-gray-300 dark:ring-gray-600"
                             src="{{ auth()->user()?->avatar ?? 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()?->name) . '&background=6366f1&color=fff' }}"
                             alt="{{ auth()->user()?->name }}">
@@ -766,7 +568,7 @@
                         x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100"
                         x-transition:leave="transition ease-in duration-150"
                         x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"
-                        class="absolute right-0 mt-2 w-48 origin-top-right bg-white dark:bg-gray-800 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 z-50 overflow-hidden">
+                        class="absolute right-0 mt-2 w-48 origin-top-right bg-white dark:bg-surface-tonal-a20 rounded-md shadow-lg ring-1 ring-gray-200 dark:ring-gray-700 z-50 overflow-hidden border border-gray-200 dark:border-surface-tonal-a30">
 
                         <form method="POST" action="{{ route('logout') }}" class="block">
                             @csrf
@@ -780,52 +582,10 @@
             </div>
         </nav>
 
-        <main class="pt-20 p-4 sm:p-6 min-h-screen bg-gray-50 dark:bg-gray-900/50">
+        <main class="pt-20 p-4 sm:p-6 min-h-screen bg-gray-50 dark:bg-surface-tonal-a10" style="transition: background-color 0.3s;">
             @yield('content')
         </main>
     </div>
-
-    <script>
-        // Global DataTables Default Configuration
-        window.addEventListener('DOMContentLoaded', function () {
-            if (typeof $.fn.dataTable !== 'undefined') {
-                $.extend(true, $.fn.dataTable.defaults, {
-                    responsive: false,
-                    drawCallback: function (settings) {
-                        const $table = $(this);
-                        if ($table.attr('id') === 'docapp-table') {
-                            const labels = [];
-                            $table.find('thead th').each(function () {
-                                // Extract text, ignoring empty tags or icon-only tags
-                                let text = $(this).text().trim();
-                                // Fallback if no text (e.g. checkbox header or icon header)
-                                if (!text && $(this).find('input[type="checkbox"]').length) text = "{{ __('file.select') }}";
-                                if (!text && $(this).hasClass('no-export')) text = "{{ __('file.actions') }}";
-                                labels.push(text);
-                            });
-
-                            $table.find('tbody tr').each(function () {
-                                $(this).find('td').each(function (index) {
-                                    if (labels[index]) {
-                                        $(this).attr('data-label', labels[index]);
-                                    }
-                                });
-                            });
-                        }
-                    }
-                });
-            } else {
-                // Fallback if DT loads after this script
-                $(document).on('init.dt', function (e, settings) {
-                    const api = new $.fn.dataTable.Api(settings);
-                    if ($(api.table().node()).attr('id') === 'docapp-table') {
-                        settings.oInit.responsive = false;
-                        api.settings()[0].oInit.responsive = false;
-                    }
-                });
-            }
-        });
-    </script>
 
     @stack('scripts')
 
@@ -1081,74 +841,7 @@
             @endif
     });
 
-        document.addEventListener('alpine:init', () => {
-            Alpine.data('notificationsDropdown', () => ({
-                open: false,
-                notifications: [],
-                unreadCount: 0,
 
-                url: '{{ route("notifications.unread") }}',
-
-                async fetchNotifications() {
-                    try {
-                        const response = await fetch(this.url, {
-                            headers: {
-                                'Accept': 'application/json',
-                                'X-Requested-With': 'XMLHttpRequest'
-                            }
-                        });
-
-                        if (!response.ok) throw new Error('Failed to fetch notifications');
-
-                        const data = await response.json();
-                        this.notifications = data.notifications || [];
-                        this.unreadCount = data.unread_count || 0;
-                    } catch (error) {
-                        console.error('Notifications fetch error:', error);
-                    }
-                },
-
-                async markAsRead(id) {
-                    try {
-                        const readRoutePattern = '{{ route("notifications.read", ":id") }}';
-                        const url = readRoutePattern.replace(':id', id);
-
-                        const response = await fetch(url, {
-                            method: 'POST',
-                            headers: {
-                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                                'Accept': 'application/json',
-                                'X-Requested-With': 'XMLHttpRequest'
-                            }
-                        });
-
-                        if (!response.ok) {
-                            let message = 'Failed to mark as read';
-                            try {
-                                const json = await response.json();
-                                message = json.message || message;
-                            } catch { }
-                            throw new Error(`${message} (${response.status})`);
-                        }
-
-                        const notifIndex = this.notifications.findIndex(n => n.id === id);
-                        if (notifIndex !== -1) {
-                            this.notifications[notifIndex].read_at = new Date().toISOString();
-                            this.unreadCount = this.notifications.filter(n => !n.read_at).length;
-                        }
-
-                    } catch (err) {
-                        console.error('Mark as read failed:', err);
-                        showNotification('Error', 'Could not mark notification as read. Please try again.', 'error');
-                    }
-                },
-
-                init() {
-                    this.fetchNotifications();
-                    setInterval(() => this.fetchNotifications(), 60000);
-                }
-            }));
-        });
     </script>
 
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
