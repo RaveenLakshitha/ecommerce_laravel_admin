@@ -17,40 +17,41 @@ class UserSeeder extends Seeder
     {
         User::unguard();
 
-        $therapists = [
-            ['name' => 'Ricardo Contreras', 'phone' => '555-0101'],
-            ['name' => 'Andros Hangis', 'phone' => '555-0102'],
-            ['name' => 'Kristal Aguilera', 'phone' => '555-0103'],
-            ['name' => 'Octavio Dominguez', 'phone' => '555-0104'],
-            ['name' => 'Arantza Corral', 'phone' => '555-0105'],
-            ['name' => 'Carolina Garcia', 'phone' => '555-0106'],
-            ['name' => 'Mercedes Porras', 'phone' => '555-0107'],
-            ['name' => 'Carolina Alvarez', 'phone' => '555-0108'],
-            ['name' => 'Rosalinda Gamez', 'phone' => '555-0109'],
-            ['name' => 'Andres Bravo', 'phone' => '555-0110'],
-            ['name' => 'Alejandra Medina', 'phone' => '555-0111'],
-            ['name' => 'Carlos Bush', 'phone' => '555-0112'],
+        $customers = [
+            ['first_name' => 'John', 'last_name' => 'Doe', 'phone' => '555-0101'],
+            ['first_name' => 'Jane', 'last_name' => 'Smith', 'phone' => '555-0102'],
+            ['first_name' => 'Michael', 'last_name' => 'Johnson', 'phone' => '555-0103'],
+            ['first_name' => 'Emily', 'last_name' => 'Davis', 'phone' => '555-0104'],
+            ['first_name' => 'David', 'last_name' => 'Wilson', 'phone' => '555-0105'],
         ];
 
-        foreach ($therapists as $therapist) {
-            $email = Str::slug($therapist['name'], '.') . '@example.com';
+        foreach ($customers as $c) {
+            $name = $c['first_name'] . ' ' . $c['last_name'];
+            $email = Str::slug($name, '.') . '@example.com';
 
-            $user = User::withTrashed()->updateOrCreate(
+            $user = User::updateOrCreate(
                 ['email' => $email],
                 [
-                    'name' => $therapist['name'],
-                    'password' => Hash::make('password123'),
-                    'phone' => $therapist['phone'],
-                    'is_active' => true, // Based on "Activo" status in document 
-                    'is_deleted' => false,
-                    'deleted_at' => null,
+                    'name' => $name,
+                    'password' => Hash::make('password'),
                 ]
             );
-            
-            // Assign therapist/doctor role if it exists
-            if (Role::where('name', 'doctor')->exists()) {
-                $user->assignRole('doctor');
+
+            // Assign role if exists
+            if (Role::where('name', 'customer')->exists()) {
+                $user->assignRole('customer');
             }
+
+            // Create or update Customer profile
+            \App\Models\Customer::updateOrCreate(
+                ['user_id' => $user->id],
+                [
+                    'first_name' => $c['first_name'],
+                    'last_name' => $c['last_name'],
+                    'email' => $email,
+                    'phone' => $c['phone'],
+                ]
+            );
         }
 
         User::reguard();

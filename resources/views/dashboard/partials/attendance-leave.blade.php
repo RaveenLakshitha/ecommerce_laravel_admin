@@ -6,10 +6,10 @@ Requires: $todayAttendance, $leaveTypes, $leaveBalances, $primary_color
 
     {{-- ── TODAY'S ATTENDANCE ─────────────────────────────────────────────── --}}
     <div
-        class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+        class="bg-white dark:bg-surface-tonal-a20 rounded-2xl shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
 
         {{-- Card header --}}
-        <div class="px-6 py-4 border-b border-gray-100 dark:border-gray-700 flex items-center gap-3"
+        <div class="px-6 py-4 border-b border-gray-100 dark:border-surface-tonal-a30 flex items-center gap-3"
             style="background: linear-gradient(135deg, {{ $primary_color }}15, {{ $primary_color }}08)">
             <div class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:{{ $primary_color }}20">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -19,7 +19,7 @@ Requires: $todayAttendance, $leaveTypes, $leaveBalances, $primary_color
                 </svg>
             </div>
             <div>
-                <h3 class="font-semibold text-gray-800 dark:text-white text-sm">
+                <h3 class="font-semibold text-gray-800 dark:text-primary-a0 text-sm">
                     {{ __('file.todays_attendance') ?? "Today's Attendance" }}
                 </h3>
                 <p class="text-xs text-gray-500 dark:text-gray-400">{{ now()->format('d M Y') }}</p>
@@ -55,7 +55,7 @@ Requires: $todayAttendance, $leaveTypes, $leaveBalances, $primary_color
                             'present' => 'bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300',
                             'late' => 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/40 dark:text-yellow-300',
                             'absent' => 'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300',
-                            default => 'bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300',
+                            default => 'bg-gray-100 text-gray-700 dark:bg-surface-tonal-a30 dark:text-gray-300',
                         };
                     @endphp
                     <span
@@ -69,16 +69,16 @@ Requires: $todayAttendance, $leaveTypes, $leaveBalances, $primary_color
 
                 {{-- Times --}}
                 <div class="grid grid-cols-2 gap-3 mb-5">
-                    <div class="rounded-xl p-3 bg-gray-50 dark:bg-gray-700/50 text-center">
+                    <div class="rounded-xl p-3 bg-gray-50 dark:bg-surface-tonal-a30/50 text-center">
                         <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">{{ __('file.clock_in') ?? 'Clock In' }}</p>
-                        <p class="font-bold text-gray-900 dark:text-white text-base">
+                        <p class="font-bold text-gray-900 dark:text-primary-a0 text-base">
                             {{ $todayAttendance->clock_in ? $todayAttendance->clock_in->format('h:i A') : '—' }}
                         </p>
                     </div>
-                    <div class="rounded-xl p-3 bg-gray-50 dark:bg-gray-700/50 text-center">
+                    <div class="rounded-xl p-3 bg-gray-50 dark:bg-surface-tonal-a30/50 text-center">
                         <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">{{ __('file.clock_out') ?? 'Clock Out' }}
                         </p>
-                        <p class="font-bold text-gray-900 dark:text-white text-base">
+                        <p class="font-bold text-gray-900 dark:text-primary-a0 text-base">
                             {{ $todayAttendance->clock_out ? $todayAttendance->clock_out->format('h:i A') : '—' }}
                         </p>
                     </div>
@@ -130,10 +130,10 @@ Requires: $todayAttendance, $leaveTypes, $leaveBalances, $primary_color
 
     {{-- ── LEAVE REQUEST ──────────────────────────────────────────────────── --}}
     <div
-        class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+        class="bg-white dark:bg-surface-tonal-a20 rounded-2xl shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
 
         {{-- Card header --}}
-        <div class="px-6 py-4 border-b border-gray-100 dark:border-gray-700 flex items-center gap-3"
+        <div class="px-6 py-4 border-b border-gray-100 dark:border-surface-tonal-a30 flex items-center gap-3"
             style="background: linear-gradient(135deg, {{ $primary_color }}15, {{ $primary_color }}08)">
             <div class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:{{ $primary_color }}20">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -143,7 +143,7 @@ Requires: $todayAttendance, $leaveTypes, $leaveBalances, $primary_color
                 </svg>
             </div>
             <div>
-                <h3 class="font-semibold text-gray-800 dark:text-white text-sm">
+                <h3 class="font-semibold text-gray-800 dark:text-primary-a0 text-sm">
                     {{ __('file.request_leave') ?? 'Request Leave' }}
                 </h3>
                 <p class="text-xs text-gray-500 dark:text-gray-400">{{ now()->year }}
@@ -171,7 +171,7 @@ Requires: $todayAttendance, $leaveTypes, $leaveBalances, $primary_color
                         {{ __('file.leave_type') ?? 'Leave Type' }}
                     </label>
                     <select name="leave_type_id" required
-                        class="w-full px-3 py-2.5 text-sm border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:outline-none transition"
+                        class="w-full px-3 py-2.5 text-sm border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-surface-tonal-a30 text-gray-900 dark:text-primary-a0 focus:ring-2 focus:outline-none transition"
                         style="--tw-ring-color:{{ $primary_color }}50">
                         <option value="">{{ __('file.select_leave_type') ?? 'Select leave type' }}</option>
                         @foreach($leaveTypes as $type)
@@ -188,7 +188,7 @@ Requires: $todayAttendance, $leaveTypes, $leaveBalances, $primary_color
                             {{ __('file.start_date') ?? 'Start Date' }}
                         </label>
                         <input type="date" name="start_date" required min="{{ now()->format('Y-m-d') }}"
-                            class="w-full px-3 py-2.5 text-sm border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:outline-none">
+                            class="w-full px-3 py-2.5 text-sm border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-surface-tonal-a30 text-gray-900 dark:text-primary-a0 focus:ring-2 focus:outline-none">
                         @error('start_date') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
                     </div>
                     <div>
@@ -197,7 +197,7 @@ Requires: $todayAttendance, $leaveTypes, $leaveBalances, $primary_color
                             {{ __('file.end_date') ?? 'End Date' }}
                         </label>
                         <input type="date" name="end_date" required min="{{ now()->format('Y-m-d') }}"
-                            class="w-full px-3 py-2.5 text-sm border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:outline-none">
+                            class="w-full px-3 py-2.5 text-sm border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-surface-tonal-a30 text-gray-900 dark:text-primary-a0 focus:ring-2 focus:outline-none">
                         @error('end_date') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
                     </div>
                 </div>
@@ -208,7 +208,7 @@ Requires: $todayAttendance, $leaveTypes, $leaveBalances, $primary_color
                         {{ __('file.reason') ?? 'Reason' }}
                     </label>
                     <textarea name="reason" rows="2"
-                        class="w-full px-3 py-2.5 text-sm border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:outline-none resize-none"></textarea>
+                        class="w-full px-3 py-2.5 text-sm border border-gray-300 dark:border-gray-600 rounded-xl bg-white dark:bg-surface-tonal-a30 text-gray-900 dark:text-primary-a0 focus:ring-2 focus:outline-none resize-none"></textarea>
                     @error('reason') <p class="mt-1 text-xs text-red-600">{{ $message }}</p> @enderror
                 </div>
 
@@ -222,3 +222,4 @@ Requires: $todayAttendance, $leaveTypes, $leaveBalances, $primary_color
     </div>
 
 </section>
+

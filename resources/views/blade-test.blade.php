@@ -2,3 +2,4 @@
 @if(true)
     <p>Blade is working</p>
 @endif
+

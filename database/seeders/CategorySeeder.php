@@ -4,76 +4,63 @@ namespace Database\Seeders;
 
 use App\Models\Category;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class CategorySeeder extends Seeder
 {
     public function run(): void
     {
-        Category::unguard();
+        // Top-level categories
+        $men = Category::create([
+            'name' => 'Men',
+            'slug' => 'men',
+            'description' => 'Men’s clothing and accessories',
+            'sort_order' => 10,
+        ]);
 
-        $categories = [
-            // Main clinical / medicine categories
-            [
-                'name' => 'Analgesics',
-                'description' => 'Pain relievers and antipyretics',
-                'is_active' => true,
-            ],
-            [
-                'name' => 'Antibiotics',
-                'description' => 'Antibacterial medications',
-                'is_active' => true,
-            ],
-            [
-                'name' => 'Anti-ulcer Agents',
-                'description' => 'Proton pump inhibitors, H2 blockers, antacids',
-                'is_active' => true,
-            ],
-            [
-                'name' => 'Respiratory',
-                'description' => 'Medications for asthma, COPD, and respiratory conditions',
-                'is_active' => true,
-            ],
+        $women = Category::create([
+            'name' => 'Women',
+            'slug' => 'women',
+            'description' => 'Women’s fashion and apparel',
+            'sort_order' => 20,
+        ]);
 
-            // Supportive / fallback categories used in inventory
-            [
-                'name' => 'Injectables',
-                'description' => 'IV and IM injectable medications',
-                'is_active' => true,
-            ],
-            [
-                'name' => 'Inhalers & Nebulizers',
-                'description' => 'Inhalation devices and respiratory medications',
-                'is_active' => true,
-            ],
-            [
-                'name' => 'Antiemetics',
-                'description' => 'Medications for nausea and vomiting',
-                'is_active' => true,
-            ],
+        // Sub-categories
+        Category::create([
+            'name' => 'T-Shirts',
+            'slug' => 't-shirts',
+            'parent_id' => $men->id,
+            'sort_order' => 10,
+        ]);
 
-            // Optional parent / broader categories (if you use hierarchical structure)
-            [
-                'name' => 'General Medicine',
-                'description' => 'Common outpatient and ward medications',
-                'is_active' => true,
-            ],
-            [
-                'name' => 'Gastrointestinal',
-                'description' => 'Medications for GI disorders',
-                'is_active' => true,
-            ],
-        ];
+        Category::create([
+            'name' => 'Jeans',
+            'slug' => 'jeans',
+            'parent_id' => $men->id,
+            'sort_order' => 20,
+        ]);
 
-        foreach ($categories as $cat) {
-            // Use firstOrCreate to avoid duplicates if re-run
-            Category::firstOrCreate(
-                ['name' => $cat['name']],
-                $cat
-            );
-        }
+        Category::create([
+            'name' => 'Hoodies & Sweatshirts',
+            'slug' => 'hoodies',
+            'parent_id' => $men->id,
+            'sort_order' => 30,
+        ]);
 
-        Category::reguard();
+        Category::create([
+            'name' => 'Tops',
+            'slug' => 'tops',
+            'parent_id' => $women->id,
+            'sort_order' => 10,
+        ]);
 
-        $this->command->info('Core medicine categories seeded successfully (' . count($categories) . ' categories).');
+        Category::create([
+            'name' => 'Dresses',
+            'slug' => 'dresses',
+            'parent_id' => $women->id,
+            'sort_order' => 20,
+        ]);
+
+        $this->command->info('Categories seeded (with some hierarchy).');
     }
 }

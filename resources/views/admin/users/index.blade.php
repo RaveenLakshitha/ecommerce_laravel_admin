@@ -6,7 +6,7 @@
     <div class="px-4 sm:px-6 lg:px-4 pb-4 sm:py-12 pt-20">
         <div class=" flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
             <div>
-                <h1 class="text-2xl sm:text-3xl font-semibold text-gray-900 dark:text-white">
+                <h1 class="text-2xl sm:text-3xl font-semibold text-gray-900 dark:text-primary-a0">
                     {{ __('file.user_management') }}
                 </h1>
                 <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
@@ -16,7 +16,7 @@
 
             <div class="flex flex-row-reverse sm:flex-row gap-3 w-full sm:w-auto justify-between sm:justify-end">
                 <button type="button" id="filter-button"
-                    class="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 rounded-lg text-sm font-medium transition border border-gray-300 dark:border-gray-600 shadow-sm">
+                    class="inline-flex items-center gap-2 px-4 py-2 bg-white dark:bg-surface-tonal-a30 hover:bg-gray-50 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 rounded-lg text-sm font-medium transition border border-gray-300 dark:border-gray-600 shadow-sm">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
@@ -51,9 +51,9 @@
         </div>
 
         <div
-            class="relative bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
-            <table id="docapp-table" class="w-full divide-y divide-gray-200 dark:divide-gray-700">
-                <thead class="bg-gray-50 dark:bg-gray-900">
+            class="relative bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
+            <table id="application-table" class="w-full divide-y divide-gray-200 dark:divide-gray-700">
+                <thead class="bg-gray-50 dark:bg-surface-tonal-a10">
                     <tr>
                         <th class="px-6 py-3 text-left w-12">
                             <input type="checkbox" id="select-all"
@@ -89,16 +89,16 @@
                         </th>
                     </tr>
                 </thead>
-                <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700"></tbody>
+                <tbody class="bg-white dark:bg-surface-tonal-a20 divide-y divide-gray-200 dark:divide-gray-700"></tbody>
             </table>
         </div>
 
         <div id="filter-drawer" class="fixed inset-0 z-50 hidden">
             <div class="fixed inset-0 bg-black/50" id="drawer-backdrop"></div>
-            <div class="fixed inset-y-0 right-0 w-full max-w-md bg-white dark:bg-gray-800 shadow-xl transform translate-x-full transition-transform duration-300 ease-in-out"
+            <div class="fixed inset-y-0 right-0 w-full max-w-md bg-white dark:bg-surface-tonal-a20 shadow-xl transform translate-x-full transition-transform duration-300 ease-in-out"
                 id="drawer-panel">
-                <div class="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
-                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">{{ __('file.Filters') }}</h3>
+                <div class="flex items-center justify-between p-6 border-b border-gray-200 dark:border-surface-tonal-a30">
+                    <h3 class="text-lg font-semibold text-gray-900 dark:text-primary-a0">{{ __('file.Filters') }}</h3>
                     <button type="button" id="close-drawer"
                         class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -114,7 +114,7 @@
                             <label
                                 class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('file.role') }}</label>
                             <select id="filter-role"
-                                class="w-full px-2 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-gray-900 dark:text-white transition-shadow">
+                                class="w-full px-2 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-surface-tonal-a10 dark:text-primary-a0 transition-shadow">
                                 <option value="">{{ __('file.all_roles') }}</option>
                                 @foreach(\Spatie\Permission\Models\Role::all() as $role)
                                     <option value="{{ $role->name }}">{{ ucfirst($role->name) }}</option>
@@ -126,7 +126,7 @@
                             <label
                                 class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('file.status') }}</label>
                             <select id="filter-status"
-                                class="w-full px-2 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-gray-900 dark:text-white transition-shadow">
+                                class="w-full px-2 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-surface-tonal-a10 dark:text-primary-a0 transition-shadow">
                                 <option value="">{{ __('file.all_statuses') }}</option>
                                 <option value="1">{{ __('file.active') }}</option>
                                 <option value="0">{{ __('file.inactive') }}</option>
@@ -134,7 +134,8 @@
                         </div>
 
                         <div>
-                            <h4 class="text-sm font-semibold text-gray-900 dark:text-white mb-3 uppercase tracking-wider">
+                            <h4
+                                class="text-sm font-semibold text-gray-900 dark:text-primary-a0 mb-3 uppercase tracking-wider">
                                 {{ __('file.created_date') }}
                             </h4>
                             <div class="grid grid-cols-2 gap-4">
@@ -142,23 +143,23 @@
                                     <label
                                         class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('file.from') }}</label>
                                     <input type="date" id="filter-from"
-                                        class="w-full px-2 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-transparent dark:text-white transition-shadow">
+                                        class="w-full px-2 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-transparent dark:text-primary-a0 transition-shadow">
                                 </div>
                                 <div>
                                     <label
                                         class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('file.to') }}</label>
                                     <input type="date" id="filter-to"
-                                        class="w-full px-2 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-transparent dark:text-white transition-shadow">
+                                        class="w-full px-2 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-transparent dark:text-primary-a0 transition-shadow">
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <div
-                        class="fixed bottom-0 left-0 right-0 p-6 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 max-w-md ml-auto">
+                        class="fixed bottom-0 left-0 right-0 p-6 bg-white dark:bg-surface-tonal-a20 border-t border-gray-200 dark:border-surface-tonal-a30 max-w-md ml-auto">
                         <div class="flex gap-3">
                             <button type="button" id="clear-filters"
-                                class="flex-1 px-5 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 transition">
+                                class="flex-1 px-5 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-surface-tonal-a30 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 transition">
                                 {{ __('file.clear') }}
                             </button>
                             <button type="button" id="apply-filters"
@@ -211,7 +212,7 @@
                     }
                 }
 
-                const table = $('#docapp-table').DataTable({
+                const table = $('#application-table').DataTable({
                     processing: true,
                     serverSide: true,
                     responsive: false,
@@ -248,21 +249,21 @@
                             data: null,
                             className: 'text-right whitespace-nowrap',
                             render: (data, type, row) => `
-                                                    <div class="flex items-center justify-end gap-1">
-                                                        ${row.edit_url ? `<a href="${row.edit_url}" class="p-2 text-gray-600 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400">
-                                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-                                                            </svg>
-                                                        </a>` : ''}
-                                                        ${row.delete_url ? `
-                                                            <button type="button" onclick="deleteUser(${row.id}, '${row.name.replace(/'/g, "\\'")}')"
-                                                                    class="p-2 text-gray-600 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-500">
-                                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                                                                </svg>
-                                                            </button>
-                                                        ` : ''}
-                                                    </div>`
+                                                            <div class="flex items-center justify-end gap-3 transition-opacity">
+                                                                ${row.edit_url ? `<a href="${row.edit_url}" class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 p-1.5 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/20" title="{{ __('file.edit') }}">
+                                                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                                                    </svg>
+                                                                </a>` : ''}
+                                                                ${row.delete_url ? `
+                                                                    <button type="button" onclick="deleteUser(${row.id}, '${row.name.replace(/'/g, "\\'")}')"
+                                                                            class="text-red-500 hover:text-red-700 dark:text-red-400 p-1.5 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20" title="{{ __('file.delete') }}">
+                                                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                                                                        </svg>
+                                                                    </button>
+                                                                ` : ''}
+                                                            </div>`
                         }
                     ],
                     layout: {
@@ -270,7 +271,7 @@
                             buttons: [
                                 {
                                     extend: 'pageLength',
-                                    className: 'inline-flex items-center gap-2 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 text-sm font-medium transition shadow-sm'
+                                    className: 'inline-flex items-center gap-2 bg-white dark:bg-surface-tonal-a30 hover:bg-gray-50 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 text-sm font-medium transition shadow-sm'
                                 },
                                 {
                                     extend: 'collection',
@@ -368,7 +369,7 @@
                                 $('.row-checkbox').prop('checked', false);
                                 $('#select-all').prop('checked', false);
                                 if (typeof updateBulkDelete === 'function') updateBulkDelete();
-                                
+
                                 table.draw(false);
                                 if (typeof showNotification === 'function') showNotification('Success', response.message || 'Selected records deleted', 'success');
                                 else alert(response.message || 'Selected records deleted');
@@ -387,7 +388,7 @@
                         }
                     });
                 });
-                window.deleteUser = function(id, name) {
+                window.deleteUser = function (id, name) {
                     if (!confirm(`Are you sure you want to delete ${name}?`)) return;
 
                     fetch(`{{ route('users.index') }}/${id}`, {
@@ -399,18 +400,18 @@
                         },
                         body: new URLSearchParams({ '_method': 'DELETE' })
                     })
-                    .then(res => res.json())
-                    .then(data => {
-                        if (data.success) {
-                            showNotification('Success', data.message, 'success');
-                            table.draw(false);
-                        } else {
-                            showNotification('Error', data.message, 'error');
-                        }
-                    })
-                    .catch(err => {
-                        showNotification('Error', 'An error occurred', 'error');
-                    });
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.success) {
+                                showNotification('Success', data.message, 'success');
+                                table.draw(false);
+                            } else {
+                                showNotification('Error', data.message, 'error');
+                            }
+                        })
+                        .catch(err => {
+                            showNotification('Error', 'An error occurred', 'error');
+                        });
                 };
             });
         </script>

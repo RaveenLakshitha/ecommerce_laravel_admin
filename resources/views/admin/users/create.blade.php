@@ -13,12 +13,12 @@
                 <svg class="w-4 h-4 mx-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                 </svg>
-                <span class="text-gray-900 dark:text-white font-medium">
+                <span class="text-gray-900 dark:text-primary-a0 font-medium">
                     {{ __('file.add_user') ?? 'Add User' }}
                 </span>
             </div>
 
-            <h1 class="text-3xl font-semibold text-gray-900 dark:text-white">
+            <h1 class="text-3xl font-semibold text-gray-900 dark:text-primary-a0">
                 {{ __('file.add_new_user') ?? 'Add New User' }}
             </h1>
             <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
@@ -31,14 +31,14 @@
             @csrf
 
             <div
-                class="bg-white dark:bg-transparent rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                class="bg-white dark:bg-transparent rounded-xl shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
 
                 <div class="p-6 sm:p-8 space-y-8">
 
                     <!-- Basic Information Section -->
                     <div class="space-y-6">
                         <h2
-                            class="text-xl font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-700 pb-3">
+                            class="text-xl font-semibold text-gray-900 dark:text-primary-a0 border-b border-gray-200 dark:border-surface-tonal-a30 pb-3">
                             {{ __('file.basic_information') ?? 'Basic Information' }}
                         </h2>
 
@@ -48,7 +48,7 @@
                                     {{ __('file.full_name') ?? 'Full Name' }} <span class="text-red-500">*</span>
                                 </label>
                                 <input type="text" name="name" value="{{ old('name') }}" required
-                                    class="w-full px-3 py-2.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-gray-900 dark:text-white transition-all"
+                                    class="w-full px-3 py-2.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-surface-tonal-a10 dark:text-primary-a0 transition-all"
                                     placeholder="John Doe">
                                 @error('name')
                                     <p class="mt-1.5 text-xs text-red-600 dark:text-red-400">{{ $message }}</p>
@@ -60,7 +60,7 @@
                                     {{ __('file.email') ?? 'Email' }} <span class="text-red-500">*</span>
                                 </label>
                                 <input type="email" name="email" value="{{ old('email') }}" required
-                                    class="w-full px-3 py-2.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-gray-900 dark:text-white transition-all"
+                                    class="w-full px-3 py-2.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-surface-tonal-a10 dark:text-primary-a0 transition-all"
                                     placeholder="user@example.com">
                                 @error('email')
                                     <p class="mt-1.5 text-xs text-red-600 dark:text-red-400">{{ $message }}</p>
@@ -73,7 +73,7 @@
                                 </label>
                                 <input type="tel" name="phone" value="{{ old('phone') }}" required minlength="7"
                                     maxlength="15"
-                                    class="w-full px-3 py-2.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-gray-900 dark:text-white transition-all"
+                                    class="w-full px-3 py-2.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-surface-tonal-a10 dark:text-primary-a0 transition-all"
                                     placeholder="+1712345678">
                                 @error('phone')
                                     <p class="mt-1.5 text-xs text-red-600 dark:text-red-400">{{ $message }}</p>
@@ -83,8 +83,8 @@
                     </div>
 
                     <!-- Account Credentials -->
-                    <div class="space-y-6 pt-6 border-t border-gray-200 dark:border-gray-700">
-                        <h2 class="text-xl font-semibold text-gray-900 dark:text-white pb-3">
+                    <div class="space-y-6 pt-6 border-t border-gray-200 dark:border-surface-tonal-a30">
+                        <h2 class="text-xl font-semibold text-gray-900 dark:text-primary-a0 pb-3">
                             {{ __('file.account_credentials') ?? 'Account Credentials' }}
                         </h2>
 
@@ -96,7 +96,7 @@
                                 </label>
                                 <div class="relative">
                                     <input type="password" name="password" id="password" required minlength="8"
-                                        class="w-full px-3 py-2.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-gray-900 dark:text-white transition-all pr-10"
+                                        class="w-full px-3 py-2.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-surface-tonal-a10 dark:text-primary-a0 transition-all pr-10"
                                         placeholder="••••••••">
                                     <button type="button" onclick="togglePassword('password', 'eyePassword')"
                                         class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 focus:outline-none">
@@ -122,7 +122,7 @@
                                 </label>
                                 <div class="relative">
                                     <input type="password" name="password_confirmation" id="password_confirmation" required
-                                        class="w-full px-3 py-2.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-gray-900 dark:text-white transition-all pr-10"
+                                        class="w-full px-3 py-2.5 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-surface-tonal-a10 dark:text-primary-a0 transition-all pr-10"
                                         placeholder="••••••••">
                                     <button type="button" onclick="togglePassword('password_confirmation', 'eyeConfirm')"
                                         class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 focus:outline-none">
@@ -140,8 +140,8 @@
                     </div>
 
                     <!-- Role Selection (Single Role) -->
-                    <div class="space-y-6 pt-6 border-t border-gray-200 dark:border-gray-700">
-                        <h2 class="text-xl font-semibold text-gray-900 dark:text-white pb-3">
+                    <div class="space-y-6 pt-6 border-t border-gray-200 dark:border-surface-tonal-a30">
+                        <h2 class="text-xl font-semibold text-gray-900 dark:text-primary-a0 pb-3">
                             {{ __('file.user_role') ?? 'User Role' }}
                         </h2>
 
@@ -150,7 +150,7 @@
                                 <label
                                     class="relative flex items-center p-4 border border-gray-300 dark:border-gray-600 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors group">
                                     <input type="radio" name="role" value="{{ $role->name }}" required
-                                        class="h-5 w-5 text-gray-900 focus:ring-gray-900 border-gray-300 dark:border-gray-600 dark:bg-gray-800"
+                                        class="h-5 w-5 text-gray-900 focus:ring-gray-900 border-gray-300 dark:border-gray-600 dark:bg-surface-tonal-a20"
                                         {{ old('role') === $role->name ? 'checked' : '' }}>
                                     <span class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-200">
                                         {{ ucfirst(str_replace('-', ' ', $role->name)) }}
@@ -167,7 +167,7 @@
                     </div>
 
                     <!-- Active Status Toggle -->
-                    <div class="pt-6 border-t border-gray-200 dark:border-gray-700">
+                    <div class="pt-6 border-t border-gray-200 dark:border-surface-tonal-a30">
                         <label class="inline-flex items-center cursor-pointer select-none">
                             <div class="relative inline-flex items-center">
                                 <input type="checkbox" name="is_active" value="1" {{ old('is_active', 1) ? 'checked' : '' }}
@@ -175,7 +175,7 @@
                                 <div class="w-11 h-6 bg-gray-200 rounded-full peer 
                                                         peer-focus:outline-none peer-focus:ring-4 
                                                         peer-focus:ring-gray-300 dark:peer-focus:ring-gray-700 
-                                                        dark:bg-gray-700 
+                                                        dark:bg-surface-tonal-a30 
                                                         peer-checked:bg-gray-900 
                                                         peer-checked:after:translate-x-5 
                                                         rtl:peer-checked:after:-translate-x-5 
@@ -242,3 +242,4 @@
         }
     </script>
 @endsection
+

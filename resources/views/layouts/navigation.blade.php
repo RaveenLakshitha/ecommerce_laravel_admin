@@ -19,14 +19,14 @@
     </script>
 </head>
 
-<body class="h-full bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors">
+<body class="h-full bg-gray-100 dark:bg-surface-tonal-a10 text-gray-900 dark:text-gray-100 transition-colors">
     <div class="flex h-full">
 
         {{-- ====================== SIDEBAR ====================== --}}
         <aside id="sidebar"
-            class="fixed inset-y-0 left-0 z-50 w-64 bg-white dark:bg-gray-800 shadow-lg transform -translate-x-full lg:translate-x-0 lg:static lg:inset-0 transition-transform duration-300">
-            <div class="flex items-center justify-between p-4 border-b dark:border-gray-700">
-                <a href="{{ route('dashboard') }}" class="text-xl font-bold text-primary">
+            class="fixed inset-y-0 left-0 z-50 w-64 bg-white dark:bg-surface-tonal-a20 shadow-lg transform -translate-x-full lg:translate-x-0 lg:static lg:inset-0 transition-transform duration-300">
+            <div class="flex items-center justify-between p-4 border-b dark:border-surface-tonal-a30">
+                <a href="{{ route('admin.dashboard') }}" class="text-xl font-bold text-primary">
                     {{ config('app.name') }}
                 </a>
                 <button id="close-sidebar"
@@ -42,30 +42,12 @@
 
                 {{-- ==== DASHBOARD (All logged‑in users) ==== --}}
                 @auth
-                    <x-sidebar-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
+                    <x-sidebar-link href="{{ route('admin.dashboard') }}" :active="request()->routeIs('dashboard')">
                         <x-icon name="home" /> Dashboard
                     </x-sidebar-link>
                 @endauth
 
-                {{-- ==== THERAPIST ==== --}}
-                @role('therapist')
-                <x-sidebar-link href="{{ route('therapist.appointments.index') }}">
-                    <x-icon name="calendar" /> My Appointments
-                </x-sidebar-link>
-                <x-sidebar-link href="{{ route('therapist.charges.index') }}">
-                    <x-icon name="dollar" /> Charges
-                </x-sidebar-link>
-                @endrole
 
-                {{-- ==== PRIMARY THERAPIST ==== --}}
-                @role('primary-therapist')
-                <x-sidebar-link href="{{ route('primary.patients.index') }}">
-                    <x-icon name="users" /> Assign Patients
-                </x-sidebar-link>
-                <x-sidebar-link href="{{ route('primary.appointments.index') }}">
-                    <x-icon name="calendar-check" /> Manage Appointments
-                </x-sidebar-link>
-                @endrole
 
                 {{-- ==== ADMIN ==== --}}
                 @role('admin')
@@ -94,12 +76,7 @@
                 </x-sidebar-link>
                 @endrole
 
-                {{-- ==== PATIENT ==== --}}
-                @role('patient')
-                <x-sidebar-link href="{{ route('patient.book') }}">
-                    <x-icon name="calendar-plus" /> Book Appointment
-                </x-sidebar-link>
-                @endrole
+
 
                 {{-- ==== USER PROFILE & LOGOUT ==== --}}
                 @auth
@@ -126,7 +103,7 @@
             </nav>
 
             {{-- ==== DARK MODE TOGGLE ==== --}}
-            <div class="absolute bottom-0 w-full p-4 border-t dark:border-gray-700">
+            <div class="absolute bottom-0 w-full p-4 border-t dark:border-surface-tonal-a30">
                 <button id="theme-toggle"
                     class="flex items-center w-full px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md">
                     <svg id="sun-icon" class="w-5 h-5 mr-2 hidden dark:inline" fill="none" stroke="currentColor"
@@ -150,7 +127,7 @@
         {{-- ====================== MAIN CONTENT ====================== --}}
         <div class="flex-1 flex flex-col">
             {{-- Mobile Header --}}
-            <header class="lg:hidden bg-white dark:bg-gray-800 shadow-sm">
+            <header class="lg:hidden bg-white dark:bg-surface-tonal-a20 shadow-sm">
                 <div class="flex items-center justify-between p-4">
                     <button id="open-sidebar"
                         class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
@@ -159,7 +136,7 @@
                                 d="M4 6h16M4 12h16M4 18h16" />
                         </svg>
                     </button>
-                    <a href="{{ route('dashboard') }}" class="text-lg font-bold text-primary">
+                    <a href="{{ route('admin.dashboard') }}" class="text-lg font-bold text-primary">
                         {{ config('app.name') }}
                     </a>
                     <div class="w-6"></div>
@@ -168,7 +145,7 @@
 
             {{-- Page Header --}}
             @if(isset($header))
-                <header class="bg-white dark:bg-gray-800 shadow-sm">
+                <header class="bg-white dark:bg-surface-tonal-a20 shadow-sm">
                     <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                         {{ $header }}
                     </div>
@@ -236,3 +213,4 @@
 </body>
 
 </html>
+

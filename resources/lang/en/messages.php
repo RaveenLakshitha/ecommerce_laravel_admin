@@ -21,7 +21,6 @@ return [
     'Are you sure want to delete?' => 'Are you sure you want to delete?222222222',
     'No user is selected!' => 'No user is selected!222222222',
     'This feature is disable for demo!' => 'This feature is disabled for demo!222222222',
-    'Medical Center' => 'Medical Center',
     'Welcome Back' => 'Welcome Back',
     'Please enter your credentials to access the system.' => 'Please enter your credentials to access the system.',
     'Email Address' => 'Email Address',

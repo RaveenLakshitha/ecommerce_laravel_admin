@@ -17,7 +17,7 @@
                 </p>
             </div>
             <div>
-                <a href="{{ auth()->check() ? route('dashboard') : route('login') }}"
+                <a href="{{ auth()->check() ? route('admin.dashboard') : route('login') }}"
                    class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700">
                     {{ auth()->check() ? __('file.go_to_dashboard') : __('file.go_to_login') }}
                 </a>
@@ -26,3 +26,4 @@
     </div>
 </body>
 </html>
+

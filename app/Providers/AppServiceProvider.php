@@ -14,7 +14,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $loader = \Illuminate\Foundation\AliasLoader::getInstance();
+        $loader->alias('Cart', \Darryldecode\Cart\Facades\CartFacade::class);
     }
 
     /**
@@ -22,6 +23,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Only load settings when not in console or testing
         if (!app()->runningInConsole() && !app()->runningUnitTests()) {
             try {
                 $setting = cache('settings')
@@ -33,16 +35,48 @@ class AppServiceProvider extends ServiceProvider
             $setting = new Setting();
         }
 
+        // Share global view variables for the clothing store
         View::share([
-            'clinic_name' => $setting->clinic_name ?? config('app.name'),
-            'clinic_address' => $setting->address ?? '123 Healthcare Avenue, Colombo 05, Sri Lanka',
-            'clinic_email' => $setting->email ?? 'info@yourclinic.lk',
-            'clinic_phone' => $setting->phone ?? '+1 11 234 5678',
-            'clinic_logo' => !empty($setting->logo_path)
-                ? asset('storage/' . $setting->logo_path)
-                : null,
-            'primary_color' => $setting->primary_color ?? '#1e40af',
-            'currency_code' => $setting->currency ?? 'USD',
+            // Store branding
+            'store_name' => $setting->store_name ?? config('app.name', 'Your Clothing Store'),
+            'store_tagline' => $setting->tagline ?? 'Trendy Fashion for Everyone',
+
+            // Site variables for admin layout
+            'site_name' => $setting->site_name ?? config('app.name', 'Your Site Name'),
+            'site_logo' => !empty($setting->logo_path)
+                ? Storage::url($setting->logo_path)
+                : asset('images/default-logo.png'),
+            'site_address' => $setting->address ?? 'No. 45, Main Street, Colombo 03, Sri Lanka',
+            'site_phone' => $setting->phone ?? '+94 11 234 5678',
+            'site_email' => $setting->email ?? 'support@yourstore.lk',
+
+            // Contact information
+            'store_email' => $setting->email ?? 'support@yourstore.lk',
+            'store_phone' => $setting->phone ?? '+94 11 234 5678',
+            'store_address' => $setting->address ?? 'No. 45, Main Street, Colombo 03, Sri Lanka',
+            'store_whatsapp' => $setting->whatsapp ?? '+94 77 123 4567',
+
+            // Branding assets
+            'store_logo' => !empty($setting->logo_path)
+                ? Storage::url($setting->logo_path)
+                : asset('images/default-logo.png'),
+
+            'store_favicon' => !empty($setting->favicon_path)
+                ? Storage::url($setting->favicon_path)
+                : asset('images/favicon.ico'),
+
+            // Visual styling
+            'primary_color' => $setting->primary_color ?? '#c02628',      // example: deep red
+            'secondary_color' => $setting->secondary_color ?? '#111827',    // example: dark gray
+
+            // Currency & localization
+            'currency_code' => $setting->currency_code ?? 'LKR',
+            'currency_symbol' => $setting->currency_symbol ?? 'Rs.',
+            'currency_format' => $setting->currency_format ?? 'Rs. 1,234.00', // example format
+
+            // Business info
+            'free_shipping_threshold' => $setting->free_shipping_threshold ?? 5000,
+            'return_period_days' => $setting->return_period_days ?? 14,
         ]);
     }
 }

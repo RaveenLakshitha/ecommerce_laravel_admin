@@ -21,22 +21,22 @@ class AuthController extends Controller
 
     public function showLoginForm()
     {
-        return view('auth.login');
+        return view('frontend.auth.login');
     }
 
     public function showRegisterForm()
     {
-        return view('auth.register');
+        return view('frontend.auth.register');
     }
 
     public function showForgotPasswordForm()
     {
-        return view('auth.forgot-password');
+        return view('frontend.auth.forgot-password');
     }
 
     public function showResetPasswordForm($token)
     {
-        return view('auth.reset-password', ['token' => $token]);
+        return view('frontend.auth.reset-password', ['token' => $token]);
     }
 
     // ========================
@@ -78,6 +78,18 @@ class AuthController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+        ]);
+
+        // Create a basic Customer record linked to this user
+        $nameParts = explode(' ', $data['name'], 2);
+        $firstName = $nameParts[0] ?? '';
+        $lastName = $nameParts[1] ?? '';
+
+        \App\Models\Customer::create([
+            'user_id' => $user->id,
+            'first_name' => $firstName,
+            'last_name' => $lastName,
+            'email' => $data['email'],
         ]);
 
         Auth::login($user);
