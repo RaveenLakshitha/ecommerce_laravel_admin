@@ -1,0 +1,26 @@
+
+   INFO  Running migrations.  
+
+  2026_03_19_063021_create_couriers_table  5.14ms FAIL
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[42S01]: Base table or view already exists: 1050 Table 'couriers' already exists (Connection: mysql, Host: 127.0.0.1, Port: 3307, Database: ecommerce, SQL: create table `couriers` (`id` bigint unsigned not null auto_increment primary key, `name` varchar(255) not null, `slug` varchar(255) not null, `description` text null, `logo_path` varchar(255) null, `api_key` varchar(255) null, `api_secret` varchar(255) null, `base_url` varchar(255) null, `is_active` tinyint(1) not null default '1', `supports_tracking` tinyint(1) not null default '0', `supports_label_generation` tinyint(1) not null default '0', `supports_cod` tinyint(1) not null default '0', `default_for_cod` tinyint(1) not null default '0', `sort_order` int not null default '0', `created_at` timestamp null, `updated_at` timestamp null) default character set utf8mb4 collate 'utf8mb4_unicode_ci')
+
+  at vendor\laravel\framework\src\Illuminate\Database\Connection.php:838
+    834▕             $exceptionType = $this->isUniqueConstraintError($e)
+    835▕                 ? UniqueConstraintViolationException::class
+    836▕                 : QueryException::class;
+    837▕ 
+  ➜ 838▕             throw new $exceptionType(
+    839▕                 $this->getNameWithReadWriteType(),
+    840▕                 $query,
+    841▕                 $this->prepareBindings($bindings),
+    842▕                 $e,
+
+  1   vendor\laravel\framework\src\Illuminate\Database\Connection.php:584
+      PDOException::("SQLSTATE[42S01]: Base table or view already exists: 1050 Table 'couriers' already exists")
+
+  2   vendor\laravel\framework\src\Illuminate\Database\Connection.php:584
+      PDOStatement::execute()
+

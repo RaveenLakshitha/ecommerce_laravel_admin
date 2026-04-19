@@ -1,0 +1,23 @@
+<?php
+return [
+    'Dashboard' => 'Tablero',
+    'Admin Panel' => 'Panel de Admin',
+    'User Management' => 'Gestión de Usuarios',
+    'Staffs' => 'Staffes',
+    'Staffs List' => 'Lista de Staffes',
+    'Customers' => 'Pacientes',
+    'Issue Invoice' => 'Emitir Factura',
+    'Log in' => 'Iniciar Sesión',
+    'Register' => 'Registrarse',
+    'English' => 'Inglés',
+    'Español' => 'Español',
+    'Welcome Back' => 'Bienvenido de Nuevo',
+    'Please enter your credentials to access the system.' => 'Por favor, introduzca sus credenciales para acceder al sistema.',
+    'Email Address' => 'Correo Electrónico',
+    'Password' => 'Contraseña',
+    'Forgot password?' => '¿Olvidaste tu contraseña?',
+    'Remember me this device' => 'Recordarme en este dispositivo',
+    'Sign in to Dashboard' => 'Iniciar sesión',
+    'Need help accessing your account?' => '¿Necesitas ayuda para acceder a tu cuenta?',
+    'Contact IT Support' => 'Contactar Soporte de TI',
+];

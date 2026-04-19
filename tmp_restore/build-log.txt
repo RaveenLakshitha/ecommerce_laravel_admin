@@ -1,0 +1,66 @@
+﻿[36mvite v7.2.0 [32mbuilding client environment for production...[36m[39m
+transforming...
+node.exe : 
+[baseline-browser-mapping] The 
+data in this module is over two 
+months old.  To ensure accurate 
+Baseline data, please update: 
+`npm i 
+baseline-browser-mapping@latest 
+-D`
+At C:\Program 
+Files\nodejs\npx.ps1:29 char:3
++   & $NODE_EXE $NPX_CLI_JS $args
++   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : No 
+   tSpecified: ([baseline-brows  
+  ...ping@latest -D`:String) [   
+ ], RemoteException
+    + FullyQualifiedErrorId : Na 
+   tiveCommandError
+ 
+Browserslist: browsers data 
+(caniuse-lite) is 6 months old. 
+Please run:
+  npx 
+update-browserslist-db@latest
+  Why you should do it 
+regularly: https://github.com/bro
+wserslist/update-db#readme
+[33m[vite:css][postcss] @import 
+must precede all other 
+statements (besides @charset or 
+empty @layer)
+4  |  
+5  |  /* ΓöÇΓöÇ Admin Design 
+System ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö
+ÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö
+ÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö
+ÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓö
+ÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ */
+6  |  @import './admin.css';
+   |  ^^^^^^^^^^^^^^^^^^^^^^
+7  |  
+8  |  [39m
+[32mΓ£ô[39m 83 modules transformed.
+rendering chunks...
+computing gzip size...
+[2mpublic/build/[22m[32mmanifest.json            [39m[1m[2m    0.38 kB[22m[1m[22m[2m Γöé gzip:     0.18 kB[22m
+[2mpublic/build/[22m[35massets/app-pzGaY1FQ.css  [39m[1m[2m   62.10 kB[22m[1m[22m[2m Γöé gzip:     8.10 kB[22m
+[2mpublic/build/[22m[35massets/app-CHE4BaVX.css  [39m[1m[2m  167.94 kB[22m[1m[22m[2m Γöé gzip:    23.56 kB[22m
+[2mpublic/build/[22m[36massets/app-D2R414SQ.js   [39m[1m[33m2,388.26 kB[39m[22m[2m Γöé gzip: 1,005.06 kB[22m
+[33m
+(!) Some chunks are larger than 
+500 kB after minification. 
+Consider:
+- Using dynamic import() to 
+code-split the application
+- Use build.rollupOptions.output.
+manualChunks to improve 
+chunking: https://rollupjs.org/co
+nfiguration-options/#output-manua
+lchunks
+- Adjust chunk size limit for 
+this warning via 
+build.chunkSizeWarningLimit.[39m
+[32mΓ£ô built in 12.88s[39m

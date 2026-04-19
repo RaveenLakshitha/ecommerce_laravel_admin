@@ -1,0 +1,74 @@
+{
+    "id": 1,
+    "product_id": 5,
+    "name": null,
+    "sku": "NK-TS-BLK-S",
+    "price": "39.99",
+    "sale_price": "32.99",
+    "compare_at_price": null,
+    "stock_quantity": 48,
+    "reserved_quantity": 0,
+    "low_stock_threshold": null,
+    "weight_grams": 180,
+    "dimensions": null,
+    "barcode": null,
+    "is_default": 1,
+    "is_active": 1,
+    "created_at": "2026-03-18T17:13:56.000000Z",
+    "updated_at": "2026-03-18T17:13:56.000000Z",
+    "deleted_at": null,
+    "attribute_values": [
+        {
+            "id": 3,
+            "attribute_id": 1,
+            "value": "S",
+            "slug": "s",
+            "color_hex": null,
+            "swatch_image": null,
+            "sort_order": 3,
+            "created_at": "2026-03-18T16:38:30.000000Z",
+            "updated_at": "2026-03-18T16:38:30.000000Z",
+            "deleted_at": null,
+            "pivot": {
+                "variant_id": 1,
+                "attribute_value_id": 3
+            },
+            "attribute": {
+                "id": 1,
+                "name": "Size",
+                "slug": "size",
+                "type": "select",
+                "sort_order": 10,
+                "created_at": "2026-03-18T16:38:30.000000Z",
+                "updated_at": "2026-03-18T16:38:30.000000Z",
+                "deleted_at": null
+            }
+        },
+        {
+            "id": 15,
+            "attribute_id": 2,
+            "value": "Black",
+            "slug": "black",
+            "color_hex": "#000000",
+            "swatch_image": null,
+            "sort_order": 0,
+            "created_at": "2026-03-18T16:38:30.000000Z",
+            "updated_at": "2026-03-18T16:38:30.000000Z",
+            "deleted_at": null,
+            "pivot": {
+                "variant_id": 1,
+                "attribute_value_id": 15
+            },
+            "attribute": {
+                "id": 2,
+                "name": "Color",
+                "slug": "color",
+                "type": "color_swatch",
+                "sort_order": 20,
+                "created_at": "2026-03-18T16:38:30.000000Z",
+                "updated_at": "2026-03-18T16:38:30.000000Z",
+                "deleted_at": null
+            }
+        }
+    ]
+}
