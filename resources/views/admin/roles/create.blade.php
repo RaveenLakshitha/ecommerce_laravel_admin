@@ -1,214 +1,100 @@
 @extends('layouts.app')
 
-@section('title', __('file.create_new_role'))
+@section('title', 'Create Role')
 
 @section('content')
-<div class="px-4 sm:px-6 lg:px-8 pb-4 sm:py-12 pt-20">
+    <div class="px-4 sm:px-6 lg:px-8 pb-4 sm:py-12 pt-20">
+        <div class="max-w-[1400px] mx-auto">
 
-    <!-- Breadcrumb + Header -->
-    <div class="mb-6">
-        <nav class="flex items-center text-sm text-gray-500 dark:text-gray-400 mb-3">
-            <a href="{{ route('roles.index') }}" class="hover:text-gray-700 dark:hover:text-gray-200 transition">
-                {{ __('file.roles') }}
-            </a>
-            <svg class="w-4 h-4 mx-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-            </svg>
-            <span class="font-medium">{{ __('file.create_role') }}</span>
-        </nav>
-        <div>
-            <h1 class="text-3xl font-bold text-gray-900 dark:text-primary-a0">
-                {{ __('file.create_new_role') }}
-            </h1>
-            <p class="text-gray-600 dark:text-gray-400 mt-1">
-                {{ __('file.set_up_role') }}
-            </p>
+            {{-- Header --}}
+            <div class="mb-8 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+                <div>
+                    <a href="{{ route('roles.index') }}"
+                        class="text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 transition-colors uppercase tracking-wider">&larr;
+                        Back to Privilege Matrix</a>
+                    <h1 class="mt-2 text-3xl font-bold tracking-tight text-gray-900 dark:text-white">Architect Access Role</h1>
+                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-400 font-medium italic underline decoration-indigo-500/20 underline-offset-4">Define custom authority levels and permission boundaries for system users.</p>
+                </div>
+            </div>
+
+            <form action="{{ route('roles.store') }}" method="POST" class="space-y-8">
+                @csrf
+
+                {{-- Role Identity --}}
+                <div class="bg-white dark:bg-surface-tonal-a20 rounded-2xl shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
+                    <div class="px-6 py-4 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50/50 dark:bg-surface-tonal-a20">
+                        <h2 class="font-semibold text-gray-900 dark:text-white">Role Identity</h2>
+                    </div>
+                    <div class="p-6">
+                        <div class="max-w-md space-y-1.5">
+                            <label for="name" class="block text-sm font-semibold text-gray-700 dark:text-gray-300">Authority Label <span class="text-red-500">*</span></label>
+                            <input type="text" name="name" id="name" value="{{ old('name') }}" required 
+                                placeholder="e.g. Senior Inventory Auditor"
+                                class="block w-full rounded-xl border-gray-200 dark:border-surface-tonal-a30 bg-white dark:bg-surface-tonal-a30 px-4 py-3 text-sm font-bold text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all shadow-sm uppercase tracking-tighter">
+                            @error('name') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Permission Matrix --}}
+                <div class="bg-white dark:bg-surface-tonal-a20 rounded-2xl shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
+                    <div class="px-6 py-4 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50/50 dark:bg-surface-tonal-a20 flex items-center justify-between">
+                        <h2 class="font-semibold text-gray-900 dark:text-white">Permission Matrix</h2>
+                        <button type="button" onclick="selectAllPermissions()" class="text-[10px] font-black uppercase tracking-widest text-indigo-500 hover:text-indigo-600 transition-colors">Select All Privileges</button>
+                    </div>
+                    <div class="p-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+                            @foreach($permissions->groupBy(function($p) { return explode('-', $p->name)[0]; }) as $group => $perms)
+                                <div class="space-y-4">
+                                    <h3 class="text-[11px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em] border-b border-gray-50 dark:border-surface-tonal-a30 pb-2 flex items-center justify-between">
+                                        {{ $group }} Module
+                                        <button type="button" onclick="toggleGroup('{{ $group }}')" class="text-[8px] hover:text-indigo-500 transition-colors">Toggle Group</button>
+                                    </h3>
+                                    <div class="space-y-2.5">
+                                        @foreach($perms as $permission)
+                                            <label class="group flex items-center p-3 rounded-xl border border-transparent hover:border-indigo-100 dark:hover:border-indigo-900/40 hover:bg-indigo-50/30 dark:hover:bg-indigo-900/10 cursor-pointer transition-all">
+                                                <input type="checkbox" name="permissions[]" value="{{ $permission->id }}" 
+                                                    data-group="{{ $group }}"
+                                                    class="perm-checkbox h-5 w-5 rounded-md border-gray-300 dark:border-surface-tonal-a30 text-indigo-500 focus:ring-indigo-500 transition-all">
+                                                <span class="ml-4 text-xs font-bold text-gray-600 dark:text-gray-300 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 uppercase tracking-tighter">
+                                                    {{ str_replace('-', ' • ', $permission->name) }}
+                                                </span>
+                                            </label>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-4">
+                    <button type="submit"
+                        class="h-14 px-10 flex items-center justify-center rounded-xl bg-gray-900 dark:bg-white text-[10px] font-black text-white dark:text-gray-900 uppercase tracking-[0.2em] hover:bg-black dark:hover:bg-gray-100 transition-all shadow-2xl shadow-gray-200 dark:shadow-none active:scale-[0.98]">
+                        Instantiate Role
+                    </button>
+                    <a href="{{ route('roles.index') }}"
+                        class="px-8 flex items-center justify-center text-[10px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest hover:text-red-500 transition-all">
+                        Discard Draft
+                    </a>
+                </div>
+            </form>
         </div>
     </div>
 
-    <form action="{{ route('roles.store') }}" method="POST" class="space-y-6">
-        @csrf
+    @push('scripts')
+        <script>
+            function selectAllPermissions() {
+                const checkboxes = document.querySelectorAll('.perm-checkbox');
+                const anyUnchecked = Array.from(checkboxes).some(cb => !cb.checked);
+                checkboxes.forEach(cb => cb.checked = anyUnchecked);
+            }
 
-        <!-- Role Name Card -->
-        <div class="bg-white dark:bg-surface-tonal-a20 rounded-xl shadow border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
-            <div class="px-6 py-4 border-b border-gray-200 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-transparent">
-                <h2 class="text-lg font-semibold text-gray-900 dark:text-primary-a0 flex items-center gap-2">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>
-                    </svg>
-                    {{ __('file.role_information') }}
-                </h2>
-            </div>
-            <div class="p-6">
-                <div class="max-w-md">
-                    <label for="role_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        {{ __('file.role_name') }} <span class="text-red-500">*</span>
-                    </label>
-                    <input type="text"
-                           name="name"
-                           id="role_name"
-                           value="{{ old('name') }}"
-                           class="w-full px-4 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-surface-tonal-a10 text-gray-900 dark:text-primary-a0 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
-                           placeholder="{{ __('file.role_name_placeholder') }}"
-                           required autofocus>
-                    @error('name')
-                        <p class="mt-1.5 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-                    @enderror
-                    <p class="mt-1.5 text-xs text-gray-500 dark:text-gray-400">{{ __('file.role_name_hint') }}</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Permissions Matrix Card -->
-        <div class="bg-white dark:bg-surface-tonal-a20 rounded-xl shadow border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
-            <div class="px-6 py-4 border-b border-gray-200 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-transparent flex items-center justify-between">
-                <h2 class="text-lg font-semibold text-gray-900 dark:text-primary-a0 flex items-center gap-2">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
-                    </svg>
-                    {{ __('file.permissions') }}
-                    <span class="text-sm font-normal text-gray-500 dark:text-gray-400">({{ __('file.optional') }})</span>
-                </h2>
-                <div class="flex items-center gap-3">
-                    <button type="button"
-                            onclick="toggleAllMatrix(true)"
-                            class="text-xs font-medium text-blue-600 dark:text-blue-400 hover:underline px-2 py-1 rounded hover:bg-blue-50 dark:hover:bg-blue-900/20 transition">
-                        {{ __('file.select_all') }}
-                    </button>
-                    <span class="text-gray-300 dark:text-gray-600">|</span>
-                    <button type="button"
-                            onclick="toggleAllMatrix(false)"
-                            class="text-xs font-medium text-red-500 dark:text-red-400 hover:underline px-2 py-1 rounded hover:bg-red-50 dark:hover:bg-red-900/20 transition">
-                        {{ __('file.deselect_all') }}
-                    </button>
-                </div>
-            </div>
-
-            <div class="overflow-x-auto">
-                <table class="min-w-full">
-                    <thead>
-                        <tr class="bg-gray-50 dark:bg-surface-tonal-a10/50 border-b border-gray-200 dark:border-surface-tonal-a30">
-                            <th class="px-5 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider w-48">
-                                {{ __('file.perm_resource') }}
-                            </th>
-                            @foreach($allowedActions as $action)
-                                <th class="px-4 py-3 text-center text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                                    <div class="flex flex-col items-center gap-1">
-                                        <span>{{ __('file.perm_action_' . $action) }}</span>
-                                        <button type="button"
-                                                onclick="toggleColumn('{{ $action }}')"
-                                                title="{{ __('file.toggle_column') }}"
-                                                class="text-gray-400 hover:text-blue-500 dark:hover:text-blue-400 transition mt-0.5">
-                                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l4-4 4 4m0 6l-4 4-4-4"/>
-                                            </svg>
-                                        </button>
-                                    </div>
-                                </th>
-                            @endforeach
-                            <th class="px-4 py-3 text-center text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider w-16">
-                                {{ __('file.perm_all') }}
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-100 dark:divide-gray-700/60">
-                        @forelse($permissionsMatrix as $resource => $actions)
-                            @php
-                                $groupKey   = 'file.perm_group_' . str_replace(['-', '.'], '_', $resource);
-                                $groupLabel = __($groupKey) !== $groupKey
-                                    ? __($groupKey)
-                                    : ucwords(str_replace(['-', '_'], ' ', $resource));
-                                $oldPerms = old('permissions', []);
-                            @endphp
-                            <tr class="hover:bg-blue-50/30 dark:hover:bg-blue-900/10 transition-colors">
-                                <td class="px-5 py-3">
-                                    <span class="text-sm font-medium text-gray-800 dark:text-gray-200">
-                                        {{ $groupLabel }}
-                                    </span>
-                                </td>
-                                @foreach($allowedActions as $action)
-                                    <td class="px-4 py-3 text-center">
-                                        @if(isset($actions[$action]))
-                                            <label class="inline-flex items-center justify-center cursor-pointer">
-                                                <input type="checkbox"
-                                                       name="permissions[]"
-                                                       value="{{ $actions[$action]->name }}"
-                                                       data-action="{{ $action }}"
-                                                       data-resource="{{ $resource }}"
-                                                       {{ in_array($actions[$action]->name, $oldPerms) ? 'checked' : '' }}
-                                                       class="perm-cb h-5 w-5 rounded border-gray-300 dark:border-gray-600 text-blue-600 focus:ring-blue-500 cursor-pointer transition">
-                                            </label>
-                                        @else
-                                            <span class="inline-block w-5 h-5 rounded bg-gray-100 dark:bg-surface-tonal-a30/50 border border-dashed border-gray-200 dark:border-gray-600"
-                                                  title="{{ __('file.perm_not_available') }}"></span>
-                                        @endif
-                                    </td>
-                                @endforeach
-                                <td class="px-4 py-3 text-center">
-                                    <button type="button"
-                                            onclick="toggleRow('{{ $resource }}')"
-                                            class="text-gray-400 hover:text-blue-500 dark:hover:text-blue-400 transition"
-                                            title="{{ __('file.toggle_row') }}">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-                                        </svg>
-                                    </button>
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="6" class="px-6 py-8 text-center text-gray-500 dark:text-gray-400">
-                                    {{ __('file.no_permissions_found') }}
-                                </td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
-
-            @error('permissions')
-                <div class="px-6 pb-4">
-                    <p class="text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
-                </div>
-            @enderror
-        </div>
-
-        <!-- Action Buttons -->
-        <div class="flex items-center justify-between pt-4 border-t border-gray-200 dark:border-surface-tonal-a30 mt-8">
-            <a href="{{ route('roles.index') }}"
-               class="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition">
-                ← {{ __('file.back_to_roles') }}
-            </a>
-            <div class="flex gap-4">
-                <a href="{{ route('roles.index') }}"
-                   class="px-6 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-surface-tonal-a20 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition">
-                    {{ __('file.cancel') }}
-                </a>
-                <button type="submit"
-                        class="px-8 py-2.5 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition">
-                    {{ __('file.create_role') }}
-                </button>
-            </div>
-        </div>
-    </form>
-</div>
-
-<script>
-function toggleAllMatrix(state) {
-    document.querySelectorAll('.perm-cb').forEach(cb => cb.checked = state);
-}
-
-function toggleRow(resource) {
-    const cbs = document.querySelectorAll(`.perm-cb[data-resource="${resource}"]`);
-    const allChecked = Array.from(cbs).every(cb => cb.checked);
-    cbs.forEach(cb => cb.checked = !allChecked);
-}
-
-function toggleColumn(action) {
-    const cbs = document.querySelectorAll(`.perm-cb[data-action="${action}"]`);
-    const allChecked = Array.from(cbs).every(cb => cb.checked);
-    cbs.forEach(cb => cb.checked = !allChecked);
-}
-</script>
+            function toggleGroup(group) {
+                const checkboxes = document.querySelectorAll(`.perm-checkbox[data-group="${group}"]`);
+                const anyUnchecked = Array.from(checkboxes).some(cb => !cb.checked);
+                checkboxes.forEach(cb => cb.checked = anyUnchecked);
+            }
+        </script>
+    @endpush
 @endsection
-

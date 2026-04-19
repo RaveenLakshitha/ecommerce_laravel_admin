@@ -18,7 +18,9 @@ class Product extends Model
         'slug',
         'description',
         'short_description',
+        'fabric_details',
         'base_price',
+        'sale_price',
         'brand_id',
         'is_featured',
         'is_visible',
@@ -57,6 +59,11 @@ class Product extends Model
     public function images(): HasMany
     {
         return $this->hasMany(ProductImage::class)->orderBy('sort_order');
+    }
+
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class)->visible()->latest();
     }
 
     // Helper: get primary image

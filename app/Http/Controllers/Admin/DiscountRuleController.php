@@ -52,14 +52,14 @@ class DiscountRuleController extends Controller
         $data = $rules->map(function ($rule) {
             $statusHtml = '';
             if ($rule->is_active && (!$rule->starts_at || now()->gte($rule->starts_at)) && (!$rule->expires_at || now()->lte($rule->expires_at))) {
-                $statusHtml = '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">Active</span>';
+                $statusHtml = '<span class="rule-status-badge status-active">Active</span>';
             } elseif (!$rule->is_active) {
-                $statusHtml = '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-surface-tonal-a30 dark:text-gray-300">Inactive</span>';
+                $statusHtml = '<span class="rule-status-badge status-inactive">Inactive</span>';
             } else {
-                $statusHtml = '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">Scheduled / Expired</span>';
+                $statusHtml = '<span class="rule-status-badge status-inactive">Scheduled / Expired</span>';
             }
             if ($rule->is_flash_sale) {
-                $statusHtml .= '<span class="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200">Flash Sale</span>';
+                $statusHtml .= '<span class="ml-2 rule-status-badge status-flash">Flash Sale</span>';
             }
 
             $nameHtml = '<div class="text-sm font-semibold text-gray-900 dark:text-primary-a0">' . htmlspecialchars($rule->name) . '</div>';
@@ -95,6 +95,7 @@ class DiscountRuleController extends Controller
                 'priority' => '<div class="text-sm text-gray-500">' . $rule->priority . '</div>',
                 'dates_html' => $datesHtml,
                 'edit_url' => route('discount-rules.edit', $rule->id),
+                'duplicate_url' => route('discount-rules.duplicate', $rule->id),
                 'delete_url' => route('discount-rules.destroy', $rule->id),
             ];
         });
@@ -107,9 +108,35 @@ class DiscountRuleController extends Controller
         ]);
     }
 
+    public function duplicate(DiscountRule $discountRule)
+    {
+        $newRule = $discountRule->replicate();
+        $newRule->name = $discountRule->name . ' (Copy)';
+        $newRule->is_active = false; // Always disable copies by default
+        $newRule->save();
+
+        // Duplicate relations
+        if ($discountRule->applies_to === 'products') {
+            $newRule->products()->sync($discountRule->products->pluck('id'));
+        } elseif ($discountRule->applies_to === 'categories') {
+            $newRule->categories()->sync($discountRule->categories->pluck('id'));
+        } elseif ($discountRule->applies_to === 'collections') {
+            $newRule->collections()->sync($discountRule->collections->pluck('id'));
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Rule duplicated successfully! You can now edit the copy.',
+            'redirect' => route('discount-rules.edit', $newRule->id)
+        ]);
+    }
+
     public function create()
     {
-        return view('admin.promotions.discount_rules.create');
+        $products = \App\Models\Product::all();
+        $categories = \App\Models\Category::all();
+        $collections = \App\Models\Collection::all();
+        return view('admin.promotions.discount_rules.create', compact('products', 'categories', 'collections'));
     }
 
     public function store(Request $request)
@@ -123,22 +150,58 @@ class DiscountRuleController extends Controller
             'get_quantity' => 'nullable|integer|min:1',
             'min_order_amount' => 'nullable|numeric|min:0',
             'applies_to' => 'required|in:all,products,categories,collections',
+            'product_ids' => 'array',
+            'product_ids.*' => 'exists:products,id',
+            'category_ids' => 'array',
+            'category_ids.*' => 'exists:categories,id',
+            'collection_ids' => 'array',
+            'collection_ids.*' => 'exists:collections,id',
             'priority' => 'required|integer|min:0',
             'starts_at' => 'nullable|date',
             'expires_at' => 'nullable|date|after_or_equal:starts_at',
+            'banners' => 'nullable|array',
+            'banners.*.title' => 'nullable|string|max:255',
+            'banners.*.description' => 'nullable|string',
+            'banners.*.image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'banners.*.existing_image' => 'nullable|string',
         ]);
 
         $data['is_active'] = $request->has('is_active');
         $data['is_flash_sale'] = $request->has('is_flash_sale');
 
-        DiscountRule::create($data);
+        // Handle Banners
+        $banners = [];
+        if ($request->has('banners')) {
+            foreach ($request->banners as $index => $bannerData) {
+                $bannerEntry = [
+                    'title' => $bannerData['title'] ?? '',
+                    'description' => $bannerData['description'] ?? '',
+                ];
 
-        return redirect()->route('admin.discount-rules.index')->with('success', 'Discount rule created successfully.');
+                if ($request->hasFile("banners.{$index}.image")) {
+                    $path = $request->file("banners.{$index}.image")->store('banners', 'public');
+                    $bannerEntry['image'] = $path;
+                }
+                
+                if (isset($bannerEntry['image'])) {
+                    $banners[] = $bannerEntry;
+                }
+            }
+        }
+        $data['banner_images'] = $banners;
+
+        $discountRule = DiscountRule::create($data);
+        $this->syncRelations($discountRule, $request);
+
+        return redirect()->route('discount-rules.index')->with('success', 'Discount rule created successfully.');
     }
 
     public function edit(DiscountRule $discountRule)
     {
-        return view('admin.promotions.discount_rules.edit', compact('discountRule'));
+        $products = \App\Models\Product::all();
+        $categories = \App\Models\Category::all();
+        $collections = \App\Models\Collection::all();
+        return view('admin.promotions.discount_rules.edit', compact('discountRule', 'products', 'categories', 'collections'));
     }
 
     public function update(Request $request, DiscountRule $discountRule)
@@ -152,17 +215,87 @@ class DiscountRuleController extends Controller
             'get_quantity' => 'nullable|integer|min:1',
             'min_order_amount' => 'nullable|numeric|min:0',
             'applies_to' => 'required|in:all,products,categories,collections',
+            'product_ids' => 'array',
+            'product_ids.*' => 'exists:products,id',
+            'category_ids' => 'array',
+            'category_ids.*' => 'exists:categories,id',
+            'collection_ids' => 'array',
+            'collection_ids.*' => 'exists:collections,id',
             'priority' => 'required|integer|min:0',
             'starts_at' => 'nullable|date',
             'expires_at' => 'nullable|date|after_or_equal:starts_at',
+            'banners' => 'nullable|array',
+            'banners.*.title' => 'nullable|string|max:255',
+            'banners.*.description' => 'nullable|string',
+            'banners.*.image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'banners.*.existing_image' => 'nullable|string',
         ]);
 
         $data['is_active'] = $request->has('is_active');
         $data['is_flash_sale'] = $request->has('is_flash_sale');
 
-        $discountRule->update($data);
+        // Handle Banners
+        $newBanners = [];
+        $currentBanners = $discountRule->banner_images ?? [];
+        $existingPaths = [];
 
-        return redirect()->route('admin.discount-rules.index')->with('success', 'Discount rule updated successfully.');
+        if ($request->has('banners')) {
+            foreach ($request->banners as $index => $bannerData) {
+                $bannerEntry = [
+                    'title' => $bannerData['title'] ?? '',
+                    'description' => $bannerData['description'] ?? '',
+                ];
+
+                if ($request->hasFile("banners.{$index}.image")) {
+                    $path = $request->file("banners.{$index}.image")->store('banners', 'public');
+                    $bannerEntry['image'] = $path;
+                } elseif (!empty($bannerData['existing_image'])) {
+                    $bannerEntry['image'] = $bannerData['existing_image'];
+                    $existingPaths[] = $bannerData['existing_image'];
+                }
+
+                if (isset($bannerEntry['image'])) {
+                    $newBanners[] = $bannerEntry;
+                }
+            }
+        }
+
+        // Cleanup old images that are no longer used
+        foreach ($currentBanners as $oldBanner) {
+            if (isset($oldBanner['image']) && !in_array($oldBanner['image'], $existingPaths)) {
+                if (!collect($newBanners)->contains('image', $oldBanner['image'])) {
+                    \Illuminate\Support\Facades\Storage::disk('public')->delete($oldBanner['image']);
+                }
+            }
+        }
+
+        $data['banner_images'] = $newBanners;
+
+        $discountRule->update($data);
+        $this->syncRelations($discountRule, $request);
+
+        return redirect()->route('discount-rules.index')->with('success', 'Discount rule updated successfully.');
+    }
+
+    protected function syncRelations(DiscountRule $discountRule, Request $request)
+    {
+        if ($request->applies_to === 'products') {
+            $discountRule->products()->sync($request->product_ids ?? []);
+        } else {
+            $discountRule->products()->detach();
+        }
+
+        if ($request->applies_to === 'categories') {
+            $discountRule->categories()->sync($request->category_ids ?? []);
+        } else {
+            $discountRule->categories()->detach();
+        }
+
+        if ($request->applies_to === 'collections') {
+            $discountRule->collections()->sync($request->collection_ids ?? []);
+        } else {
+            $discountRule->collections()->detach();
+        }
     }
 
     public function destroy(DiscountRule $discountRule)

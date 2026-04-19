@@ -1,606 +1,356 @@
 @extends('layouts.app')
 
-@section('title', __('file.categories'))
+@section('title', __('file.categories') ?? 'Categories')
 
 @section('content')
-    <div class="px-4 sm:px-6 lg:px-8 pb-4 sm:py-12 pt-20">
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-            <div>
-                <h1 class="text-2xl sm:text-3xl font-semibold text-gray-900 dark:text-primary-a0">
-                    {{ __('file.categories') }}
-                </h1>
-                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                    {{ __('file.manage_categories') }}
-                </p>
-            </div>
-            <button onclick="openCreateDrawer()"
-                class="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-medium transition">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+    <div class="admin-page animate-fade-in-up">
+        <div class="admin-page-inner">
+
+            <nav class="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-4" aria-label="Breadcrumb">
+                <a href="{{ route('admin.dashboard') }}" class="hover:text-gray-600 dark:hover:text-gray-300 transition-colors">{{ __('file.dashboard') }}</a>
+                <svg class="w-3 h-3 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
                 </svg>
-                {{ __('file.add_category') }}
-            </button>
-        </div>
+                <span class="text-gray-500">{{ __('file.categories') }}</span>
+            </nav>
 
-        <div id="bulk-delete-form" class="hidden mb-6">
-            <form method="POST" action="{{ route('categories.bulkDelete') }}" id="bulk-delete-form-el"
-                class="bg-red-50 dark:bg-red-900/20 border border-red-300 dark:border-red-800 rounded-lg p-4 flex justify-between items-center">
-                @csrf
-                <div id="bulk-ids-container"></div>
-                <span class="text-sm font-medium text-red-800 dark:text-red-300">
-                    <span id="selected-count">0</span> {{ __('file.category_selected') }}
-                </span>
-                <button type="submit"
-                    class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-md transition">
-                    {{ __('file.delete_selected') }}
-                </button>
-            </form>
-        </div>
+            <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
+                <div>
+                    <h1 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{ __('file.categories') }}</h1>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">{{ __('file.manage_categories') }}</p>
+                </div>
+                <div class="flex items-center gap-3">
+                    <a href="{{ route('categories.tree') }}" class="inline-flex items-center gap-2 px-4 py-2.5 bg-white dark:bg-surface-tonal-a20 border border-gray-200 dark:border-white/10 rounded-xl text-xs font-bold text-gray-600 dark:text-gray-300 uppercase tracking-widest hover:bg-gray-50 dark:hover:bg-surface-tonal-a30 transition-all">
+                        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"/></svg>
+                        Tree View
+                    </a>
+                    <button onclick="openCreateDrawer()" class="inline-flex items-center gap-2 px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold rounded-xl transition-all shadow-sm active:scale-[0.98]">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                        </svg>
+                        {{ __('file.add_category') }}
+                    </button>
+                </div>
+            </div>
 
-        <div
-            class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
-            <div class="overflow-x-auto">
-                <table id="application-table" class="w-full divide-y divide-gray-200 dark:divide-gray-700 display nowrap"
-                    style="width:100%">
-                    <thead class="bg-gray-50 dark:bg-surface-tonal-a10">
-                        <tr>
-                            <th class="px-4 sm:px-6 py-3 text-right all pr-6" style="width: 80px; min-width: 80px;">
-                                <input type="checkbox" id="select-all"
-                                    class="w-4 h-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
-                            </th>
-                            <th
-                                class="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider all">
-                                {{ __('file.name') }}
-                            </th>
-                            <th
-                                class="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider desktop">
-                                {{ __('file.description') }}
-                            </th>
-                            <th
-                                class="px-4 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider desktop">
-                                {{ __('file.parent_category') }}
-                            </th>
-                            <th
-                                class="px-4 sm:px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider desktop">
-                                {{ __('file.status') }}
-                            </th>
-                            <th
-                                class="px-4 sm:px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider desktop">
-                                {{ __('file.actions') }}
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody class="bg-white dark:bg-surface-tonal-a20 divide-y divide-gray-200 dark:divide-gray-700"></tbody>
-                </table>
+            {{-- Success Alert --}}
+            @if(session('success'))
+                <div class="admin-alert-success animate-fade-in-scale">
+                    <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+                    </svg>
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            {{-- Bulk Actions Bar --}}
+            <div id="bulk-delete-form" class="hidden animate-fade-in-scale sticky top-20 z-30">
+                <form method="POST" action="{{ route('categories.bulkDelete') }}" id="bulk-delete-form-el" class="admin-bulk-bar">
+                    @csrf
+                    <div id="bulk-ids-container"></div>
+                    <div class="flex items-center gap-4">
+                        <div class="flex items-center gap-2">
+                            <span class="selection-count" id="selected-count">0</span>
+                            <span class="text-sm font-bold text-gray-900 dark:text-white">{{ __('file.category_selected') ?? 'Categories Selected' }}</span>
+                        </div>
+                    </div>
+                    <button type="submit" class="inline-flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-xs font-bold uppercase tracking-widest rounded-xl transition-all shadow-md shadow-red-500/20 active:scale-95">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                        </svg>
+                        {{ __('file.delete_selected') }}
+                    </button>
+                </form>
+            </div>
+
+            {{-- Data Table --}}
+            <div class="admin-card">
+                <div class="overflow-x-auto">
+                    <table id="application-table" class="w-full" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th class="!text-center !px-4" style="width: 50px; min-width: 50px;">
+                                    <input type="checkbox" id="select-all" class="w-4 h-4 rounded border-gray-300 dark:border-surface-tonal-a30 text-gray-900 focus:ring-gray-300">
+                                </th>
+                                <th>Category Name</th>
+                                <th>Parent</th>
+                                <th class="!text-center">Status</th>
+                                <th class="!text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
 
-    <!-- View Drawer -->
-    <div id="profile-drawer" class="fixed inset-0 z-50 hidden overflow-hidden">
-        <div id="drawer-overlay" class="absolute inset-0 bg-gray-900/60 dark:bg-black/80 backdrop-blur-sm"
-            onclick="closeProfileDrawer()"></div>
-        <div id="drawer-panel"
-            class="absolute inset-x-0 bottom-0 md:inset-y-0 md:right-0 md:left-auto w-full md:max-w-md bg-white dark:bg-surface-tonal-a20 shadow-2xl flex flex-col h-[90vh] md:h-full rounded-t-3xl md:rounded-none">
-            <div class="md:hidden flex justify-center pt-4 pb-2">
-                <div class="w-12 h-1.5 bg-gray-300 dark:bg-gray-600 rounded-full"></div>
-            </div>
-            <div class="flex items-center justify-between px-5 py-4 border-b border-gray-200 dark:border-surface-tonal-a30">
+    {{-- Create Drawer --}}
+    <div id="create-drawer" class="fixed inset-0 z-[100] hidden overflow-hidden transition-all duration-500">
+        <div id="create-overlay" class="absolute inset-0 bg-black/40 backdrop-blur-sm opacity-0 transition-opacity duration-300" onclick="closeCreateDrawer()"></div>
+        <div id="create-panel" class="absolute inset-y-0 right-0 w-full md:max-w-lg bg-white dark:bg-surface-tonal-a20 shadow-2xl transform translate-x-full transition-transform duration-500 ease-in-out flex flex-col">
+            <div class="flex items-center justify-between px-8 py-6 border-b border-gray-100 dark:border-white/5">
                 <div>
-                    <h3 class="text-lg font-semibold text-gray-900 dark:text-primary-a0" id="drawer-name"></h3>
-                    <p class="text-xs text-gray-500 dark:text-gray-400">{{ __('file.category_details') }}</p>
+                    <h3 class="text-xl font-black text-gray-900 dark:text-white tracking-tight">Add New Category</h3>
+                    <p class="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em] mt-1">Catalog Structure</p>
                 </div>
-                <button onclick="closeProfileDrawer()"
-                    class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors p-1">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
+                <button onclick="closeCreateDrawer()" class="p-2 rounded-xl hover:bg-gray-50 dark:hover:bg-white/5 text-gray-400 hover:text-gray-900 dark:hover:text-white transition-all">
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
                 </button>
             </div>
-            <div class="flex-1 overflow-y-auto overscroll-contain px-5 py-5 text-sm">
-                <div class="space-y-5">
+
+            <div class="flex-1 overflow-y-auto custom-scrollbar p-8">
+                <form id="create-form" class="space-y-8" enctype="multipart/form-data">
+                    @csrf
+                    
+                    {{-- Category Name --}}
                     <div>
-                        <h4 class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{ __('file.details') }}
-                        </h4>
-                        <div class="grid grid-cols-1 gap-3">
-                            <div><label
-                                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{ __('file.name') }}</label>
-                                <div class="text-gray-900 dark:text-primary-a0" id="drawer-name-detail"></div>
-                            </div>
-                            <div><label
-                                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{ __('file.parent_category') }}</label>
-                                <div class="text-gray-900 dark:text-primary-a0" id="drawer-parent"></div>
-                            </div>
-                            <div><label
-                                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{ __('file.status') }}</label>
-                                <div id="drawer-status"></div>
+                        <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3 block">Category Name</label>
+                        <input type="text" name="name" id="create-name" required placeholder="e.g. Tablets & Electronics" 
+                            class="w-full bg-gray-50 dark:bg-surface-tonal-a30 border-0 rounded-2xl px-5 py-4 text-sm font-bold text-gray-900 dark:text-white placeholder:text-gray-300 focus:ring-2 focus:ring-emerald-500/20 transition-all shadow-inner">
+                    </div>
+
+                    {{-- Parent Category --}}
+                    <div>
+                        <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3 block">Parent Category</label>
+                        <div class="relative">
+                            <select name="parent_id" id="create-parent" class="w-full bg-gray-50 dark:bg-surface-tonal-a30 border-0 rounded-2xl px-5 py-4 text-sm font-bold text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 transition-all appearance-none cursor-pointer">
+                                <option value="">None (Root Level)</option>
+                                @foreach(\App\Models\Category::with('children.children')->whereNull('parent_id')->orderBy('name')->get() as $parent)
+                                    <option value="{{ $parent->id }}">{{ $parent->name }}</option>
+                                    @foreach($parent->children as $child)
+                                        <option value="{{ $child->id }}">&nbsp;&nbsp;— {{ $child->name }}</option>
+                                        @foreach($child->children as $grandchild)
+                                            <option value="{{ $grandchild->id }}">&nbsp;&nbsp;&nbsp;&nbsp;—— {{ $grandchild->name }}</option>
+                                        @endforeach
+                                    @endforeach
+                                @endforeach
+                            </select>
+                            <div class="absolute inset-y-0 right-5 flex items-center pointer-events-none text-gray-400">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
                             </div>
                         </div>
                     </div>
-                    <div>
-                        <h4 class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            {{ __('file.description') }}
-                        </h4>
-                        <div class="text-gray-900 dark:text-primary-a0 whitespace-pre-wrap" id="drawer-description">—</div>
-                    </div>
-                </div>
-            </div>
-            <div
-                class="px-5 py-3 bg-gray-50 dark:bg-surface-tonal-a10/50 border-t border-gray-200 dark:border-surface-tonal-a30">
-                <button onclick="closeProfileDrawer()"
-                    class="w-full px-4 py-2 bg-gray-900 dark:bg-surface-tonal-a30 text-white text-sm font-medium rounded-lg hover:bg-gray-800 dark:hover:bg-gray-600 transition">
-                    {{ __('file.close') }}
-                </button>
-            </div>
-        </div>
-    </div>
 
-    <!-- Edit Drawer -->
-    <div id="edit-drawer" class="fixed inset-0 z-50 hidden overflow-hidden">
-        <div id="edit-overlay" class="absolute inset-0 bg-gray-900/60 dark:bg-black/80 backdrop-blur-sm"
-            onclick="closeEditDrawer()"></div>
-        <div id="edit-panel"
-            class="absolute inset-x-0 bottom-0 md:inset-y-0 md:right-0 md:left-auto w-full md:max-w-md bg-white dark:bg-surface-tonal-a20 shadow-2xl flex flex-col h-[90vh] md:h-full rounded-t-3xl md:rounded-none">
-            <div class="md:hidden flex justify-center pt-4 pb-2">
-                <div class="w-12 h-1.5 bg-gray-300 dark:bg-gray-600 rounded-full"></div>
-            </div>
-            <div class="flex items-center justify-between px-5 py-4 border-b border-gray-200 dark:border-surface-tonal-a30">
-                <div>
-                    <h3 class="text-lg font-semibold text-gray-900 dark:text-primary-a0" id="edit-drawer-name"></h3>
-                    <p class="text-xs text-gray-500 dark:text-gray-400">{{ __('file.edit_category') }}</p>
-                </div>
-                <button onclick="closeEditDrawer()"
-                    class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors p-1">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
-            </div>
-            <div class="flex-1 overflow-y-auto overscroll-contain px-5 py-5 text-sm">
-                <form id="edit-form" class="space-y-5">
-                    @csrf
-                    <input type="hidden" name="_method" value="PATCH">
-                    <input type="hidden" name="id" id="edit-id">
-                    <div>
-                        <label
-                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{ __('file.name') }}</label>
-                        <input type="text" name="name" id="edit-name" required
-                            class="w-full px-2 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-transparent dark:text-primary-a0 transition-shadow" />
+                    <div class="grid grid-cols-2 gap-6">
+                        {{-- Status --}}
+                        <div>
+                            <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3 block">Status</label>
+                            <div class="relative">
+                                <select name="is_active" id="create-status" class="w-full bg-gray-50 dark:bg-surface-tonal-a30 border-0 rounded-2xl px-5 py-4 text-sm font-bold text-gray-900 dark:text-white focus:ring-2 focus:ring-emerald-500/20 transition-all appearance-none cursor-pointer">
+                                    <option value="1">Active</option>
+                                    <option value="0">Inactive</option>
+                                </select>
+                                <div class="absolute inset-y-0 right-5 flex items-center pointer-events-none text-gray-400">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"/></svg>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- Thumbnail Link/Hint --}}
+                        <div>
+                            <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3 block">Thumbnail</label>
+                            <div class="flex items-center gap-3">
+                                <div class="w-12 h-12 rounded-xl bg-gray-50 dark:bg-surface-tonal-a30 flex items-center justify-center overflow-hidden border border-gray-100 dark:border-white/5" id="mini-preview-container">
+                                    <svg id="mini-placeholder" class="w-5 h-5 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                                    <img id="mini-preview" class="hidden w-full h-full object-cover">
+                                </div>
+                                <button type="button" onclick="document.getElementById('create-image').click()" 
+                                    class="px-4 py-2 bg-white dark:bg-surface-tonal-a30 border border-gray-100 dark:border-white/5 text-[10px] font-black uppercase tracking-widest rounded-lg hover:bg-gray-50 transition-all shadow-sm">
+                                    Choose file
+                                </button>
+                                <input type="file" name="image" id="create-image" accept="image/*" class="hidden" onchange="previewImage(this)">
+                            </div>
+                        </div>
                     </div>
+
+                    {{-- Description --}}
                     <div>
-                        <label
-                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{ __('file.parent_category') }}</label>
-                        <select name="parent_id" id="edit-parent"
-                            class="w-full px-2 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-surface-tonal-a10 dark:text-primary-a0 transition-shadow">
-                            <option value="">{{ __('file.no_parent') }}</option>
-                            @foreach(\App\Models\Category::whereNull('parent_id')->orderBy('name')->get() as $parent)
-                                <option value="{{ $parent->id }}">{{ $parent->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div>
-                        <label
-                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{ __('file.status') }}</label>
-                        <select name="is_active" id="edit-status"
-                            class="w-full px-2 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-surface-tonal-a10 dark:text-primary-a0 transition-shadow">
-                            <option value="1">{{ __('file.active') }}</option>
-                            <option value="0">{{ __('file.inactive') }}</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label
-                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{ __('file.description') }}</label>
-                        <textarea name="description" id="edit-description" rows="6"
-                            class="w-full px-2 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-transparent dark:text-primary-a0 transition-shadow"></textarea>
+                        <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3 block">Description</label>
+                        <textarea name="description" id="create-description" rows="5" placeholder="Enter category details..." 
+                            class="w-full bg-gray-50 dark:bg-surface-tonal-a30 border-0 rounded-2xl px-5 py-4 text-sm font-bold text-gray-900 dark:text-white placeholder:text-gray-300 focus:ring-2 focus:ring-emerald-500/20 transition-all resize-none shadow-inner"></textarea>
                     </div>
                 </form>
             </div>
-            <div
-                class="px-5 py-3 bg-gray-50 dark:bg-surface-tonal-a10/50 border-t border-gray-200 dark:border-surface-tonal-a30">
-                <div class="flex gap-3">
-                    <button onclick="closeEditDrawer()"
-                        class="flex-1 px-4 py-2 bg-gray-900 dark:bg-surface-tonal-a30 text-white text-sm font-medium rounded-lg hover:bg-gray-800 dark:hover:bg-gray-600 transition">
-                        {{ __('file.cancel') }}
-                    </button>
-                    <button type="submit" form="edit-form"
-                        class="flex-1 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg transition">
-                        {{ __('file.save_changes') }}
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <!-- Create Drawer -->
-    <div id="create-drawer" class="fixed inset-0 z-50 hidden overflow-hidden">
-        <div id="create-overlay" class="absolute inset-0 bg-gray-900/60 dark:bg-black/80 backdrop-blur-sm"
-            onclick="closeCreateDrawer()"></div>
-        <div id="create-panel"
-            class="absolute inset-x-0 bottom-0 md:inset-y-0 md:right-0 md:left-auto w-full md:max-w-md bg-white dark:bg-surface-tonal-a20 shadow-2xl flex flex-col h-[90vh] md:h-full rounded-t-3xl md:rounded-none">
-            <div class="md:hidden flex justify-center pt-4 pb-2">
-                <div class="w-12 h-1.5 bg-gray-300 dark:bg-gray-600 rounded-full"></div>
-            </div>
-            <div class="flex items-center justify-between px-5 py-4 border-b border-gray-200 dark:border-surface-tonal-a30">
-                <div>
-                    <h3 class="text-lg font-semibold text-gray-900 dark:text-primary-a0">{{ __('file.add_category') }}</h3>
-                    <p class="text-xs text-gray-500 dark:text-gray-400">{{ __('file.create_new_category') }}</p>
-                </div>
-                <button onclick="closeCreateDrawer()"
-                    class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors p-1">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
+            <div class="px-8 py-6 bg-gray-50/50 dark:bg-surface-tonal-a10 border-t border-gray-100 dark:border-white/5 flex gap-4">
+                <button onclick="closeCreateDrawer()" class="flex-1 px-6 py-4 bg-white dark:bg-surface-tonal-a30 border border-gray-100 dark:border-white/5 text-gray-500 hover:text-gray-900 dark:hover:text-white font-black text-xs uppercase tracking-[0.2em] rounded-2xl transition-all shadow-sm active:scale-95">
+                    Cancel
                 </button>
-            </div>
-            <div class="flex-1 overflow-y-auto overscroll-contain px-5 py-5 text-sm">
-                <form id="create-form" class="space-y-5">
-                    @csrf
-                    <div>
-                        <label
-                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{ __('file.name') }}</label>
-                        <input type="text" name="name" id="create-name" required
-                            class="w-full px-2 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-transparent dark:text-primary-a0 transition-shadow" />
-                    </div>
-                    <div>
-                        <label
-                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{ __('file.parent_category') }}</label>
-                        <select name="parent_id" id="create-parent"
-                            class="w-full px-2 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-surface-tonal-a10 dark:text-primary-a0 transition-shadow">
-                            <option value="">{{ __('file.no_parent') }}</option>
-                            @foreach(\App\Models\Category::whereNull('parent_id')->orderBy('name')->get() as $parent)
-                                <option value="{{ $parent->id }}">{{ $parent->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div>
-                        <label
-                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{ __('file.status') }}</label>
-                        <select name="is_active" id="create-status"
-                            class="w-full px-2 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-surface-tonal-a10 dark:text-primary-a0 transition-shadow">
-                            <option value="1">{{ __('file.active') }}</option>
-                            <option value="0">{{ __('file.inactive') }}</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label
-                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{ __('file.description') }}</label>
-                        <textarea name="description" id="create-description" rows="6"
-                            class="w-full px-2 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-transparent dark:text-primary-a0 transition-shadow"></textarea>
-                    </div>
-                </form>
-            </div>
-            <div
-                class="px-5 py-3 bg-gray-50 dark:bg-surface-tonal-a10/50 border-t border-gray-200 dark:border-surface-tonal-a30">
-                <div class="flex gap-3">
-                    <button onclick="closeCreateDrawer()"
-                        class="flex-1 px-4 py-2 bg-gray-900 dark:bg-surface-tonal-a30 text-white text-sm font-medium rounded-lg hover:bg-gray-800 dark:hover:bg-gray-600 transition">
-                        {{ __('file.cancel') }}
-                    </button>
-                    <button type="submit" form="create-form"
-                        class="flex-1 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg transition">
-                        {{ __('file.create_category') }}
-                    </button>
-                </div>
+                <button type="submit" form="create-form" id="submit-btn" class="flex-[1.5] flex items-center justify-center gap-2 px-6 py-4 bg-emerald-400 hover:bg-emerald-500 text-emerald-950 font-black text-xs uppercase tracking-[0.15em] rounded-2xl transition-all shadow-lg shadow-emerald-500/20 active:scale-[0.98]">
+                    <span id="btn-text">Create Category</span>
+                    <svg id="loading-spinner" class="animate-spin h-4 w-4 hidden" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                </button>
             </div>
         </div>
     </div>
 
     @push('scripts')
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                const table = $('#application-table').DataTable({
-                    processing: true,
-                    serverSide: true,
-                    responsive: false,
-                    ajax: '{{ route('categories.datatable') }}',
-                    order: [[1, 'asc']],
-                    columnDefs: [
-                        { targets: 0, orderable: false, className: 'dtr-control', responsivePriority: 1 },
-                        { targets: 1, responsivePriority: 2 },
-                        { targets: -1, orderable: false, searchable: false, responsivePriority: 1 }
-                    ],
-                    columns: [
-                        {
-                            data: 'id',
-                            render: data => `<input type="checkbox" name="ids[]" value="${data}" class="row-checkbox w-4 h-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">`,
-                            className: 'text-center',
-                            orderable: false
-                        },
-                        {
-                            data: 'name',
-                            render: data => `<div class="font-medium text-gray-900 dark:text-primary-a0">${data || '-'}</div>`
-                        },
-                        {
-                            data: 'description',
-                            render: data => `<div class="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">${data || '—'}</div>`
-                        },
-                        {
-                            data: 'parent_name',
-                            render: data => data || '—'
-                        },
-                        {
-                            data: 'status_html',
-                            className: 'text-center',
-                            render: data => data || '-'
-                        },
-                        {
-                            data: null,
-                            orderable: false,
-                            searchable: false,
-                            className: 'text-right whitespace-nowrap',
-                            render: (data, type, row) => `
-                                                <div class="flex items-center justify-end gap-3 transition-opacity">
-                                                    <button onclick='openProfileDrawer(${JSON.stringify(row).replace(/'/g, "\\'")})' class="text-teal-600 hover:text-teal-900 dark:text-teal-400 p-1.5 rounded-lg hover:bg-teal-50 dark:hover:bg-teal-900/20" title="{{ __('file.view') }}">
-                                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-                                                        </svg>
-                                                    </button>
-                                                    <button onclick='openEditDrawer(${JSON.stringify(row).replace(/'/g, "\\'")})' class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 p-1.5 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/20" title="{{ __('file.edit') }}">
-                                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                                                        </svg>
-                                                    </button>
-                                                    ${row.delete_url ? `
-                                                        <button type="button" onclick="confirmDelete('${row.delete_url}')" class="text-red-500 hover:text-red-700 dark:text-red-400 p-1.5 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20" title="{{ __('file.delete') }}">
-                                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
-                                                            </svg>
-                                                        </button>
-                                                    ` : ''}
-                                                </div>
-                                        `
-                        }
-                    ],
-                    layout: {
-                        topStart: {
-                            buttons: [
-                                { extend: 'pageLength', className: 'btn btn-sm btn-light' },
-                                { extend: 'collection', text: "{{ __('file.Export') }}", className: 'btn btn-sm btn-dark', buttons: ['copy', 'excel', 'csv', 'pdf', 'print'] }
-                            ]
-                        },
-                        topEnd: 'search',
-                        bottomStart: 'info',
-                        bottomEnd: 'paging'
-                    },
-                    pageLength: 10,
-                    lengthMenu: [10, 25, 50, 100],
-                    language: {
-                        search: "",
-                        searchPlaceholder: "{{ __('file.search_categories') }}",
-                        lengthMenu: "{{ __('file.show_entries') }}",
-                        info: "{{ __('file.showing_entries') }}",
-                        infoEmpty: "{{ __('file.no_items_found') }}",
-                        emptyTable: "{{ __('file.no_items_found') }}",
-                        processing: false,
-                    },
-                    autoWidth: false,
-                    scrollX: false
-                });
+    <script>
+        const drawer = document.getElementById('create-drawer');
+        const overlay = document.getElementById('create-overlay');
+        const panel = document.getElementById('create-panel');
 
-                $('#select-all').on('change', function () {
-                    $('.row-checkbox').prop('checked', this.checked);
-                    updateBulkDelete();
-                });
-                $(document).on('change', '.row-checkbox', updateBulkDelete);
+        window.openCreateDrawer = () => {
+            drawer.classList.remove('hidden');
+            setTimeout(() => { overlay.classList.add('opacity-100'); panel.classList.remove('translate-x-full'); }, 10);
+            document.body.style.overflow = 'hidden';
+            // Reset mini preview
+            resetImagePreview();
+        };
 
-                function updateBulkDelete() {
-                    const checked = $('.row-checkbox:checked');
-                    const count = checked.length;
-                    $('#bulk-delete-form').toggleClass('hidden', count === 0);
-                    $('#selected-count').text(count);
-
-                    const container = document.getElementById('bulk-ids-container');
-                    container.innerHTML = '';
-                    checked.each(function () {
-                        const input = document.createElement('input');
-                        input.type = 'hidden';
-                        input.name = 'ids[]';
-                        input.value = this.value;
-                        container.appendChild(input);
-                    });
+        window.previewImage = (input) => {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    $('#mini-preview').attr('src', e.target.result).removeClass('hidden');
+                    $('#mini-placeholder').addClass('hidden');
                 }
+                reader.readAsDataURL(input.files[0]);
+            }
+        };
 
-                $('#bulk-delete-form-el').on('submit', function (e) {
-                    e.preventDefault();
-                    if (!confirm('{{ __("file.confirm_delete_selected_items") }}')) return;
+        window.resetImagePreview = () => {
+            $('#mini-preview').addClass('hidden').attr('src', '');
+            $('#mini-placeholder').removeClass('hidden');
+            $('#create-image').val('');
+        };
 
-                    $.ajax({
-                        url: this.action,
-                        method: 'POST',
-                        data: $(this).serialize(),
-                        success: function (response) {
-                            table.draw(false);
-                            updateBulkDelete();
-                            $('#select-all').prop('checked', false);
-                            if (response.success) {
-                                if (typeof showNotification === 'function') showNotification('Success', response.message || 'Categories deleted successfully.', 'success');
-                            } else {
-                                if (typeof showNotification === 'function') showNotification('Error', response.message || 'Error deleting categories', 'error');
-                                else alert(response.message);
-                            }
-                        },
-                        error: function (xhr) {
-                            const msg = xhr.responseJSON?.message || 'Delete failed.';
-                            if (typeof showNotification === 'function') showNotification('Error', msg, 'error');
-                            else alert(msg);
+        window.closeCreateDrawer = () => {
+            overlay.classList.remove('opacity-100');
+            panel.classList.add('translate-x-full');
+            document.body.style.overflow = '';
+            setTimeout(() => drawer.classList.add('hidden'), 500);
+        };
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const table = $('#application-table').DataTable({
+                processing: true, serverSide: true,
+                ajax: { url: '{{ route('categories.datatable') }}' },
+                order: [[1, 'asc']],
+                columnDefs: [
+                    { targets: 0, orderable: false, searchable: false },
+                    { targets: -1, orderable: false, searchable: false }
+                ],
+                columns: [
+                    {
+                        data: 'id',
+                        render: data => `<input type="checkbox" name="ids[]" value="${data}" class="row-checkbox w-4 h-4 rounded border-gray-300 dark:border-surface-tonal-a30 text-gray-900 focus:ring-gray-300">`,
+                        className: 'text-center',
+                    },
+                    {
+                        data: 'name',
+                        render: (data, type, row) => `
+                            <div class="flex flex-col py-0.5">
+                                <span class="text-sm font-semibold text-gray-900 dark:text-white capitalize">${data || '-'}</span>
+                                <span class="text-[10px] text-gray-400 dark:text-gray-500 uppercase tracking-widest">${row.parent_id === null ? 'Root' : 'Sub-Category'}</span>
+                            </div>`
+                    },
+                    {
+                        data: 'parent_name',
+                        render: data => `<span class="text-xs text-gray-500 dark:text-gray-400 font-medium">${data || '—'}</span>`
+                    },
+                    { 
+                        data: 'status_html', 
+                        className: 'text-center',
+                        render: function(data, type, row) {
+                            let status = data.toLowerCase().trim();
+                            let cls = 'admin-badge-info';
+                            if (status.includes('active')) cls = 'admin-badge-success';
+                            if (status.includes('inactive')) cls = 'admin-badge-danger';
+                            return `<span class="admin-badge ${cls}">${data}</span>`;
                         }
-                    });
+                    },
+                    {
+                        data: null, className: 'text-right whitespace-nowrap',
+                        render: (data, type, row) => `
+                            <div class="flex items-center justify-end gap-1.5 px-3">
+                                <a href="${row.edit_url}" class="p-1.5 rounded-lg text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                                </a>
+                                <button type="button" onclick="confirmDelete('${row.delete_url}')" class="p-1.5 rounded-lg text-gray-400 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-all">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                                </button>
+                            </div>`
+                    }
+                ],
+                layout: {
+                    topStart: { buttons: [
+                        { extend: 'pageLength', className: 'dt-button' },
+                        { extend: 'collection', text: "Export", className: 'dt-button', buttons: ['copy', 'excel', 'csv', 'pdf', 'print'] }
+                    ]},
+                    topEnd: 'search', bottomStart: 'info', bottomEnd: 'paging'
+                },
+                pageLength: 25, lengthMenu: [10, 25, 50, 100],
+                language: {
+                    search: "", searchPlaceholder: "Search categories...",
+                    lengthMenu: "Show _MENU_ entries", info: "Showing _START_ to _END_ of _TOTAL_ entries",
+                    infoEmpty: "No items found", emptyTable: "No categories found.", processing: false,
+                },
+                autoWidth: false, scrollX: false
+            });
+
+            $('#create-form').on('submit', function (e) {
+                e.preventDefault();
+                const btn = $('#submit-btn'), text = $('#btn-text'), spinner = $('#loading-spinner');
+                btn.prop('disabled', true).addClass('opacity-50 pointer-events-none');
+                text.addClass('hidden'); spinner.removeClass('hidden');
+
+                fetch('{{ route('categories.store') }}', {
+                    method: 'POST', body: new FormData(this),
+                    headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}', 'Accept': 'application/json' }
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        table.draw(false); closeCreateDrawer();
+                        if (typeof showNotification === 'function') showNotification('Success', data.message, 'success');
+                        this.reset();
+                    }
+                })
+                .finally(() => {
+                    btn.prop('disabled', false).removeClass('opacity-50 pointer-events-none');
+                    text.removeClass('hidden'); spinner.addClass('hidden');
                 });
+            });
 
-                window.confirmDelete = function (url) {
-                    if (!confirm('{{ __("file.confirm_delete_item") }}')) return;
+            $('#select-all').on('change', function () { $('.row-checkbox').prop('checked', this.checked); updateBulkDelete(); });
+            $(document).on('change', '.row-checkbox', updateBulkDelete);
 
-                    $.ajax({
-                        url: url,
-                        method: 'POST',
-                        data: {
-                            _token: '{{ csrf_token() }}',
-                            _method: 'DELETE'
-                        },
-                        success: function (response) {
-                            table.draw(false);
-                            $('.row-checkbox').prop('checked', false);
-                            $('#select-all').prop('checked', false);
-                            if (typeof updateBulkDelete === 'function') updateBulkDelete();
-                            if (typeof updateBulkDeleteUI === 'function') updateBulkDeleteUI();
-                            if (response.success) {
-                                if (typeof showNotification === 'function') showNotification('Success', response.message, 'success');
-                            } else {
-                                if (typeof showNotification === 'function') showNotification('Error', response.message, 'error');
-                                else alert(response.message);
-                            }
-                        },
-                        error: function (xhr) {
-                            const msg = xhr.responseJSON?.message || 'Delete failed.';
-                            if (typeof showNotification === 'function') showNotification('Error', msg, 'error');
-                            else alert(msg);
-                        }
-                    });
-                };
-
-                const profileDrawer = document.getElementById('profile-drawer');
-                const editDrawer = document.getElementById('edit-drawer');
-                const createDrawer = document.getElementById('create-drawer');
-                let bodyScrollPos = 0;
-
-                window.openProfileDrawer = function (category) {
-                    document.getElementById('drawer-name').textContent = category.name;
-                    document.getElementById('drawer-name-detail').textContent = category.name || '—';
-                    document.getElementById('drawer-parent').textContent = category.parent_name || '—';
-                    document.getElementById('drawer-description').textContent = category.description || '—';
-
-                    document.getElementById('drawer-status').innerHTML = category.status_html;
-
-                    bodyScrollPos = window.pageYOffset;
-                    document.body.style.position = 'fixed';
-                    document.body.style.top = `-${bodyScrollPos}px`;
-                    document.body.style.width = '100%';
-
-                    profileDrawer.classList.remove('hidden');
-                };
-
-                window.closeProfileDrawer = function () {
-                    profileDrawer.classList.add('hidden');
-                    document.body.style.position = '';
-                    document.body.style.top = '';
-                    document.body.style.width = '';
-                    window.scrollTo(0, bodyScrollPos);
-                };
-
-                window.openEditDrawer = function (category) {
-                    document.getElementById('edit-id').value = category.id;
-                    document.getElementById('edit-drawer-name').textContent = category.name || '';
-                    document.getElementById('edit-name').value = category.name || '';
-                    document.getElementById('edit-parent').value = category.parent_id || '';
-                    document.getElementById('edit-status').value = category.is_active ? 1 : 0;
-                    document.getElementById('edit-description').value = category.description || '';
-
-                    bodyScrollPos = window.pageYOffset;
-                    document.body.style.position = 'fixed';
-                    document.body.style.top = `-${bodyScrollPos}px`;
-                    document.body.style.width = '100%';
-
-                    editDrawer.classList.remove('hidden');
-                };
-
-                window.closeEditDrawer = function () {
-                    editDrawer.classList.add('hidden');
-                    document.body.style.position = '';
-                    document.body.style.top = '';
-                    document.body.style.width = '';
-                    window.scrollTo(0, bodyScrollPos);
-                };
-
-                window.openCreateDrawer = function () {
-                    document.getElementById('create-form').reset();
-                    document.getElementById('create-status').value = 1;
-                    document.getElementById('create-parent').value = '';
-
-                    bodyScrollPos = window.pageYOffset;
-                    document.body.style.position = 'fixed';
-                    document.body.style.top = `-${bodyScrollPos}px`;
-                    document.body.style.width = '100%';
-
-                    createDrawer.classList.remove('hidden');
-                };
-
-                window.closeCreateDrawer = function () {
-                    createDrawer.classList.add('hidden');
-                    document.body.style.position = '';
-                    document.body.style.top = '';
-                    document.body.style.width = '';
-                    window.scrollTo(0, bodyScrollPos);
-                };
-
-                document.getElementById('edit-form').addEventListener('submit', function (e) {
-                    e.preventDefault();
-                    const formData = new FormData(this);
-                    const id = formData.get('id');
-
-                    fetch(`{{ route('categories.update', ':id') }}`.replace(':id', id), {
-                        method: 'POST',
-                        body: formData,
-                        headers: {
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                            'Accept': 'application/json'
-                        }
-                    })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                table.draw(false);
-                                closeEditDrawer();
-                                if (typeof showNotification === 'function') showNotification('Success', data.message, 'success');
-                                else alert(data.message);
-                            } else {
-                                if (typeof showNotification === 'function') showNotification('Error', data.message || 'Update failed', 'error');
-                                else alert(data.message || 'Update failed');
-                            }
-                        })
-                        .catch(() => {
-                            if (typeof showNotification === 'function') showNotification('Error', 'Failed to update category', 'error');
-                            else alert('Failed to update category');
-                        });
+            function updateBulkDelete() {
+                const checked = $('.row-checkbox:checked');
+                const count = checked.length;
+                $('#bulk-delete-form').toggleClass('hidden', count === 0);
+                $('#selected-count').text(count);
+                const container = document.getElementById('bulk-ids-container');
+                container.innerHTML = '';
+                checked.each(function () {
+                    const input = document.createElement('input');
+                    input.type = 'hidden'; input.name = 'ids[]'; input.value = this.value;
+                    container.appendChild(input);
                 });
+            }
 
-                document.getElementById('create-form').addEventListener('submit', function (e) {
-                    e.preventDefault();
-                    const formData = new FormData(this);
-
-                    fetch('{{ route('categories.store') }}', {
-                        method: 'POST',
-                        body: formData,
-                        headers: {
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                            'Accept': 'application/json'
-                        }
-                    })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                table.draw(false);
-                                closeCreateDrawer();
-                                if (typeof showNotification === 'function') showNotification('Success', data.message, 'success');
-                                else alert(data.message);
-                            } else {
-                                if (typeof showNotification === 'function') showNotification('Error', data.message || 'Create failed', 'error');
-                                else alert(data.message || 'Create failed');
-                            }
-                        })
-                        .catch(() => {
-                            if (typeof showNotification === 'function') showNotification('Error', 'Failed to create category', 'error');
-                            else alert('Failed to create category');
-                        });
-                });
-
-                document.addEventListener('keydown', e => {
-                    if (e.key === 'Escape') {
-                        if (!profileDrawer.classList.contains('hidden')) closeProfileDrawer();
-                        if (!editDrawer.classList.contains('hidden')) closeEditDrawer();
-                        if (!createDrawer.classList.contains('hidden')) closeCreateDrawer();
+            $('#bulk-delete-form-el').on('submit', function (e) {
+                e.preventDefault();
+                if (!confirm('{{ __("file.confirm_delete_selected_items") }}')) return;
+                $.ajax({
+                    url: this.action, method: 'POST', data: $(this).serialize(),
+                    success: function (response) {
+                        table.draw(false); updateBulkDelete(); $('#select-all').prop('checked', false);
+                        if (response.success && typeof showNotification === 'function') showNotification('Success', response.message, 'success');
                     }
                 });
             });
-        </script>
+
+            window.confirmDelete = function (url) {
+                if (!confirm('{{ __("file.confirm_delete_item") }}')) return;
+                $.post(url, { _token: '{{ csrf_token() }}', _method: 'DELETE' }, function(resp) {
+                    table.draw(false); updateBulkDelete();
+                    if (typeof showNotification === 'function') showNotification('Success', resp.message, 'success');
+                });
+            };
+        });
+    </script>
     @endpush
 @endsection

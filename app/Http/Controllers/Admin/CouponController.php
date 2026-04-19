@@ -104,7 +104,10 @@ class CouponController extends Controller
 
     public function create()
     {
-        return view('admin.promotions.coupons.create');
+        $products = \App\Models\Product::all();
+        $categories = \App\Models\Category::all();
+        $collections = \App\Models\Collection::all();
+        return view('admin.promotions.coupons.create', compact('products', 'categories', 'collections'));
     }
 
     public function store(Request $request)
@@ -120,19 +123,29 @@ class CouponController extends Controller
             'usage_per_user' => 'nullable|integer|min:1',
             'starts_at' => 'nullable|date',
             'expires_at' => 'nullable|date|after_or_equal:starts_at',
-            'applies_to' => 'required|in:all,specific_products,specific_categories',
+            'applies_to' => 'required|in:all,specific_products,specific_categories,specific_collections',
+            'product_ids' => 'array',
+            'product_ids.*' => 'exists:products,id',
+            'category_ids' => 'array',
+            'category_ids.*' => 'exists:categories,id',
+            'collection_ids' => 'array',
+            'collection_ids.*' => 'exists:collections,id',
         ]);
 
         $data['is_active'] = $request->has('is_active');
 
-        Coupon::create($data);
+        $coupon = Coupon::create($data);
+        $this->syncRelations($coupon, $request);
 
         return redirect()->route('admin.coupons.index')->with('success', 'Coupon created successfully.');
     }
 
     public function edit(Coupon $coupon)
     {
-        return view('admin.promotions.coupons.edit', compact('coupon'));
+        $products = \App\Models\Product::all();
+        $categories = \App\Models\Category::all();
+        $collections = \App\Models\Collection::all();
+        return view('admin.promotions.coupons.edit', compact('coupon', 'products', 'categories', 'collections'));
     }
 
     public function update(Request $request, Coupon $coupon)
@@ -148,14 +161,42 @@ class CouponController extends Controller
             'usage_per_user' => 'nullable|integer|min:1',
             'starts_at' => 'nullable|date',
             'expires_at' => 'nullable|date|after_or_equal:starts_at',
-            'applies_to' => 'required|in:all,specific_products,specific_categories',
+            'applies_to' => 'required|in:all,specific_products,specific_categories,specific_collections',
+            'product_ids' => 'array',
+            'product_ids.*' => 'exists:products,id',
+            'category_ids' => 'array',
+            'category_ids.*' => 'exists:categories,id',
+            'collection_ids' => 'array',
+            'collection_ids.*' => 'exists:collections,id',
         ]);
 
         $data['is_active'] = $request->has('is_active');
 
         $coupon->update($data);
+        $this->syncRelations($coupon, $request);
 
         return redirect()->route('admin.coupons.index')->with('success', 'Coupon updated successfully.');
+    }
+
+    protected function syncRelations(Coupon $coupon, Request $request)
+    {
+        if ($request->applies_to === 'specific_products') {
+            $coupon->products()->sync($request->product_ids ?? []);
+        } else {
+            $coupon->products()->detach();
+        }
+
+        if ($request->applies_to === 'specific_categories') {
+            $coupon->categories()->sync($request->category_ids ?? []);
+        } else {
+            $coupon->categories()->detach();
+        }
+
+        if ($request->applies_to === 'specific_collections') {
+            $coupon->collections()->sync($request->collection_ids ?? []);
+        } else {
+            $coupon->collections()->detach();
+        }
     }
 
     public function destroy(Coupon $coupon)

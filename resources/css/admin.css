@@ -1,0 +1,537 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   ADMIN DESIGN SYSTEM — admin.css
+   Centralized styles for the entire admin panel.
+   Uses Tailwind @apply with surface-tonal-* dark mode tokens.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+
+/* ─────────────────────────────────────────────────────────────────────────
+   1. GLOBAL HUD (Navbar & Sidebar)
+   ───────────────────────────────────────────────────────────────────────── */
+
+#navbar {
+    @apply bg-white dark:bg-surface-tonal-a20 backdrop-blur-md;
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────
+   2. PAGE LAYOUT
+   ───────────────────────────────────────────────────────────────────────── */
+
+.admin-page {
+    @apply px-4 sm:px-6 lg:px-8 pb-10 pt-6;
+}
+
+.admin-page-inner {
+    @apply max-w-[1400px] mx-auto;
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────
+   2. PAGE HEADER
+   ───────────────────────────────────────────────────────────────────────── */
+
+.admin-page-header {
+    @apply mb-8 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4;
+}
+
+.admin-page-title {
+    @apply text-2xl font-black tracking-tight text-black dark:text-white;
+}
+
+.admin-page-subtitle {
+    @apply mt-1 text-sm text-gray-500 dark:text-gray-400;
+}
+
+.admin-breadcrumb {
+    @apply inline-flex items-center gap-1.5 text-xs font-medium text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors mb-3 uppercase tracking-widest;
+}
+
+.admin-breadcrumb svg {
+    @apply w-3 h-3;
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────
+   3. CARDS
+   ───────────────────────────────────────────────────────────────────────── */
+
+.admin-card {
+    @apply bg-white dark:bg-surface-tonal-a20 rounded-2xl shadow-sm border border-gray-100/50 dark:border-white/5 overflow-hidden;
+}
+
+.admin-card-header {
+    @apply px-6 py-5 bg-gray-50/30 dark:bg-surface-tonal-a20/50;
+}
+
+.admin-card-header h2 {
+    @apply text-base font-black text-black dark:text-white uppercase tracking-wider;
+}
+
+.admin-card-header p {
+    @apply text-xs text-gray-500 dark:text-gray-400 mt-0.5;
+}
+
+.admin-card-body {
+    @apply p-6 sm:p-8;
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────
+   4. FORM INPUTS (.fi)
+   ───────────────────────────────────────────────────────────────────────── */
+
+.fi {
+    @apply block w-full rounded-xl border border-gray-200 dark:border-surface-tonal-a30 bg-white dark:bg-surface-tonal-a30 text-sm leading-relaxed text-gray-900 dark:text-white transition-all appearance-none outline-none;
+    padding: 0.625rem 0.875rem;
+}
+
+.fi::placeholder {
+    @apply text-gray-400 dark:text-gray-500;
+}
+
+.fi:focus {
+    @apply border-gray-300 dark:border-surface-tonal-a50 ring-4 ring-gray-900/5 dark:ring-white/5;
+}
+
+/* Select arrow fix */
+select.fi {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 0.75rem center;
+    background-repeat: no-repeat;
+    background-size: 1.25em 1.25em;
+    padding-right: 2.5rem;
+}
+
+/* Textarea */
+textarea.fi {
+    resize: vertical;
+    min-height: 5rem;
+}
+
+/* Remove number spinners */
+input[type=number].fi::-webkit-inner-spin-button,
+input[type=number].fi::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+}
+
+input[type=number].fi {
+    -moz-appearance: textfield;
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────
+   5. LABELS & HELPERS
+   ───────────────────────────────────────────────────────────────────────── */
+
+.fi-label {
+    @apply block text-[11px] font-black text-black dark:text-white uppercase tracking-widest mb-2;
+}
+
+.fi-label-required::after {
+    content: ' *';
+    @apply text-red-500;
+}
+
+.fi-help {
+    @apply text-xs text-gray-400 dark:text-gray-500 mt-1;
+}
+
+.fi-error {
+    @apply text-xs text-red-500 mt-1;
+}
+
+.fi-section-title {
+    @apply text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-4;
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────
+   6. TOGGLE SWITCH
+   ───────────────────────────────────────────────────────────────────────── */
+
+.tgl {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.tgl input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.tgl-track {
+    width: 40px;
+    height: 22px;
+    background: #cbd5e1;
+    border-radius: 999px;
+    position: relative;
+    transition: background 0.2s;
+    pointer-events: none;
+}
+
+.tgl-track::after {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 16px;
+    height: 16px;
+    background: #fff;
+    border-radius: 50%;
+    transition: transform 0.2s;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+.tgl input:checked~.tgl-track {
+    background: #1e293b;
+}
+
+.tgl input:checked~.tgl-track::after {
+    transform: translateX(18px);
+}
+
+.dark .tgl-track {
+    background: var(--clr-surface-tonal-a40);
+}
+
+.dark .tgl input:checked~.tgl-track {
+    background: #e2e8f0;
+}
+
+.dark .tgl input:checked~.tgl-track::after {
+    background: #1e293b;
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────
+   7. CHECKBOX CARD
+   ───────────────────────────────────────────────────────────────────────── */
+
+.ck-card {
+    @apply flex items-center p-3 rounded-xl border border-gray-100 dark:border-surface-tonal-a30 hover:bg-gray-50 dark:hover:bg-surface-tonal-a30 transition cursor-pointer;
+}
+
+.ck-card .ck-card-text h3 {
+    @apply text-sm font-bold text-gray-900 dark:text-white;
+}
+
+.ck-card .ck-card-text p {
+    @apply text-xs text-gray-500 dark:text-gray-400;
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────
+   8. BUTTONS
+   ───────────────────────────────────────────────────────────────────────── */
+
+/* Primary — dark bg, inverts in dark mode */
+.admin-btn-primary {
+    @apply w-full flex items-center justify-center px-6 py-3.5 rounded-xl bg-gray-900 dark:bg-white text-sm font-semibold text-white dark:text-gray-900 hover:bg-black dark:hover:bg-gray-100 transition-all shadow-sm focus:ring-4 focus:ring-gray-900/10 dark:focus:ring-white/20 active:scale-[0.98];
+}
+
+/* Secondary / Ghost */
+.admin-btn-secondary {
+    @apply w-full flex items-center justify-center px-6 py-3 rounded-xl border border-gray-200 dark:border-surface-tonal-a30 bg-transparent text-sm font-semibold text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-surface-tonal-a30 transition-all;
+}
+
+/* Accent — green CTA (inspired by reference design) */
+.admin-btn-accent {
+    @apply inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold transition-all shadow-sm active:scale-[0.98];
+}
+
+/* Danger */
+.admin-btn-danger {
+    @apply inline-flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-lg transition-all;
+}
+
+/* Small inline action link */
+.admin-btn-add {
+    @apply inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-sm font-semibold hover:bg-black dark:hover:bg-gray-100 transition-all shadow-sm active:scale-[0.98];
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────
+   9. ALERTS
+   ───────────────────────────────────────────────────────────────────────── */
+
+.admin-alert-success {
+    @apply mb-6 flex items-center gap-3 bg-white dark:bg-surface-tonal-a20 border border-emerald-200 dark:border-emerald-800/40 rounded-xl px-4 py-3 text-sm text-emerald-700 dark:text-emerald-400 shadow-sm;
+}
+
+.admin-alert-error {
+    @apply mb-6 bg-white dark:bg-surface-tonal-a20 border border-red-200 dark:border-red-800/40 rounded-xl px-4 py-3 shadow-sm;
+}
+
+.admin-alert-error .admin-alert-title {
+    @apply text-sm font-semibold text-red-700 dark:text-red-400 mb-2;
+}
+
+.admin-alert-error li {
+    @apply flex items-center gap-2 text-xs text-red-600 dark:text-red-400;
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────
+   10. STATUS BADGES
+   ───────────────────────────────────────────────────────────────────────── */
+
+.admin-badge {
+    @apply inline-flex items-center px-2.5 py-1 rounded-lg border text-xs font-semibold;
+}
+
+.admin-badge-success {
+    @apply bg-emerald-50 text-emerald-700 border-emerald-100 dark:bg-emerald-500/10 dark:text-emerald-400 dark:border-emerald-500/20;
+}
+
+.admin-badge-warning {
+    @apply bg-amber-50 text-amber-700 border-amber-100 dark:bg-amber-500/10 dark:text-amber-400 dark:border-amber-500/20;
+}
+
+.admin-badge-danger {
+    @apply bg-rose-50 text-rose-700 border-rose-100 dark:bg-rose-500/10 dark:text-rose-400 dark:border-rose-500/20;
+}
+
+.admin-badge-info {
+    @apply bg-blue-50 text-blue-700 border-blue-100 dark:bg-blue-500/10 dark:text-blue-400 dark:border-blue-500/20;
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────
+   11. IMAGE UPLOAD ZONES
+   ───────────────────────────────────────────────────────────────────────── */
+
+.admin-upload-zone {
+    @apply relative group rounded-2xl border-2 border-dashed border-gray-200 dark:border-surface-tonal-a30 bg-gray-50/50 dark:bg-surface-tonal-a30 overflow-hidden flex flex-col items-center justify-center gap-2 cursor-pointer hover:border-gray-400 dark:hover:border-surface-tonal-a50 transition-all;
+}
+
+.admin-upload-zone .admin-upload-placeholder {
+    @apply flex flex-col items-center gap-2 text-gray-400 transition-transform group-hover:scale-110 text-center px-4;
+}
+
+.admin-upload-zone .admin-upload-placeholder svg {
+    @apply h-10 w-10 opacity-50;
+}
+
+.admin-upload-zone .admin-upload-placeholder p {
+    @apply text-xs font-bold uppercase tracking-wider;
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────
+   12. TAB NAVIGATION (Settings)
+   ───────────────────────────────────────────────────────────────────────── */
+
+.tab-scroll::-webkit-scrollbar {
+    display: none;
+}
+
+.tab-scroll {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.tab-btn {
+    position: relative;
+    white-space: nowrap;
+}
+
+.tab-btn.is-active {
+    color: #1e293b !important;
+}
+
+.dark .tab-btn.is-active {
+    color: #f1f5f9 !important;
+}
+
+.tab-btn.is-active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: #1e293b;
+    border-radius: 2px 2px 0 0;
+}
+
+.dark .tab-btn.is-active::after {
+    background: #f1f5f9;
+}
+
+.tab-panel {
+    display: none;
+}
+
+.tab-panel.is-active {
+    display: block;
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────
+   13. UTILITY ANIMATIONS
+   ───────────────────────────────────────────────────────────────────────── */
+
+@keyframes fade-in-scale {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.animate-fade-in-scale {
+    animation: fade-in-scale 0.2s ease-out forwards;
+}
+
+@keyframes fade-in-up {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in-up {
+    animation: fade-in-up 0.3s ease-out forwards;
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────
+   14. BULK DELETE BAR
+   ───────────────────────────────────────────────────────────────────────── */
+
+.admin-bulk-bar {
+    @apply mb-6 bg-white dark:bg-surface-tonal-a20 border-2 border-red-100 dark:border-red-900/30 rounded-2xl p-3 sm:p-4 flex flex-row justify-between items-center shadow-lg shadow-red-900/5 ring-1 ring-red-500/10 gap-4;
+}
+
+.admin-bulk-bar .selection-count {
+    @apply px-3 py-1 rounded-lg bg-red-100 dark:bg-red-500/20 text-red-700 dark:text-red-400 font-bold tabular-nums text-sm;
+}
+
+.admin-bulk-bar span {
+    @apply text-sm font-bold text-red-900 dark:text-red-100;
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────
+   15. CUSTOM SCROLLBAR
+   ───────────────────────────────────────────────────────────────────────── */
+
+.custom-scrollbar::-webkit-scrollbar {
+    width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #e2e8f0;
+    border-radius: 10px;
+}
+
+.dark .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #334155;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   16. SALESYNC PREMIUM COMPONENTS
+   ───────────────────────────────────────────────────────────────────────── */
+
+.fi-section-title {
+    @apply text-base font-bold text-gray-900 dark:text-white mb-2;
+}
+
+.fi-section-subtitle {
+    @apply text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-4;
+}
+
+/* Chip Selection (Size Chips) */
+.fi-chip-group {
+    @apply flex flex-wrap gap-2;
+}
+
+.fi-chip {
+    @apply cursor-pointer relative;
+}
+
+.fi-chip input {
+    @apply absolute opacity-0 w-0 h-0;
+}
+
+.fi-chip-label {
+    @apply flex items-center justify-center px-4 py-2 rounded-lg bg-gray-50 dark:bg-surface-tonal-a30 text-gray-400 dark:text-gray-500 text-xs font-bold transition-all border-2 border-transparent hover:scale-105 active:scale-95 shadow-sm;
+}
+
+.fi-chip input:checked+.fi-chip-label {
+    @apply bg-emerald-100 dark:bg-emerald-500/20 text-emerald-900 dark:text-emerald-400 border-emerald-500/30 ring-2 ring-emerald-500/10;
+}
+
+/* Radio Indicator Group (Gender) */
+.fi-radio-group {
+    @apply flex flex-wrap gap-6;
+}
+
+.fi-radio {
+    @apply cursor-pointer flex items-center gap-2;
+}
+
+.fi-radio input {
+    @apply absolute opacity-0 w-0 h-0;
+}
+
+.fi-radio-circle {
+    @apply w-5 h-5 rounded-full border-2 border-gray-200 dark:border-surface-tonal-a30 transition-all shadow-inner;
+}
+
+.fi-radio-text {
+    @apply text-xs font-bold text-gray-400 dark:text-gray-500 transition-colors group-hover:text-gray-600 dark:group-hover:text-gray-300;
+}
+
+.fi-radio input:checked+.fi-radio-circle {
+    @apply scale-110 shadow-sm;
+}
+
+.fi-radio input:checked~.fi-radio-text {
+    @apply text-gray-900 dark:text-white font-black;
+}
+
+.fi-radio input:checked+.fi-radio-circle {
+    @apply border-emerald-500 shadow-sm ring-2 ring-emerald-500/20 ring-offset-2 dark:ring-offset-surface-tonal-a20;
+}
+
+/* Media Gallery */
+.media-gallery-grid {
+    @apply grid grid-cols-4 gap-2 mt-4;
+}
+
+.media-gallery-item {
+    @apply aspect-square rounded-xl overflow-hidden border border-gray-100 dark:border-surface-tonal-a30 relative group bg-gray-50 dark:bg-surface-tonal-a30;
+}
+
+.media-gallery-item.is-active {
+    @apply border-emerald-500/50 ring-2 ring-emerald-500/20;
+}
+
+/* Refined Form Input for SalesSync — Shared with .fi */
+.fi-salessync {
+    @apply fi bg-gray-50/30 dark:bg-surface-tonal-a20/30 border-gray-100/50 dark:border-white/5 rounded-xl px-4 py-3 text-sm font-bold shadow-sm placeholder:text-gray-300 dark:placeholder:text-gray-600 text-black dark:text-white;
+}
+
+.fi-salessync:focus {
+    @apply bg-white dark:bg-surface-tonal-a30 border-indigo-300 dark:border-indigo-500/50 ring-4 ring-indigo-500/5 shadow-md;
+}

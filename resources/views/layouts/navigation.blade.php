@@ -9,17 +9,28 @@
 
     <title>@yield('title', config('app.name'))</title>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+
     <!-- Tailwind CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             darkMode: 'class',
-            theme: { extend: { colors: { primary: '#1d4ed8' } } }
+            theme: { 
+                extend: { 
+                    colors: { primary: '#1d4ed8' },
+                    fontFamily: {
+                        sans: ['Inter', 'ui-sans-serif', 'system-ui', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Roboto', '"Helvetica Neue"', 'Arial', '"Noto Sans"', 'sans-serif'],
+                    }
+                } 
+            }
         }
     </script>
 </head>
 
-<body class="h-full bg-gray-100 dark:bg-surface-tonal-a10 text-gray-900 dark:text-gray-100 transition-colors">
+<body class="h-full bg-gray-100 dark:bg-surface-tonal-a10 text-gray-900 dark:text-gray-100 transition-colors" style="font-family:'Inter',system-ui,sans-serif;">
     <div class="flex h-full">
 
         {{-- ====================== SIDEBAR ====================== --}}

@@ -94,10 +94,16 @@ Route::domain('admin.karbnzol.com')->group(function () {
         Route::resource('products.variants', \App\Http\Controllers\Admin\VariantController::class)->except(['index', 'show']);
 
         // Categories Management
+        Route::get('categories/manager', [\App\Http\Controllers\CategoryController::class, 'tree'])->name('categories.tree');
         Route::get('categories/datatable', [\App\Http\Controllers\CategoryController::class, 'datatable'])->name('categories.datatable');
         Route::get('categories/{category}/details', [\App\Http\Controllers\CategoryController::class, 'details'])->name('categories.details');
         Route::post('categories/bulk-delete', [\App\Http\Controllers\CategoryController::class, 'bulkDelete'])->name('categories.bulkDelete');
         Route::resource('categories', \App\Http\Controllers\CategoryController::class);
+
+        // Collections Management
+        Route::get('collections/datatable', [\App\Http\Controllers\Admin\CollectionController::class, 'datatable'])->name('collections.datatable');
+        Route::post('collections/bulk-delete', [\App\Http\Controllers\Admin\CollectionController::class, 'bulkDelete'])->name('collections.bulkDelete');
+        Route::resource('collections', \App\Http\Controllers\Admin\CollectionController::class);
 
         // Attributes Management
         Route::get('attributes/datatable', [\App\Http\Controllers\Admin\AttributeController::class, 'datatable'])->name('attributes.datatable');
@@ -165,6 +171,7 @@ Route::domain('admin.karbnzol.com')->group(function () {
         Route::resource('coupons', \App\Http\Controllers\Admin\CouponController::class);
         Route::get('discount-rules/datatable', [\App\Http\Controllers\Admin\DiscountRuleController::class, 'datatable'])->name('discount-rules.datatable');
         Route::post('discount-rules/bulk-delete', [\App\Http\Controllers\Admin\DiscountRuleController::class, 'bulkDelete'])->name('discount-rules.bulkDelete');
+        Route::post('discount-rules/{discount_rule}/duplicate', [\App\Http\Controllers\Admin\DiscountRuleController::class, 'duplicate'])->name('discount-rules.duplicate');
         Route::resource('discount-rules', \App\Http\Controllers\Admin\DiscountRuleController::class);
 
         // Payments & Finances
@@ -177,7 +184,15 @@ Route::domain('admin.karbnzol.com')->group(function () {
         Route::post('refunds/bulk-delete', [\App\Http\Controllers\Admin\RefundController::class, 'bulkDelete'])->name('refunds.bulkDelete');
         Route::resource('refunds', \App\Http\Controllers\Admin\RefundController::class)->only(['index', 'show', 'destroy']);
 
+        // General Settings
+        Route::get('settings/general', [\App\Http\Controllers\SettingsController::class, 'general'])->name('settings.general');
+        Route::put('settings/general', [\App\Http\Controllers\SettingsController::class, 'update'])->name('settings.update');
+
         Route::get('settings/payment-gateways', [\App\Http\Controllers\Admin\PaymentGatewaySettingController::class, 'index'])->name('settings.payment-gateways');
         Route::patch('settings/payment-gateways/{gateway}', [\App\Http\Controllers\Admin\PaymentGatewaySettingController::class, 'update'])->name('settings.payment-gateways.update');
+
+        // Storefront Settings
+        Route::get('settings/storefront', [\App\Http\Controllers\Admin\StorefrontController::class, 'index'])->name('admin.storefront.index');
+        Route::put('settings/storefront', [\App\Http\Controllers\Admin\StorefrontController::class, 'update'])->name('admin.storefront.update');
     });
 });

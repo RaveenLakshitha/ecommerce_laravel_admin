@@ -1020,6 +1020,15 @@
 
     <!-- ── SCRIPTS ─────────────────────────────────────────────── -->
     <script>
+        window.addEventListener('pageshow', (event) => {
+            if (event.persisted) {
+                const wipe = document.getElementById('page-wipe');
+                if (wipe) {
+                    wipe.style.display = 'none';
+                }
+            }
+        });
+
         window.addEventListener('load', () => {
 
             /* ── Custom cursor ───────────────────────────────────── */

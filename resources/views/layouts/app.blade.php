@@ -12,7 +12,9 @@
     {{-- DRAPE theme fonts --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=DM+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
 
 
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -29,442 +31,11 @@
             if (theme === 'dark') document.documentElement.classList.add('dark');
         })();
     </script>
-
-    <style>
-        :root {
-            --primary-color: #e8c547;
-            --primary-color-hover: rgba(232,197,71,0.12);
-            --primary-color-active: #e8c547;
-            --primary-shadow: 0 4px 15px rgba(232,197,71,0.25);
-        }
-
-        .sidebar-item-active {
-            background-color: rgba(232,197,71,0.12) !important;
-            color: #e8c547 !important;
-            box-shadow: none !important;
-            border-radius: 0.5rem;
-            border-left: 2px solid #e8c547;
-        }
-
-        .sidebar-item-hover:hover {
-            background-color: #f4f4f5 !important;
-            color: #27272a !important;
-            border-radius: 0.5rem;
-        }
-        .dark .sidebar-item-hover:hover {
-            background-color: #18181b !important;
-            color: #f0f0f2 !important;
-        }
-
-        .sidebar-sub-active {
-            background-color: rgba(232,197,71,0.08) !important;
-            color: #e8c547 !important;
-            border-radius: 0.5rem;
-            font-weight: 600;
-        }
-
-        [data-tooltip] {
-            position: relative;
-        }
-
-        [data-tooltip]::after {
-            content: attr(data-tooltip);
-            position: absolute;
-            left: 100%;
-            top: 50%;
-            transform: translateY(-50%);
-            margin-left: 12px;
-            background: #1f2937;
-            color: white;
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-size: 13px;
-            white-space: nowrap;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.2s;
-            z-index: 50;
-        }
-
-        .sidebar-collapsed [data-tooltip]:hover::after {
-            opacity: 1;
-        }
-
-        .sidebar-collapsed .sidebar-text {
-            display: none;
-        }
-
-        .sidebar-collapsed .flex.items-center.space-x-3 {
-            justify-content: center;
-        }
-
-        .sidebar-collapsed .h-16.flex.items-center.justify-between {
-            justify-content: center;
-        }
-
-        #sidebar::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        #sidebar::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        #sidebar::-webkit-scrollbar-thumb {
-            background: #4b5563;
-            border-radius: 3px;
-        }
-
-        #sidebar::-webkit-scrollbar-thumb:hover {
-            background: #6b7280;
-        }
-
-        html {
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-
-        #sidebar {
-            max-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        #sidebar nav {
-            overflow-y: auto;
-            overflow-x: hidden;
-        }
-
-        .sidebar-collapsed [x-show] {
-            display: none !important;
-        }
-
-        .sidebar-collapsed button[@click*="open"] .transition-transform {
-            display: none;
-        }
-
-        .sidebar-collapsed button[@click*="open"] {
-            pointer-events: none;
-        }
-
-        .sidebar-collapsed a {
-            pointer-events: auto;
-        }
-
-        #notification-container {
-            position: fixed;
-            top: 80px;
-            right: 20px;
-            z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            max-height: calc(100vh - 100px);
-            overflow-y: auto;
-            pointer-events: none;
-            width: auto;
-            max-width: 420px;
-        }
-
-        #notification-container::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        #notification-container::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        #notification-container::-webkit-scrollbar-thumb {
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 3px;
-        }
-
-        .notification {
-            pointer-events: auto;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
-            overflow: hidden;
-            animation: slideIn 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            display: flex;
-            min-width: 320px;
-            max-width: 100%;
-            position: relative;
-        }
-
-        .dark .notification {
-            background: #1f2937;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
-        }
-
-        .notification.removing {
-            animation: slideOut 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
-        }
-
-        @keyframes slideIn {
-            from {
-                transform: translateX(120%) scale(0.8);
-                opacity: 0;
-            }
-
-            to {
-                transform: translateX(0) scale(1);
-                opacity: 1;
-            }
-        }
-
-        @keyframes slideOut {
-            to {
-                transform: translateX(120%) scale(0.8);
-                opacity: 0;
-            }
-        }
-
-        .notification-icon {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            min-width: 60px;
-        }
-
-        .notification-icon svg {
-            width: 28px;
-            height: 28px;
-        }
-
-        .notification-content {
-            flex: 1;
-            padding: 16px 12px 16px 0;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-
-        .notification-title {
-            font-weight: 600;
-            font-size: 15px;
-            line-height: 1.4;
-        }
-
-        .notification-message {
-            font-size: 14px;
-            line-height: 1.5;
-            opacity: 0.85;
-        }
-
-        .notification-close {
-            position: absolute;
-            top: 12px;
-            right: 12px;
-            background: rgba(0, 0, 0, 0.05);
-            border: none;
-            border-radius: 6px;
-            width: 24px;
-            height: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s;
-            padding: 0;
-        }
-
-        .dark .notification-close {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .notification-close:hover {
-            background: rgba(0, 0, 0, 0.1);
-            transform: scale(1.1);
-        }
-
-        .dark .notification-close:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        .notification-close svg {
-            width: 14px;
-            height: 14px;
-        }
-
-        .notification-progress {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            height: 3px;
-            background: currentColor;
-            opacity: 0.3;
-            transform-origin: left;
-            animation: progress var(--duration, 5s) linear forwards;
-        }
-
-        @keyframes progress {
-            from {
-                transform: scaleX(1);
-            }
-
-            to {
-                transform: scaleX(0);
-            }
-        }
-
-        .notification.success {
-            border-left: 4px solid #10b981;
-        }
-
-        .notification.success .notification-icon {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            color: white;
-        }
-
-        .notification.success .notification-title {
-            color: #059669;
-        }
-
-        .dark .notification.success .notification-title {
-            color: #10b981;
-        }
-
-        .notification.success .notification-message {
-            color: #064e3b;
-        }
-
-        .dark .notification.success .notification-message {
-            color: #d1fae5;
-        }
-
-        .notification.success .notification-progress {
-            color: #10b981;
-        }
-
-        .notification.error {
-            border-left: 4px solid #ef4444;
-        }
-
-        .notification.error .notification-icon {
-            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-            color: white;
-        }
-
-        .notification.error .notification-title {
-            color: #dc2626;
-        }
-
-        .dark .notification.error .notification-title {
-            color: #ef4444;
-        }
-
-        .notification.error .notification-message {
-            color: #7f1d1d;
-        }
-
-        .dark .notification.error .notification-message {
-            color: #fecaca;
-        }
-
-        .notification.error .notification-progress {
-            color: #ef4444;
-        }
-
-        .notification.warning {
-            border-left: 4px solid #f59e0b;
-        }
-
-        .notification.warning .notification-icon {
-            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-            color: white;
-        }
-
-        .notification.warning .notification-title {
-            color: #d97706;
-        }
-
-        .dark .notification.warning .notification-title {
-            color: #f59e0b;
-        }
-
-        .notification.warning .notification-message {
-            color: #78350f;
-        }
-
-        .dark .notification.warning .notification-message {
-            color: #fde68a;
-        }
-
-        .notification.warning .notification-progress {
-            color: #f59e0b;
-        }
-
-        .notification.info {
-            border-left: 4px solid #3b82f6;
-        }
-
-        .notification.info .notification-icon {
-            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-            color: white;
-        }
-
-        .notification.info .notification-title {
-            color: #2563eb;
-        }
-
-        .dark .notification.info .notification-title {
-            color: #3b82f6;
-        }
-
-        .notification.info .notification-message {
-            color: #1e3a8a;
-        }
-
-        .dark .notification.info .notification-message {
-            color: #dbeafe;
-        }
-
-        .notification.info .notification-progress {
-            color: #3b82f6;
-        }
-
-        @media (max-width: 640px) {
-            #notification-container {
-                top: 70px;
-                right: 10px;
-                left: 10px;
-                max-width: none;
-                gap: 10px;
-                max-height: calc(100vh - 80px);
-            }
-
-            .notification {
-                min-width: 0;
-                border-radius: 10px;
-            }
-
-            .notification-icon {
-                padding: 16px;
-                min-width: 50px;
-            }
-
-            .notification-icon svg {
-                width: 24px;
-                height: 24px;
-            }
-
-            .notification-content {
-                padding: 14px 10px 14px 0;
-            }
-
-            .notification-title {
-                font-size: 14px;
-            }
-
-            .notification-message {
-                font-size: 13px;
-            }
-        }
-    </style>
 </head>
 
-<body class="min-h-screen bg-gray-50 dark:bg-surface-tonal-a10 text-gray-900 dark:text-gray-50 transition-colors duration-300" style="font-family:'DM Sans',system-ui,sans-serif;">
+<body
+    class="min-h-screen bg-gray-50 dark:bg-surface-tonal-a10 text-gray-900 dark:text-gray-50 transition-colors duration-300"
+    style="font-family:'Inter',system-ui,sans-serif;">
 
     <div id="notification-container"></div>
 
@@ -475,7 +46,7 @@
     <div id="main-content" class="transition-all duration-300 lg:ml-64" style="margin-left: 0;">
 
         <nav id="navbar"
-            class="fixed top-0 h-16 bg-white dark:bg-surface-tonal-a20 shadow-sm border-b border-gray-200 dark:border-surface-tonal-a30 z-40 flex items-center justify-between px-6 transition-all duration-300 left-0 right-0 lg:left-64">
+            class="fixed top-0 h-16 backdrop-blur-md shadow-sm border-b border-gray-200 dark:border-white/5 z-40 flex items-center justify-between px-6 transition-all duration-300 left-0 right-0 lg:left-64">
             <button id="mobile-menu-btn"
                 class="lg:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors text-gray-600 dark:text-gray-200">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -485,9 +56,13 @@
 
             <div class="flex items-center space-x-4">
                 <a href="{{ route('orders.manager') }}"
-                   class="hidden sm:inline-flex items-center px-4 py-2 bg-accent border border-transparent rounded-lg font-semibold text-xs text-gray-900 uppercase tracking-widest hover:bg-accent-dim focus:outline-none focus:ring-2 focus:ring-accent/50 transition shadow-sm">
-                   <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
-                   Order Manager
+                    class="hidden sm:inline-flex items-center gap-2 px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 border border-emerald-500/20 rounded-xl font-bold text-[11px] text-white uppercase tracking-wider transition-all shadow-lg shadow-emerald-600/20 active:scale-[0.98]">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10">
+                        </path>
+                    </svg>
+                    Order Manager
                 </a>
             </div>
 
@@ -582,7 +157,8 @@
             </div>
         </nav>
 
-        <main class="pt-20 p-4 sm:p-6 min-h-screen bg-gray-50 dark:bg-surface-tonal-a10" style="transition: background-color 0.3s;">
+        <main class="pt-32 p-4 sm:p-6 min-h-screen bg-gray-50 dark:bg-surface-tonal-a10"
+            style="transition: background-color 0.3s; position: relative; z-index: 10;">
             @yield('content')
         </main>
     </div>

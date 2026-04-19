@@ -1,6 +1,32 @@
 <?php
 
 return [
-
+    'categories' => 'Categorías',
+    'manage_categories' => 'Administrar Categorías',
+    'category_manager' => 'Gestor de Categorías',
+    'add_category' => 'Añadir Categoría',
+    'create_new_category' => 'Crear Nueva Categoría',
+    'category_selected' => 'categoría seleccionada',
+    'delete_selected' => 'Eliminar Seleccionados',
+    'name' => 'Nombre',
+    'parent_category' => 'Categoría Principal',
+    'status' => 'Estado',
+    'actions' => 'Acciones',
+    'no_parent' => 'Sin Padre',
+    'active' => 'Activo',
+    'inactive' => 'Inactivo',
+    'description' => 'Descripción',
+    'cancel' => 'Cancelar',
+    'create_category' => 'Crear Categoría',
+    'edit' => 'Editar',
+    'delete' => 'Eliminar',
+    'Export' => 'Exportar',
+    'search_categories' => 'Buscar categorías...',
+    'show_entries' => 'Mostrar _MENU_ registros',
+    'showing_entries' => 'Mostrando _START_ a _END_ de _TOTAL_ registros',
+    'no_items_found' => 'No se encontraron artículos',
+    'confirm_delete_selected_items' => '¿Está seguro de que desea eliminar los elementos seleccionados?',
+    'confirm_delete_item' => '¿Está seguro de que desea eliminar este elemento?',
+    'category_updated_successfully' => 'Categoría actualizada con éxito!',
+    'unauthorized' => 'Acción no autorizada.',
 ];
-

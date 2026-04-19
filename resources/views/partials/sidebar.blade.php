@@ -39,10 +39,10 @@ style="width: 16rem; max-height: 100vh;">
                 request()->routeIs('shipping.*') ? 'shipping' : (
                 request()->routeIs('coupons.*', 'discount-rules.*') ? 'promotions' : (
                 request()->routeIs('invoices.*','cash-registers.*') ? 'billing' : (
-                request()->routeIs('categories.*', 'brands.*', 'attributes.*', 'products.*') ? 'catalog' : (
+                request()->routeIs('categories.*', 'brands.*', 'attributes.*', 'products.*', 'collections.*') ? 'catalog' : (
                 request()->routeIs('customers.*', 'subscribers.*', 'reviews.*') ? 'crm' : (
                 request()->routeIs('reports.*') ? 'reports' : (
-                request()->routeIs('users.*','roles.*','settings.*','dropdowns.*') ? 'admin' : 'none'
+                request()->routeIs('users.*','roles.*','settings.*','dropdowns.*','admin.storefront.*') ? 'admin' : 'none'
             ))))))))) }}'
         }" 
         class="p-4 space-y-1 overflow-y-auto overflow-x-hidden flex-1 pb-10">
@@ -78,7 +78,7 @@ style="width: 16rem; max-height: 100vh;">
             </div>
 
             {{-- Catalog --}}
-            @canany(['categories.index', 'brands.index', 'attributes.index', 'products.index'])
+            @canany(['categories.index', 'brands.index', 'attributes.index', 'products.index', 'collections.index'])
             <div x-data="{ group: 'catalog' }">
                 @include('partials.sidebar-group-btn', [
                     'name'  => 'catalog',
@@ -89,6 +89,9 @@ style="width: 16rem; max-height: 100vh;">
                     @include('partials.sidebar-sub-item', ['route' => 'products.index',       'active' => request()->routeIs('products.*'),       'label' => __('file.products') ?? 'Products'])
                     @can('categories.index')
                         @include('partials.sidebar-sub-item', ['route' => 'categories.index',       'active' => request()->routeIs('categories.*'),       'label' => __('file.categories') ?? 'Categories'])
+                    @endcan
+                    @can('collections.index')
+                        @include('partials.sidebar-sub-item', ['route' => 'collections.index',      'active' => request()->routeIs('collections.*'),      'label' => 'Collections'])
                     @endcan
                     @can('brands.index')
                         @include('partials.sidebar-sub-item', ['route' => 'brands.index',             'active' => request()->routeIs('brands.*'),           'label' => __('file.brands') ?? 'Brands'])
@@ -213,6 +216,7 @@ style="width: 16rem; max-height: 100vh;">
                     @endcan
                     @can('settings.index')
                         @include('partials.sidebar-sub-item', ['route' => 'settings.general', 'active' => request()->routeIs('settings.*'),   'label' => __('file.general_settings') ?? 'General'])
+                        @include('partials.sidebar-sub-item', ['route' => 'admin.storefront.index', 'active' => request()->routeIs('admin.storefront.*'), 'label' => 'Storefront'])
                     @endcan
 
                 </div>

@@ -27,6 +27,29 @@ class CategoryController extends Controller
         return view('admin.categories.index');
     }
 
+    public function tree()
+    {
+        if (!Auth::user()->can('categories.index')) {
+            return redirect()->route('home')
+                ->with('error', __('file.module_access_denied'));
+        }
+
+        $categories = Category::whereNull('parent_id')
+            ->with([
+                'children' => function ($q) {
+                    $q->orderBy('name');
+                },
+                'children.children' => function ($q) {
+                    $q->orderBy('name');
+                },
+                'children.children.children'
+            ])
+            ->orderBy('name')
+            ->get();
+
+        return view('admin.categories.tree', compact('categories'));
+    }
+
     public function datatable(Request $request)
     {
         $draw = $request->input('draw');
@@ -57,17 +80,18 @@ class CategoryController extends Controller
 
         $sortColumn = match ((int) $orderIdx) {
             1 => 'name',
-            2 => 'description',
-            3 => 'parent_id',
+            2 => 'parent_id',
+            3 => 'is_active',
             default => 'name',
         };
 
+        // If sorting parent_id, sort as requested. Otherwise always prioritize parents (parent_id IS NULL)
         if ($sortColumn === 'parent_id') {
             $query->leftJoin('categories as parents', 'categories.parent_id', '=', 'parents.id')
                 ->orderByRaw("COALESCE(parents.name, 'zzz') {$orderDir}")
                 ->select('categories.*');
         } else {
-            $query->orderBy($sortColumn, $orderDir);
+            $query->orderByRaw('parent_id IS NOT NULL')->orderBy($sortColumn, $orderDir);
         }
 
         $categories = $query->offset($start)->limit($length)->get();
@@ -83,7 +107,6 @@ class CategoryController extends Controller
             return [
                 'id' => $category->id,
                 'name' => $category->name,
-                'description' => $category->description ?? '—',
                 'parent_name' => $category->parent?->name ?? '—',
                 'parent_id' => $category->parent_id,
                 'is_active' => $category->is_active,
@@ -124,20 +147,59 @@ class CategoryController extends Controller
 
         $validated = $request->validate([
             'name' => [
-                'required', 
-                'string', 
-                'max:255', 
+                'required',
+                'string',
+                'max:255',
                 Rule::unique('categories', 'name')
             ],
             'description' => 'nullable|string',
             'parent_id' => 'nullable|exists:categories,id',
             'is_active' => 'sometimes|boolean',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:10240',
+            'banners' => 'nullable|array',
+            'banners.*.title' => 'nullable|string|max:255',
+            'banners.*.description' => 'nullable|string',
+            'banners.*.image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:10240',
+        ], [
+            'image.image' => 'The uploaded file is either not an image or exceeds your server\'s maximum upload limit (usually 2MB locally). Please compress the image or increase upload_max_filesize in your php.ini.',
+            'image.mimes' => 'The uploaded file must be a jpeg, png, jpg, or webp (Or the file exceeded your PHP upload_max_filesize limit).',
+            'banners.*.image.image' => 'One of the banner images is either not an image or exceeds your server\'s maximum upload size limit.',
+            'banners.*.image.mimes' => 'Each banner image must be a jpeg, png, jpg, or webp (Or the file exceeded your PHP limit).',
         ]);
 
         $validated['is_active'] = $request->boolean('is_active', true);
 
+        if ($request->hasFile('image')) {
+            $validated['image'] = $request->file('image')->store('categories', 'public');
+        }
+
+        if ($request->has('banners')) {
+            $banners = [];
+            foreach ($request->input('banners', []) as $index => $bannerData) {
+                $bannerEntry = [
+                    'title' => $bannerData['title'] ?? '',
+                    'description' => $bannerData['description'] ?? '',
+                ];
+
+                if ($request->hasFile("banners.{$index}.image")) {
+                    $bannerEntry['image'] = $request->file("banners.{$index}.image")->store('categories/banners', 'public');
+                }
+                
+                if (isset($bannerEntry['image']) || !empty($bannerEntry['title'])) {
+                    $banners[] = $bannerEntry;
+                }
+            }
+            $validated['banner_images'] = $banners;
+        }
+
         Category::create($validated);
 
+        if ($request->wantsJson() || $request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => __('file.category_created_successfully')
+            ]);
+        }
         return redirect()->route('categories.index')
             ->with('success', __('file.category_created_successfully'));
     }
@@ -177,7 +239,7 @@ class CategoryController extends Controller
 
     public function edit(Category $category)
     {
-        if (!Auth::user()->can('categories.update')) {
+        if (!Auth::user()->can('categories.edit')) {
             return redirect()->route('categories.index')
                 ->with('error', __('file.categories_edit_denied'));
         }
@@ -196,10 +258,13 @@ class CategoryController extends Controller
     public function update(Request $request, Category $category)
     {
         if (!Auth::user()->can('categories.edit')) {
-            return response()->json([
-                'success' => false,
-                'message' => __('file.unauthorized')
-            ], 403);
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => __('file.unauthorized')
+                ], 403);
+            }
+            return redirect()->route('categories.index')->with('error', __('file.unauthorized'));
         }
 
         $validated = $request->validate([
@@ -215,14 +280,79 @@ class CategoryController extends Controller
                 },
             ],
             'is_active' => 'sometimes|boolean',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:10240',
+            'banners' => 'nullable|array',
+            'banners.*.title' => 'nullable|string|max:255',
+            'banners.*.description' => 'nullable|string',
+            'banners.*.image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:10240',
+            'banners.*.existing_image' => 'nullable|string',
+        ], [
+            'image.image' => 'The uploaded file is either not an image or exceeds your server\'s maximum upload limit (usually 2MB locally). Please compress the image or increase upload_max_filesize in your php.ini.',
+            'image.mimes' => 'The uploaded file must be a jpeg, png, jpg, or webp (Or the file exceeded your PHP upload_max_filesize limit).',
+            'banner_images.*.image' => 'One of the banner images is either not an image or exceeds your server\'s maximum upload size limit.',
+            'banner_images.*.mimes' => 'Each banner image must be a jpeg, png, jpg, or webp (Or the file exceeded your PHP limit).',
         ]);
+
+        $validated['is_active'] = $request->boolean('is_active', $request->has('is_active') ? $request->is_active : $category->is_active);
+
+        if ($request->hasFile('image')) {
+            if ($category->image) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($category->image);
+            }
+            $validated['image'] = $request->file('image')->store('categories', 'public');
+        }
+
+        if ($request->has('banners')) {
+            $banners = [];
+            $existingImages = $category->banner_images ? array_column($category->banner_images, 'image') : [];
+            $newImagesPaths = [];
+
+            foreach ($request->input('banners', []) as $index => $bannerData) {
+                $bannerEntry = [
+                    'title' => $bannerData['title'] ?? '',
+                    'description' => $bannerData['description'] ?? '',
+                    'image' => $bannerData['existing_image'] ?? null,
+                ];
+
+                if ($request->hasFile("banners.{$index}.image")) {
+                    $bannerEntry['image'] = $request->file("banners.{$index}.image")->store('categories/banners', 'public');
+                    $newImagesPaths[] = $bannerEntry['image'];
+                }
+                
+                if ($bannerEntry['image']) {
+                    $banners[] = $bannerEntry;
+                }
+            }
+
+            // Cleanup old images that are no longer used
+            $finalImages = array_column($banners, 'image');
+            foreach ($existingImages as $oldPath) {
+                if (!in_array($oldPath, $finalImages)) {
+                    \Illuminate\Support\Facades\Storage::disk('public')->delete($oldPath);
+                }
+            }
+
+            $validated['banner_images'] = $banners;
+        } else {
+            // If the banners field itself is missing from the request, we might want to keep old ones
+            // but if it's there but empty, we clear them.
+            if ($request->has('banners_submitted')) {
+               $validated['banner_images'] = [];
+            } else {
+               unset($validated['banner_images']);
+            }
+        }
 
         $category->update($validated);
 
-        return response()->json([
-            'success' => true,
-            'message' => __('file.category_updated_successfully')
-        ]);
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => __('file.category_updated_successfully')
+            ]);
+        }
+
+        return redirect()->route('categories.index')->with('success', __('file.category_updated_successfully'));
     }
 
     public function destroy(Category $category)
@@ -268,7 +398,7 @@ class CategoryController extends Controller
         }
 
         $validator = Validator::make(['ids' => $ids], [
-            'ids'   => 'required|array',
+            'ids' => 'required|array',
             'ids.*' => 'exists:categories,id'
         ]);
 

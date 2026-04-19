@@ -43,6 +43,8 @@ class RealisticProductSeeder extends Seeder
                 'name' => 'Nike Sportswear Club T-Shirt',
                 'description' => 'Classic cotton tee with Nike logo print. Breathable and comfortable for everyday wear or light training.',
                 'short_description' => 'Iconic Nike cotton t-shirt',
+                'meta_title' => 'Nike Sportswear Club T-Shirt | Premium Men\'s Tee',
+                'meta_description' => 'Shop the classic Nike Sportswear Club T-Shirt. Breathable, comfortable cotton ideal for everyday wear or training. Available in multiple sizes and colors.',
                 'is_visible' => true,
                 'is_featured' => true,
             ]
@@ -119,6 +121,8 @@ class RealisticProductSeeder extends Seeder
                 'name' => 'Adidas Originals Adicolor Trefoil Jeans',
                 'description' => 'Slim fit stretch denim jeans with signature trefoil branding. Comfortable for casual street style.',
                 'short_description' => 'Adidas slim fit jeans',
+                'meta_title' => 'Adidas Originals Adicolor Trefoil Jeans | Street Style Denim',
+                'meta_description' => 'Upgrade your wardrobe with Adidas Originals Adicolor Trefoil Jeans. Slim fit stretch denim for ultimate comfort and casual street style.',
                 'is_visible' => true,
                 'is_featured' => false,
             ]
@@ -187,6 +191,8 @@ class RealisticProductSeeder extends Seeder
                 'name' => 'Local Threads Heavyweight Oversized Hoodie',
                 'description' => 'Premium fleece hoodie with dropped shoulders and front pouch pocket. Perfect for Sri Lankan street style.',
                 'short_description' => 'Cozy oversized hoodie – local brand',
+                'meta_title' => 'Heavyweight Oversized Hoodie | Local Threads',
+                'meta_description' => 'Stay cozy with the Local Threads Heavyweight Oversized Hoodie. Featuring premium fleece, dropped shoulders, and a front pouch pocket.',
                 'is_visible' => true,
                 'is_featured' => true,
             ]

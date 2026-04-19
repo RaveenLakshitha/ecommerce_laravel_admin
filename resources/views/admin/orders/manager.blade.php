@@ -582,8 +582,8 @@
                     return map[status] || 'bg-gray-50 dark:bg-surface-tonal-a20 text-gray-500 dark:text-gray-400 border-gray-200 dark:border-surface-tonal-a30';
                 },
 
-                formatMoney(amount, currency = 'LKR') {
-                    return (currency || 'LKR') + ' ' + parseFloat(amount || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                formatMoney(amount, currency = '{{ $currency_symbol }}') {
+                    return (currency || '{{ $currency_symbol }}') + ' ' + parseFloat(amount || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
                 },
 
                 formatDate(dateString) {

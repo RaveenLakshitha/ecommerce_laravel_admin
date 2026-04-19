@@ -40,9 +40,11 @@ class ProductController extends Controller
         $filteredRecords = (clone $query)->count();
 
         $sortColumn = match ((int) $orderIdx) {
-            0 => 'id',
-            2 => 'name',
-            4 => 'base_price',
+            1 => 'id',
+            3 => 'name',
+            4 => 'brand_id',
+            5 => 'base_price',
+            6 => 'is_visible',
             default => 'id',
         };
 
@@ -115,12 +117,18 @@ class ProductController extends Controller
             'name' => 'required|string|max:255',
             'slug' => 'required|string|max:255|unique:products,slug',
             'base_price' => 'required|numeric|min:0',
+            'sale_price' => 'nullable|numeric|min:0',
             'brand_id' => 'nullable|exists:brands,id',
             'description' => 'nullable|string',
             'short_description' => 'nullable|string',
+            'fabric_details' => 'nullable|string',
+            'meta_title' => 'nullable|string|max:255',
+            'meta_description' => 'nullable|string',
+            'meta_keywords' => 'nullable|string|max:255',
+            'canonical_url' => 'nullable|url|max:255',
             'is_visible' => 'boolean',
             'is_featured' => 'boolean',
-            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+            'images.*' => 'nullable|mimes:jpeg,png,jpg,gif,webp,avif|max:2048'
         ]);
 
         $validated['is_visible'] = $request->has('is_visible');
@@ -135,6 +143,8 @@ class ProductController extends Controller
         if ($request->has('categories')) {
             $product->categories()->attach($request->categories);
         }
+
+
 
         return redirect()->route('products.index')->with('success', 'Product created successfully.');
     }
@@ -158,7 +168,7 @@ class ProductController extends Controller
      */
     public function show(string $id)
     {
-        $product = \App\Models\Product::with(['categories', 'images', 'brand', 'variants.attributeValues'])->findOrFail($id);
+        $product = \App\Models\Product::with(['categories', 'collections', 'images', 'brand', 'variants.attributeValues'])->findOrFail($id);
         return view('admin.products.show', compact('product'));
     }
 
@@ -167,10 +177,9 @@ class ProductController extends Controller
      */
     public function edit(string $id)
     {
-        $product = \App\Models\Product::with(['categories', 'images', 'variants.attributeValues'])->findOrFail($id);
+        $product = \App\Models\Product::with(['categories', 'collections', 'images', 'variants.attributeValues'])->findOrFail($id);
         $brands = \App\Models\Brand::all();
         $categories = \App\Models\Category::all();
-
         return view('admin.products.edit', compact('product', 'brands', 'categories'));
     }
 
@@ -185,12 +194,18 @@ class ProductController extends Controller
             'name' => 'required|string|max:255',
             'slug' => 'required|string|max:255|unique:products,slug,' . $product->id,
             'base_price' => 'required|numeric|min:0',
+            'sale_price' => 'nullable|numeric|min:0',
             'brand_id' => 'nullable|exists:brands,id',
             'description' => 'nullable|string',
             'short_description' => 'nullable|string',
+            'fabric_details' => 'nullable|string',
+            'meta_title' => 'nullable|string|max:255',
+            'meta_description' => 'nullable|string',
+            'meta_keywords' => 'nullable|string|max:255',
+            'canonical_url' => 'nullable|url|max:255',
             'is_visible' => 'boolean',
             'is_featured' => 'boolean',
-            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
+            'images.*' => 'nullable|mimes:jpeg,png,jpg,gif,webp,avif|max:2048'
         ]);
 
         $validated['is_visible'] = $request->has('is_visible');
@@ -207,6 +222,8 @@ class ProductController extends Controller
         } else {
             $product->categories()->detach();
         }
+
+
 
         return redirect()->route('products.index')->with('success', 'Product updated successfully.');
     }

@@ -9,6 +9,10 @@
     <title>@if(View::hasSection('title'))@yield('title') | {{ $site_name }}@else{{ $site_name }}@endif</title>
 
     <link rel="icon" href="{{ $site_logo ?? asset('images/default-logo.png') }}" type="image/png">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
 
 
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -74,7 +78,7 @@
 </head>
 
 <body
-    class="h-screen overflow-hidden bg-gray-100 dark:bg-surface-tonal-a10 text-gray-900 dark:text-gray-100 transition-colors duration-300">
+    class="h-screen overflow-hidden bg-gray-100 dark:bg-surface-tonal-a10 text-gray-900 dark:text-gray-100 transition-colors duration-300" style="font-family:'Inter',system-ui,sans-serif;">
     <div class="flex h-screen overflow-hidden">
 
 

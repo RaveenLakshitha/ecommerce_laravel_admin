@@ -24,6 +24,7 @@ class DiscountRule extends Model
         'expires_at',
         'is_active',
         'is_flash_sale',
+        'banner_images',
     ];
 
     protected $casts = [
@@ -33,6 +34,7 @@ class DiscountRule extends Model
         'is_flash_sale' => 'boolean',
         'value' => 'decimal:2',
         'min_order_amount' => 'decimal:2',
+        'banner_images' => 'array',
     ];
 
     public function products(): BelongsToMany
@@ -55,5 +57,21 @@ class DiscountRule extends Model
         return $this->is_active &&
             (!$this->starts_at || now()->gte($this->starts_at)) &&
             (!$this->expires_at || now()->lte($this->expires_at));
+    }
+
+    public function getBannerUrlsAttribute(): array
+    {
+        $banners = [];
+        if ($this->banner_images && is_array($this->banner_images)) {
+            foreach ($this->banner_images as $banner) {
+                if (isset($banner['image'])) {
+                    $banner['image_url'] = \Illuminate\Support\Facades\Storage::url($banner['image']);
+                } else {
+                    $banner['image_url'] = asset('images/logo-main.jpg');
+                }
+                $banners[] = $banner;
+            }
+        }
+        return $banners;
     }
 }

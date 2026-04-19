@@ -70,13 +70,25 @@ class AppServiceProvider extends ServiceProvider
             'secondary_color' => $setting->secondary_color ?? '#111827',    // example: dark gray
 
             // Currency & localization
-            'currency_code' => $setting->currency_code ?? 'LKR',
-            'currency_symbol' => $setting->currency_symbol ?? 'Rs.',
-            'currency_format' => $setting->currency_format ?? 'Rs. 1,234.00', // example format
+            'currency_code' => $setting->currency ?? 'USD',
+            'currency_symbol' => $setting->currency_symbol ?? '$',
 
             // Business info
             'free_shipping_threshold' => $setting->free_shipping_threshold ?? 5000,
             'return_period_days' => $setting->return_period_days ?? 14,
         ]);
+
+        View::composer(['frontend.layouts.app', 'frontend.layouts.layoutdark', 'frontend.layouts.noir'], function ($view) {
+            $categories = \App\Models\Category::whereNull('parent_id')
+                ->where('is_active', true)
+                ->with(['children' => function($q) {
+                    $q->where('is_active', true)->orderBy('name');
+                }, 'children.children' => function($q) {
+                    $q->where('is_active', true)->orderBy('name');
+                }])
+                ->orderBy('name')
+                ->get();
+            $view->with('globalCategories', $categories);
+        });
     }
 }

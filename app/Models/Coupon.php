@@ -44,6 +44,11 @@ class Coupon extends Model
         return $this->belongsToMany(Category::class, 'coupon_category');
     }
 
+    public function collections(): BelongsToMany
+    {
+        return $this->belongsToMany(Collection::class, 'coupon_collection');
+    }
+
     public function isValid(): bool
     {
         return $this->is_active &&

@@ -314,7 +314,7 @@
                             <p>Color: {{ $item->attributes['color'] }}</p>
                         @endif
                         
-                        <div class="cart-item-price">Rs. {{ number_format($item->price, 2) }}</div>
+                        <div class="cart-item-price">{{ $currency_symbol }} {{ number_format($item->price, 2) }}</div>
                     </div>
 
                     <!-- Actions -->
@@ -345,7 +345,7 @@
             
             <div class="summary-row">
                 <span>Subtotal</span>
-                <span>Rs. {{ number_format($subtotal, 2) }}</span>
+                <span>{{ $currency_symbol }} {{ number_format($subtotal, 2) }}</span>
             </div>
             
             <div class="summary-row">
@@ -360,7 +360,7 @@
 
             <div class="summary-total">
                 <span>Total</span>
-                <span>Rs. {{ number_format($total, 2) }}</span>
+                <span>{{ $currency_symbol }} {{ number_format($total, 2) }}</span>
             </div>
 
             <a href="#" class="checkout-btn">Proceed to Checkout</a>

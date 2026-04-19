@@ -35,17 +35,18 @@ class HomeController extends Controller
             ->take(8)
             ->get();
 
-        // Featured collections (e.g. Summer Sale, New Season)
         $featuredCollections = Collection::where('is_featured', true)
             ->with('products')
             ->take(3)
             ->get();
 
+        $storefront = \App\Models\Setting::getAll();
+
         return view('frontend.home', compact(
-            //'banners',
             'newArrivals',
             'bestSellers',
-            'featuredCollections'
+            'featuredCollections',
+            'storefront'
         ));
     }
 }
