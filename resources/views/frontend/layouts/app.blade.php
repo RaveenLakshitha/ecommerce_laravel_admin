@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title') | {{ $store_name ?? 'Karbnzol' }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
@@ -625,19 +626,20 @@
 
         .cart-dot {
             position: absolute;
-            top: 13px;
-            right: 8px;
-            width: 16px;
-            height: 16px;
+            top: 10px;
+            right: 6px;
+            width: 20px;
+            height: 20px;
             background: var(--gold);
             color: var(--bg);
             font-family: var(--font-display);
-            font-size: 0.5rem;
+            font-size: 0.62rem;
             font-weight: 700;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
+            line-height: 1;
         }
 
         .nav-auth {
@@ -1223,14 +1225,12 @@
     <!-- Announcement bar -->
     <div class="announce-bar" aria-live="polite">
         <span class="announce-inner">
-            FREE DELIVERY ON ORDERS OVER RS. 5,000 &nbsp;·&nbsp;
-            NEW ARRIVALS EVERY FRIDAY &nbsp;·&nbsp;
-            MINTPAY — PAY IN 3 EASY INSTALLMENTS &nbsp;·&nbsp;
-            4% CASHBACK WITH MINTPAY &nbsp;·&nbsp;
-            FREE DELIVERY ON ORDERS OVER RS. 5,000 &nbsp;·&nbsp;
-            NEW ARRIVALS EVERY FRIDAY &nbsp;·&nbsp;
-            MINTPAY — PAY IN 3 EASY INSTALLMENTS &nbsp;·&nbsp;
-            4% CASHBACK WITH MINTPAY
+            @php
+                $announcement = $storefront_offer_text ?? 'FREE DELIVERY ON ORDERS OVER RS. 5,000 &nbsp;·&nbsp; NEW ARRIVALS EVERY FRIDAY &nbsp;·&nbsp; MINTPAY — PAY IN 3 EASY INSTALLMENTS';
+                // Repeat it to fill the marquee
+                $repeated = str_repeat($announcement . ' &nbsp;·&nbsp; ', 4);
+            @endphp
+            {!! $repeated !!}
         </span>
     </div>
 
@@ -1360,9 +1360,9 @@
                 <a href="#" class="nav-icon" aria-label="Search">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
                 </a>
-                <a href="{{ route('cart.index') }}" class="nav-icon" aria-label="Shopping bag">
+                <a href="{{ route('cart.index') }}" class="nav-icon" aria-label="Shopping cart">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-                    <span class="cart-dot">0</span>
+                    <span class="cart-dot" id="navCartCount">{{ \Darryldecode\Cart\Facades\CartFacade::getTotalQuantity() }}</span>
                 </a>
                 <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false">
                     <span></span><span></span><span></span>
@@ -1466,9 +1466,9 @@
                 <div class="g-up">
                     <p class="ft-col-h">Shop</p>
                     <ul class="ft-col-links">
-                        <li><a href="{{ route('products.index') }}">All Products</a></li>
+                        <li><a href="{{ route('frontend.products.index') }}">All Products</a></li>
                         <li><a href="#">New Arrivals</a></li>
-                        <li><a href="{{ route('products.index') }}">Men's Clothing</a></li>
+                        <li><a href="{{ route('frontend.products.index') }}">Men's Clothing</a></li>
                         <li><a href="#">Kids Clothing</a></li>
                         <li><a href="#">Activewear</a></li>
                         <li><a href="#">Sale</a></li>

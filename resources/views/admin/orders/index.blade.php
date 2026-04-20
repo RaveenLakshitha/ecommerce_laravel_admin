@@ -74,22 +74,23 @@
 {{-- Filter Drawer --}}
 <div id="filter-drawer" class="fixed inset-0 z-[100] hidden overflow-hidden transition-all duration-500">
     <div id="filter-overlay" class="absolute inset-0 bg-black/40 backdrop-blur-sm opacity-0 transition-opacity duration-300" onclick="closeFilterDrawer()"></div>
-    <div id="filter-panel" class="absolute inset-y-0 right-0 w-full md:max-w-sm bg-white dark:bg-surface-tonal-a10 shadow-2xl transform translate-x-full transition-transform duration-500 ease-in-out flex flex-col">
-        <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-surface-tonal-a20">
+    <div id="filter-panel" class="absolute inset-y-0 right-0 w-full md:max-w-lg bg-white dark:bg-surface-tonal-a20 shadow-2xl transform translate-x-full transition-transform duration-500 ease-in-out flex flex-col">
+        <div class="flex items-center justify-between px-8 py-4 border-b border-gray-100 dark:border-white/5">
             <div>
-                <h3 class="text-lg font-bold text-gray-900 dark:text-white uppercase tracking-tight">Commerce Filters</h3>
-                <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Refine your logistic parameters</p>
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white tracking-tight">Commerce Filters</h3>
+                <p class="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em] mt-1">Refine your logistic parameters</p>
             </div>
-            <button onclick="closeFilterDrawer()" class="text-gray-400 hover:text-gray-600 transition-colors">
-                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            <button onclick="closeFilterDrawer()" class="p-2 rounded-xl hover:bg-gray-50 dark:hover:bg-white/5 text-gray-400 hover:text-gray-900 dark:hover:text-white transition-all">
+                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/></svg>
             </button>
         </div>
 
-        <div class="flex-1 overflow-y-auto p-6 space-y-6">
-            <div class="space-y-4">
+        <div class="flex-1 overflow-y-auto p-8 space-y-6 custom-scrollbar">
+            <div class="space-y-6">
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Order Lifecycle</label>
-                    <select id="filter-status" class="w-full rounded-lg border-gray-300 dark:border-surface-tonal-a30 bg-white dark:bg-surface-tonal-a30 text-sm focus:ring-indigo-500">
+                    <label class="block text-[10px] font-black text-black dark:text-white uppercase tracking-widest mb-1">Order Lifecycle</label>
+                    <select id="filter-status" 
+                        class="block w-full rounded-md border border-gray-100/50 dark:border-white/5 bg-gray-50/30 dark:bg-surface-tonal-a20 px-3 py-2 text-xs font-bold shadow-sm text-black dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-indigo-300 dark:focus:border-indigo-500/50 focus:ring-2 focus:ring-indigo-500/5 focus:shadow-md cursor-pointer">
                         <option value="">All Statuses</option>
                         <option value="pending">Pending</option>
                         <option value="processing">Processing</option>
@@ -101,8 +102,9 @@
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Financial Status</label>
-                    <select id="filter-payment" class="w-full rounded-lg border-gray-300 dark:border-surface-tonal-a30 bg-white dark:bg-surface-tonal-a30 text-sm focus:ring-indigo-500">
+                    <label class="block text-[10px] font-black text-black dark:text-white uppercase tracking-widest mb-1">Financial Status</label>
+                    <select id="filter-payment" 
+                        class="block w-full rounded-md border border-gray-100/50 dark:border-white/5 bg-gray-50/30 dark:bg-surface-tonal-a20 px-3 py-2 text-xs font-bold shadow-sm text-black dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-indigo-300 dark:focus:border-indigo-500/50 focus:ring-2 focus:ring-indigo-500/5 focus:shadow-md cursor-pointer">
                         <option value="">All States</option>
                         <option value="pending">Pending</option>
                         <option value="paid">Paid</option>
@@ -111,34 +113,37 @@
                     </select>
                 </div>
 
-                <div class="pt-4 border-t border-gray-100 dark:border-surface-tonal-a20">
-                    <h4 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">Temporal Range</h4>
-                    <div class="space-y-4">
+                <div class="pt-6 border-t border-gray-100 dark:border-white/5">
+                    <p class="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em] mb-4">Temporal Range</p>
+                    <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-xs text-gray-500 mb-1 ml-1">Archive Start</label>
-                            <input type="date" id="filter-date-from" class="w-full rounded-lg border-gray-300 dark:border-surface-tonal-a30 bg-white dark:bg-surface-tonal-a30 text-sm focus:ring-indigo-500">
+                            <label class="block text-[10px] font-black text-black dark:text-white uppercase tracking-widest mb-1">Archive Start</label>
+                            <input type="date" id="filter-date-from" 
+                                class="block w-full rounded-md border border-gray-100/50 dark:border-white/5 bg-gray-50/30 dark:bg-surface-tonal-a20 px-3 py-2 text-xs font-bold shadow-sm text-black dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-indigo-300 dark:focus:border-indigo-500/50 focus:ring-2 focus:ring-indigo-500/5 focus:shadow-md">
                         </div>
                         <div>
-                            <label class="block text-xs text-gray-500 mb-1 ml-1">Archive Termination</label>
-                            <input type="date" id="filter-date-to" class="w-full rounded-lg border-gray-300 dark:border-surface-tonal-a30 bg-white dark:bg-surface-tonal-a30 text-sm focus:ring-indigo-500">
+                            <label class="block text-[10px] font-black text-black dark:text-white uppercase tracking-widest mb-1">Archive Termination</label>
+                            <input type="date" id="filter-date-to" 
+                                class="block w-full rounded-md border border-gray-100/50 dark:border-white/5 bg-gray-50/30 dark:bg-surface-tonal-a20 px-3 py-2 text-xs font-bold shadow-sm text-black dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-indigo-300 dark:focus:border-indigo-500/50 focus:ring-2 focus:ring-indigo-500/5 focus:shadow-md">
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="px-6 py-4 bg-gray-50 dark:bg-surface-tonal-a10 border-t border-gray-200 dark:border-surface-tonal-a20 flex gap-3">
+        <div class="px-8 py-6 bg-gray-50/50 dark:bg-surface-tonal-a10 border-t border-gray-100 dark:border-white/5 flex gap-3">
             <button id="clear-filters"
-                class="flex-1 px-4 py-3 border border-gray-300 dark:border-surface-tonal-a30 text-[10px] font-black uppercase tracking-widest text-gray-700 dark:text-gray-300 rounded-xl hover:bg-white transition-all">
+                class="flex-1 px-5 py-2.5 bg-white dark:bg-surface-tonal-a20 border border-gray-200 dark:border-white/10 rounded-xl text-xs font-bold text-gray-600 dark:text-gray-300 uppercase tracking-widest hover:bg-gray-50 dark:hover:bg-surface-tonal-a30 transition-all active:scale-95">
                 Reset
             </button>
             <button id="apply-filters"
-                class="flex-1 px-4 py-3 bg-indigo-600 text-white text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-indigo-700 transition-all shadow-lg">
+                class="flex-[1.5] flex items-center justify-center gap-2 px-5 py-2.5 bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-sm font-semibold rounded-xl transition-all shadow-sm active:scale-[0.98]">
                 Apply Search
             </button>
         </div>
     </div>
 </div>
+
 
 @push('scripts')
 <script>

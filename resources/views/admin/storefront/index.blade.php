@@ -39,15 +39,30 @@
 
                     <!-- Offers Section -->
                     <div class="border-b border-gray-200 dark:border-surface-tonal-a30 pb-6">
-                        <h2 class="text-xl font-semibold text-gray-900 dark:text-primary-a0 mb-6">Promotional Offer Bar</h2>
+                        <h2 class="text-xl font-semibold text-gray-900 dark:text-primary-a0 mb-6">Announcement Bar (Global Top Bar)</h2>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Offer Text <span class="text-xs text-gray-400 font-normal ml-2">(Max 50 characters)</span></label>
-                                <input type="text" name="storefront_offer_text" value="{{ old('storefront_offer_text', $setting->storefront_offer_text) }}" maxlength="50" placeholder="e.g., Free shipping on orders over $100!" class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-transparent dark:text-primary-a0 transition-shadow">
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Announcement Text <span class="text-xs text-gray-400 font-normal ml-2">(Repeats in marquee)</span></label>
+                                <input type="text" name="storefront_offer_text" value="{{ old('storefront_offer_text', $setting->storefront_offer_text ?? '') }}" maxlength="50" placeholder="e.g., FREE SHIPPING ON ORDERS OVER RS. 5,000" class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-transparent dark:text-primary-a0 transition-shadow">
                             </div>
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Offer Link (Optional)</label>
-                                <input type="text" name="storefront_offer_link" value="{{ old('storefront_offer_link', $setting->storefront_offer_link) }}" maxlength="255" placeholder="e.g., /collections/sale" class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-transparent dark:text-primary-a0 transition-shadow">
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Announcement Link (Optional)</label>
+                                <input type="text" name="storefront_offer_link" value="{{ old('storefront_offer_link', $setting->storefront_offer_link ?? '') }}" maxlength="255" placeholder="e.g., /collections/sale" class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-transparent dark:text-primary-a0 transition-shadow">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Marquee Section -->
+                    <div class="border-b border-gray-200 dark:border-surface-tonal-a30 pb-6">
+                        <h2 class="text-xl font-semibold text-gray-900 dark:text-primary-a0 mb-6">Home Page Marquee Bar</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Marquee Text <span class="text-xs text-gray-400 font-normal ml-2">(Use '|' to separate multiple messages)</span></label>
+                                <input type="text" name="storefront_marquee_text" value="{{ old('storefront_marquee_text', $setting->storefront_marquee_text ?? '') }}" maxlength="255" placeholder="e.g., Free Delivery | New Arrivals | MintPay Available" class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-transparent dark:text-primary-a0 transition-shadow">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Marquee Link (Optional)</label>
+                                <input type="text" name="storefront_marquee_link" value="{{ old('storefront_marquee_link', $setting->storefront_marquee_link ?? '') }}" maxlength="255" placeholder="e.g., /collections/new-arrivals" class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-transparent dark:text-primary-a0 transition-shadow">
                             </div>
                         </div>
                     </div>

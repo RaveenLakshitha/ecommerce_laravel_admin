@@ -22,6 +22,7 @@ class Product extends Model
         'base_price',
         'sale_price',
         'brand_id',
+        'category_id',
         'is_featured',
         'is_visible',
         'meta_title',
@@ -36,9 +37,9 @@ class Product extends Model
         return $this->belongsTo(Brand::class);
     }
 
-    public function categories(): BelongsToMany
+    public function category(): BelongsTo
     {
-        return $this->belongsToMany(Category::class);
+        return $this->belongsTo(Category::class);
     }
 
     public function collections(): BelongsToMany

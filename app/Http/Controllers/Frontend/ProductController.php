@@ -10,7 +10,7 @@ class ProductController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Product::with(['variants.attributeValues.attribute', 'primaryImage', 'categories'])
+        $query = Product::with(['variants.attributeValues.attribute', 'primaryImage', 'category'])
             ->where('is_visible', true);
 
         $currentCategory = null;
@@ -20,9 +20,7 @@ class ProductController extends Controller
         if ($request->has('category') && $request->category !== '') {
             $currentCategory = \App\Models\Category::where('slug', $request->category)->first();
             if ($currentCategory) {
-                $query->whereHas('categories', function($q) use ($currentCategory) {
-                    $q->where('categories.id', $currentCategory->id);
-                });
+                $query->where('category_id', $currentCategory->id);
                 $categoryBanners = $currentCategory->banner_urls;
             }
         }
@@ -95,17 +93,15 @@ class ProductController extends Controller
 
     public function show($slug)
     {
-        $product = Product::with('variants.attributeValues.attribute', 'images', 'brand', 'categories', 'reviews.customer')
+        $product = Product::with('variants.attributeValues.attribute', 'images', 'brand', 'category', 'reviews.customer')
             ->where('slug', $slug)
             ->where('is_visible', true)
             ->firstOrFail();
 
         $relatedProducts = collect();
-        if ($product->categories->isNotEmpty()) {
+        if ($product->category_id) {
             $relatedProducts = Product::with('primaryImage', 'images', 'variants')
-                ->whereHas('categories', function($q) use ($product) {
-                    $q->whereIn('categories.id', $product->categories->pluck('id'));
-                })
+                ->where('category_id', $product->category_id)
                 ->where('id', '!=', $product->id)
                 ->where('is_visible', true)
                 ->latest()
