@@ -31,6 +31,8 @@ class StorefrontController extends Controller
             'email' => 'nullable|email|max:255',
             'storefront_offer_text' => 'nullable|string|max:50',
             'storefront_offer_link' => 'nullable|string|max:255',
+            'storefront_marquee_text' => 'nullable|string|max:100',
+            'storefront_marquee_link' => 'nullable|string|max:255',
             'storefront_about_us' => 'nullable|string|max:250',
             
             'banners' => 'nullable|array',
@@ -46,7 +48,9 @@ class StorefrontController extends Controller
             'email',
             'storefront_about_us',
             'storefront_offer_text',
-            'storefront_offer_link'
+            'storefront_offer_link',
+            'storefront_marquee_text',
+            'storefront_marquee_link'
         ]);
 
         $banners = is_array($setting->storefront_banners) ? $setting->storefront_banners : [];
@@ -75,6 +79,7 @@ class StorefrontController extends Controller
                 }
 
                 $newBanners[] = [
+                    'tag' => $bannerData['tag'] ?? '',
                     'title' => $bannerData['title'] ?? '',
                     'subtitle' => $bannerData['subtitle'] ?? '',
                     'link' => $bannerData['link'] ?? '',

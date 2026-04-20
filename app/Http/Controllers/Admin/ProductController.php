@@ -24,7 +24,7 @@ class ProductController extends Controller
         $orderDir = $request->input('order.0.dir', 'desc');
         $searchValue = trim($request->input('search.value', ''));
 
-        $query = \App\Models\Product::with('brand', 'images');
+        $query = \App\Models\Product::with('brand', 'images', 'category');
 
         if ($searchValue !== '') {
             $query->where(function ($q) use ($searchValue) {
@@ -119,6 +119,7 @@ class ProductController extends Controller
             'base_price' => 'required|numeric|min:0',
             'sale_price' => 'nullable|numeric|min:0',
             'brand_id' => 'nullable|exists:brands,id',
+            'category_id' => 'required|exists:categories,id',
             'description' => 'nullable|string',
             'short_description' => 'nullable|string',
             'fabric_details' => 'nullable|string',
@@ -138,10 +139,6 @@ class ProductController extends Controller
 
         if ($request->hasFile('images')) {
             $this->handleImages($product, $request->file('images'));
-        }
-
-        if ($request->has('categories')) {
-            $product->categories()->attach($request->categories);
         }
 
 
@@ -168,7 +165,7 @@ class ProductController extends Controller
      */
     public function show(string $id)
     {
-        $product = \App\Models\Product::with(['categories', 'collections', 'images', 'brand', 'variants.attributeValues'])->findOrFail($id);
+        $product = \App\Models\Product::with(['category', 'collections', 'images', 'brand', 'variants.attributeValues'])->findOrFail($id);
         return view('admin.products.show', compact('product'));
     }
 
@@ -177,7 +174,7 @@ class ProductController extends Controller
      */
     public function edit(string $id)
     {
-        $product = \App\Models\Product::with(['categories', 'collections', 'images', 'variants.attributeValues'])->findOrFail($id);
+        $product = \App\Models\Product::with(['category', 'collections', 'images', 'variants.attributeValues'])->findOrFail($id);
         $brands = \App\Models\Brand::all();
         $categories = \App\Models\Category::all();
         return view('admin.products.edit', compact('product', 'brands', 'categories'));
@@ -196,6 +193,7 @@ class ProductController extends Controller
             'base_price' => 'required|numeric|min:0',
             'sale_price' => 'nullable|numeric|min:0',
             'brand_id' => 'nullable|exists:brands,id',
+            'category_id' => 'required|exists:categories,id',
             'description' => 'nullable|string',
             'short_description' => 'nullable|string',
             'fabric_details' => 'nullable|string',
@@ -215,12 +213,6 @@ class ProductController extends Controller
 
         if ($request->hasFile('images')) {
             $this->handleImages($product, $request->file('images'));
-        }
-
-        if ($request->has('categories')) {
-            $product->categories()->sync($request->categories);
-        } else {
-            $product->categories()->detach();
         }
 
 

@@ -74,13 +74,13 @@
                                     <p class="text-xs font-mono text-gray-500 dark:text-gray-400 truncate">{{ $product->slug }}</p>
                                 </div>
                                 <div class="sm:col-span-2 space-y-1">
-                                    <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Categories</p>
+                                    <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Category</p>
                                     <div class="flex flex-wrap gap-1 mt-1">
-                                        @forelse($product->categories as $category)
-                                            <span class="px-2 py-0.5 rounded-md bg-gray-100 dark:bg-surface-tonal-a30 text-gray-600 dark:text-gray-400 text-[10px] font-bold">{{ $category->name }}</span>
-                                        @empty
-                                            <span class="text-[10px] text-gray-400 font-medium italic">No categories</span>
-                                        @endforelse
+                                        @if($product->category)
+                                            <span class="px-2 py-0.5 rounded-md bg-gray-100 dark:bg-surface-tonal-a30 text-gray-600 dark:text-gray-400 text-[10px] font-bold">{{ $product->category->name }}</span>
+                                        @else
+                                            <span class="text-[10px] text-gray-400 font-medium italic">No category</span>
+                                        @endif
                                     </div>
                                 </div>
                             </div>

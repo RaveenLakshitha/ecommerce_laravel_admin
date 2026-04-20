@@ -147,27 +147,23 @@
                             <div class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50/50 dark:bg-surface-tonal-a20">
                                 <h2 class="text-sm font-bold text-gray-900 dark:text-white">Organization</h2>
                             </div>
-                            <div class="p-4 space-y-4">
-                                <div>
-                                    <label class="block text-[10px] font-black text-black dark:text-white uppercase tracking-widest mb-1">Category</label>
-                                    <div class="relative">
-                                        <select name="category_ids[]" required
-                                            class="block w-full rounded-md border border-gray-100/50 dark:border-white/5 bg-gray-50/30 dark:bg-surface-tonal-a20 px-3 py-2 text-xs font-bold shadow-sm text-black dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-indigo-300 dark:focus:border-indigo-500/50 focus:ring-2 focus:ring-indigo-500/5 focus:shadow-md">
-                                            <option value="">Select Category</option>
-                                            @foreach($categories as $category)
-                                                <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                            @endforeach
-                                        </select>
+                                <div class="p-4 space-y-4">
+                                    <div>
+                                        <label class="block text-[10px] font-black text-black dark:text-white uppercase tracking-widest mb-1">Category</label>
+                                        <div class="relative">
+                                            <select name="category_id" required
+                                                class="block w-full rounded-md border border-gray-100/50 dark:border-white/5 bg-gray-50/30 dark:bg-surface-tonal-a20 px-3 py-2 text-xs font-bold shadow-sm text-black dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-indigo-300 dark:focus:border-indigo-500/50 focus:ring-2 focus:ring-indigo-500/5 focus:shadow-md">
+                                                <option value="">Select Category</option>
+                                                @foreach($categories as $category)
+                                                    <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        @error('category_id')
+                                            <p class="text-[10px] text-red-500 mt-1 font-bold px-1">{{ $message }}</p>
+                                        @enderror
                                     </div>
-                                    @error('category_ids')
-                                        <p class="text-[10px] text-red-500 mt-1 font-bold px-1">{{ $message }}</p>
-                                    @enderror
-                                </div>
 
-                                <button type="button" onclick="openCreateDrawer()"
-                                    class="w-full py-2 bg-indigo-50 hover:bg-indigo-100 dark:bg-indigo-500/10 dark:hover:bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 text-[10px] font-black tracking-widest uppercase rounded-lg transition-all active:scale-[0.98]">
-                                    + Add New Category
-                                </button>
                             </div>
                         </div>
 
@@ -291,5 +287,4 @@
         </script>
     @endpush
 
-    @include('admin.categories.partials.drawer')
 @endsection

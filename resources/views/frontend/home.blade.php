@@ -601,7 +601,10 @@
 
             @foreach($banners as $i => $sl)
                 <div class="hero-slide {{ $i === 0 ? 'active' : '' }}">
-                    @php $imgUrl = str_starts_with($sl['image'], 'http') ? $sl['image'] : asset('storage/' . $sl['image']); @endphp
+                    @php 
+                        $slImg = $sl['image'] ?? '';
+                        $imgUrl = !empty($slImg) && str_starts_with($slImg, 'http') ? $slImg : (!empty($slImg) ? asset('storage/' . $slImg) : 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1600&q=80'); 
+                    @endphp
                     <div class="slide-bg" style="background-image: url('{{ $imgUrl }}');"></div>
                     <div class="slide-progress"></div>
                     <div class="hero-content">
@@ -611,10 +614,12 @@
                         </h1>
                         @if(!empty($sl['subtitle']))<p class="slide-sub">{{ $sl['subtitle'] }}</p>@endif
                         <div class="slide-actions">
-                            <a href="{{ rtrim(url('/'), '/') . '/' . ltrim($sl['link'] ?? '', '/') }}" class="btn-gold">
-                                Shop Now
-                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                            </a>
+                            @if(!empty($sl['link']))
+                                <a href="{{ rtrim(url('/'), '/') . '/' . ltrim($sl['link'], '/') }}" class="btn-gold">
+                                    Shop Now
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                                </a>
+                            @endif
                             <a href="#" class="btn-outline-light">Lookbook</a>
                         </div>
                     </div>
@@ -658,14 +663,16 @@
     ═══════════════════════════════════════════════════ --}}
     <div class="cat-bar">
         <div class="cat-bar-inner">
-            <a class="cat-tab active" href="{{ route('products.index') }}">All <span class="cat-count-chip">34</span></a>
-            <a class="cat-tab" href="#">New Arrivals <span class="cat-count-chip">12</span></a>
-            <a class="cat-tab" href="#">T-Shirts <span class="cat-count-chip">18</span></a>
-            <a class="cat-tab" href="#">Polo Shirts <span class="cat-count-chip">8</span></a>
-            <a class="cat-tab" href="#">Jeans <span class="cat-count-chip">10</span></a>
-            <a class="cat-tab" href="#">Chinos <span class="cat-count-chip">7</span></a>
-            <a class="cat-tab" href="#">Activewear <span class="cat-count-chip">9</span></a>
-            <a class="cat-tab" href="#">Kids <span class="cat-count-chip">15</span></a>
+            <a class="cat-tab active" href="{{ route('frontend.products.index') }}">All
+                @php $totalProducts = $featuredCategories->sum('products_count'); @endphp
+                <span class="cat-count-chip">{{ $totalProducts }}</span>
+            </a>
+            @foreach($featuredCategories as $cat)
+                <a class="cat-tab" href="{{ route('frontend.products.index', ['category' => $cat->slug]) }}">
+                    {{ $cat->name }}
+                    <span class="cat-count-chip">{{ $cat->products_count }}</span>
+                </a>
+            @endforeach
         </div>
     </div>
 
@@ -686,37 +693,56 @@
             </div>
 
             <div class="product-grid-4">
-                @php
-                    $newArrivals = [
-                        ['brand' => 'Edge Casuals', 'name' => 'Textured Pattern Polo T-Shirt', 'price' => 'Rs. 2,990', 'orig' => null, 'ribbon' => 'New Arrival', 'rc' => '', 'colors' => ['#8b7355', '#3a8fd1', '#c8c066'], 'img' => 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80', 'inst' => '3 × Rs. 996.66'],
-                        ['brand' => 'Edge Casuals', 'name' => 'Solid Polo T-Shirt — 53738', 'price' => 'Rs. 2,290', 'orig' => null, 'ribbon' => 'New Arrival', 'rc' => '', 'colors' => ['#8b2020', '#c8a96e', '#3a8fd1', '#c8c066'], 'img' => 'https://images.unsplash.com/photo-1516826957135-700dedea698c?w=600&q=80', 'inst' => '3 × Rs. 763.33'],
-                        ['brand' => 'Edge Casuals', 'name' => 'Sportswear T-Shirt SPW-43', 'price' => 'Rs. 2,990', 'orig' => null, 'ribbon' => 'New Arrival', 'rc' => '', 'colors' => ['#2d2d2d', '#1a1a1a', '#1a3a6e'], 'img' => 'https://images.unsplash.com/photo-1571945153237-4929e783af4a?w=600&q=80', 'inst' => '3 × Rs. 996.66'],
-                        ['brand' => 'Edge Casuals', 'name' => 'Sportswear T-Shirt SPW-31', 'price' => 'Rs. 2,990', 'orig' => null, 'ribbon' => 'New Arrival', 'rc' => '', 'colors' => ['#8b2020', '#555555', '#3a9e5f', '#3a8fd1'], 'img' => 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&q=80', 'inst' => '3 × Rs. 996.66'],
-                    ];
-                @endphp
-                @foreach($newArrivals as $p)
+                @forelse($newArrivals as $product)
+                    @php
+                        $defaultVariant = $product->variants->where('is_default', true)->first()
+                            ?? $product->variants->first();
+                        $displayPrice   = $defaultVariant ? ($defaultVariant->sale_price ?? $defaultVariant->price) : $product->sale_price ?? $product->base_price;
+                        $originalPrice  = ($defaultVariant && $defaultVariant->sale_price) ? $defaultVariant->price : ($product->sale_price ? $product->base_price : null);
+                        $imgUrl         = $product->primaryImage
+                            ? asset('storage/' . $product->primaryImage->file_path)
+                            : 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80';
+                    @endphp
                     <div class="p-card reveal">
-                        <div class="p-img-wrap">
-                            <span class="p-ribbon {{ $p['rc'] }}">{{ $p['ribbon'] }}</span>
+                        <a href="{{ route('frontend.products.show', $product->slug) }}" class="p-img-wrap" style="display:block;">
+                            <span class="p-ribbon">New Arrival</span>
                             <div class="p-side-actions">
-                                <button class="p-side-btn" aria-label="Wishlist"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
-                                <button class="p-side-btn" aria-label="Quick view"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                                <button class="p-side-btn" aria-label="Wishlist" onclick="event.preventDefault()">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                                </button>
+                                <button class="p-side-btn" aria-label="Quick view" onclick="event.preventDefault()">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                </button>
                             </div>
-                            <img src="{{ $p['img'] }}" alt="{{ $p['name'] }}" loading="lazy">
-                            <button class="p-quick-add">+ Add to Bag</button>
-                        </div>
+                            <img src="{{ $imgUrl }}" alt="{{ $product->name }}" loading="lazy">
+                            @if($defaultVariant)
+                                <button class="p-quick-add js-add-to-cart"
+                                    data-variant-id="{{ $defaultVariant->id }}"
+                                    onclick="event.preventDefault(); event.stopPropagation(); addToCart(this)"
+                                >+ Add to Cart</button>
+                            @else
+                                <span class="p-quick-add" style="cursor:default;background:var(--bg-4);color:var(--dim);">Out of Stock</span>
+                            @endif
+                        </a>
                         <div class="p-info">
-                            <p class="p-brand">{{ $p['brand'] }}</p>
-                            <p class="p-name">{{ $p['name'] }}</p>
+                            <p class="p-brand">{{ $product->brand?->name ?? 'Karbnzol' }}</p>
+                            <p class="p-name">{{ $product->name }}</p>
                             <div class="p-price-row">
-                                <span class="p-price">{{ $p['price'] }} LKR</span>
-                                @if($p['orig'])<span class="p-price-was">{{ $p['orig'] }}</span>@endif
+                                <span class="p-price">Rs. {{ number_format($displayPrice, 2) }} LKR</span>
+                                @if($originalPrice)
+                                    <span class="p-price-was">Rs. {{ number_format($originalPrice, 2) }}</span>
+                                @endif
                             </div>
-                            <p class="p-install">3 × <strong>{{ explode('× ', $p['inst'])[1] }}</strong> &amp; get up to <span class="cb">4% Cashback</span> with<span class="mintpay">MintPay</span></p>
-                            <div class="p-swatches">@foreach($p['colors'] as $c)<span class="p-dot" style="background:{{ $c }};"></span>@endforeach</div>
+                            @if($displayPrice > 0)
+                                <p class="p-install">3 × <strong>Rs. {{ number_format($displayPrice / 3, 2) }}</strong> &amp; up to <span class="cb">4% Cashback</span> with<span class="mintpay">MintPay</span></p>
+                            @endif
                         </div>
                     </div>
-                @endforeach
+                @empty
+                    <div style="grid-column:1/-1;padding:3rem;text-align:center;color:var(--dim);font-family:var(--font-display);letter-spacing:0.14em;font-size:0.85rem;">
+                        NEW ARRIVALS COMING SOON
+                    </div>
+                @endforelse
             </div>
         </div>
     </section>
@@ -727,13 +753,25 @@
     <div class="marquee-bar" aria-hidden="true">
         <div class="marquee-track">
             @php 
-                $offerText = $storefront->storefront_offer_text ?? null;
-                $offerLink = $storefront->storefront_offer_link ?? null;
-                $mw = $offerText ? array_fill(0, 15, $offerText) : ['Free Island Delivery', 'New Arrivals Weekly', 'MintPay Available', 'Premium Quality', 'Sri Lanka\'s Best', 'Free Island Delivery', 'New Arrivals Weekly', 'MintPay Available', 'Premium Quality', 'Sri Lanka\'s Best', 'Free Island Delivery', 'New Arrivals Weekly', 'MintPay Available', 'Premium Quality', 'Sri Lanka\'s Best']; 
+                $mqRaw = $storefront_marquee_text ?? '';
+                $mqLink = $storefront_marquee_link ?? null;
+                
+                if (!empty($mqRaw)) {
+                    // Split by | and trim whitespace
+                    $parts = array_map('trim', explode('|', $mqRaw));
+                    // Repeat the parts to ensure we have enough items for the marquee loop
+                    $mw = [];
+                    while(count($mw) < 15) {
+                        $mw = array_merge($mw, $parts);
+                    }
+                    $mw = array_slice($mw, 0, count($mw) > 15 ? count($mw) : 15);
+                } else {
+                    $mw = ['Free Island Delivery', 'New Arrivals Weekly', 'MintPay Available', 'Premium Quality', 'Sri Lanka\'s Best', 'Free Island Delivery', 'New Arrivals Weekly', 'MintPay Available', 'Premium Quality', 'Sri Lanka\'s Best', 'Free Island Delivery', 'New Arrivals Weekly', 'MintPay Available', 'Premium Quality', 'Sri Lanka\'s Best'];
+                }
             @endphp
             @foreach($mw as $w)
-                @if($offerLink)
-                    <a href="{{ $offerLink }}" class="marquee-item hover:opacity-80 transition">{{ strtoupper($w) }} <span class="marquee-sep"></span></a>
+                @if($mqLink)
+                    <a href="{{ $mqLink }}" class="marquee-item hover:opacity-80 transition">{{ strtoupper($w) }} <span class="marquee-sep"></span></a>
                 @else
                     <span class="marquee-item">{{ strtoupper($w) }} <span class="marquee-sep"></span></span>
                 @endif
@@ -756,25 +794,52 @@
         </div>
         <div style="max-width:1600px;margin:0 auto;padding:0 2rem;">
             <div class="collections-grid">
-                @php $cols = [
-                    ['num' => 'Col. 01', 'name' => 'The Dark Edit', 'slug' => 'dark-edit', 'img' => 'https://images.unsplash.com/photo-1487222477894-8943e31ef7b2?w=900&q=80'],
-                    ['num' => 'Col. 02', 'name' => 'Street Ready', 'slug' => 'street', 'img' => 'https://images.unsplash.com/photo-1483985988355-763728e1935b?w=600&q=80'],
-                    ['num' => 'Col. 03', 'name' => 'Active Series', 'slug' => 'active', 'img' => 'https://images.unsplash.com/photo-1571945153237-4929e783af4a?w=600&q=80'],
-                    ['num' => 'Col. 04', 'name' => 'Classic Essentials', 'slug' => 'classic', 'img' => 'https://images.unsplash.com/photo-1516826957135-700dedea698c?w=600&q=80'],
-                ]; @endphp
-                @foreach($cols as $c)
-                    <div class="col-card reveal">
-                        <div class="col-bg" style="background-image: url('{{ $c['img'] }}');"></div>
-                        <div class="col-overlay"></div>
-                        <div class="col-content">
-                            <div>
-                                <p class="col-num">{{ $c['num'] }}</p>
-                                <h3 class="col-name">{{ strtoupper($c['name']) }}</h3>
+                @if($featuredCollections->isNotEmpty())
+                    @foreach($featuredCollections as $i => $col)
+                        @php
+                            $colImg = $col->banner_url
+                                ?? ($col->products->first()?->primaryImage
+                                    ? asset('storage/' . $col->products->first()->primaryImage->file_path)
+                                    : 'https://images.unsplash.com/photo-1487222477894-8943e31ef7b2?w=900&q=80');
+                        @endphp
+                        <div class="col-card reveal">
+                            <div class="col-bg" style="background-image: url('{{ $colImg }}');"></div>
+                            <div class="col-overlay"></div>
+                            <div class="col-content">
+                                <div>
+                                    <p class="col-num">Col. {{ str_pad($i + 1, 2, '0', STR_PAD_LEFT) }}</p>
+                                    <h3 class="col-name">{{ strtoupper($col->name) }}</h3>
+                                </div>
+                                <div class="col-arrow">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                                </div>
                             </div>
-                            
                         </div>
-                    </div>
-                @endforeach
+                    @endforeach
+                @else
+                    {{-- Fallback static collections when none configured in admin --}}
+                    @php $fallbackCols = [
+                        ['num' => 'Col. 01', 'name' => 'The Dark Edit',      'img' => 'https://images.unsplash.com/photo-1487222477894-8943e31ef7b2?w=900&q=80'],
+                        ['num' => 'Col. 02', 'name' => 'Street Ready',       'img' => 'https://images.unsplash.com/photo-1483985988355-763728e1935b?w=600&q=80'],
+                        ['num' => 'Col. 03', 'name' => 'Active Series',      'img' => 'https://images.unsplash.com/photo-1571945153237-4929e783af4a?w=600&q=80'],
+                        ['num' => 'Col. 04', 'name' => 'Classic Essentials', 'img' => 'https://images.unsplash.com/photo-1516826957135-700dedea698c?w=600&q=80'],
+                    ]; @endphp
+                    @foreach($fallbackCols as $c)
+                        <div class="col-card reveal">
+                            <div class="col-bg" style="background-image: url('{{ $c['img'] }}');"></div>
+                            <div class="col-overlay"></div>
+                            <div class="col-content">
+                                <div>
+                                    <p class="col-num">{{ $c['num'] }}</p>
+                                    <h3 class="col-name">{{ strtoupper($c['name']) }}</h3>
+                                </div>
+                                <div class="col-arrow">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                @endif
             </div>
         </div>
     </section>
@@ -793,35 +858,58 @@
             </div>
 
             <div class="product-grid-4">
-                @php $bestSellers = [
-                    ['brand' => 'Edge Casuals', 'name' => 'Classic Chino Trouser', 'price' => 'Rs. 3,490', 'orig' => 'Rs. 4,200', 'ribbon' => 'Sale', 'rc' => 'sale', 'colors' => ['#8b7355', '#4a3f38', '#1a1a1a'], 'img' => 'https://images.unsplash.com/photo-1594938298603-c8148c4b4e3d?w=600&q=80', 'inst' => '3 × Rs. 1,163.33'],
-                    ['brand' => 'Edge Casuals', 'name' => 'Slim Fit Jeans SFJ-22', 'price' => 'Rs. 4,590', 'orig' => null, 'ribbon' => 'Best Seller', 'rc' => 'top', 'colors' => ['#1a2a3a', '#2d2d2d', '#6b5e52'], 'img' => 'https://images.unsplash.com/photo-1542272604-787c3835535d?w=600&q=80', 'inst' => '3 × Rs. 1,530.00'],
-                    ['brand' => 'Edge Active', 'name' => 'Performance DRI-FIT Polo', 'price' => 'Rs. 2,790', 'orig' => null, 'ribbon' => 'Best Seller', 'rc' => 'top', 'colors' => ['#1a1a1a', '#2d5a8e', '#2d7a4f'], 'img' => 'https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=600&q=80', 'inst' => '3 × Rs. 930.00'],
-                    ['brand' => 'Edge Kids', 'name' => 'Boys Graphic Tee Multipack', 'price' => 'Rs. 1,890', 'orig' => null, 'ribbon' => 'New Arrival', 'rc' => '', 'colors' => ['#cc3333', '#3a8fd1', '#2d7a4f', '#c8a96e'], 'img' => 'https://images.unsplash.com/photo-1503944583220-79d8926ad5e2?w=600&q=80', 'inst' => '3 × Rs. 630.00'],
-                ]; @endphp
-                @foreach($bestSellers as $p)
+                @forelse($bestSellers as $product)
+                    @php
+                        $defaultVariant = $product->variants->where('is_default', true)->first()
+                            ?? $product->variants->first();
+                        $displayPrice   = $defaultVariant ? ($defaultVariant->sale_price ?? $defaultVariant->price) : $product->sale_price ?? $product->base_price;
+                        $originalPrice  = ($defaultVariant && $defaultVariant->sale_price) ? $defaultVariant->price : ($product->sale_price ? $product->base_price : null);
+                        $imgUrl         = $product->primaryImage
+                            ? asset('storage/' . $product->primaryImage->file_path)
+                            : 'https://images.unsplash.com/photo-1594938298603-c8148c4b4e3d?w=600&q=80';
+                        $ribbon         = $product->is_featured ? 'top' : '';
+                        $ribbonLabel    = $product->is_featured ? 'Best Seller' : 'Popular';
+                    @endphp
                     <div class="p-card reveal">
-                        <div class="p-img-wrap">
-                            <span class="p-ribbon {{ $p['rc'] }}">{{ $p['ribbon'] }}</span>
+                        <a href="{{ route('frontend.products.show', $product->slug) }}" class="p-img-wrap" style="display:block;">
+                            <span class="p-ribbon {{ $ribbon }}">{{ $ribbonLabel }}</span>
                             <div class="p-side-actions">
-                                <button class="p-side-btn" aria-label="Wishlist"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></button>
-                                <button class="p-side-btn" aria-label="Quick view"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                                <button class="p-side-btn" aria-label="Wishlist" onclick="event.preventDefault()">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                                </button>
+                                <button class="p-side-btn" aria-label="Quick view" onclick="event.preventDefault()">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                </button>
                             </div>
-                            <img src="{{ $p['img'] }}" alt="{{ $p['name'] }}" loading="lazy">
-                            <button class="p-quick-add">+ Add to Bag</button>
-                        </div>
+                            <img src="{{ $imgUrl }}" alt="{{ $product->name }}" loading="lazy">
+                            @if($defaultVariant)
+                                <button class="p-quick-add js-add-to-cart"
+                                    data-variant-id="{{ $defaultVariant->id }}"
+                                    onclick="event.preventDefault(); event.stopPropagation(); addToCart(this)"
+                                >+ Add to Cart</button>
+                            @else
+                                <span class="p-quick-add" style="cursor:default;background:var(--bg-4);color:var(--dim);">Out of Stock</span>
+                            @endif
+                        </a>
                         <div class="p-info">
-                            <p class="p-brand">{{ $p['brand'] }}</p>
-                            <p class="p-name">{{ $p['name'] }}</p>
+                            <p class="p-brand">{{ $product->brand?->name ?? 'Karbnzol' }}</p>
+                            <p class="p-name">{{ $product->name }}</p>
                             <div class="p-price-row">
-                                <span class="p-price">{{ $p['price'] }} LKR</span>
-                                @if($p['orig'])<span class="p-price-was">{{ $p['orig'] }}</span>@endif
+                                <span class="p-price">Rs. {{ number_format($displayPrice, 2) }} LKR</span>
+                                @if($originalPrice)
+                                    <span class="p-price-was">Rs. {{ number_format($originalPrice, 2) }}</span>
+                                @endif
                             </div>
-                            <p class="p-install">3 × <strong>{{ explode('× ', $p['inst'])[1] }}</strong> &amp; up to <span class="cb">4% Cashback</span> with<span class="mintpay">MintPay</span></p>
-                            <div class="p-swatches">@foreach($p['colors'] as $c)<span class="p-dot" style="background:{{ $c }};"></span>@endforeach</div>
+                            @if($displayPrice > 0)
+                                <p class="p-install">3 × <strong>Rs. {{ number_format($displayPrice / 3, 2) }}</strong> &amp; up to <span class="cb">4% Cashback</span> with<span class="mintpay">MintPay</span></p>
+                            @endif
                         </div>
                     </div>
-                @endforeach
+                @empty
+                    <div style="grid-column:1/-1;padding:3rem;text-align:center;color:var(--dim);font-family:var(--font-display);letter-spacing:0.14em;font-size:0.85rem;">
+                        BEST SELLERS COMING SOON
+                    </div>
+                @endforelse
             </div>
         </div>
     </section>
@@ -839,7 +927,7 @@
                 Built for<br>the Modern<br>Man.
             </h2>
             <p class="editorial-body">
-                From everyday essentials to statement pieces, every garment we make is precision-cut and quality-tested. Sri Lanka's most trusted menswear brand — worn by thousands, loved by all.
+                {{ $storefront->storefront_about_us ?? "From everyday essentials to statement pieces, every garment we make is precision-cut and quality-tested. Sri Lanka's most trusted menswear brand — worn by thousands, loved by all." }}
             </p>
             <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
                 <a href="#" class="btn-gold">Our Story <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
@@ -883,7 +971,127 @@
         </div>
     </section>
 
+    {{-- ═══════════════════════════════════════════════════
+         CART TOAST NOTIFICATION
+    ═══════════════════════════════════════════════════ --}}
+    <style>
+        #cart-toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: var(--bg-2);
+            border: 1px solid var(--bg-4);
+            border-left: 3px solid var(--gold);
+            padding: 0.875rem 1.25rem;
+            min-width: 260px;
+            max-width: 340px;
+            box-shadow: 0 16px 48px rgba(0,0,0,0.55);
+            transform: translateY(120%);
+            opacity: 0;
+            transition: transform 0.4s cubic-bezier(0.16,1,0.3,1), opacity 0.35s;
+            pointer-events: none;
+        }
+        #cart-toast.show {
+            transform: translateY(0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+        #cart-toast.error { border-left-color: var(--red); }
+        .toast-icon { color: var(--gold); flex-shrink: 0; }
+        #cart-toast.error .toast-icon { color: var(--red); }
+        .toast-msg {
+            font-family: var(--font-display);
+            font-size: 0.72rem;
+            font-weight: 500;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--off-white);
+            flex: 1;
+        }
+        .toast-close {
+            background: none; border: none; cursor: pointer;
+            color: var(--dim); font-size: 1.1rem; line-height: 1;
+            transition: color 0.2s;
+            flex-shrink: 0;
+        }
+        .toast-close:hover { color: var(--off-white); }
+        .p-quick-add.loading { opacity: 0.6; pointer-events: none; }
+    </style>
+
+    <div id="cart-toast" role="alert" aria-live="polite">
+        <span class="toast-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        </span>
+        <span class="toast-msg" id="toast-message">Item added to cart!</span>
+        <button class="toast-close" onclick="hideToast()" aria-label="Dismiss">&times;</button>
+    </div>
+
     <script>
+    /* ══════════════════════════════════════════
+       ADD TO CART — AJAX
+    ══════════════════════════════════════════ */
+    const _csrf = document.querySelector('meta[name="csrf-token"]')?.content ?? '';
+    let toastTimer = null;
+
+    function showToast(msg, isError = false) {
+        const toast = document.getElementById('cart-toast');
+        const msgEl = document.getElementById('toast-message');
+        msgEl.textContent = msg;
+        toast.classList.toggle('error', isError);
+        toast.classList.add('show');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(hideToast, 3500);
+    }
+
+    function hideToast() {
+        document.getElementById('cart-toast')?.classList.remove('show');
+    }
+
+    function addToCart(btn) {
+        const variantId = btn.dataset.variantId;
+        if (!variantId) return;
+
+        btn.classList.add('loading');
+        const originalText = btn.textContent;
+        btn.textContent = 'Adding…';
+
+        fetch(`/cart/add/${variantId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': _csrf,
+                'X-Requested-With': 'XMLHttpRequest',
+                'Accept': 'application/json',
+            },
+            body: JSON.stringify({ quantity: 1 }),
+        })
+        .then(async res => {
+            const data = await res.json();
+            if (data.success) {
+                showToast(data.message ?? 'Added to cart!');
+                // Update cart count badge in nav
+                const badge = document.getElementById('navCartCount');
+                if (badge) badge.textContent = data.cartCount ?? '';
+                btn.textContent = '✓ Added';
+                setTimeout(() => { btn.textContent = originalText; }, 2000);
+            } else {
+                showToast(data.message ?? 'Could not add to cart.', true);
+                btn.textContent = originalText;
+            }
+        })
+        .catch(() => {
+            showToast('Network error — please try again.', true);
+            btn.textContent = originalText;
+        })
+        .finally(() => {
+            btn.classList.remove('loading');
+        });
+    }
+
     window.addEventListener('load', () => {
         if (typeof gsap === 'undefined') return;
         gsap.registerPlugin(ScrollTrigger);

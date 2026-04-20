@@ -1131,7 +1131,7 @@
                     <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
                     <a href="{{ route('frontend.products.index') }}">Shop</a>
                     <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
-                    <span>{{ $product->categories->first()->name ?? 'Product' }}</span>
+                    <span>{{ $product->category->name ?? 'Product' }}</span>
                 </div>
 
                 <h1 class="pd-title">{{ $product->name }}</h1>

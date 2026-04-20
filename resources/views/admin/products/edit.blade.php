@@ -114,37 +114,22 @@
                         {{-- Organization --}}
                         <div class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                             <div class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50/50 dark:bg-surface-tonal-a20">
-                                <h2 class="text-sm font-bold text-gray-900 dark:text-white">Categories</h2>
+                                <h2 class="text-sm font-bold text-gray-900 dark:text-white">Organization</h2>
                             </div>
-                            <div class="p-4">
-                                @php
-                                    $selectedCategories = old('categories', $product->categories->pluck('id')->toArray());
-                                @endphp
-                                <div class="space-y-4" x-data="{
-                                    search: '',
-                                    categories: [ @foreach($categories as $c) { id: {{ $c->id }}, name: '{{ addslashes($c->name) }}', checked: {{ (is_array($selectedCategories) && in_array($c->id, $selectedCategories)) ? 'true' : 'false' }} }, @endforeach ],
-                                    get filtered() {
-                                        return this.categories.filter(c => c.name.toLowerCase().includes(this.search.toLowerCase()));
-                                    }
-                                }">
+                            <div class="p-4 space-y-4">
+                                <div>
+                                    <label for="category_id" class="block text-[10px] font-black text-black dark:text-white uppercase tracking-widest mb-1">Category</label>
                                     <div class="relative">
-                                        <input type="text" x-model="search" placeholder="Filter categories..." class="block w-full rounded-md border border-gray-100/50 dark:border-white/5 bg-gray-50/30 dark:bg-surface-tonal-a20 px-3 py-2 text-xs font-bold shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-300 text-black dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-indigo-300 dark:focus:border-indigo-500/50 focus:ring-2 focus:ring-indigo-500/5 focus:shadow-md !pl-9">
-                                        <svg class="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                                        <select name="category_id" id="category_id" required
+                                            class="block w-full rounded-md border border-gray-100/50 dark:border-white/5 bg-gray-50/30 dark:bg-surface-tonal-a20 px-3 py-2 text-xs font-bold shadow-sm text-black dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-indigo-300 dark:focus:border-indigo-500/50 focus:ring-2 focus:ring-indigo-500/5 focus:shadow-md">
+                                            <option value="">Select Category</option>
+                                            @foreach($categories as $category)
+                                                <option value="{{ $category->id }}" {{ old('category_id', $product->category_id) == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
-                                    <div class="max-h-[220px] overflow-y-auto pr-2 custom-scrollbar grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                        <template x-for="category in filtered" :key="category.id">
-                                            <label class="flex items-center p-3 rounded-xl border border-gray-100 dark:border-surface-tonal-a30 hover:bg-gray-50 dark:hover:bg-surface-tonal-a30 transition cursor-pointer group">
-                                                <input type="checkbox" name="categories[]" :value="category.id" x-model="category.checked"
-                                                    class="h-4 w-4 rounded border-gray-300 dark:border-surface-tonal-a30 text-gray-900 dark:text-white focus:ring-gray-500 transition-all">
-                                                <span class="text-xs font-bold text-gray-600 dark:text-gray-400 ml-3 group-hover:text-gray-900 dark:group-hover:text-white transition-colors" x-text="category.name"></span>
-                                            </label>
-                                        </template>
-                                    </div>
-                                    <template x-for="item in categories.filter(c => c.checked && !filtered.find(f => f.id === c.id))" :key="'hidden-'+item.id">
-                                        <input type="hidden" name="categories[]" :value="item.id">
-                                    </template>
+                                    @error('category_id') <p class="text-[10px] text-red-500 mt-1 font-bold px-1">{{ $message }}</p> @enderror
                                 </div>
-                                @error('categories') <p class="text-xs text-red-500 mt-2 font-bold">{{ $message }}</p> @enderror
                             </div>
                         </div>
 
@@ -240,13 +225,9 @@
                                                         <a href="{{ route('products.variants.edit', [$product->id, $variant->id]) }}" class="p-1.5 rounded-lg text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/10 transition-all">
                                                             <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
                                                         </a>
-                                                        <form action="{{ route('products.variants.destroy', [$product->id, $variant->id]) }}" method="POST" onsubmit="return confirm('Delete this variant?');">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="submit" class="p-1.5 rounded-lg text-gray-400 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 transition-all">
-                                                                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
-                                                            </button>
-                                                        </form>
+                                                        <button type="button" onclick="confirmDeleteVariant({{ $product->id }}, {{ $variant->id }})" class="p-1.5 rounded-lg text-gray-400 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 transition-all">
+                                                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                                                        </button>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -344,6 +325,11 @@
         </div>
     </div>
 
+    <form id="delete-variant-form" method="POST" class="hidden">
+        @csrf
+        @method('DELETE')
+    </form>
+
     @push('scripts')
         <script>
             function deleteImage(productId, imageId) {
@@ -401,6 +387,14 @@
                     .replace(/[\s_-]+/g, '-')
                     .replace(/^-+|-+$/g, '');
             });
+
+            function confirmDeleteVariant(productId, variantId) {
+                if (confirm('Are you sure you want to delete this variant?')) {
+                    const form = document.getElementById('delete-variant-form');
+                    form.action = `/admin/products/${productId}/variants/${variantId}`;
+                    form.submit();
+                }
+            }
         </script>
     @endpush
 @endsection

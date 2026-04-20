@@ -111,6 +111,16 @@ class Setting extends Model
         // === Maintenance & Security ===
         'site_maintenance_mode',
         'maintenance_message',
+
+        // === Storefront Customization ===
+        'storefront_banners',
+        'storefront_offer_text',
+        'storefront_offer_link',
+        'storefront_about_us',
+        'storefront_marquee_text',
+        'storefront_marquee_link',
+        'phone',
+        'email',
     ];
 
     protected $casts = [
@@ -146,6 +156,7 @@ class Setting extends Model
         'shipping_notification_enabled' => 'boolean',
         'number_of_decimals' => 'integer',
         'low_stock_threshold' => 'integer',
+        'storefront_banners' => 'json',
     ];
 
     /**

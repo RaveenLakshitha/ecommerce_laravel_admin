@@ -73,6 +73,14 @@ class AppServiceProvider extends ServiceProvider
             'currency_code' => $setting->currency ?? 'USD',
             'currency_symbol' => $setting->currency_symbol ?? '$',
 
+            // Storefront Customization
+            'storefront_offer_text' => $setting->storefront_offer_text,
+            'storefront_offer_link' => $setting->storefront_offer_link,
+            'storefront_marquee_text' => $setting->storefront_marquee_text,
+            'storefront_marquee_link' => $setting->storefront_marquee_link,
+            'storefront_banners'    => $setting->storefront_banners,
+            'storefront_about_us'   => $setting->storefront_about_us,
+
             // Business info
             'free_shipping_threshold' => $setting->free_shipping_threshold ?? 5000,
             'return_period_days' => $setting->return_period_days ?? 14,
