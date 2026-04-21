@@ -17,6 +17,20 @@ class Variant extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::created(function ($variant) {
+            if (empty($variant->barcode)) {
+                // Numeric barcode: ProductID (padded) + VariantID (padded)
+                $variant->barcode = str_pad($variant->product_id, 4, '0', STR_PAD_LEFT) . 
+                                   str_pad($variant->id, 4, '0', STR_PAD_LEFT);
+                $variant->saveQuietly();
+            }
+        });
+    }
+
     protected $fillable = [
         'product_id',
         'sku',

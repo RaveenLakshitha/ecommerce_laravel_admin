@@ -3,6 +3,67 @@
 @section('title', 'Edit Product')
 
 @section('content')
+@php
+    // Build existing options & variants for the inline panel JS
+    $existingOptions      = [];
+    $existingVariantsForJs = [];
+
+    $variantsWithAttrs = $product->variants()
+        ->with('attributeValues.attribute', 'images')
+        ->get();
+
+    // Step 1: collect unique options (attribute name → unique values)
+    foreach ($variantsWithAttrs as $variant) {
+        foreach ($variant->attributeValues as $av) {
+            $attrName = $av->attribute->name;
+            $optIdx   = array_search($attrName, array_column($existingOptions, 'name'));
+            if ($optIdx === false) {
+                $existingOptions[] = ['name' => $attrName, 'values' => []];
+                $optIdx = count($existingOptions) - 1;
+            }
+            if (!in_array($av->value, $existingOptions[$optIdx]['values'])) {
+                $existingOptions[$optIdx]['values'][] = $av->value;
+            }
+        }
+    }
+
+    // Step 2: build per-variant data for JS pre-population
+    foreach ($variantsWithAttrs as $variant) {
+        $opts = [];
+        foreach ($variant->attributeValues as $av) {
+            $attrName = $av->attribute->name;
+            $optIdx   = array_search($attrName, array_column($existingOptions, 'name'));
+            if ($optIdx !== false) {
+                $opts[$optIdx] = $av->value;
+            }
+        }
+        ksort($opts);
+
+        $primaryImage = $variant->images->first();
+        $existingVariantsForJs[] = [
+            'id'             => $variant->id,
+            'sku'            => $variant->sku,
+            'price'          => (float) $variant->price,
+            'barcode'        => $variant->barcode,
+            'stock_quantity' => (int) $variant->stock_quantity,
+            'opts'           => $opts,
+            'image_url'      => $primaryImage
+                ? \Illuminate\Support\Facades\Storage::url($primaryImage->file_path)
+                : null,
+        ];
+    }
+
+    $existingOptionsJson  = json_encode($existingOptions);
+    $existingVariantsJson = json_encode($existingVariantsForJs);
+    $basePrice            = $product->base_price;
+    $allAttributesJson    = $allAttributes->map(function($attr) {
+        return [
+            'id' => $attr->id,
+            'name' => $attr->name,
+            'values' => $attr->values->pluck('value')->toArray()
+        ];
+    })->toJson();
+@endphp
     <div class="admin-page animate-fade-in-up">
         <div class="admin-page-inner">
 
@@ -165,81 +226,9 @@
                             </div>
                         </div>
 
-                        {{-- Variants --}}
-                        <div class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
-                            <div class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50/50 dark:bg-surface-tonal-a20 flex items-center justify-between">
-                                <div class="flex flex-col">
-                                    <h2 class="text-sm font-bold text-gray-900 dark:text-white">Product Variants</h2>
-                                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-0.5">Inventory Options</p>
-                                </div>
-                                <a href="{{ route('products.variants.create', $product->id) }}" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-[10px] font-black uppercase tracking-widest rounded-xl transition-all shadow-lg shadow-indigo-600/20 active:scale-[0.98]">
-                                    + Add Variant
-                                </a>
-                            </div>
-                            <div class="overflow-x-auto">
-                                <table class="w-full text-left border-collapse">
-                                    <thead>
-                                        <tr class="bg-gray-50 dark:bg-surface-tonal-a20 border-b border-gray-100 dark:border-surface-tonal-a30">
-                                            <th class="px-6 py-3 text-[10px] font-bold text-gray-400 uppercase tracking-widest">SKU</th>
-                                            <th class="px-6 py-3 text-[10px] font-bold text-gray-400 uppercase tracking-widest">Attributes</th>
-                                            <th class="px-6 py-3 text-[10px] font-bold text-gray-400 uppercase tracking-widest text-center">Stock</th>
-                                            <th class="px-6 py-3 text-[10px] font-bold text-gray-400 uppercase tracking-widest text-right">Price</th>
-                                            <th class="px-6 py-3 text-[10px] font-bold text-gray-400 uppercase tracking-widest text-right">Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="divide-y divide-gray-50 dark:divide-surface-tonal-a30">
-                                        @forelse($product->variants as $variant)
-                                            <tr class="hover:bg-gray-50 dark:hover:bg-surface-tonal-a30 transition-colors group">
-                                                <td class="px-6 py-3.5">
-                                                    <div class="flex flex-col">
-                                                        <span class="text-sm font-bold text-gray-700 dark:text-white">{{ $variant->sku }}</span>
-                                                        @if($variant->is_default)
-                                                            <span class="text-[8px] font-black text-indigo-500 uppercase tracking-tighter">Default</span>
-                                                        @endif
-                                                    </div>
-                                                </td>
-                                                <td class="px-6 py-3.5">
-                                                    <div class="flex flex-wrap gap-1">
-                                                        @foreach($variant->attributeValues as $value)
-                                                            <span class="px-2 py-0.5 rounded-lg bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 text-[10px] font-bold border border-indigo-100 dark:border-indigo-500/20">
-                                                                {{ $value->attribute->name }}: {{ $value->value }}
-                                                            </span>
-                                                        @endforeach
-                                                    </div>
-                                                </td>
-                                                <td class="px-6 py-3.5 text-center">
-                                                    <span class="text-xs font-bold {{ $variant->isInStock() ? 'text-emerald-500' : 'text-red-500' }}">
-                                                        {{ $variant->available_quantity }}
-                                                    </span>
-                                                </td>
-                                                <td class="px-6 py-3.5 text-right">
-                                                    <div class="flex flex-col items-end">
-                                                        <span class="text-sm font-bold text-gray-900 dark:text-white">${{ number_format($variant->price, 2) }}</span>
-                                                        @if($variant->sale_price)
-                                                            <span class="text-[10px] text-emerald-500 font-bold">${{ number_format($variant->sale_price, 2) }}</span>
-                                                        @endif
-                                                    </div>
-                                                </td>
-                                                <td class="px-6 py-3.5">
-                                                    <div class="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-                                                        <a href="{{ route('products.variants.edit', [$product->id, $variant->id]) }}" class="p-1.5 rounded-lg text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/10 transition-all">
-                                                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
-                                                        </a>
-                                                        <button type="button" onclick="confirmDeleteVariant({{ $product->id }}, {{ $variant->id }})" class="p-1.5 rounded-lg text-gray-400 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 transition-all">
-                                                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
-                                                        </button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        @empty
-                                            <tr>
-                                                <td colspan="5" class="px-6 py-10 text-center text-[10px] font-bold text-gray-400 uppercase tracking-widest">No variants defined</td>
-                                            </tr>
-                                        @endforelse
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                        {{-- Options & Variants --}}
+                        @include('admin.products.partials.variants-panel')
+
                     </div>
 
                     {{-- Right Column --}}
@@ -325,10 +314,7 @@
         </div>
     </div>
 
-    <form id="delete-variant-form" method="POST" class="hidden">
-        @csrf
-        @method('DELETE')
-    </form>
+
 
     @push('scripts')
         <script>

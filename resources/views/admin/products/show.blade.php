@@ -130,6 +130,7 @@
                             <table class="w-full text-left border-collapse">
                                 <thead>
                                     <tr class="bg-gray-50 dark:bg-surface-tonal-a20 border-b border-gray-100 dark:border-surface-tonal-a30">
+                                        <th class="px-6 py-3 text-[10px] font-bold text-gray-400 uppercase tracking-widest min-w-[60px]">Image</th>
                                         <th class="px-6 py-3 text-[10px] font-bold text-gray-400 uppercase tracking-widest">SKU</th>
                                         <th class="px-6 py-3 text-[10px] font-bold text-gray-400 uppercase tracking-widest">Attributes</th>
                                         <th class="px-6 py-3 text-[10px] font-bold text-gray-400 uppercase tracking-widest text-center">Stock</th>
@@ -139,6 +140,18 @@
                                 <tbody class="divide-y divide-gray-50 dark:divide-surface-tonal-a30">
                                     @forelse($product->variants as $variant)
                                         <tr class="hover:bg-gray-50 dark:hover:bg-surface-tonal-a30 transition-colors">
+                                            <td class="px-6 py-3.5">
+                                                @php $vImage = $variant->images->where('is_primary', true)->first() ?? $variant->images->first(); @endphp
+                                                <div class="w-10 h-10 rounded-lg overflow-hidden border border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a30/20">
+                                                    @if($vImage)
+                                                        <img src="{{ Storage::url($vImage->file_path) }}" class="w-full h-full object-cover">
+                                                    @else
+                                                        <div class="w-full h-full flex items-center justify-center text-gray-300">
+                                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                                                        </div>
+                                                    @endif
+                                                </div>
+                                            </td>
                                             <td class="px-6 py-3.5">
                                                 <div class="flex flex-col">
                                                     <span class="text-sm font-bold text-gray-700 dark:text-white">{{ $variant->sku }}</span>
@@ -172,7 +185,7 @@
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="4" class="px-6 py-10 text-center text-xs font-medium text-gray-500 uppercase tracking-widest">No variants defined</td>
+                                            <td colspan="5" class="px-6 py-10 text-center text-xs font-medium text-gray-500 uppercase tracking-widest">No variants defined</td>
                                         </tr>
                                     @endforelse
                                 </tbody>
@@ -262,8 +275,166 @@
                             </div>
                         </div>
                     </div>
+                    {{-- Barcode & Label Management --}}
+                    <div class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
+                        <div class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50/50 dark:bg-surface-tonal-a20 flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <h2 class="text-sm font-bold text-gray-900 dark:text-white">Barcodes & Labels</h2>
+                                <label class="flex items-center gap-1.5 cursor-pointer group">
+                                    <input type="checkbox" id="select-all-labels" checked
+                                        class="w-3.5 h-3.5 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 transition-all cursor-pointer">
+                                    <span class="text-[10px] font-bold text-gray-400 group-hover:text-indigo-500 transition-colors uppercase tracking-widest">Select All</span>
+                                </label>
+                            </div>
+                            <button onclick="printLabels()" class="text-[10px] font-bold text-indigo-500 hover:text-indigo-600 uppercase tracking-widest flex items-center gap-1 transition-colors">
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"/></svg>
+                                Print Labels
+                            </button>
+                        </div>
+                        <div class="p-4 space-y-3 max-h-[400px] overflow-y-auto custom-scrollbar">
+                            @foreach($product->variants as $variant)
+                                <label class="block p-3 rounded-xl border border-gray-100 dark:border-white/5 bg-gray-50/50 dark:bg-surface-tonal-a30/20 hover:border-indigo-200 dark:hover:border-indigo-500/30 transition-all cursor-pointer group relative">
+                                    <div class="flex items-center gap-3">
+                                        <div class="flex-shrink-0">
+                                            <input type="checkbox" name="selected_labels[]" value="{{ $variant->id }}" checked
+                                                class="variant-label-checkbox w-4 h-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 transition-all cursor-pointer">
+                                        </div>
+                                        <div class="flex-grow">
+                                            <div class="flex justify-between items-start mb-0.5">
+                                                <span class="text-[10px] font-black text-indigo-500 uppercase tracking-widest leading-none">{{ $variant->sku }}</span>
+                                                <span class="text-[10px] font-black text-gray-900 dark:text-white">${{ number_format($variant->price ?? 0, 2) }}</span>
+                                            </div>
+                                            <div class="mb-1">
+                                                <p class="text-[9px] font-bold text-gray-600 dark:text-gray-300">
+                                                    {{ $variant->attributeValues->map(fn($av) => $av->attribute->name . ': ' . $av->value)->join(', ') }}
+                                                </p>
+                                            </div>
+                                            <div class="flex items-center justify-between">
+                                                <span class="text-[9px] font-bold text-gray-400 font-mono tracking-tighter">{{ $variant->barcode }}</span>
+                                                <span class="text-[8px] font-bold text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity">Select for Print</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </label>
+                            @endforeach
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
     </div>
+
+    @push('scripts')
+        <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
+        <script>
+            function printLabels() {
+                const selectedIds = Array.from(document.querySelectorAll('.variant-label-checkbox:checked')).map(cb => cb.value);
+                if (selectedIds.length === 0) {
+                    alert('Please select at least one variant to print.');
+                    return;
+                }
+
+                const printWindow = window.open('', '_blank');
+                const product = @json($product);
+                const allVariants = @json($product->variants);
+                const selectedVariants = allVariants.filter(v => selectedIds.includes(v.id.toString()));
+                
+                let labelsHtml = '';
+                selectedVariants.forEach(v => {
+                    const price = v.price ? parseFloat(v.price).toFixed(2) : '0.00';
+                    const barcodeVal = v.barcode || '';
+                    
+                    // Collect attributes (e.g. Size: L, Color: Red)
+                    let attrText = '';
+                    if (v.attribute_values && v.attribute_values.length > 0) {
+                        attrText = v.attribute_values.map(av => {
+                            const attrName = av.attribute ? av.attribute.name : '';
+                            return `${attrName}: ${av.value}`;
+                        }).join(', ');
+                    }
+
+                    labelsHtml += `
+                        <div class="label-item">
+                            <div class="product-name">${product.name}</div>
+                            <div class="variant-sku">${v.sku}</div>
+                            <div class="attributes">${attrText}</div>
+                            <div class="barcode-container">
+                                <svg id="print-barcode-${v.id}"></svg>
+                            </div>
+                            <div class="barcode-text font-mono">${barcodeVal}</div>
+                            <div class="price">$${price}</div>
+                        </div>
+                    `;
+                });
+
+                printWindow.document.write(`
+                    <html>
+                        <head>
+                            <title>Print Labels - ${product.name}</title>
+                            <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"><\/script>
+                            <style>
+                                @page { margin: 0; }
+                                body { font-family: 'Inter', sans-serif; margin: 20px; color: #000; }
+                                .labels-grid { 
+                                    display: grid; 
+                                    grid-template-columns: repeat(3, 1fr); 
+                                    gap: 15px; 
+                                }
+                                .label-item { 
+                                    border: 1px solid #eee; 
+                                    padding: 10px; 
+                                    text-align: center;
+                                    page-break-inside: avoid;
+                                    display: flex;
+                                    flex-direction: column;
+                                    justify-content: center;
+                                    min-height: 180px;
+                                }
+                                .product-name { font-size: 10px; font-weight: 800; text-transform: uppercase; margin-bottom: 2px; }
+                                .variant-sku { font-size: 8px; color: #666; margin-bottom: 2px; }
+                                .attributes { font-size: 8px; font-weight: 600; color: #444; margin-bottom: 5px; }
+                                .barcode-container { margin: 5px 0; }
+                                .barcode-container svg { width: 100%; height: 50px; }
+                                .barcode-text { font-size: 8px; margin-bottom: 5px; letter-spacing: 2px; }
+                                .price { font-size: 12px; font-weight: 900; }
+                                @media print {
+                                    .btn-print { display: none; }
+                                }
+                            </style>
+                        </head>
+                        <body>
+                            <div class="labels-grid">
+                                ${labelsHtml}
+                            </div>
+                            <script>
+                                window.onload = () => {
+                                    ${selectedVariants.map(v => `
+                                        JsBarcode("#print-barcode-${v.id}", "${v.barcode}", {
+                                            format: "CODE128",
+                                            width: 1.5,
+                                            height: 40,
+                                            displayValue: false
+                                        });
+                                    `).join('\n')}
+                                    setTimeout(() => {
+                                        window.print();
+                                        // window.close();
+                                    }, 500);
+                                };
+                            <\/script>
+                        </body>
+                    </html>
+                `);
+                printWindow.document.close();
+            }
+
+            document.getElementById('select-all-labels')?.addEventListener('change', function() {
+                const checked = this.checked;
+                document.querySelectorAll('.variant-label-checkbox').forEach(cb => {
+                    cb.checked = checked;
+                });
+            });
+        </script>
+    @endpush
 @endsection
