@@ -616,11 +616,11 @@
                         <div class="slide-actions">
                             @if(!empty($sl['link']))
                                 <a href="{{ rtrim(url('/'), '/') . '/' . ltrim($sl['link'], '/') }}" class="btn-gold">
-                                    Shop Now
+                                    {{ __('file.shop_now') }}
                                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                                 </a>
                             @endif
-                            <a href="#" class="btn-outline-light">Lookbook</a>
+                            <a href="#" class="btn-outline-light">{{ __('file.lookbook') }}</a>
                         </div>
                     </div>
                 </div>
@@ -642,14 +642,14 @@
             </button>
         </div>
 
-        <div class="scroll-hint" aria-hidden="true">Scroll to Explore</div>
+        <div class="scroll-hint" aria-hidden="true">{{ __('file.scroll_to_explore') }}</div>
     </section>
 
     {{-- ═══════════════════════════════════════════════════
          STATS BAR
     ═══════════════════════════════════════════════════ --}}
     <div class="stats-bar">
-        @php $stats = [['n' => '12K+', 'l' => 'Orders Shipped'], ['n' => '500+', 'l' => 'Styles In Stock'], ['n' => '98%', 'l' => '5-Star Reviews'], ['n' => '48H', 'l' => 'Island Delivery']]; @endphp
+        @php $stats = [['n' => '12K+', 'l' => __('file.orders_shipped')], ['n' => '500+', 'l' => __('file.styles_in_stock')], ['n' => '98%', 'l' => __('file.five_star_reviews')], ['n' => '48H', 'l' => __('file.island_delivery')]]; @endphp
         @foreach($stats as $s)
             <div class="stat-item reveal">
                 <div class="stat-num">{{ $s['n'] }}</div>
@@ -663,7 +663,7 @@
     ═══════════════════════════════════════════════════ --}}
     <div class="cat-bar">
         <div class="cat-bar-inner">
-            <a class="cat-tab active" href="{{ route('frontend.products.index') }}">All
+            <a class="cat-tab active" href="{{ route('frontend.products.index') }}">{{ __('file.all') }}
                 @php $totalProducts = $featuredCategories->sum('products_count'); @endphp
                 <span class="cat-count-chip">{{ $totalProducts }}</span>
             </a>
@@ -683,11 +683,11 @@
         <div class="sec-wrap">
             <div class="sec-head reveal">
                 <div>
-                    <p class="sec-eyebrow">Just Dropped</p>
-                    <h2 class="sec-title">New Arrivals</h2>
+                    <p class="sec-eyebrow">{{ __('file.just_dropped') }}</p>
+                    <h2 class="sec-title">{{ __('file.new_arrivals') }}</h2>
                 </div>
                 <a href="{{ route('products.index') }}" class="sec-link">
-                    View All
+                    {{ __('file.view_all') }}
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                 </a>
             </div>
@@ -705,7 +705,7 @@
                     @endphp
                     <div class="p-card reveal">
                         <a href="{{ route('frontend.products.show', $product->slug) }}" class="p-img-wrap" style="display:block;">
-                            <span class="p-ribbon">New Arrival</span>
+                            <span class="p-ribbon">{{ __('file.new_arrival') }}</span>
                             <div class="p-side-actions">
                                 <button class="p-side-btn" aria-label="Wishlist" onclick="event.preventDefault()">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
@@ -719,9 +719,9 @@
                                 <button class="p-quick-add js-add-to-cart"
                                     data-variant-id="{{ $defaultVariant->id }}"
                                     onclick="event.preventDefault(); event.stopPropagation(); addToCart(this)"
-                                >+ Add to Cart</button>
+                                >{{ __('file.add_to_cart') }}</button>
                             @else
-                                <span class="p-quick-add" style="cursor:default;background:var(--bg-4);color:var(--dim);">Out of Stock</span>
+                                <span class="p-quick-add" style="cursor:default;background:var(--bg-4);color:var(--dim);">{{ __('file.out_of_stock') }}</span>
                             @endif
                         </a>
                         <div class="p-info">
@@ -740,7 +740,7 @@
                     </div>
                 @empty
                     <div style="grid-column:1/-1;padding:3rem;text-align:center;color:var(--dim);font-family:var(--font-display);letter-spacing:0.14em;font-size:0.85rem;">
-                        NEW ARRIVALS COMING SOON
+                        {{ __('file.coming_soon') }}
                     </div>
                 @endforelse
             </div>
@@ -786,10 +786,10 @@
         <div class="sec-wrap">
             <div class="sec-head reveal">
                 <div>
-                    <p class="sec-eyebrow">Shop by Collection</p>
-                    <h2 class="sec-title">Featured Collections</h2>
+                    <p class="sec-eyebrow">{{ __('file.shop_by_collection') }}</p>
+                    <h2 class="sec-title">{{ __('file.featured_collections') }}</h2>
                 </div>
-                <a href="{{ route('products.index') }}" class="sec-link">Browse All <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+                <a href="{{ route('products.index') }}" class="sec-link">{{ __('file.browse_all') }} <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
             </div>
         </div>
         <div style="max-width:1600px;margin:0 auto;padding:0 2rem;">
@@ -851,10 +851,10 @@
         <div class="sec-wrap">
             <div class="sec-head reveal">
                 <div>
-                    <p class="sec-eyebrow">Customer Favourites</p>
-                    <h2 class="sec-title">Best Sellers</h2>
+                    <p class="sec-eyebrow">{{ __('file.customer_favourites') }}</p>
+                    <h2 class="sec-title">{{ __('file.best_sellers') }}</h2>
                 </div>
-                <a href="{{ route('products.index') }}" class="sec-link">View All <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+                <a href="{{ route('products.index') }}" class="sec-link">{{ __('file.view_all') }} <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
             </div>
 
             <div class="product-grid-4">
@@ -868,7 +868,7 @@
                             ? asset('storage/' . $product->primaryImage->file_path)
                             : 'https://images.unsplash.com/photo-1594938298603-c8148c4b4e3d?w=600&q=80';
                         $ribbon         = $product->is_featured ? 'top' : '';
-                        $ribbonLabel    = $product->is_featured ? 'Best Seller' : 'Popular';
+                        $ribbonLabel    = $product->is_featured ? __('file.best_seller') : __('file.popular');
                     @endphp
                     <div class="p-card reveal">
                         <a href="{{ route('frontend.products.show', $product->slug) }}" class="p-img-wrap" style="display:block;">
@@ -886,7 +886,7 @@
                                 <button class="p-quick-add js-add-to-cart"
                                     data-variant-id="{{ $defaultVariant->id }}"
                                     onclick="event.preventDefault(); event.stopPropagation(); addToCart(this)"
-                                >+ Add to Cart</button>
+                                >{{ __('file.add_to_cart') }}</button>
                             @else
                                 <span class="p-quick-add" style="cursor:default;background:var(--bg-4);color:var(--dim);">Out of Stock</span>
                             @endif
@@ -907,7 +907,7 @@
                     </div>
                 @empty
                     <div style="grid-column:1/-1;padding:3rem;text-align:center;color:var(--dim);font-family:var(--font-display);letter-spacing:0.14em;font-size:0.85rem;">
-                        BEST SELLERS COMING SOON
+                        {{ __('file.best_sellers_coming_soon') }}
                     </div>
                 @endforelse
             </div>
@@ -922,16 +922,16 @@
             <img src="https://images.unsplash.com/photo-1487222477894-8943e31ef7b2?w=900&q=80" alt="About Karbnzol" loading="lazy">
         </div>
         <div class="editorial-text reveal">
-            <p class="editorial-tag">Our Story</p>
+            <p class="editorial-tag">{{ __('file.our_story') }}</p>
             <h2 class="editorial-headline">
-                Built for<br>the Modern<br>Man.
+                {!! str_replace('.', '.<br>', __('file.built_for_modern_man')) !!}
             </h2>
             <p class="editorial-body">
                 {{ $storefront->storefront_about_us ?? "From everyday essentials to statement pieces, every garment we make is precision-cut and quality-tested. Sri Lanka's most trusted menswear brand — worn by thousands, loved by all." }}
             </p>
             <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
-                <a href="#" class="btn-gold">Our Story <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
-                <a href="{{ route('products.index') }}" class="btn-outline-dark">Shop Now</a>
+                <a href="#" class="btn-gold">{{ __('file.our_story') }} <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+                <a href="{{ route('products.index') }}" class="btn-outline-dark">{{ __('file.shop_now') }}</a>
             </div>
         </div>
     </section>
@@ -941,10 +941,10 @@
     ═══════════════════════════════════════════════════ --}}
     <div class="trust-bar">
         @php $trusts = [
-            ['svg' => '<rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>', 'h' => 'Free Delivery', 'p' => 'On orders over Rs. 5,000'],
-            ['svg' => '<polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>', 'h' => 'Easy Returns', 'p' => '14-day hassle-free policy'],
-            ['svg' => '<rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/>', 'h' => 'Secure Payment', 'p' => 'SSL encrypted checkout'],
-            ['svg' => '<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.41 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.52 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.16 6.16l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>', 'h' => 'Customer Support', 'p' => 'Mon–Sat, 9am–6pm'],
+            ['svg' => '<rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>', 'h' => __('file.free_delivery_trust'), 'p' => __('file.free_delivery_trust_subtitle')],
+            ['svg' => '<polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>', 'h' => __('file.easy_returns'), 'p' => __('file.easy_returns_subtitle')],
+            ['svg' => '<rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/>', 'h' => __('file.secure_payment'), 'p' => __('file.secure_payment_subtitle')],
+            ['svg' => '<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.41 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.52 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.16 6.16l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>', 'h' => __('file.customer_support'), 'p' => __('file.customer_support_subtitle')],
         ]; @endphp
         @foreach($trusts as $t)
             <div class="trust-cell reveal">
@@ -960,13 +960,13 @@
     <section class="nl-section">
         <div class="nl-inner">
             <div class="nl-text reveal">
-                <h3>Join the Club</h3>
-                <p>Exclusive deals, early drops &amp; style tips — delivered to your inbox.</p>
+                <h3>{{ __('file.join_the_club') }}</h3>
+                <p>{{ __('file.newsletter_subtitle') }}</p>
             </div>
             <form class="nl-form" action="{{ route('newsletter.subscribe') }}" method="POST">
                 @csrf
-                <input type="email" name="email" placeholder="Enter your email address" required>
-                <button type="submit">Subscribe</button>
+                <input type="email" name="email" placeholder="{{ __('file.enter_email_placeholder') }}" required>
+                <button type="submit">{{ __('file.subscribe') }}</button>
             </form>
         </div>
     </section>
@@ -1026,11 +1026,19 @@
         <span class="toast-icon">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
         </span>
-        <span class="toast-msg" id="toast-message">Item added to cart!</span>
-        <button class="toast-close" onclick="hideToast()" aria-label="Dismiss">&times;</button>
+        <span class="toast-msg" id="toast-message">{{ __('file.item_added_to_cart') }}</span>
+        <button class="toast-close" onclick="hideToast()" aria-label="{{ __('file.dismiss') }}">&times;</button>
     </div>
 
     <script>
+    // JS Translations
+    const translations = {
+        adding: "{{ __('file.adding') }}",
+        added: "{{ __('file.added') }}",
+        item_added: "{{ __('file.item_added_to_cart') }}",
+        error_adding: "{{ __('file.error_adding_to_cart') }}",
+        network_error: "{{ __('file.network_error') }}"
+    };
     /* ══════════════════════════════════════════
        ADD TO CART — AJAX
     ══════════════════════════════════════════ */
@@ -1057,7 +1065,7 @@
 
         btn.classList.add('loading');
         const originalText = btn.textContent;
-        btn.textContent = 'Adding…';
+        btn.textContent = translations.adding;
 
         fetch(`/cart/add/${variantId}`, {
             method: 'POST',
@@ -1072,19 +1080,19 @@
         .then(async res => {
             const data = await res.json();
             if (data.success) {
-                showToast(data.message ?? 'Added to cart!');
+                showToast(data.message ?? translations.item_added);
                 // Update cart count badge in nav
                 const badge = document.getElementById('navCartCount');
                 if (badge) badge.textContent = data.cartCount ?? '';
-                btn.textContent = '✓ Added';
+                btn.textContent = '✓ ' + translations.added;
                 setTimeout(() => { btn.textContent = originalText; }, 2000);
             } else {
-                showToast(data.message ?? 'Could not add to cart.', true);
+                showToast(data.message ?? translations.error_adding, true);
                 btn.textContent = originalText;
             }
         })
         .catch(() => {
-            showToast('Network error — please try again.', true);
+            showToast(translations.network_error, true);
             btn.textContent = originalText;
         })
         .finally(() => {
