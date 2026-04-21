@@ -3,7 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Attribute;
+use App\Models\AttributeValue;
+use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
@@ -105,7 +109,8 @@ class ProductController extends Controller
     {
         $brands = \App\Models\Brand::all();
         $categories = \App\Models\Category::all();
-        return view('admin.products.create', compact('brands', 'categories'));
+        $allAttributes = \App\Models\Attribute::with('values')->orderBy('name')->get();
+        return view('admin.products.create', compact('brands', 'categories', 'allAttributes'));
     }
 
     /**
@@ -129,21 +134,21 @@ class ProductController extends Controller
             'canonical_url' => 'nullable|url|max:255',
             'is_visible' => 'boolean',
             'is_featured' => 'boolean',
-            'images.*' => 'nullable|mimes:jpeg,png,jpg,gif,webp,avif|max:2048'
+            'images.*' => 'nullable|mimes:jpeg,png,jpg,gif,webp,avif|max:2048',
         ]);
 
         $validated['is_visible'] = $request->has('is_visible');
         $validated['is_featured'] = $request->has('is_featured');
 
-        $product = \App\Models\Product::create($validated);
+        $product = Product::create($validated);
 
         if ($request->hasFile('images')) {
             $this->handleImages($product, $request->file('images'));
         }
 
+        $this->syncVariants($product, $request);
 
-
-        return redirect()->route('products.index')->with('success', 'Product created successfully.');
+        return redirect()->route('products.edit', $product->id)->with('success', 'Product created successfully. Add or review variants below.');
     }
 
     protected function handleImages(\App\Models\Product $product, $images)
@@ -165,7 +170,7 @@ class ProductController extends Controller
      */
     public function show(string $id)
     {
-        $product = \App\Models\Product::with(['category', 'collections', 'images', 'brand', 'variants.attributeValues'])->findOrFail($id);
+        $product = \App\Models\Product::with(['category', 'collections', 'images', 'brand', 'variants.attributeValues.attribute'])->findOrFail($id);
         return view('admin.products.show', compact('product'));
     }
 
@@ -177,7 +182,8 @@ class ProductController extends Controller
         $product = \App\Models\Product::with(['category', 'collections', 'images', 'variants.attributeValues'])->findOrFail($id);
         $brands = \App\Models\Brand::all();
         $categories = \App\Models\Category::all();
-        return view('admin.products.edit', compact('product', 'brands', 'categories'));
+        $allAttributes = \App\Models\Attribute::with('values')->orderBy('name')->get();
+        return view('admin.products.edit', compact('product', 'brands', 'categories', 'allAttributes'));
     }
 
     /**
@@ -185,7 +191,7 @@ class ProductController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $product = \App\Models\Product::findOrFail($id);
+        $product = Product::findOrFail($id);
 
         $validated = $request->validate([
             'name' => 'required|string|max:255',
@@ -203,7 +209,7 @@ class ProductController extends Controller
             'canonical_url' => 'nullable|url|max:255',
             'is_visible' => 'boolean',
             'is_featured' => 'boolean',
-            'images.*' => 'nullable|mimes:jpeg,png,jpg,gif,webp,avif|max:2048'
+            'images.*' => 'nullable|mimes:jpeg,png,jpg,gif,webp,avif|max:2048',
         ]);
 
         $validated['is_visible'] = $request->has('is_visible');
@@ -215,9 +221,125 @@ class ProductController extends Controller
             $this->handleImages($product, $request->file('images'));
         }
 
+        $this->syncVariants($product, $request);
 
+        return redirect()->route('products.edit', $product->id)->with('success', 'Product updated successfully.');
+    }
 
-        return redirect()->route('products.index')->with('success', 'Product updated successfully.');
+    /**
+     * Sync variants from the inline Shopify-style panel.
+     * Finds-or-creates Attributes and AttributeValues dynamically.
+     */
+    protected function syncVariants(Product $product, Request $request): void
+    {
+        $options      = $request->input('options', []);
+        $variantsData = $request->input('variants', []);
+
+        // Nothing submitted → leave existing variants untouched
+        if (empty($options) && empty($variantsData)) {
+            return;
+        }
+
+        // ── Step 1: Build attribute/value DB records ──────────────────────────
+        // $optionMap[optIndex] = ['attribute' => Attribute, 'values' => [string => AttributeValue]]
+        $optionMap = [];
+        foreach ($options as $optIndex => $option) {
+            $attrName = trim($option['name'] ?? '');
+            if (empty($attrName)) continue;
+
+            $attribute = Attribute::firstOrCreate(
+                ['name' => $attrName],
+                ['slug' => Str::slug($attrName), 'type' => 'select', 'sort_order' => (int) $optIndex]
+            );
+
+            $valMap = [];
+            foreach ($option['values'] ?? [] as $val) {
+                $val = trim($val);
+                if (empty($val)) continue;
+                $attrValue = AttributeValue::firstOrCreate(
+                    ['attribute_id' => $attribute->id, 'value' => $val],
+                    ['slug' => Str::slug($val), 'sort_order' => 0]
+                );
+                $valMap[$val] = $attrValue;
+            }
+            $optionMap[$optIndex] = ['attribute' => $attribute, 'values' => $valMap];
+        }
+
+        // ── Step 2: Iterate submitted variant rows ────────────────────────────
+        $keptIds         = [];
+        $existingVariants = $product->variants()->with('attributeValues')->get();
+        $isFirst         = true;
+
+        foreach ($variantsData as $rowIndex => $variantData) {
+            // Skip unchecked rows
+            if (empty($variantData['enabled'])) continue;
+
+            // Resolve attribute value IDs for this combination
+            $attrValueIds = [];
+            foreach ($variantData['opts'] ?? [] as $optIdx => $value) {
+                $value = trim($value);
+                if (isset($optionMap[$optIdx]['values'][$value])) {
+                    $attrValueIds[] = $optionMap[$optIdx]['values'][$value]->id;
+                }
+            }
+            sort($attrValueIds);
+
+            // Find existing variant by explicit ID, or by matching attribute combo
+            $variant = null;
+            if (!empty($variantData['id'])) {
+                $variant = $existingVariants->find($variantData['id']);
+            }
+            if (!$variant && !empty($attrValueIds)) {
+                $variant = $existingVariants->first(function ($v) use ($attrValueIds) {
+                    $ids = $v->attributeValues->pluck('id')->sort()->values()->toArray();
+                    return $ids === $attrValueIds;
+                });
+            }
+
+            $price = floatval($variantData['price'] ?? $product->base_price);
+            $sku   = trim($variantData['sku'] ?? '');
+
+            $fields = [
+                'sku'            => $sku ?: ('SKU-' . strtoupper(Str::random(6))),
+                'price'          => $price > 0 ? $price : $product->base_price,
+                'barcode'        => $variantData['barcode'] ?? null ?: null,
+                'stock_quantity' => max(0, intval($variantData['stock_quantity'] ?? 0)),
+                'is_default'     => $isFirst,
+            ];
+
+            if ($variant) {
+                $variant->update($fields);
+            } else {
+                $variant = $product->variants()->create($fields);
+            }
+
+            $variant->attributeValues()->sync($attrValueIds);
+            $keptIds[] = $variant->id;
+            $isFirst   = false;
+
+            // Handle per-variant image upload
+            $file = $request->file("variant_images.$rowIndex");
+            if ($file && $file->isValid()) {
+                \Illuminate\Support\Facades\Log::info('Variant image received in syncVariants', [
+                    'rowIndex' => $rowIndex,
+                    'variant_id' => $variant->id,
+                    'file_name' => $file->getClientOriginalName()
+                ]);
+                $path = $file->store('products', 'public');
+                $variant->images()->create([
+                    'product_id' => $product->id,
+                    'file_path'  => $path,
+                    'file_name'  => $file->getClientOriginalName(),
+                    'sort_order' => 0,
+                    'is_primary' => true,
+                ]);
+            }
+        }
+
+        // ── Step 3: Remove variants that were unchecked / deleted ─────────────
+        if (!empty($keptIds)) {
+            $product->variants()->whereNotIn('id', $keptIds)->each(fn ($v) => $v->delete());
+        }
     }
 
     /**
@@ -265,7 +387,7 @@ class ProductController extends Controller
             return response()->json(['success' => false, 'message' => 'No items selected.'], 400);
         }
 
-        $products = \App\Models\Product::whereIn('id', $ids)->get();
+        $products = Product::whereIn('id', $ids)->get();
         foreach ($products as $product) {
             foreach ($product->images as $image) {
                 if (\Illuminate\Support\Facades\Storage::disk('public')->exists($image->file_path)) {

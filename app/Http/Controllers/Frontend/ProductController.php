@@ -93,7 +93,7 @@ class ProductController extends Controller
 
     public function show($slug)
     {
-        $product = Product::with('variants.attributeValues.attribute', 'images', 'brand', 'category', 'reviews.customer')
+        $product = Product::with(['variants.attributeValues.attribute', 'variants.images', 'images', 'brand', 'category', 'reviews.customer'])
             ->where('slug', $slug)
             ->where('is_visible', true)
             ->firstOrFail();

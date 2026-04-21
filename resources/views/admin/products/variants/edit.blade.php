@@ -37,7 +37,7 @@
         </div>
         @endif
 
-        <form action="{{ route('products.variants.update', [$product->id, $variant->id]) }}" method="POST" id="edit-variant-form">
+        <form action="{{ route('products.variants.update', [$product->id, $variant->id]) }}" method="POST" id="edit-variant-form" enctype="multipart/form-data">
             @csrf
             @method('PUT')
 
@@ -131,6 +131,34 @@
 
                 {{-- Right Column --}}
                 <div class="lg:col-span-1 space-y-4">
+                    
+                    {{-- Media --}}
+                    <div class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
+                        <div class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50/50 dark:bg-surface-tonal-a20 flex items-center justify-between">
+                            <h2 class="text-sm font-bold text-gray-900 dark:text-white">Variant Media</h2>
+                        </div>
+                        <div class="p-4">
+                            <div class="grid grid-cols-2 gap-3" id="variant-media-grid">
+                                @foreach($variant->images as $image)
+                                    <div class="aspect-square rounded-xl border border-gray-100 dark:border-surface-tonal-a30 overflow-hidden relative group bg-gray-50 dark:bg-surface-tonal-a30/20" id="image-container-{{ $image->id }}">
+                                        <img src="{{ Storage::url($image->file_path) }}" class="w-full h-full object-cover">
+                                        <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center gap-2">
+                                            <button type="button" onclick="deleteVariantImage({{ $product->id }}, {{ $variant->id }}, {{ $image->id }})" class="w-8 h-8 rounded-full bg-red-500 text-white flex items-center justify-center hover:bg-red-600 shadow-lg">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                                            </button>
+                                        </div>
+                                    </div>
+                                @endforeach
+
+                                <label class="aspect-square admin-upload-zone rounded-xl border-dashed border-2 border-gray-200 dark:border-surface-tonal-a30 bg-gray-50/50 dark:bg-surface-tonal-a30/20 flex flex-col items-center justify-center gap-1 cursor-pointer hover:border-indigo-400 transition-all">
+                                    <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                                    <p class="text-[8px] font-black text-gray-400 uppercase tracking-widest">Add Media</p>
+                                    <input type="file" name="variant_images[]" multiple accept="image/*" class="hidden" onchange="handleMediaSelect(this)">
+                                </label>
+                            </div>
+                            @error('variant_images') <p class="text-[10px] text-red-500 mt-2 font-bold">{{ $message }}</p> @enderror
+                        </div>
+                    </div>
                     {{-- Shipping & Settings --}}
                     <div class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                         <div class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50/50 dark:bg-surface-tonal-a20">
@@ -178,3 +206,86 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    const dataTransfer = new DataTransfer();
+
+    function handleMediaSelect(input) {
+        if (input.files) {
+            const grid = document.getElementById('variant-media-grid');
+            const uploadBtn = grid.querySelector('label');
+
+            Array.from(input.files).forEach(file => {
+                const reader = new FileReader();
+                
+                const wrapperId = 'v-img-' + Math.random().toString(36).substr(2, 9);
+                
+                dataTransfer.items.add(file);
+                // We'll update the actual hidden input or keep this one updated
+                // Actually, we can use the same input name or a new one
+                // The backend expects variant_images[]
+                
+                reader.onload = function(e) {
+                    const wrapper = document.createElement('div');
+                    wrapper.id = wrapperId;
+                    wrapper.className = 'aspect-square rounded-xl border border-gray-100 dark:border-surface-tonal-a30 overflow-hidden relative group animate-fade-in-scale';
+                    wrapper.innerHTML = `
+                        <img src="${e.target.result}" class="w-full h-full object-cover">
+                        <button type="button" onclick="removeNewMedia('${wrapperId}', '${file.name}')" class="absolute top-2 right-2 w-6 h-6 bg-white dark:bg-surface-tonal-a30 text-red-500 rounded-full shadow-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                        </button>
+                    `;
+                    grid.insertBefore(wrapper, uploadBtn);
+                };
+                reader.readAsDataURL(file);
+            });
+            
+            // Sync the input files with our dataTransfer
+            input.files = dataTransfer.files;
+        }
+    }
+
+    function removeNewMedia(wrapperId, fileName) {
+        document.getElementById(wrapperId).remove();
+        
+        const newDataTransfer = new DataTransfer();
+        Array.from(dataTransfer.files).forEach(file => {
+            if (file.name !== fileName) {
+                newDataTransfer.items.add(file);
+            }
+        });
+        
+        dataTransfer.items.clear();
+        Array.from(newDataTransfer.files).forEach(file => dataTransfer.items.add(file));
+        
+        document.querySelector('input[name="variant_images[]"]').files = dataTransfer.files;
+    }
+
+    function deleteVariantImage(productId, variantId, imageId) {
+        if (!confirm('Are you sure you want to remove this image from the variant?')) return;
+
+        fetch(`/admin/products/${productId}/variants/${variantId}/images/${imageId}`, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                document.getElementById(`image-container-${imageId}`).classList.add('scale-90', 'opacity-0');
+                setTimeout(() => document.getElementById(`image-container-${imageId}`).remove(), 200);
+            } else {
+                alert(data.message || 'Error deleting image');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while deleting the image');
+        });
+    }
+</script>
+@endpush

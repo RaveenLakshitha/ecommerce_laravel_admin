@@ -31,6 +31,7 @@ class VariantController extends Controller
             'is_default' => 'boolean',
             'attribute_values' => 'required|array',
             'attribute_values.*' => 'exists:attribute_values,id',
+            'variant_images.*' => 'nullable|mimes:jpeg,png,jpg,gif,webp,avif|max:2048'
         ]);
 
         $validated['is_default'] = $request->has('is_default');
@@ -43,7 +44,26 @@ class VariantController extends Controller
         $variant = $product->variants()->create($validated);
         $variant->attributeValues()->sync($request->attribute_values);
 
+        if ($request->hasFile('variant_images')) {
+            $this->handleVariantImages($product, $variant, $request->file('variant_images'));
+        }
+
         return redirect()->route('products.edit', $product->id)->with('success', 'Variant created successfully.');
+    }
+
+    protected function handleVariantImages(Product $product, Variant $variant, $images)
+    {
+        foreach ($images as $index => $image) {
+            $path = $image->store('products', 'public');
+
+            $variant->images()->create([
+                'product_id' => $product->id,
+                'file_path' => $path,
+                'file_name' => $image->getClientOriginalName(),
+                'sort_order' => $variant->images()->count() + $index,
+                'is_primary' => $variant->images()->count() === 0 && $index === 0,
+            ]);
+        }
     }
 
     public function edit(Product $product, Variant $variant)
@@ -66,6 +86,7 @@ class VariantController extends Controller
             'is_default' => 'boolean',
             'attribute_values' => 'required|array',
             'attribute_values.*' => 'exists:attribute_values,id',
+            'variant_images.*' => 'nullable|mimes:jpeg,png,jpg,gif,webp,avif|max:2048'
         ]);
 
         $validated['is_default'] = $request->has('is_default');
@@ -78,6 +99,14 @@ class VariantController extends Controller
         $variant->update($validated);
         $variant->attributeValues()->sync($request->attribute_values);
 
+        \Illuminate\Support\Facades\Log::info('Variant update triggered', ['variant_id' => $variant->id]);
+        if ($request->hasFile('variant_images')) {
+            \Illuminate\Support\Facades\Log::info('Images detected in request', ['count' => count($request->file('variant_images'))]);
+            $this->handleVariantImages($product, $variant, $request->file('variant_images'));
+        } else {
+            \Illuminate\Support\Facades\Log::info('No images detected in request');
+        }
+
         return redirect()->route('products.edit', $product->id)->with('success', 'Variant updated successfully.');
     }
 
@@ -85,5 +114,20 @@ class VariantController extends Controller
     {
         $variant->delete();
         return redirect()->route('products.edit', $product->id)->with('success', 'Variant deleted successfully.');
+    }
+
+    public function deleteImage(Product $product, Variant $variant, $imageId)
+    {
+        $image = $variant->images()->findOrFail($imageId);
+
+        // Delete from storage
+        if (\Illuminate\Support\Facades\Storage::disk('public')->exists($image->file_path)) {
+            \Illuminate\Support\Facades\Storage::disk('public')->delete($image->file_path);
+        }
+
+        // Delete from database
+        $image->delete();
+
+        return response()->json(['success' => true, 'message' => 'Image deleted successfully']);
     }
 }

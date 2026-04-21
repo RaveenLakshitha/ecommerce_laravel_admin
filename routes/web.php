@@ -92,6 +92,7 @@ Route::domain('admin.karbnzol.com')->group(function () {
         
         // Product Variants
         Route::resource('products.variants', \App\Http\Controllers\Admin\VariantController::class)->except(['index', 'show']);
+        Route::delete('products/{product}/variants/{variant}/images/{image}', [\App\Http\Controllers\Admin\VariantController::class, 'deleteImage'])->name('products.variants.images.destroy');
 
         // Categories Management
         Route::get('categories/manager', [\App\Http\Controllers\CategoryController::class, 'tree'])->name('categories.tree');

@@ -3,6 +3,18 @@
 @section('title', 'Add New Product')
 
 @section('content')
+@php
+    $existingOptionsJson  = '[]';
+    $existingVariantsJson = '[]';
+    $basePrice            = 0;
+    $allAttributesJson    = $allAttributes->map(function($attr) {
+        return [
+            'id' => $attr->id,
+            'name' => $attr->name,
+            'values' => $attr->values->pluck('value')->toArray()
+        ];
+    })->toJson();
+@endphp
     <div class="admin-page animate-fade-in-up" x-data="productForm()">
         <div class="admin-page-inner">
 
@@ -119,6 +131,30 @@
                             </div>
                         </div>
 
+                        {{-- Organization / Category --}}
+                        <div class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
+                            <div class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50/50 dark:bg-surface-tonal-a20">
+                                <h2 class="text-sm font-bold text-gray-900 dark:text-white">Organization</h2>
+                            </div>
+                            <div class="p-4 space-y-4">
+                                <div>
+                                    <label class="block text-[10px] font-black text-black dark:text-white uppercase tracking-widest mb-1">Category</label>
+                                    <div class="relative">
+                                        <select name="category_id" required
+                                            class="block w-full rounded-md border border-gray-100/50 dark:border-white/5 bg-gray-50/30 dark:bg-surface-tonal-a20 px-3 py-2 text-xs font-bold shadow-sm text-black dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-indigo-300 dark:focus:border-indigo-500/50 focus:ring-2 focus:ring-indigo-500/5 focus:shadow-md">
+                                            <option value="">Select Category</option>
+                                            @foreach($categories as $category)
+                                                <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    @error('category_id')
+                                        <p class="text-[10px] text-red-500 mt-1 font-bold px-1">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+
                         {{-- Product Gallery --}}
                         <div class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                             <div class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50/50 dark:bg-surface-tonal-a20 flex items-center justify-between">
@@ -137,35 +173,15 @@
                                 @error('images') <p class="text-[10px] text-red-500 mt-2 font-bold">{{ $message }}</p> @enderror
                             </div>
                         </div>
-                    </div>
+
+                        {{-- Options & Variants --}}
+                        @include('admin.products.partials.variants-panel')
+
+                </div>{{-- end lg:col-span-2 --}}
 
                     {{-- RIGHT COLUMN --}}
                     <div class="lg:col-span-1 space-y-4">
 
-                        {{-- Organization / Category --}}
-                        <div class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
-                            <div class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50/50 dark:bg-surface-tonal-a20">
-                                <h2 class="text-sm font-bold text-gray-900 dark:text-white">Organization</h2>
-                            </div>
-                                <div class="p-4 space-y-4">
-                                    <div>
-                                        <label class="block text-[10px] font-black text-black dark:text-white uppercase tracking-widest mb-1">Category</label>
-                                        <div class="relative">
-                                            <select name="category_id" required
-                                                class="block w-full rounded-md border border-gray-100/50 dark:border-white/5 bg-gray-50/30 dark:bg-surface-tonal-a20 px-3 py-2 text-xs font-bold shadow-sm text-black dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-indigo-300 dark:focus:border-indigo-500/50 focus:ring-2 focus:ring-indigo-500/5 focus:shadow-md">
-                                                <option value="">Select Category</option>
-                                                @foreach($categories as $category)
-                                                    <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                        @error('category_id')
-                                            <p class="text-[10px] text-red-500 mt-1 font-bold px-1">{{ $message }}</p>
-                                        @enderror
-                                    </div>
-
-                            </div>
-                        </div>
 
                         {{-- Search Engine Optimization --}}
                         <div class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">

@@ -1758,14 +1758,25 @@
                 attrs[av.attribute_id] = av.id;
             });
         }
+        
+        // Get the first image assigned specifically to this variant, 
+        // or null if none assigned.
+        let variantImg = null;
+        if (v.images && v.images.length > 0) {
+            variantImg = v.images[0].url;
+        }
+
         return {
             id: v.id,
             price: parseFloat(v.price),
             sale_price: v.sale_price ? parseFloat(v.sale_price) : null,
             stock: v.stock_quantity,
-            attributes: attrs
+            attributes: attrs,
+            image_url: variantImg
         };
     });
+
+    const productPrimaryImage = @json($product->primaryImage ? $product->primaryImage->url : ($product->images->first() ? $product->images->first()->url : asset('images/placeholder.jpg')));
 
     const numRequiredAttributes = @json(isset($productAttributes) ? $productAttributes->count() : 0);
     // Disable add to cart button initially if there are attributes needed
@@ -1879,10 +1890,33 @@
                 <span class="pd-stock-dot ${stockDot}" id="pdStockDot"></span>
                 <span class="pd-stock-label" id="pdStockLabel">${stockText}</span>
             `;
+
+            // Update Image
+            const targetImageUrl = exactMatch.image_url || productPrimaryImage;
+            if (targetImageUrl) {
+                const mainImg = document.getElementById('mainProductImage');
+                // Use a safe comparison (comparing last parts of the URL if needed, 
+                // but checking full string for now)
+                if (!mainImg.src.endsWith(targetImageUrl) && mainImg.src !== targetImageUrl) {
+                    mainImg.style.opacity = '0';
+                    setTimeout(() => {
+                        mainImg.src = targetImageUrl;
+                        mainImg.style.opacity = '1';
+                    }, 200);
+                }
+            }
         } else {
-            // Not a complete match yet
+            // Not a complete match yet or variant not found
             addToCartBtn.disabled = true;
             addToCartBtn.textContent = 'Select Options';
+            
+            // Revert stock to "Select options" state
+            const stockWrap = document.getElementById('pdStockWrap');
+            stockWrap.className = 'pd-stock in-stock';
+            stockWrap.innerHTML = `
+                <span class="pd-stock-dot" style="background:#ccc;"></span>
+                <span class="pd-stock-label" style="color:#777;">Please select all options</span>
+            `;
         }
     }
 
