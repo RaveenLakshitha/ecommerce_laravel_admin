@@ -1216,6 +1216,65 @@
                 align-items: flex-start;
             }
         }
+        /* ── Language Switcher ──────────────────── */
+        .lang-switcher .lang-text {
+            font-family: var(--font-display);
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            color: var(--gold);
+        }
+
+        .lang-btn {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 0.65rem 1.5rem;
+            background: none;
+            border: none;
+            color: var(--silver);
+            font-family: var(--font-body);
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .lang-btn:hover {
+            color: var(--white);
+            background: var(--bg-3);
+        }
+
+        .lang-btn.active {
+            color: var(--gold);
+            font-weight: 600;
+        }
+
+        .mob-lang-row {
+            padding: 1rem 1.5rem;
+            display: flex;
+            gap: 1rem;
+            border-bottom: 1px solid var(--bg-4);
+        }
+
+        .mob-lang-btn {
+            font-family: var(--font-display);
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            color: var(--silver);
+            text-transform: uppercase;
+            background: none;
+            border: 1px solid var(--bg-4);
+            padding: 0.5rem 1rem;
+            flex: 1;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .mob-lang-btn.active {
+            border-color: var(--gold);
+            color: var(--gold);
+        }
     </style>
 </head>
 
@@ -1250,24 +1309,24 @@
 
                     <!-- Home (no dropdown) -->
                     <li class="nav-item">
-                        <a href="{{ route('home') }}" class="active">Home</a>
+                        <a href="{{ route('home') }}" class="active">{{ __('file.home') }}</a>
                     </li>
 
                     <!-- New Arrivals — simple dropdown -->
                     <li class="nav-item has-drop">
                         <a href="#">
-                            New Arrivals
-                            <span class="new-pill">New</span>
+                            {{ __('file.new_arrivals') }}
+                            <span class="new-pill">{{ __('file.new') }}</span>
                             <svg class="nav-chevron" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 1 5 5 9 1"/></svg>
                         </a>
                         <div class="nav-dropdown simple" role="menu">
                             <ul class="dd-simple-list">
-                                <li><a href="#" role="menuitem">View All New Arrivals <span class="dd-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></a></li>
+                                <li><a href="#" role="menuitem">{{ __('file.view_all_new_arrivals') }} <span class="dd-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></a></li>
                                 <div class="dd-simple-divider"></div>
-                                <li><a href="#" role="menuitem">This Week's Drop <span class="dd-item-badge">Hot</span> <span class="dd-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></a></li>
-                                <li><a href="#" role="menuitem">New Men's Styles <span class="dd-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></a></li>
-                                <li><a href="#" role="menuitem">New Kids' Styles <span class="dd-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></a></li>
-                                <li><a href="#" role="menuitem">New Activewear <span class="dd-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></a></li>
+                                <li><a href="#" role="menuitem">{{ __('file.this_weeks_drop') }} <span class="dd-item-badge">{{ __('file.hot') }}</span> <span class="dd-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></a></li>
+                                <li><a href="#" role="menuitem">{{ __('file.new_mens_styles') }} <span class="dd-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></a></li>
+                                <li><a href="#" role="menuitem">{{ __('file.new_kids_styles') }} <span class="dd-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></a></li>
+                                <li><a href="#" role="menuitem">{{ __('file.new_activewear') }} <span class="dd-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></a></li>
                             </ul>
                         </div>
                     </li>
@@ -1334,30 +1393,53 @@
 
 
                     <!-- About (no dropdown) -->
-                    <li class="nav-item"><a href="#">About</a></li>
+                    <li class="nav-item"><a href="#">{{ __('file.about') }}</a></li>
 
                     <!-- Contact (no dropdown) -->
-                    <li class="nav-item"><a href="#">Contact</a></li>
-
-                    <!-- Careers (no dropdown) -->
-                    <li class="nav-item"><a href="#">Careers</a></li>
+                    <li class="nav-item"><a href="#">{{ __('file.contact') }}</a></li>
 
                 </ul>
             </nav>
 
             <!-- Right icons -->
             <div class="nav-right">
+                <!-- Language Switcher -->
+                <div class="nav-item has-drop lang-switcher">
+                    <a href="#" class="nav-icon" aria-label="{{ __('file.switch_language') }}">
+                        <span class="lang-text">{{ strtoupper(app()->getLocale()) }}</span>
+                        <svg class="nav-chevron" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 1 5 5 9 1"/></svg>
+                    </a>
+                    <div class="nav-dropdown simple" role="menu" style="min-width: 120px;">
+                        <ul class="dd-simple-list">
+                            <li>
+                                <form action="{{ route('language.switch') }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="locale" value="en">
+                                    <button type="submit" class="lang-btn {{ app()->getLocale() == 'en' ? 'active' : '' }}">English</button>
+                                </form>
+                            </li>
+                            <li>
+                                <form action="{{ route('language.switch') }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="locale" value="es">
+                                    <button type="submit" class="lang-btn {{ app()->getLocale() == 'es' ? 'active' : '' }}">Español</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
                 @auth('web')
                     <a href="{{ route('account.dashboard') }}" class="nav-icon" aria-label="Account">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                     </a>
                 @else
                     <div class="nav-auth">
-                        <a href="{{ route('login') }}" class="auth-link">Sign In</a>
-                        <a href="{{ route('register') }}" class="auth-link primary">Register</a>
+                        <a href="#" onclick="openAuthModal('login'); return false;" class="auth-link">{{ __('file.sign_in') }}</a>
+                        <a href="#" onclick="openAuthModal('register'); return false;" class="auth-link primary">{{ __('file.register') }}</a>
                     </div>
                 @endauth
-                <a href="#" class="nav-icon" aria-label="Search">
+                <a href="#" class="nav-icon" aria-label="{{ __('file.search') }}">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
                 </a>
                 <a href="{{ route('cart.index') }}" class="nav-icon" aria-label="Shopping cart">
@@ -1377,17 +1459,17 @@
     <nav class="mobile-nav" id="mobileNav" aria-label="Mobile navigation">
 
         <!-- Plain link: Home -->
-        <div class="mob-item mob-plain"><a href="{{ route('home') }}">Home</a></div>
+        <div class="mob-item mob-plain"><a href="{{ route('home') }}">{{ __('file.home') }}</a></div>
 
         <!-- New Arrivals accordion -->
         <div class="mob-item" id="mob-new">
             <div class="mob-item-head" onclick="toggleMob('mob-new')">
-                <a href="#" onclick="return false;">New Arrivals</a>
+                <a href="#" onclick="return false;">{{ __('file.new_arrivals') }}</a>
                 <svg class="mob-chevron" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 1 5 5 9 1"/></svg>
             </div>
             <div class="mob-sub">
                 <div class="mob-sub-section">
-                    <a href="#">View All New Arrivals</a>
+                    <a href="#">{{ __('file.view_all_new_arrivals') }}</a>
                     <a href="#">This Week's Drop</a>
                     <a href="#">New Men's Styles</a>
                     <a href="#">New Kids' Styles</a>
@@ -1424,18 +1506,32 @@
         @endforeach
 
         <!-- Plain links -->
-        <div class="mob-item mob-plain"><a href="#">About</a></div>
-        <div class="mob-item mob-plain"><a href="#">Contact</a></div>
-        <div class="mob-item mob-plain"><a href="#">Careers</a></div>
-        <div class="mob-item mob-plain"><a href="{{ route('cart.index') }}">My Bag (0)</a></div>
+        <div class="mob-item mob-plain"><a href="#">{{ __('file.about') }}</a></div>
+        <div class="mob-item mob-plain"><a href="#">{{ __('file.contact') }}</a></div>
+        <div class="mob-item mob-plain"><a href="#">{{ __('file.careers') }}</a></div>
+        <div class="mob-item mob-plain"><a href="{{ route('cart.index') }}">{{ __('file.my_bag') }} ({{ \Darryldecode\Cart\Facades\CartFacade::getTotalQuantity() }})</a></div>
+
+        <!-- Language row -->
+        <div class="mob-lang-row">
+            <form action="{{ route('language.switch') }}" method="POST" style="flex: 1;">
+                @csrf
+                <input type="hidden" name="locale" value="en">
+                <button type="submit" class="mob-lang-btn {{ app()->getLocale() == 'en' ? 'active' : '' }}">EN</button>
+            </form>
+            <form action="{{ route('language.switch') }}" method="POST" style="flex: 1;">
+                @csrf
+                <input type="hidden" name="locale" value="es">
+                <button type="submit" class="mob-lang-btn {{ app()->getLocale() == 'es' ? 'active' : '' }}">ES</button>
+            </form>
+        </div>
 
         <!-- Auth buttons -->
         @auth('web')
-            <div class="mob-item mob-plain"><a href="{{ route('account.dashboard') }}">My Account</a></div>
+            <div class="mob-item mob-plain"><a href="{{ route('account.dashboard') }}">{{ __('file.my_account') }}</a></div>
         @else
             <div class="mob-auth">
-                <a href="{{ route('login') }}" class="mob-signin">Sign In</a>
-                <a href="{{ route('register') }}" class="mob-register">Register</a>
+                <a href="#" onclick="openAuthModal('login'); return false;" class="mob-signin">{{ __('file.sign_in') }}</a>
+                <a href="#" onclick="openAuthModal('register'); return false;" class="mob-register">{{ __('file.register') }}</a>
             </div>
         @endauth
     </nav>
@@ -1464,29 +1560,29 @@
                     </div>
                 </div>
                 <div class="g-up">
-                    <p class="ft-col-h">Shop</p>
+                    <p class="ft-col-h">{{ __('file.shop') }}</p>
                     <ul class="ft-col-links">
-                        <li><a href="{{ route('frontend.products.index') }}">All Products</a></li>
-                        <li><a href="#">New Arrivals</a></li>
-                        <li><a href="{{ route('frontend.products.index') }}">Men's Clothing</a></li>
-                        <li><a href="#">Kids Clothing</a></li>
-                        <li><a href="#">Activewear</a></li>
-                        <li><a href="#">Sale</a></li>
+                        <li><a href="{{ route('frontend.products.index') }}">{{ __('file.all_products') }}</a></li>
+                        <li><a href="#">{{ __('file.new_arrivals') }}</a></li>
+                        <li><a href="{{ route('frontend.products.index') }}">{{ __('file.mens_clothing') }}</a></li>
+                        <li><a href="#">{{ __('file.kids_clothing') }}</a></li>
+                        <li><a href="#">{{ __('file.activewear') }}</a></li>
+                        <li><a href="#">{{ __('file.sale') }}</a></li>
                     </ul>
                 </div>
                 <div class="g-up">
-                    <p class="ft-col-h">Help</p>
+                    <p class="ft-col-h">{{ __('file.help') }}</p>
                     <ul class="ft-col-links">
-                        <li><a href="#">Shipping Info</a></li>
-                        <li><a href="#">Returns Policy</a></li>
-                        <li><a href="#">Size Guide</a></li>
-                        <li><a href="#">Track Order</a></li>
-                        <li><a href="#">FAQ</a></li>
-                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">{{ __('file.shipping_info') }}</a></li>
+                        <li><a href="#">{{ __('file.returns_policy') }}</a></li>
+                        <li><a href="#">{{ __('file.size_guide') }}</a></li>
+                        <li><a href="#">{{ __('file.track_order') }}</a></li>
+                        <li><a href="#">{{ __('file.faq') }}</a></li>
+                        <li><a href="#">{{ __('file.contact_us') }}</a></li>
                     </ul>
                 </div>
                 <div class="g-up">
-                    <p class="ft-col-h">Contact</p>
+                    <p class="ft-col-h">{{ __('file.contact') }}</p>
                     <div class="ft-contact">
                         <a href="tel:{{ $storefront->phone ?? '+94112345678' }}">{{ $storefront->phone ?? '+94 11 234 5678' }}</a><br>
                         <a href="mailto:{{ $storefront->email ?? 'hello@karbnzol.com' }}">{{ $storefront->email ?? 'hello@karbnzol.com' }}</a><br><br>
@@ -1494,14 +1590,14 @@
                     </div>
                 </div>
                 <div class="g-up">
-                    <p class="ft-col-h">Newsletter</p>
-                    <p class="ft-nl-note">Get exclusive deals and early access to new drops.</p>
+                    <p class="ft-col-h">{{ __('file.newsletter') }}</p>
+                    <p class="ft-nl-note">{{ __('file.newsletter_note') }}</p>
                     <form class="ft-nl-form" action="{{ route('newsletter.subscribe') }}" method="POST">
                         @csrf
-                        <input type="email" name="email" placeholder="Your email" required>
-                        <button type="submit">Go</button>
+                        <input type="email" name="email" placeholder="{{ __('file.your_email') }}" required>
+                        <button type="submit">{{ __('file.subscribe') }}</button>
                     </form>
-                    <p class="ft-pay-label">We Accept</p>
+                    <p class="ft-pay-label">{{ __('file.we_accept') }}</p>
                     <div class="ft-pay-row">
                         <span class="pay-chip">Visa</span>
                         <span class="pay-chip">Master</span>
@@ -1722,5 +1818,7 @@
         }
     }
     </script>
+    
+    @include('frontend.layouts.auth-modals')
 </body>
 </html>
