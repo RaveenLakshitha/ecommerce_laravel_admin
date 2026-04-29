@@ -68,8 +68,11 @@ class AttributeController extends Controller
         ]);
     }
 
-    public function create()
+    public function create(Request $request)
     {
+        if ($request->ajax()) {
+            return view('admin.attributes.partials.form', ['attribute' => null])->render();
+        }
         return view('admin.attributes.create');
     }
 
@@ -84,11 +87,18 @@ class AttributeController extends Controller
 
         Attribute::create($validated);
 
-        return redirect()->route('attributes.index')->with('success', 'Attribute created successfully.');
+        if ($request->ajax()) {
+            return response()->json(['success' => true, 'message' => __('file.attribute_created_successfully')]);
+        }
+
+        return redirect()->route('attributes.index')->with('success', __('file.attribute_created_successfully'));
     }
 
-    public function edit(Attribute $attribute)
+    public function edit(Request $request, Attribute $attribute)
     {
+        if ($request->ajax()) {
+            return view('admin.attributes.partials.form', compact('attribute'))->render();
+        }
         $attribute->load(['values' => function($query) {
             $query->orderBy('sort_order');
         }]);
@@ -107,7 +117,11 @@ class AttributeController extends Controller
 
         $attribute->update($validated);
 
-        return redirect()->route('attributes.index')->with('success', 'Attribute updated successfully.');
+        if ($request->ajax()) {
+            return response()->json(['success' => true, 'message' => __('file.attribute_updated_successfully')]);
+        }
+
+        return redirect()->route('attributes.index')->with('success', __('file.attribute_updated_successfully'));
     }
 
     public function destroy(Attribute $attribute)
@@ -115,10 +129,10 @@ class AttributeController extends Controller
         $attribute->delete();
 
         if (request()->ajax()) {
-            return response()->json(['success' => true, 'message' => 'Attribute deleted successfully.']);
+            return response()->json(['success' => true, 'message' => __('file.attribute_deleted_successfully')]);
         }
 
-        return redirect()->route('attributes.index')->with('success', 'Attribute deleted successfully.');
+        return redirect()->route('attributes.index')->with('success', __('file.attribute_deleted_successfully'));
     }
 
     public function bulkDelete(Request $request)
@@ -130,14 +144,14 @@ class AttributeController extends Controller
         }
 
         if (!is_array($ids) || empty($ids)) {
-            return response()->json(['success' => false, 'message' => 'No items selected.'], 400);
+            return response()->json(['success' => false, 'message' => __('file.no_items_selected')], 400);
         }
 
         \App\Models\Attribute::whereIn('id', $ids)->delete();
 
         return response()->json([
             'success' => true,
-            'message' => 'Selected attributes deleted successfully.'
+            'message' => __('file.attributes_bulk_deleted_successfully')
         ]);
     }
 
@@ -154,7 +168,7 @@ class AttributeController extends Controller
 
         $attribute->values()->create($validated);
 
-        return back()->with('success', 'Attribute value added successfully.');
+        return back()->with('success', __('file.attribute_value_added_successfully'));
     }
 
     public function destroyValue(Attribute $attribute, AttributeValue $value)
@@ -166,6 +180,6 @@ class AttributeController extends Controller
 
         $value->delete();
 
-        return back()->with('success', 'Attribute value deleted successfully.');
+        return back()->with('success', __('file.attribute_value_deleted_successfully'));
     }
 }

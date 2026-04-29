@@ -1,6 +1,4 @@
-@extends('frontend.layouts.app')@section('title', $store_name ?? 'Karbnzol — Premium Menswear')@section('content')
-
-    <style>
+@extends('frontend.layouts.app')@section('title', $store_name ?? 'Karbnzol — Premium Menswear')@section('content')<style>
         :root {
             --bg:        #1a1a1a;
             --bg-2:      #222222;
@@ -8,8 +6,8 @@
             --bg-4:      #333333;
             --white:     #ffffff;
             --off-white: #f0f0f0;
-            --silver:    #aaaaaa;
-            --dim:       #666666;
+            --silver:    #d1d5db;
+            --dim:       #a1a1aa;
             --gold:      #c8a96e;
             --gold-bg:   rgba(200,169,110,0.1);
             --red:       #cc3333;
@@ -587,8 +585,9 @@
         <div class="hero-track" id="heroTrack">
 
             @php 
-                $banners = $storefront->storefront_banners ?? [];
-                if (!is_array($banners)) $banners = [];
+                                $banners = $storefront->storefront_banners ?? [];
+                if (!is_array($banners))
+                    $banners = [];
                 // Fallback to default if no banners configured
                 if (empty($banners)) {
                     $banners = [
@@ -602,7 +601,7 @@
             @foreach($banners as $i => $sl)
                 <div class="hero-slide {{ $i === 0 ? 'active' : '' }}">
                     @php 
-                        $slImg = $sl['image'] ?? '';
+                                            $slImg = $sl['image'] ?? '';
                         $imgUrl = !empty($slImg) && str_starts_with($slImg, 'http') ? $slImg : (!empty($slImg) ? asset('storage/' . $slImg) : 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1600&q=80'); 
                     @endphp
                     <div class="slide-bg" style="background-image: url('{{ $imgUrl }}');"></div>
@@ -686,7 +685,7 @@
                     <p class="sec-eyebrow">{{ __('file.just_dropped') }}</p>
                     <h2 class="sec-title">{{ __('file.new_arrivals') }}</h2>
                 </div>
-                <a href="{{ route('products.index') }}" class="sec-link">
+                <a href="{{ route('frontend.products.index') }}" class="sec-link">
                     {{ __('file.view_all') }}
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                 </a>
@@ -697,9 +696,9 @@
                     @php
                         $defaultVariant = $product->variants->where('is_default', true)->first()
                             ?? $product->variants->first();
-                        $displayPrice   = $defaultVariant ? ($defaultVariant->sale_price ?? $defaultVariant->price) : $product->sale_price ?? $product->base_price;
-                        $originalPrice  = ($defaultVariant && $defaultVariant->sale_price) ? $defaultVariant->price : ($product->sale_price ? $product->base_price : null);
-                        $imgUrl         = $product->primaryImage
+                        $displayPrice = $defaultVariant ? ($defaultVariant->sale_price ?? $defaultVariant->price) : $product->sale_price ?? $product->base_price;
+                        $originalPrice = ($defaultVariant && $defaultVariant->sale_price) ? $defaultVariant->price : ($product->sale_price ? $product->base_price : null);
+                        $imgUrl = $product->primaryImage
                             ? asset('storage/' . $product->primaryImage->file_path)
                             : 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80';
                     @endphp
@@ -728,13 +727,13 @@
                             <p class="p-brand">{{ $product->brand?->name ?? 'Karbnzol' }}</p>
                             <p class="p-name">{{ $product->name }}</p>
                             <div class="p-price-row">
-                                <span class="p-price">Rs. {{ number_format($displayPrice, 2) }} LKR</span>
+                                <span class="p-price">@price($displayPrice)</span>
                                 @if($originalPrice)
-                                    <span class="p-price-was">Rs. {{ number_format($originalPrice, 2) }}</span>
+                                    <span class="p-price-was">@price($originalPrice)</span>
                                 @endif
                             </div>
                             @if($displayPrice > 0)
-                                <p class="p-install">3 × <strong>Rs. {{ number_format($displayPrice / 3, 2) }}</strong> &amp; up to <span class="cb">4% Cashback</span> with<span class="mintpay">MintPay</span></p>
+                                <p class="p-install">3 × <strong>@price($displayPrice / 3)</strong> &amp; up to <span class="cb">4% Cashback</span> with<span class="mintpay">MintPay</span></p>
                             @endif
                         </div>
                     </div>
@@ -753,15 +752,15 @@
     <div class="marquee-bar" aria-hidden="true">
         <div class="marquee-track">
             @php 
-                $mqRaw = $storefront_marquee_text ?? '';
+                                $mqRaw = $storefront_marquee_text ?? '';
                 $mqLink = $storefront_marquee_link ?? null;
-                
+
                 if (!empty($mqRaw)) {
                     // Split by | and trim whitespace
                     $parts = array_map('trim', explode('|', $mqRaw));
                     // Repeat the parts to ensure we have enough items for the marquee loop
                     $mw = [];
-                    while(count($mw) < 15) {
+                    while (count($mw) < 15) {
                         $mw = array_merge($mw, $parts);
                     }
                     $mw = array_slice($mw, 0, count($mw) > 15 ? count($mw) : 15);
@@ -789,7 +788,7 @@
                     <p class="sec-eyebrow">{{ __('file.shop_by_collection') }}</p>
                     <h2 class="sec-title">{{ __('file.featured_collections') }}</h2>
                 </div>
-                <a href="{{ route('products.index') }}" class="sec-link">{{ __('file.browse_all') }} <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+                <a href="{{ route('frontend.products.index') }}" class="sec-link">{{ __('file.browse_all') }} <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
             </div>
         </div>
         <div style="max-width:1600px;margin:0 auto;padding:0 2rem;">
@@ -819,9 +818,9 @@
                 @else
                     {{-- Fallback static collections when none configured in admin --}}
                     @php $fallbackCols = [
-                        ['num' => 'Col. 01', 'name' => 'The Dark Edit',      'img' => 'https://images.unsplash.com/photo-1487222477894-8943e31ef7b2?w=900&q=80'],
-                        ['num' => 'Col. 02', 'name' => 'Street Ready',       'img' => 'https://images.unsplash.com/photo-1483985988355-763728e1935b?w=600&q=80'],
-                        ['num' => 'Col. 03', 'name' => 'Active Series',      'img' => 'https://images.unsplash.com/photo-1571945153237-4929e783af4a?w=600&q=80'],
+                        ['num' => 'Col. 01', 'name' => 'The Dark Edit', 'img' => 'https://images.unsplash.com/photo-1487222477894-8943e31ef7b2?w=900&q=80'],
+                        ['num' => 'Col. 02', 'name' => 'Street Ready', 'img' => 'https://images.unsplash.com/photo-1483985988355-763728e1935b?w=600&q=80'],
+                        ['num' => 'Col. 03', 'name' => 'Active Series', 'img' => 'https://images.unsplash.com/photo-1571945153237-4929e783af4a?w=600&q=80'],
                         ['num' => 'Col. 04', 'name' => 'Classic Essentials', 'img' => 'https://images.unsplash.com/photo-1516826957135-700dedea698c?w=600&q=80'],
                     ]; @endphp
                     @foreach($fallbackCols as $c)
@@ -854,7 +853,7 @@
                     <p class="sec-eyebrow">{{ __('file.customer_favourites') }}</p>
                     <h2 class="sec-title">{{ __('file.best_sellers') }}</h2>
                 </div>
-                <a href="{{ route('products.index') }}" class="sec-link">{{ __('file.view_all') }} <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+                <a href="{{ route('frontend.products.index') }}" class="sec-link">{{ __('file.view_all') }} <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
             </div>
 
             <div class="product-grid-4">
@@ -862,13 +861,13 @@
                     @php
                         $defaultVariant = $product->variants->where('is_default', true)->first()
                             ?? $product->variants->first();
-                        $displayPrice   = $defaultVariant ? ($defaultVariant->sale_price ?? $defaultVariant->price) : $product->sale_price ?? $product->base_price;
-                        $originalPrice  = ($defaultVariant && $defaultVariant->sale_price) ? $defaultVariant->price : ($product->sale_price ? $product->base_price : null);
-                        $imgUrl         = $product->primaryImage
+                        $displayPrice = $defaultVariant ? ($defaultVariant->sale_price ?? $defaultVariant->price) : $product->sale_price ?? $product->base_price;
+                        $originalPrice = ($defaultVariant && $defaultVariant->sale_price) ? $defaultVariant->price : ($product->sale_price ? $product->base_price : null);
+                        $imgUrl = $product->primaryImage
                             ? asset('storage/' . $product->primaryImage->file_path)
                             : 'https://images.unsplash.com/photo-1594938298603-c8148c4b4e3d?w=600&q=80';
-                        $ribbon         = $product->is_featured ? 'top' : '';
-                        $ribbonLabel    = $product->is_featured ? __('file.best_seller') : __('file.popular');
+                        $ribbon = $product->is_featured ? 'top' : '';
+                        $ribbonLabel = $product->is_featured ? __('file.best_seller') : __('file.popular');
                     @endphp
                     <div class="p-card reveal">
                         <a href="{{ route('frontend.products.show', $product->slug) }}" class="p-img-wrap" style="display:block;">
@@ -895,13 +894,13 @@
                             <p class="p-brand">{{ $product->brand?->name ?? 'Karbnzol' }}</p>
                             <p class="p-name">{{ $product->name }}</p>
                             <div class="p-price-row">
-                                <span class="p-price">Rs. {{ number_format($displayPrice, 2) }} LKR</span>
+                                <span class="p-price">@price($displayPrice)</span>
                                 @if($originalPrice)
-                                    <span class="p-price-was">Rs. {{ number_format($originalPrice, 2) }}</span>
+                                    <span class="p-price-was">@price($originalPrice)</span>
                                 @endif
                             </div>
                             @if($displayPrice > 0)
-                                <p class="p-install">3 × <strong>Rs. {{ number_format($displayPrice / 3, 2) }}</strong> &amp; up to <span class="cb">4% Cashback</span> with<span class="mintpay">MintPay</span></p>
+                                <p class="p-install">3 × <strong>@price($displayPrice / 3)</strong> &amp; up to <span class="cb">4% Cashback</span> with<span class="mintpay">MintPay</span></p>
                             @endif
                         </div>
                     </div>
@@ -931,7 +930,7 @@
             </p>
             <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
                 <a href="#" class="btn-gold">{{ __('file.our_story') }} <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
-                <a href="{{ route('products.index') }}" class="btn-outline-dark">{{ __('file.shop_now') }}</a>
+                <a href="{{ route('frontend.products.index') }}" class="btn-outline-dark">{{ __('file.shop_now') }}</a>
             </div>
         </div>
     </section>
@@ -1206,3 +1205,4 @@
     </script>
 
 @endsection
+

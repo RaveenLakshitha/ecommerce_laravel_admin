@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Coupon;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 
 class CouponController extends Controller
@@ -64,10 +65,10 @@ class CouponController extends Controller
             $codeHtml .= '<div class="text-xs text-gray-500">' . htmlspecialchars(ucfirst(str_replace('_', ' ', $coupon->applies_to))) . '</div>';
 
             $discountHtml = '<div class="text-sm text-gray-900 dark:text-primary-a0">';
-            $discountHtml .= $coupon->type == 'percentage' ? rtrim(rtrim((string) $coupon->value, '0'), '.') . '%' : '$' . number_format($coupon->value, 2);
+            $discountHtml .= $coupon->type == 'percentage' ? rtrim(rtrim((string) $coupon->value, '0'), '.') . '%' : Setting::formatPrice($coupon->value);
             $discountHtml .= '</div>';
             if ($coupon->min_order_amount) {
-                $discountHtml .= '<div class="text-xs text-gray-500">Min: $' . number_format($coupon->min_order_amount, 2) . '</div>';
+                $discountHtml .= '<div class="text-xs text-gray-500">Min: ' . Setting::formatPrice($coupon->min_order_amount) . '</div>';
             }
 
             $usageHtml = '<div class="text-sm text-gray-900 dark:text-primary-a0">' . $coupon->used_count . ' / ' . ($coupon->usage_limit ?? '∞') . '</div>';

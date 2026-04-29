@@ -30,6 +30,9 @@ return [
     'Sign in to Dashboard' => 'Sign in',
     'Need help accessing your account?' => 'Need help accessing your account?',
     'Contact IT Support' => 'Contact IT Support',
+    'Admin Portal' => 'Admin Portal',
+    'Please enter your admin credentials.' => 'Please enter your admin credentials.',
+    'Sign in to Admin Dashboard' => 'Sign in to Admin Dashboard',
     'English' => 'English',
     'Español' => 'Español',
 ];

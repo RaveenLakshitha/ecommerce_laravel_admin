@@ -3,211 +3,349 @@
 @section('title', __('file.logistics_providers') ?? 'Logistics Providers')
 
 @section('content')
-<div class="px-4 sm:px-6 lg:px-8 pb-4 sm:py-12 pt-20">
-    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-        <div>
-            <h1 class="text-2xl sm:text-3xl font-semibold text-gray-900 dark:text-primary-a0">
-                {{ __('file.logistics_providers') ?? 'Logistics Providers' }}
-            </h1>
-            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                {{ __('file.manage_logistics_providers') ?? 'Coordinate delivery partnerships and monitor fulfillment logistics' }}
-            </p>
-        </div>
-        <div>
-            <a href="{{ route('shipping.couriers.create') }}"
-                class="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg transition shadow-sm">
-                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-                {{ __('file.add_provider') ?? 'Add Provider' }}
-            </a>
-        </div>
-    </div>
+    <div class="admin-page animate-fade-in-up">
+        <div class="admin-page-inner">
+            <nav class="admin-breadcrumb mt-6" aria-label="Breadcrumb">
+                <a href="{{ route('admin.dashboard') }}">
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                    </svg>
+                    {{ __('file.dashboard') }}
+                </a>
+                <svg viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd"
+                        d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                        clip-rule="evenodd" />
+                </svg>
+                <span class="active">{{ __('file.logistics_providers') ?? 'Logistics Providers' }}</span>
+            </nav>
 
-    @if(session('success'))
-        <div class="mb-4 bg-green-50 border-l-4 border-green-500 p-4">
-            <div class="flex text-green-700">
-                <svg class="h-5 w-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                <p class="text-sm font-medium">{{ session('success') }}</p>
+            <div class="admin-page-header">
+                <div>
+                    <h1 class="admin-page-title">{{ __('file.logistics_providers') ?? 'Logistics Providers' }}</h1>
+                    <p class="admin-page-subtitle">{{ __('file.manage_logistics_providers') ?? 'Coordinate delivery partnerships and monitor fulfillment logistics' }}</p>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button type="button" onclick="openCourierDrawer()" class="admin-btn-add">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                        </svg>
+                        {{ __('file.add_provider') ?? 'Add Provider' }}
+                    </button>
+                </div>
+            </div>
+
+            @if(session('success'))
+                <div class="admin-alert-success animate-fade-in-scale">
+                    <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+                    </svg>
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            <div id="bulk-delete-form" class="hidden animate-fade-in-scale sticky top-20 z-30 mb-6">
+                <form method="POST" action="{{ route('shipping.couriers.bulkDelete') }}" id="bulk-delete-form-el"
+                    class="admin-bulk-bar">
+                    @csrf
+                    <div id="bulk-ids-container" class="hidden"></div>
+                    <div class="flex items-center gap-3">
+                        <div class="selection-count" id="selected-count">0</div>
+                        <span>{{ __('file.providers_selected') ?? 'Providers Selected' }}</span>
+                    </div>
+                    <button type="submit"
+                        class="inline-flex items-center gap-2 px-6 py-2.5 bg-red-600 hover:bg-red-700 text-white text-[11px] font-bold uppercase tracking-wider rounded-xl transition-all shadow-lg shadow-red-600/20 active:scale-95 whitespace-nowrap border border-red-500/30">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                        {{ __('file.delete_selected') ?? 'Delete Selected' }}
+                    </button>
+                </form>
+            </div>
+
+            <div class="admin-card">
+                <div class="overflow-x-auto">
+                    <table id="application-table" class="w-full" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th class="!text-center !px-4" style="width: 50px; min-width: 50px;">
+                                    <input type="checkbox" id="select-all"
+                                        class="w-4 h-4 rounded border-gray-300 dark:border-surface-tonal-a30 text-gray-900 focus:ring-gray-300">
+                                </th>
+                                <th>{{ __('file.Provider') }}</th>
+                                <th>{{ __('file.Status') }}</th>
+                                <th>{{ __('file.Features') }}</th>
+                                <th class="!text-right">{{ __('file.Actions') }}</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
             </div>
         </div>
-    @endif
-
-    <div id="bulk-delete-form" class="hidden mb-6">
-        <form method="POST" action="{{ route('shipping.couriers.bulkDelete') }}" id="bulk-delete-form-el"
-            class="bg-red-50 dark:bg-red-900/20 border border-red-300 dark:border-red-800 rounded-lg p-4 flex justify-between items-center">
-            @csrf
-            <div id="bulk-ids-container"></div>
-            <span class="text-sm font-medium text-red-800 dark:text-red-300">
-                <span id="selected-count">0</span> items selected
-            </span>
-            <button type="submit"
-                class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-md transition">
-                {{ __('file.delete_selected') ?? 'Delete Selected' }}
-            </button>
-        </form>
     </div>
 
-    <div class="bg-white dark:bg-surface-tonal-a10 rounded-xl shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
-        <div class="overflow-x-auto">
-            <table id="application-table" class="w-full divide-y divide-gray-200 dark:divide-surface-tonal-a30 nowrap" style="width:100%">
-                <thead class="bg-gray-50 dark:bg-surface-tonal-a10 border-b border-gray-200 dark:border-surface-tonal-a30">
-                    <tr>
-                        <th class="px-4 sm:px-6 py-3 text-right" style="width: 80px; min-width: 80px;">
-                            <input type="checkbox" id="select-all" class="w-4 h-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 transition-all">
-                        </th>
-                        <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider all">Provider</th>
-                        <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider all">Status</th>
-                        <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider desktop">Features</th>
-                        <th scope="col" class="px-6 py-4 text-right text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider all">Actions</th>
-                    </tr>
-                </thead>
-                <tbody class="bg-white dark:bg-surface-tonal-a10 divide-y divide-gray-200 dark:divide-surface-tonal-a30 [&>tr]:group transition-all">
-                </tbody>
-            </table>
+    @push('drawers')
+        {{-- Courier Drawer --}}
+        <div id="courier-drawer" class="fixed inset-0 z-[9999] hidden overflow-hidden">
+            <div id="courier-drawer-overlay"
+                class="absolute inset-0 bg-black/40 backdrop-blur-sm opacity-0 transition-opacity duration-300"
+                onclick="closeCourierDrawer()"></div>
+            <div id="courier-drawer-panel"
+                class="absolute inset-y-0 right-0 w-full md:max-w-lg bg-white dark:bg-surface-tonal-a20 shadow-2xl transform translate-x-full transition-transform duration-500 ease-in-out flex flex-col">
+                
+                <div class="flex items-center justify-between px-8 py-5 border-b border-gray-100 dark:border-white/5 bg-gray-50/50 dark:bg-white/5">
+                    <div>
+                        <h3 id="courier-drawer-title" class="text-xl font-extrabold text-gray-900 dark:text-white tracking-tight">
+                            {{ __('file.add_new_provider') ?? 'Add New Logistics Provider' }}
+                        </h3>
+                        <p id="courier-drawer-subtitle" class="text-sm font-medium text-primary mt-1">
+                            {{ __('file.coordinate_delivery_partnerships') ?? 'Coordinate delivery partnerships and logistics' }}
+                        </p>
+                    </div>
+                    <button type="button" onclick="closeCourierDrawer()"
+                        class="p-2.5 rounded-xl hover:bg-white dark:hover:bg-white/10 text-gray-400 hover:text-gray-900 dark:hover:text-white transition-all">
+                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+
+                <div id="courier-drawer-content" class="flex-1 overflow-y-auto p-8 custom-scrollbar">
+                    <div class="flex items-center justify-center h-full">
+                        <div class="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+                    </div>
+                </div>
+            </div>
         </div>
+    @endpush
+
+    @push('scripts')
+        <script type="module">
+            const courierDrawer = document.getElementById('courier-drawer');
+            const courierOverlay = document.getElementById('courier-drawer-overlay');
+            const courierPanel = document.getElementById('courier-drawer-panel');
+            const courierContent = document.getElementById('courier-drawer-content');
+
+            window.openCourierDrawer = (url = null) => {
+                const isEdit = url && !url.includes('create');
+                const titleEl = document.getElementById('courier-drawer-title');
+                const subtitleEl = document.getElementById('courier-drawer-subtitle');
+                
+                titleEl.textContent = isEdit ? '{{ __("file.edit_logistics_provider") ?? "Edit Logistics Provider" }}' : '{{ __("file.add_new_provider") ?? "Add New Logistics Provider" }}';
+                subtitleEl.textContent = isEdit ? '{{ __("file.update_provider_details") ?? "Update logistics partner configuration" }}' : '{{ __("file.create_new_provider_entry") ?? "Create a new logistics partner entry" }}';
+
+                courierDrawer.classList.remove('hidden');
+                courierContent.innerHTML = '<div class="flex items-center justify-center h-full"><div class="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin"></div></div>';
+                
+                setTimeout(() => {
+                    courierOverlay.classList.replace('opacity-0', 'opacity-100');
+                    courierPanel.classList.remove('translate-x-full');
+                }, 10);
+                
+                document.body.style.overflow = 'hidden';
+
+                const fetchUrl = url || '{{ route("shipping.couriers.create") }}';
+                fetch(fetchUrl, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+                    .then(res => res.text())
+                    .then(html => {
+                        courierContent.innerHTML = html;
+                        setupCourierFormHandler();
+                    })
+                    .catch(err => {
+                        courierContent.innerHTML = `<div class="p-4 text-red-500 text-center">${err.message}</div>`;
+                    });
+            };
+
+            window.closeCourierDrawer = () => {
+                courierOverlay.classList.remove('opacity-100');
+                courierPanel.classList.add('translate-x-full');
+                document.body.style.overflow = '';
+                setTimeout(() => courierDrawer.classList.add('hidden'), 500);
+            };
+
+            function setupCourierFormHandler() {
+                const form = document.getElementById('courier-drawer-form');
+                if (!form) return;
+
+                form.addEventListener('submit', function (e) {
+                    e.preventDefault();
+                    const formData = new FormData(this);
+                    const submitBtn = form.querySelector('button[type="submit"]');
+                    const loader = document.getElementById('courier-drawer-loader');
+                    const saveText = document.getElementById('courier-drawer-save-text');
+
+                    submitBtn.disabled = true;
+                    loader.classList.remove('hidden');
+                    loader.classList.add('flex');
+                    saveText.classList.add('invisible');
+
+                    fetch(this.action, {
+                        method: 'POST',
+                        body: formData,
+                        headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                    })
+                    .then(res => res.json())
+                    .then(res => {
+                        if (res.success) {
+                            closeCourierDrawer();
+                            if (window.courierTable) window.courierTable.draw(false);
+                            if (typeof showNotification === 'function') showNotification('{{ __("file.Success") }}', res.message, 'success');
+                        } else {
+                            if (typeof showNotification === 'function') showNotification('{{ __("file.Error") }}', res.message || 'Something went wrong', 'error');
+                        }
+                    })
+                    .catch(err => {
+                        console.error(err);
+                    })
+                    .finally(() => {
+                        submitBtn.disabled = false;
+                        loader.classList.add('hidden');
+                        loader.classList.remove('flex');
+                        saveText.classList.remove('invisible');
+                    });
+                });
+            }
+
+            document.addEventListener('DOMContentLoaded', function () {
+                if (!window.jQuery) return;
+                const $ = window.jQuery;
+                
+                const table = $('#application-table').DataTable({
+                    processing: true, serverSide: true,
+                    ajax: { url: '{{ route('shipping.couriers.datatable') }}' },
+                    order: [[1, 'asc']],
+                    columnDefs: [
+                        { targets: 0, orderable: false, searchable: false },
+                        { targets: -1, orderable: false, searchable: false }
+                    ],
+                    columns: [
+                        {
+                            data: 'id',
+                            render: data => `<input type="checkbox" name="ids[]" value="${data}" class="row-checkbox w-4 h-4 rounded border-gray-300 dark:border-surface-tonal-a30 text-gray-900 focus:ring-gray-300">`,
+                            className: 'text-center'
+                        },
+                        {
+                            data: 'name_html', name: 'name',
+                            render: data => data
+                        },
+                        {
+                            data: 'status_html', name: 'is_active',
+                            render: data => data
+                        },
+                        {
+                            data: 'features_html', searchable: false, orderable: false,
+                            render: data => `<div class="flex flex-wrap gap-1 max-w-md py-1">${data || '<span class="text-[10px] text-gray-400 italic">No Features</span>'}</div>`
+                        },
+                        {
+                            data: null, 
+                            className: 'text-right whitespace-nowrap !px-4',
+                            render: function (data, type, row) {
+                                return `
+                                    <div class="flex items-center justify-end gap-2">
+                                        <button type="button" onclick="openCourierDrawer('${row.edit_url}')" 
+                                            class="p-2 rounded-xl text-gray-400 hover:text-primary dark:hover:text-primary hover:bg-primary/10 transition-all group/btn" 
+                                            title="{{ __('file.edit') }}">
+                                            <svg class="w-5 h-5 group-hover/btn:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                            </svg>
+                                        </button>
+                                        <button type="button" onclick="confirmDelete('${row.delete_url}')" 
+                                            class="p-2 rounded-xl text-gray-400 hover:text-error dark:hover:text-error hover:bg-error/10 transition-all group/btn" 
+                                            title="{{ __('file.delete') }}">
+                                            <svg class="w-5 h-5 group-hover/btn:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                            </svg>
+                                        </button>
+                                    </div>`;
+                            }
+                        }
+                    ],
+                    layout: {
+                        topStart: {
+                            buttons: [
+                                { extend: 'pageLength', className: 'dt-button' },
+                                {
+                                    extend: 'collection',
+                                    text: "{{ __('file.Export') }}",
+                                    className: 'dt-button',
+                                    buttons: [
+                                        { extend: 'copy', className: 'dt-button' },
+                                        { extend: 'excel', className: 'dt-button' },
+                                        { extend: 'csv', className: 'dt-button' },
+                                        { extend: 'pdf', className: 'dt-button' },
+                                        { extend: 'print', className: 'dt-button' }
+                                    ]
+                                }
+                            ]
+                        },
+                        topEnd: 'search',
+                        bottomStart: 'info',
+                        bottomEnd: 'paging'
+                    },
+                    pageLength: 10,
+                    lengthMenu: [10, 25, 50, 100],
+                    language: {
+                        search: "",
+                        searchPlaceholder: "{{ __('file.search_providers') ?? 'Search providers' }}...",
+                        lengthMenu: "{{ __('file.show_entries') }}",
+                        info: "{{ __('file.showing_entries') }}",
+                        infoEmpty: "{{ __('file.no_items_found') }}",
+                        emptyTable: "{{ __('file.no_providers_found') }}",
+                        processing: '<div class="admin-loader"></div>',
+                        paginate: {
+                            next: '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>',
+                            previous: '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>'
+                        }
+                    },
+                    autoWidth: false,
+                    scrollX: false
+                });
+
+                window.courierTable = table;
+
+                $('#select-all').on('change', function () { $('.row-checkbox').prop('checked', this.checked); updateBulkDelete(); });
+                $(document).on('change', '.row-checkbox', updateBulkDelete);
+
+                function updateBulkDelete() {
+                    const checked = $('.row-checkbox:checked');
+                    const count = checked.length;
+                    $('#bulk-delete-form').toggleClass('hidden', count === 0);
+                    $('#selected-count').text(count);
+                    const container = document.getElementById('bulk-ids-container');
+                    if (container) {
+                        container.innerHTML = '';
+                        checked.each(function () {
+                            const input = document.createElement('input');
+                            input.type = 'hidden'; input.name = 'ids[]'; input.value = this.value;
+                            container.appendChild(input);
+                        });
+                    }
+                }
+
+                $('#bulk-delete-form-el').on('submit', function (e) {
+                    e.preventDefault();
+                    if (!confirm('{{ __("file.confirm_delete_selected_items") }}')) return;
+                    $.ajax({
+                        url: this.action, method: 'POST', data: $(this).serialize(),
+                        success: function (response) {
+                            table.draw(false); updateBulkDelete(); $('#select-all').prop('checked', false);
+                            if (response.success && typeof showNotification === 'function') showNotification('{{ __('file.Success') }}', response.message, 'success');
+                        }
+                    });
+                });
+
+                window.confirmDelete = function (url) {
+                    if (!confirm('{{ __("file.confirm_delete_item") }}')) return;
+                    $.post(url, { _token: '{{ csrf_token() }}', _method: 'DELETE' }, function (resp) {
+                        table.draw(false); updateBulkDelete();
+                        if (typeof showNotification === 'function') showNotification('{{ __('file.Success') }}', resp.message, 'success');
+                    });
+                };
+            });
+        </script>
+    @endpush
     </div>
-</div>
-
-@push('scripts')
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const table = $('#application-table').DataTable({
-            processing: true, serverSide: true, responsive: false,
-            ajax: { url: '{{ route('shipping.couriers.datatable') }}' },
-            order: [[1, 'asc']],
-            columnDefs: [ { targets: [0, 4], orderable: false, searchable: false } ],
-            columns: [
-                {
-                    data: 'id',
-                    render: data => `<input type="checkbox" name="ids[]" value="${data}" class="row-checkbox w-4 h-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 transition-all">`,
-                    className: 'text-center'
-                },
-                { 
-                    data: 'name', name: 'name',
-                    render: function(data, type, row) {
-                        return `
-                            <div class="flex items-center gap-3 py-1">
-                                <div class="w-9 h-9 rounded-lg bg-indigo-50 dark:bg-indigo-500/10 flex items-center justify-center text-indigo-600 dark:text-indigo-400 border border-indigo-100 dark:border-indigo-500/20">
-                                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-                                </div>
-                                <div class="flex flex-col">
-                                    <span class="text-sm font-bold text-gray-900 dark:text-white uppercase tracking-tighter leading-tight">${data}</span>
-                                    <span class="text-[10px] text-gray-400 font-medium italic">Logistics Partner</span>
-                                </div>
-                            </div>
-                        `;
-                    }
-                },
-                { 
-                    data: 'is_active', name: 'is_active',
-                    render: function(data) {
-                        const active = data == 1;
-                        return `<span class="px-2 py-0.5 rounded-md text-[10px] font-bold uppercase ${active ? 'bg-green-50 text-green-700 dark:bg-green-900/20 dark:text-green-400' : 'bg-red-50 text-red-700 dark:bg-red-900/20 dark:text-red-400'}">${active ? 'Active' : 'Inactive'}</span>`;
-                    }
-                },
-                { 
-                    data: 'features_html', searchable: false, orderable: false,
-                    render: function(data) {
-                        return `<div class="flex flex-wrap gap-1 max-w-md py-1">${data || '<span class="text-[10px] text-gray-400 italic">No Features</span>'}</div>`;
-                    } 
-                },
-                {
-                    data: null, className: 'text-right whitespace-nowrap px-6 py-4',
-                    render: (data, type, row) => `
-                        <div class="flex items-center justify-end gap-3 transition-opacity">
-                            <a href="${row.edit_url}" class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 p-1.5 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/20" title="Edit">
-                                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
-                            </a>
-                            <button type="button" onclick="confirmDelete('${row.delete_url}')" class="text-red-500 hover:text-red-700 dark:text-red-400 p-1.5 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20" title="Delete">
-                                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
-                            </button>
-                        </div>`
-                }
-            ],
-            layout: {
-                topStart: {
-                    buttons: [
-                        { extend: 'pageLength', className: 'btn btn-sm btn-light' },
-                        { extend: 'collection', text: "Export", className: 'btn btn-sm btn-dark', buttons: ['copy', 'excel', 'csv', 'pdf', 'print'] }
-                    ]
-                },
-                topEnd: 'search', bottomStart: 'info', bottomEnd: 'paging'
-            },
-            pageLength: 25,
-            lengthMenu: [10, 25, 50, 100],
-            language: {
-                search: "", searchPlaceholder: "Search providers...",
-                lengthMenu: "Show _MENU_ entries",
-                info: "Showing _START_ to _END_ of _TOTAL_ entries",
-                infoEmpty: "No items found",
-                emptyTable: "No providers found.",
-                processing: false,
-            },
-            autoWidth: false,
-            scrollX: false
-        });
-
-        $('#select-all').on('change', function () {
-            $('.row-checkbox').prop('checked', this.checked);
-            updateBulkDelete();
-        });
-        $(document).on('change', '.row-checkbox', updateBulkDelete);
-
-        function updateBulkDelete() {
-            const checked = $('.row-checkbox:checked');
-            const count = checked.length;
-            $('#bulk-delete-form').toggleClass('hidden', count === 0);
-            $('#selected-count').text(count);
-
-            const container = document.getElementById('bulk-ids-container');
-            container.innerHTML = '';
-            checked.each(function () {
-                const input = document.createElement('input');
-                input.type = 'hidden';
-                input.name = 'ids[]';
-                input.value = this.value;
-                container.appendChild(input);
-            });
-        }
-
-        $('#bulk-delete-form-el').on('submit', function (e) {
-            e.preventDefault();
-            if (!confirm('{{ __("file.confirm_bulk_delete") ?? "Are you sure you want to delete the selected items?" }}')) return;
-
-            $.ajax({
-                url: this.action,
-                method: 'POST',
-                data: $(this).serialize(),
-                success: function (response) {
-                    table.draw(false);
-                    updateBulkDelete();
-                    $('#select-all').prop('checked', false);
-                    if (response.success) {
-                        if (typeof showNotification === 'function') showNotification('Success', response.message, 'success');
-                    }
-                }
-            });
-        });
-
-        window.confirmDelete = function (url) {
-            if (!confirm('{{ __("file.confirm_delete") ?? "Are you sure you want to delete this item?" }}')) return;
-
-            $.ajax({
-                url: url,
-                method: 'POST',
-                data: {
-                    _token: '{{ csrf_token() }}',
-                    _method: 'DELETE'
-                },
-                success: function (response) {
-                    table.draw(false);
-                    updateBulkDelete();
-                    if (response.success) {
-                        if (typeof showNotification === 'function') showNotification('Success', response.message, 'success');
-                    }
-                }
-            });
-        };
-    });
-</script>
-@endpush
 @endsection

@@ -71,12 +71,12 @@ class CollectionController extends Controller
 
         $data = $collections->map(function ($collection) {
             $statusHtml = $collection->is_active
-                ? '<span class="inline-flex px-3 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300">Active</span>'
-                : '<span class="inline-flex px-3 py-1 text-xs font-medium rounded-full bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-300">Inactive</span>';
+                ? '<span class="inline-flex px-3 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300">' . __('file.active') . '</span>'
+                : '<span class="inline-flex px-3 py-1 text-xs font-medium rounded-full bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-300">' . __('file.inactive') . '</span>';
             
             $featuredHtml = $collection->is_featured
-                ? '<span class="inline-flex px-3 py-1 text-xs font-medium rounded-full bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300">Yes</span>'
-                : '<span class="inline-flex px-3 py-1 text-xs font-medium rounded-full bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-300">No</span>';
+                ? '<span class="inline-flex px-3 py-1 text-xs font-medium rounded-full bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300">' . __('file.Yes') . '</span>'
+                : '<span class="inline-flex px-3 py-1 text-xs font-medium rounded-full bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-300">' . __('file.No') . '</span>';
 
             $user = Auth::guard('admin')->user() ?? Auth::user();
             $edit_url = $user->can('collections.edit') ? route('collections.edit', $collection) : null;
@@ -105,8 +105,11 @@ class CollectionController extends Controller
         ]);
     }
 
-    public function create()
+    public function create(Request $request)
     {
+        if ($request->ajax()) {
+            return view('admin.collections.partials.form', ['collection' => null])->render();
+        }
         $products = \App\Models\Product::all();
         return view('admin.collections.create', compact('products'));
     }
@@ -146,12 +149,19 @@ class CollectionController extends Controller
             $collection->products()->sync($request->products);
         }
 
+        if ($request->ajax()) {
+            return response()->json(['success' => true, 'message' => __('file.collection_created_successfully')]);
+        }
+
         return redirect()->route('collections.index')
-            ->with('success', 'Collection created successfully.');
+            ->with('success', __('file.collection_created_successfully'));
     }
 
-    public function edit(Collection $collection)
+    public function edit(Request $request, Collection $collection)
     {
+        if ($request->ajax()) {
+            return view('admin.collections.partials.form', compact('collection'))->render();
+        }
         $products = \App\Models\Product::all();
         return view('admin.collections.edit', compact('collection', 'products'));
     }
@@ -195,11 +205,11 @@ class CollectionController extends Controller
         if ($request->ajax()) {
             return response()->json([
                 'success' => true,
-                'message' => 'Collection updated successfully.'
+                'message' => __('file.collection_updated_successfully')
             ]);
         }
 
-        return redirect()->route('collections.index')->with('success', 'Collection updated successfully.');
+        return redirect()->route('collections.index')->with('success', __('file.collection_updated_successfully'));
     }
 
     public function destroy(Collection $collection)
@@ -210,10 +220,10 @@ class CollectionController extends Controller
         $collection->delete();
 
         if (request()->ajax()) {
-            return response()->json(['success' => true, 'message' => 'Collection deleted successfully.']);
+            return response()->json(['success' => true, 'message' => __('file.collection_deleted_successfully')]);
         }
 
-        return back()->with('success', 'Collection deleted successfully.');
+        return back()->with('success', __('file.collection_deleted_successfully'));
     }
 
     public function bulkDelete(Request $request)
@@ -225,7 +235,7 @@ class CollectionController extends Controller
         }
 
         if (!is_array($ids) || empty($ids)) {
-            $msg = 'No items selected.';
+            $msg = __('file.no_items_selected');
             if ($request->ajax()) {
                 return response()->json(['success' => false, 'message' => $msg], 400);
             }
@@ -238,7 +248,7 @@ class CollectionController extends Controller
         ]);
 
         if ($validator->fails()) {
-            $msg = 'Validation failed for selected items.';
+            $msg = __('file.validation_failed');
             if ($request->ajax()) {
                 return response()->json(['success' => false, 'message' => $msg, 'errors' => $validator->errors()], 422);
             }
@@ -256,10 +266,10 @@ class CollectionController extends Controller
         if ($request->ajax()) {
             return response()->json([
                 'success' => true,
-                'message' => 'Selected collections deleted successfully.'
+                'message' => __('file.collections_bulk_deleted_successfully')
             ]);
         }
 
-        return back()->with('success', 'Selected collections deleted successfully.');
+        return back()->with('success', __('file.collections_bulk_deleted_successfully'));
     }
 }

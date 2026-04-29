@@ -31,8 +31,8 @@
             --bg-panel: #1e1e1e;
             --white: #ffffff;
             --off-white: #f0f0f0;
-            --silver: #aaaaaa;
-            --dim: #666666;
+            --silver: #d1d5db;
+            --dim: #a1a1aa;
             --gold: #c8a96e;
             --gold-bg: rgba(200, 169, 110, 0.12);
             --red: #cc3333;
@@ -847,7 +847,7 @@
                 <div class="g-up">
                     <p class="ft-col-h">Shop</p>
                     <ul class="ft-col-links">
-                        <li><a href="{{ route('products.index') }}">All Products</a></li>
+                        <li><a href="{{ route('frontend.products.index') }}">All Products</a></li>
                         <li><a href="{{ route('frontend.products.index') }}">New Arrivals</a></li>
                         @foreach($globalCategories as $category)
                             <li><a href="{{ route('frontend.products.index', ['category' => $category->slug]) }}">{{ $category->name }}</a></li>
@@ -864,7 +864,8 @@
                         <li><a href="#">Size Guide</a></li>
                         <li><a href="#">Track Order</a></li>
                         <li><a href="#">FAQ</a></li>
-                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="{{ route('frontend.about') }}">About Us</a></li>
+                        <li><a href="{{ route('frontend.contact') }}">Contact Us</a></li>
                     </ul>
                 </div>
 
@@ -980,3 +981,4 @@
 </body>
 
 </html>
+

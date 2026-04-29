@@ -161,10 +161,10 @@ class CategoryController extends Controller
             'banners.*.description' => 'nullable|string',
             'banners.*.image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:10240',
         ], [
-            'image.image' => 'The uploaded file is either not an image or exceeds your server\'s maximum upload limit (usually 2MB locally). Please compress the image or increase upload_max_filesize in your php.ini.',
-            'image.mimes' => 'The uploaded file must be a jpeg, png, jpg, or webp (Or the file exceeded your PHP upload_max_filesize limit).',
-            'banners.*.image.image' => 'One of the banner images is either not an image or exceeds your server\'s maximum upload size limit.',
-            'banners.*.image.mimes' => 'Each banner image must be a jpeg, png, jpg, or webp (Or the file exceeded your PHP limit).',
+            'image.image' => __('file.image_upload_limit_error'),
+            'image.mimes' => __('file.image_mimes_error'),
+            'banners.*.image.image' => __('file.banner_image_upload_limit_error'),
+            'banners.*.image.mimes' => __('file.banner_image_mimes_error'),
         ]);
 
         $validated['is_active'] = $request->boolean('is_active', true);
@@ -287,10 +287,10 @@ class CategoryController extends Controller
             'banners.*.image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:10240',
             'banners.*.existing_image' => 'nullable|string',
         ], [
-            'image.image' => 'The uploaded file is either not an image or exceeds your server\'s maximum upload limit (usually 2MB locally). Please compress the image or increase upload_max_filesize in your php.ini.',
-            'image.mimes' => 'The uploaded file must be a jpeg, png, jpg, or webp (Or the file exceeded your PHP upload_max_filesize limit).',
-            'banner_images.*.image' => 'One of the banner images is either not an image or exceeds your server\'s maximum upload size limit.',
-            'banner_images.*.mimes' => 'Each banner image must be a jpeg, png, jpg, or webp (Or the file exceeded your PHP limit).',
+            'image.image' => __('file.image_upload_limit_error'),
+            'image.mimes' => __('file.image_mimes_error'),
+            'banner_images.*.image' => __('file.banner_image_upload_limit_error'),
+            'banner_images.*.mimes' => __('file.banner_image_mimes_error'),
         ]);
 
         $validated['is_active'] = $request->boolean('is_active', $request->has('is_active') ? $request->is_active : $category->is_active);

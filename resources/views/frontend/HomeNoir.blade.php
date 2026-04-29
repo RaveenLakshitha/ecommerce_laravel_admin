@@ -14,7 +14,7 @@
         --volt:     #c8ff00;
         --volt-dim: #8cb500;
         --volt-bg:  rgba(200,255,0,0.06);
-        --ash:      #888888;
+        --ash:      #b1b1b1;
         --smoke:    #444444;
         --bone:     #e8e8e8;
         --white:    #ffffff;
@@ -728,7 +728,7 @@
                 Precision cuts. Raw textures. Season-defining silhouettes for those who refuse to blend in.
             </p>
             <div class="hero-cta-group slide-up">
-                <a href="{{ route('products.index') }}" class="btn-volt">
+                <a href="{{ route('frontend.products.index') }}" class="btn-volt">
                     Shop the Drop
                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                 </a>
@@ -786,7 +786,7 @@
                 NEW ARRIVALS
                 <span class="section-title-tag">Just Dropped</span>
             </h2>
-            <a href="{{ route('products.index') }}" class="section-view-all">
+            <a href="{{ route('frontend.products.index') }}" class="section-view-all">
                 View All <span>→</span>
             </a>
         </div>
@@ -891,7 +891,7 @@
                 BEST SELLERS
                 <span class="section-title-tag">Top Rated</span>
             </h2>
-            <a href="{{ route('products.index') }}" class="section-view-all">View All <span>→</span></a>
+            <a href="{{ route('frontend.products.index') }}" class="section-view-all">View All <span>→</span></a>
         </div>
 
         <div class="product-grid">
@@ -1119,3 +1119,4 @@ window.addEventListener('load', () => {
 </script>
 
 @endsection
+

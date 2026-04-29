@@ -1,31 +1,38 @@
 @extends('layouts.app')
 
-@section('title', __('file.collections') ?? 'Collections')
+@section('title', __('file.collections'))
 
 @section('content')
     <div class="admin-page animate-fade-in-up">
         <div class="admin-page-inner">
 
-            <nav class="flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-gray-400 mb-4" aria-label="Breadcrumb">
-                <a href="{{ route('admin.dashboard') }}" class="hover:text-gray-600 dark:hover:text-gray-300 transition-colors">{{ __('file.dashboard') }}</a>
-                <svg class="w-3 h-3 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+            <nav class="admin-breadcrumb mt-6" aria-label="Breadcrumb">
+                <a href="{{ route('admin.dashboard') }}">
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                    </svg>
+                    {{ __('file.dashboard') }}
+                </a>
+                <svg viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd"
+                        d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                        clip-rule="evenodd" />
                 </svg>
-                <span class="text-gray-500">{{ __('file.collections') ?? 'Collections' }}</span>
+                <span class="active">{{ __('file.collections') }}</span>
             </nav>
 
-            <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
+            <div class="admin-page-header">
                 <div>
-                    <h1 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{ __('file.collections') ?? 'Collections' }}</h1>
-                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">{{ __('file.manage_collections') ?? 'Curate product groupings and coordinate seasonal releases' }}</p>
+                    <h1 class="admin-page-title">{{ __('file.collections') }}</h1>
+                    <p class="admin-page-subtitle">{{ __('file.manage_collections') }}</p>
                 </div>
                 <div class="flex items-center gap-3">
-                    <a href="{{ route('collections.create') }}" 
-                       class="inline-flex items-center gap-2 px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-semibold rounded-xl transition-all shadow-sm active:scale-[0.98]">
+                    <a href="{{ route('collections.create') }}" class="admin-btn-add">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                         </svg>
-                        <span>{{ __('file.add_collection') ?? 'Add Collection' }}</span>
+                        {{ __('file.add_collection') }}
                     </a>
                 </div>
             </div>
@@ -41,21 +48,19 @@
             @endif
 
             {{-- Bulk Actions Bar --}}
-            <div id="bulk-delete-form" class="hidden animate-fade-in-scale sticky top-20 z-30">
+            <div id="bulk-delete-form" class="hidden animate-fade-in-scale sticky top-20 z-30 mb-6">
                 <form method="POST" action="{{ route('collections.bulkDelete') }}" id="bulk-delete-form-el" class="admin-bulk-bar">
                     @csrf
-                    <div id="bulk-ids-container"></div>
-                    <div class="flex items-center gap-4">
-                        <div class="flex items-center gap-2">
-                            <span class="selection-count" id="selected-count">0</span>
-                            <span class="text-sm font-bold text-gray-900 dark:text-white">Items Selected</span>
-                        </div>
+                    <div id="bulk-ids-container" class="hidden"></div>
+                    <div class="flex items-center gap-3">
+                        <div class="selection-count" id="selected-count">0</div>
+                        <span>{{ __('file.collections_selected') ?? 'Collections Selected' }}</span>
                     </div>
-                    <button type="submit" class="inline-flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-xs font-bold uppercase tracking-widest rounded-xl transition-all shadow-md shadow-red-500/20 active:scale-95">
+                    <button type="submit" class="inline-flex items-center gap-2 px-6 py-2.5 bg-red-600 hover:bg-red-700 text-white text-[11px] font-bold uppercase tracking-wider rounded-xl transition-all shadow-lg shadow-red-600/20 active:scale-95 whitespace-nowrap border border-red-500/30">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
                         </svg>
-                        Delete Selected
+                        {{ __('file.delete_selected') ?? 'Delete Selected' }}
                     </button>
                 </form>
             </div>
@@ -69,10 +74,10 @@
                                 <th class="!text-center !px-4" style="width: 50px; min-width: 50px;">
                                     <input type="checkbox" id="select-all" class="w-4 h-4 rounded border-gray-300 dark:border-surface-tonal-a30 text-gray-900 focus:ring-gray-300">
                                 </th>
-                                <th>Collection Identity</th>
-                                <th>Schedule</th>
-                                <th class="!text-center">Status</th>
-                                <th class="!text-right">Actions</th>
+                                <th>{{ __('file.collection_identity') }}</th>
+                                <th>{{ __('file.schedule') }}</th>
+                                <th class="!text-center">{{ __('file.status') }}</th>
+                                <th class="!text-right">{{ __('file.actions') }}</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -81,124 +86,263 @@
             </div>
         </div>
     </div>
+@endsection
+
+@push('drawers')
+    {{-- Collection Drawer --}}
+    <div id="collection-drawer" class="fixed inset-0 z-[9999] hidden overflow-hidden">
+        <div id="collection-drawer-overlay"
+            class="absolute inset-0 bg-black/40 backdrop-blur-sm opacity-0 transition-opacity duration-300"
+            onclick="closeCollectionDrawer()"></div>
+        <div id="collection-drawer-panel"
+            class="absolute inset-y-0 right-0 w-full md:max-w-lg bg-white dark:bg-surface-tonal-a20 shadow-2xl transform translate-x-full transition-transform duration-500 ease-in-out flex flex-col">
+            
+            <div class="flex items-center justify-between px-8 py-5 border-b border-gray-100 dark:border-white/5 bg-gray-50/50 dark:bg-white/5">
+                <div>
+                    <h3 id="collection-drawer-title" class="text-xl font-extrabold text-gray-900 dark:text-white tracking-tight">
+                        {{ __('file.add_new_collection') }}
+                    </h3>
+                    <p id="collection-drawer-subtitle" class="text-sm font-medium text-primary mt-1">
+                        {{ __('file.create_new_collection_entry') ?? 'Set up a new collection with products and schedule.' }}
+                    </p>
+                </div>
+                <button type="button" onclick="closeCollectionDrawer()"
+                    class="p-2.5 rounded-xl hover:bg-white dark:hover:bg-white/10 text-gray-400 hover:text-gray-900 dark:hover:text-white transition-all">
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+
+            <div id="collection-drawer-content" class="flex-1 overflow-y-auto p-8 custom-scrollbar">
+                <div class="flex items-center justify-center h-full">
+                    <div class="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+@endpush
 
     @push('scripts')
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const table = $('#application-table').DataTable({
-                processing: true, serverSide: true,
-                ajax: { url: '{{ route('collections.datatable') }}' },
-                order: [[1, 'asc']],
-                columnDefs: [
-                    { targets: 0, orderable: false, searchable: false },
-                    { targets: -1, orderable: false, searchable: false }
-                ],
-                columns: [
-                    {
-                        data: 'id',
-                        render: data => `<input type="checkbox" name="ids[]" value="${data}" class="row-checkbox w-4 h-4 rounded border-gray-300 dark:border-surface-tonal-a30 text-gray-900 focus:ring-gray-300">`,
-                        className: 'text-center'
-                    },
-                    {
-                        data: 'name', name: 'name',
-                        render: (data, type, row) => `
-                            <div class="flex items-center gap-3 py-1">
-                                <div class="w-12 h-12 rounded-lg bg-gray-100 dark:bg-surface-tonal-a30 flex-shrink-0 overflow-hidden border border-gray-200 dark:border-white/5 shadow-sm">
-                                    ${row.banner_url ? `<img src="${row.banner_url}" class="w-full h-full object-cover">` : `<div class="w-full h-full flex items-center justify-center text-gray-400"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg></div>`}
-                                </div>
-                                <div class="flex flex-col">
-                                    <span class="text-sm font-semibold text-gray-900 dark:text-white">${data}</span>
-                                    <span class="text-[10px] text-gray-400 dark:text-gray-500 uppercase tracking-widest">Manual Collection</span>
-                                </div>
-                            </div>`
-                    },
-                    {
-                        data: null, name: 'start_date',
-                        render: (data, type, row) => `
-                            <div class="flex flex-col">
-                                <span class="text-xs font-medium text-gray-700 dark:text-gray-300">${row.start_date || 'N/A'}</span>
-                                <span class="text-[10px] text-gray-400 dark:text-gray-500 italic">thru ${row.end_date || '∞'}</span>
-                            </div>`
-                    },
-                    {
-                        data: null, name: 'is_active', className: 'text-center',
-                        render: function(data, type, row) {
-                            let status = (row.status_html || '').toLowerCase();
-                            let cls = 'admin-badge-info';
-                            if (status.includes('active')) cls = 'admin-badge-success';
-                            if (status.includes('inactive')) cls = 'admin-badge-danger';
-                            
-                            let html = `<div class="flex flex-col items-center gap-1.5">`;
-                            if (row.featured_html && row.featured_html.includes('Featured')) {
-                                html += `<span class="admin-badge admin-badge-accent !py-0.5 !text-[9px]"><i class="fi-sr-star mr-1 text-[8px]"></i>Featured</span>`;
-                            }
-                            html += `<span class="admin-badge ${cls}">${row.status_html || 'N/A'}</span>`;
-                            html += `</div>`;
-                            return html;
-                        }
-                    },
-                    {
-                        data: null, className: 'text-right whitespace-nowrap',
-                        render: (data, type, row) => `
-                            <div class="flex items-center justify-end gap-1.5 px-3">
-                                <a href="${row.edit_url}" class="p-1.5 rounded-lg text-gray-400 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 transition-all">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
-                                </a>
-                                <button type="button" onclick="confirmDelete('${row.delete_url}')" class="p-1.5 rounded-lg text-gray-400 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-all">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
-                                </button>
-                            </div>`
-                    }
-                ],
-                layout: {
-                    topStart: { buttons: [
-                        { extend: 'pageLength', className: 'dt-button' },
-                        { extend: 'collection', text: "Export", className: 'dt-button', buttons: ['copy', 'excel', 'csv', 'pdf', 'print'] }
-                    ]},
-                    topEnd: 'search', bottomStart: 'info', bottomEnd: 'paging'
-                },
-                pageLength: 25, lengthMenu: [10, 25, 50, 100],
-                language: {
-                    search: "", searchPlaceholder: "Search collections...",
-                    lengthMenu: "Show _MENU_ entries", info: "Showing _START_ to _END_ of _TOTAL_ entries",
-                    infoEmpty: "No items found", emptyTable: "No collections found.", processing: false,
-                }
-            });
+    <script type="module">
+        const colDrawer = document.getElementById('collection-drawer');
+        const colOverlay = document.getElementById('collection-drawer-overlay');
+        const colPanel = document.getElementById('collection-drawer-panel');
+        const colContent = document.getElementById('collection-drawer-content');
 
-            $('#select-all').on('change', function () { $('.row-checkbox').prop('checked', this.checked); updateBulkDelete(); });
-            $(document).on('change', '.row-checkbox', updateBulkDelete);
+        window.openCollectionDrawer = (url = null) => {
+            const isEdit = url && !url.includes('create');
+            const titleEl = document.getElementById('collection-drawer-title');
+            const subtitleEl = document.getElementById('collection-drawer-subtitle');
+            
+            titleEl.textContent = isEdit ? '{{ __("file.edit_collection") ?? "Edit Collection" }}' : '{{ __("file.add_new_collection") }}';
+            subtitleEl.textContent = isEdit ? '{{ __("file.update_collection_details") ?? "Update collection items and settings" }}' : '{{ __("file.create_new_collection_entry") ?? "Set up a new collection with products and schedule." }}';
 
-            function updateBulkDelete() {
-                const checked = $('.row-checkbox:checked');
-                const count = checked.length;
-                $('#bulk-delete-form').toggleClass('hidden', count === 0);
-                $('#selected-count').text(count);
-                const container = document.getElementById('bulk-ids-container');
-                container.innerHTML = '';
-                checked.each(function () {
-                    const input = document.createElement('input');
-                    input.type = 'hidden'; input.name = 'ids[]'; input.value = this.value;
-                    container.appendChild(input);
+            colDrawer.classList.remove('hidden');
+            colContent.innerHTML = '<div class="flex items-center justify-center h-full"><div class="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin"></div></div>';
+            
+            setTimeout(() => {
+                colOverlay.classList.replace('opacity-0', 'opacity-100');
+                colPanel.classList.remove('translate-x-full');
+            }, 10);
+            
+            document.body.style.overflow = 'hidden';
+
+            const fetchUrl = url || '{{ route("collections.create") }}';
+            fetch(fetchUrl, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+                .then(res => res.text())
+                .then(html => {
+                    colContent.innerHTML = html;
+                    setupCollectionFormHandler();
+                })
+                .catch(err => {
+                    colContent.innerHTML = `<div class="p-4 text-red-500 text-center">${err.message}</div>`;
                 });
-            }
+        };
 
-            $('#bulk-delete-form-el').on('submit', function (e) {
+        window.closeCollectionDrawer = () => {
+            colOverlay.classList.replace('opacity-100', 'opacity-0');
+            colPanel.classList.add('translate-x-full');
+            document.body.style.overflow = '';
+            setTimeout(() => colDrawer.classList.add('hidden'), 500);
+        };
+
+        function setupCollectionFormHandler() {
+            const form = document.getElementById('collection-drawer-form');
+            if (!form) return;
+
+            form.addEventListener('submit', function (e) {
                 e.preventDefault();
-                if (!confirm('{{ __("file.confirm_delete_selected_items") }}')) return;
-                $.ajax({
-                    url: this.action, method: 'POST', data: $(this).serialize(),
-                    success: function (r) { table.draw(false); updateBulkDelete(); $('#select-all').prop('checked', false); if (r.success && typeof showNotification === 'function') showNotification('Success', r.message, 'success'); }
+                const formData = new FormData(this);
+                const submitBtn = form.querySelector('button[type="submit"]');
+                const loader = document.getElementById('collection-drawer-loader');
+                const saveText = document.getElementById('collection-drawer-save-text');
+
+                submitBtn.disabled = true;
+                loader.classList.remove('hidden');
+                saveText.classList.add('invisible');
+
+                fetch(this.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                })
+                .then(res => res.json())
+                .then(res => {
+                    if (res.success) {
+                        closeCollectionDrawer();
+                        if (window.collectionTable) window.collectionTable.draw(false);
+                        if (typeof showNotification === 'function') showNotification('{{ __("file.Success") }}', res.message, 'success');
+                    } else {
+                        if (typeof showNotification === 'function') showNotification('{{ __("file.Error") }}', res.message || 'Something went wrong', 'error');
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                    if (typeof showNotification === 'function') showNotification('{{ __("file.Error") }}', 'An unexpected error occurred', 'error');
+                })
+                .finally(() => {
+                    submitBtn.disabled = false;
+                    loader.classList.add('hidden');
+                    saveText.classList.remove('invisible');
                 });
             });
+        }
 
-            window.confirmDelete = function (url) {
-                if (!confirm('{{ __("file.confirm_delete_item") }}')) return;
-                $.post(url, { _token: '{{ csrf_token() }}', _method: 'DELETE' }, function(resp) {
-                    table.draw(false); updateBulkDelete();
-                    if (typeof showNotification === 'function') showNotification('Success', resp.message, 'success');
+        const initCollectionsTable = () => {
+            if (!window.jQuery) {
+                setTimeout(initCollectionsTable, 50);
+                return;
+            }
+            const $ = window.jQuery;
+            $(function () {
+                const table = $('#application-table').DataTable({
+                    processing: true, serverSide: true,
+                    ajax: { url: '{{ route('collections.datatable') }}' },
+                    order: [[1, 'asc']],
+                    columns: [
+                        {
+                            data: 'id',
+                            render: data => `<input type="checkbox" name="ids[]" value="${data}" class="row-checkbox w-4 h-4 rounded border-gray-300 dark:border-surface-tonal-a30 text-gray-900 focus:ring-gray-300">`,
+                            className: 'text-center'
+                        },
+                        {
+                            data: 'name', name: 'name',
+                            render: (data, type, row) => `
+                                <div class="flex items-center gap-3 py-1">
+                                    <div class="w-12 h-12 rounded-lg bg-gray-100 dark:bg-surface-tonal-a30 flex-shrink-0 overflow-hidden border border-gray-200 dark:border-white/5 shadow-sm">
+                                        ${row.banner_url ? `<img src="${row.banner_url}" class="w-full h-full object-cover">` : `<div class="w-full h-full flex items-center justify-center text-gray-400"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg></div>`}
+                                    </div>
+                                    <div class="flex flex-col">
+                                        <span class="text-sm font-semibold text-gray-900 dark:text-white">${data}</span>
+                                        <span class="text-[10px] text-gray-400 dark:text-gray-500 uppercase tracking-widest">{{ __('file.manual_collection') }}</span>
+                                    </div>
+                                </div>`
+                        },
+                        {
+                            data: null, name: 'start_date',
+                            render: (data, type, row) => `
+                                <div class="flex flex-col">
+                                    <span class="text-xs font-medium text-gray-700 dark:text-gray-300">${row.start_date || 'N/A'}</span>
+                                    <span class="text-[10px] text-gray-400 dark:text-gray-500 italic">{{ __('file.thru') }} ${row.end_date || '∞'}</span>
+                                </div>`
+                        },
+                        {
+                            data: null, name: 'is_active', className: 'text-center',
+                            render: function(data, type, row) {
+                                let status = (row.status_html || '').toLowerCase();
+                                let cls = 'admin-badge-info';
+                                if (status.includes('active')) cls = 'admin-badge-success';
+                                if (status.includes('inactive')) cls = 'admin-badge-danger';
+                                
+                                let html = `<div class="flex flex-col items-center gap-1.5">`;
+                                if (row.featured_html && row.featured_html.includes('Featured')) {
+                                    html += `<span class="admin-badge admin-badge-accent !py-0.5 !text-[9px]"><i class="fi-sr-star mr-1 text-[8px]"></i>${row.featured_html.includes('{{ __('file.Yes') }}') ? '{{ __('file.featured') }}' : ''}</span>`;
+                                }
+                                html += `<span class="admin-badge ${cls}">${row.status_html || 'N/A'}</span>`;
+                                html += `</div>`;
+                                return html;
+                            }
+                        },
+                        {
+                            data: null, 
+                            orderable: false,
+                            className: 'text-right whitespace-nowrap !px-4',
+                            render: (data, type, row) => `
+                                <div class="flex items-center justify-end gap-2 px-3">
+                                    <button type="button" onclick="openCollectionDrawer('${row.edit_url}')" 
+                                        class="p-2 rounded-xl text-gray-400 hover:text-primary dark:hover:text-primary hover:bg-primary/10 transition-all group/btn" 
+                                        title="{{ __('file.edit') }}">
+                                        <svg class="w-5 h-5 group-hover/btn:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                        </svg>
+                                    </button>
+                                    <button type="button" onclick="confirmDelete('${row.delete_url}')" 
+                                        class="p-2 rounded-xl text-gray-400 hover:text-error dark:hover:text-error hover:bg-error/10 transition-all group/btn" 
+                                        title="{{ __('file.delete') }}">
+                                        <svg class="w-5 h-5 group-hover/btn:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                        </svg>
+                                    </button>
+                                </div>`
+                        }
+                    ],
+                    layout: {
+                        topStart: { buttons: [
+                            { extend: 'pageLength', className: 'dt-button' },
+                            { extend: 'collection', text: "{{ __('file.Export') }}", className: 'dt-button', buttons: ['copy', 'excel', 'csv', 'pdf', 'print'] }
+                        ]},
+                        topEnd: 'search', bottomStart: 'info', bottomEnd: 'paging'
+                    },
+                    pageLength: 10, lengthMenu: [10, 25, 50, 100],
+                    language: {
+                        search: "", searchPlaceholder: "{{ __('file.search_collections') }}",
+                        lengthMenu: "{{ __('file.show_entries') }}", info: "{{ __('file.showing_entries') }}",
+                        infoEmpty: "{{ __('file.no_items_found') }}", emptyTable: "{{ __('file.no_collections_found') }}", processing: false,
+                    },
+                    autoWidth: false,
+                    scrollX: false
                 });
-            };
-        });
+
+                window.collectionTable = table;
+
+                $('#select-all').on('change', function () { $('.row-checkbox').prop('checked', this.checked); updateBulkDelete(); });
+                $(document).on('change', '.row-checkbox', updateBulkDelete);
+
+                function updateBulkDelete() {
+                    const checked = $('.row-checkbox:checked');
+                    const count = checked.length;
+                    $('#bulk-delete-form').toggleClass('hidden', count === 0);
+                    $('#selected-count').text(count);
+                    const container = document.getElementById('bulk-ids-container');
+                    if (container) {
+                        container.innerHTML = '';
+                        checked.each(function () {
+                            const input = document.createElement('input');
+                            input.type = 'hidden'; input.name = 'ids[]'; input.value = this.value;
+                            container.appendChild(input);
+                        });
+                    }
+                }
+
+                $('#bulk-delete-form-el').on('submit', function (e) {
+                    e.preventDefault();
+                    if (!confirm('{{ __("file.confirm_delete_selected_items") }}')) return;
+                    $.ajax({
+                        url: this.action, method: 'POST', data: $(this).serialize(),
+                        success: function (r) { table.draw(false); updateBulkDelete(); $('#select-all').prop('checked', false); if (r.success && typeof showNotification === 'function') showNotification('{{ __('file.Success') }}', r.message, 'success'); }
+                    });
+                });
+
+                window.confirmDelete = function (url) {
+                    if (!confirm('{{ __("file.confirm_delete_item") }}')) return;
+                    $.post(url, { _token: '{{ csrf_token() }}', _method: 'DELETE' }, function(resp) {
+                        table.draw(false); updateBulkDelete();
+                        if (typeof showNotification === 'function') showNotification('{{ __('file.Success') }}', resp.message, 'success');
+                    });
+                };
+            });
+        };
+        initCollectionsTable();
     </script>
-    @endpush
-@endsection
+@endpush

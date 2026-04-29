@@ -21,12 +21,20 @@ class AuthController extends Controller
 
     public function showLoginForm()
     {
-        return view('frontend.auth.login');
+        // Already logged in → go to account dashboard
+        if (auth('web')->check()) {
+            return redirect()->route('account.dashboard');
+        }
+        // Open the login modal on the homepage instead of a full-page view
+        return redirect()->route('home')->with('open_modal', 'login');
     }
 
     public function showRegisterForm()
     {
-        return view('frontend.auth.register');
+        if (auth('web')->check()) {
+            return redirect()->route('account.dashboard');
+        }
+        return redirect()->route('home')->with('open_modal', 'register');
     }
 
     public function showForgotPasswordForm()
@@ -54,7 +62,7 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials, $remember)) {
             $request->session()->regenerate();
-            return redirect()->intended(route('dashboard'));
+            return redirect()->intended(route('home'));
         }
 
         return back()->withErrors([
@@ -94,7 +102,7 @@ class AuthController extends Controller
 
         Auth::login($user);
 
-        return redirect()->route('dashboard');
+        return redirect()->route('home');
     }
 
     public function forgotPassword(Request $request)
@@ -138,7 +146,8 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('login')
+        // Go back to homepage — modal will not be shown
+        return redirect()->route('home')
             ->with('status', __('file.logged_out_successfully') ?? 'You have been logged out successfully.');
     }
 }

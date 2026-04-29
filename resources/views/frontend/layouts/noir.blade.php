@@ -38,7 +38,7 @@
             /* muted volt */
             --volt-bg: rgba(200, 255, 0, 0.06);
             /* volt tint */
-            --ash: #888888;
+            --ash: #b1b1b1;
             /* secondary text */
             --smoke: #444444;
             /* borders */
@@ -858,7 +858,7 @@
             <!-- Center nav -->
             <nav aria-label="Primary">
                 <ul class="nav-links">
-                    <li><a href="{{ route('products.index') }}" class="active">Shop</a></li>
+                    <li><a href="{{ route('frontend.products.index') }}" class="active">Shop</a></li>
                     <li><a href="#">New Drop</a></li>
                     <li><a href="#">Collections</a></li>
                     <li><a href="#">Editorial</a></li>
@@ -914,7 +914,7 @@
 
     <!-- Mobile nav drawer -->
     <nav class="mobile-drawer" id="mobile-drawer" aria-label="Mobile navigation">
-        <a href="{{ route('products.index') }}">Shop</a>
+        <a href="{{ route('frontend.products.index') }}">Shop</a>
         <a href="#">New Drop</a>
         <a href="#">Collections</a>
         <a href="#">Editorial</a>
@@ -964,7 +964,7 @@
             <div class="footer-col gsap-init">
                 <p class="footer-col-label">Navigate</p>
                 <ul>
-                    <li><a href="{{ route('products.index') }}">Shop All</a></li>
+                    <li><a href="{{ route('frontend.products.index') }}">Shop All</a></li>
                     <li><a href="#">New Drop</a></li>
                     <li><a href="#">Collections</a></li>
                     <li><a href="#">Lookbook</a></li>
@@ -1155,3 +1155,4 @@
 </body>
 
 </html>
+

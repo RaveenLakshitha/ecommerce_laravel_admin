@@ -7,6 +7,7 @@ use App\Models\Variant;
 use Darryldecode\Cart\Facades\CartFacade as Cart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Setting;
 
 class CartController extends Controller
 {
@@ -15,10 +16,9 @@ class CartController extends Controller
         $cartItems      = Cart::getContent();
         $subtotal       = Cart::getSubTotal();
         $total          = Cart::getTotal();
-        $currency_symbol = 'Rs.';
 
         return view('frontend.cart.index', compact(
-            'cartItems', 'subtotal', 'total', 'currency_symbol'
+            'cartItems', 'subtotal', 'total'
         ));
     }
 
@@ -53,7 +53,7 @@ class CartController extends Controller
         ]);
 
         if (Auth::check()) {
-            Cart::session(Auth::id())->store();
+            Cart::session(Auth::id());
         }
 
         $cartCount = Cart::getTotalQuantity();
@@ -103,14 +103,14 @@ class CartController extends Controller
         ]);
 
         if (Auth::check()) {
-            Cart::session(Auth::id())->store();
+            Cart::session(Auth::id());
         }
 
         // Re-fetch updated item for its new subtotal
         $updatedItem   = Cart::get($request->rowId);
-        $itemSubtotal  = $updatedItem ? number_format($updatedItem->getPriceSumWithConditions(), 2) : '0.00';
-        $cartSubtotal  = number_format(Cart::getSubTotal(), 2);
-        $cartTotal     = number_format(Cart::getTotal(), 2);
+        $itemSubtotal  = $updatedItem ? Setting::formatPrice($updatedItem->getPriceSumWithConditions()) : Setting::formatPrice(0);
+        $cartSubtotal  = Setting::formatPrice(Cart::getSubTotal());
+        $cartTotal     = Setting::formatPrice(Cart::getTotal());
         $cartCount     = Cart::getTotalQuantity();
 
         if ($request->ajax() || $request->wantsJson()) {
@@ -132,11 +132,11 @@ class CartController extends Controller
         Cart::remove($rowId);
 
         if (Auth::check()) {
-            Cart::session(Auth::id())->store();
+            Cart::session(Auth::id());
         }
 
-        $cartSubtotal = number_format(Cart::getSubTotal(), 2);
-        $cartTotal    = number_format(Cart::getTotal(), 2);
+        $cartSubtotal = Setting::formatPrice(Cart::getSubTotal());
+        $cartTotal    = Setting::formatPrice(Cart::getTotal());
         $cartCount    = Cart::getTotalQuantity();
 
         if ($request->ajax() || $request->wantsJson()) {
@@ -158,7 +158,7 @@ class CartController extends Controller
     public static function mergeAfterLogin()
     {
         if (Auth::check()) {
-            Cart::session(Auth::id())->restore();
+            Cart::session(Auth::id());
 
             $guestCart = Cart::getContent();
             foreach ($guestCart as $item) {
@@ -166,7 +166,6 @@ class CartController extends Controller
             }
 
             Cart::clear();
-            Cart::session(Auth::id())->store();
         }
     }
 }

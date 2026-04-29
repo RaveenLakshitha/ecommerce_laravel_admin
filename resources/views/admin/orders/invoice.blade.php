@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Invoice - Order {{ $order->order_number }}</title>
+    <title>{{ __('file.invoice_title') }} - {{ __('file.order') }} {{ $order->order_number }}</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @media print {
@@ -21,17 +21,17 @@
         <div class="flex justify-end gap-3 mb-8 no-print border-b pb-4">
             <button onclick="window.print()" class="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 flex items-center gap-2 text-sm font-medium">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
-                Print Invoice
+                {{ __('file.print_invoice') }}
             </button>
             <a href="{{ route('orders.show', $order->id) }}" class="px-4 py-2 border border-gray-300 rounded hover:bg-gray-50 text-gray-700 text-sm font-medium">
-                Back to Order
+                {{ __('file.back_to_orders') }}
             </a>
         </div>
 
         <!-- Header -->
         <div class="flex flex-col sm:flex-row justify-between items-start gap-6 border-b pb-8">
             <div>
-                <h1 class="text-3xl font-bold text-gray-900 tracking-tight">INVOICE</h1>
+                <h1 class="text-3xl font-bold text-gray-900 tracking-tight">{{ __('file.invoice_title') }}</h1>
                 <p class="text-gray-500 mt-1 uppercase text-sm font-semibold tracking-wider">#{{ $order->order_number }}</p>
             </div>
             <div class="text-left sm:text-right">
@@ -46,7 +46,7 @@
         <!-- Details -->
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 mt-8 border-b pb-8">
             <div>
-                <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Billed To</h3>
+                <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">{{ __('file.billed_to') }}</h3>
                 <div class="text-sm">
                     @if($order->billingAddress)
                         <p class="font-bold text-gray-900">{{ $order->billingAddress->first_name }} {{ $order->billingAddress->last_name }}</p>
@@ -67,7 +67,7 @@
             </div>
 
             <div>
-                <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Shipped To</h3>
+                <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">{{ __('file.shipped_to') }}</h3>
                 <div class="text-sm">
                     @if($order->shippingAddress)
                         <p class="font-bold text-gray-900">{{ $order->shippingAddress->first_name }} {{ $order->shippingAddress->last_name }}</p>
@@ -78,17 +78,17 @@
                         <p class="text-gray-600">{{ $order->shippingAddress->city }}, {{ $order->shippingAddress->state }} {{ $order->shippingAddress->postal_code }}</p>
                         <p class="text-gray-600">{{ $order->shippingAddress->country }}</p>
                     @else
-                        <p class="text-gray-500 italic">Same as Billing / Not provided</p>
+                        <p class="text-gray-500 italic">{{ __('file.same_as_billing_not_provided') }}</p>
                     @endif
                 </div>
             </div>
 
             <div class="sm:text-right">
-                <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Invoice Info</h3>
+                <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">{{ __('file.invoice_info') }}</h3>
                 <div class="text-sm space-y-1">
-                    <p><span class="text-gray-500 mr-2">Invoice Date:</span> <span class="font-medium text-gray-900">{{ now()->format('M d, Y') }}</span></p>
-                    <p><span class="text-gray-500 mr-2">Order Date:</span> <span class="font-medium text-gray-900">{{ $order->placed_at ? $order->placed_at->format('M d, Y') : $order->created_at->format('M d, Y') }}</span></p>
-                    <p><span class="text-gray-500 mr-2">Payment Method:</span> <span class="font-medium text-gray-900 uppercase">{{ $order->payment_method ?: 'N/A' }}</span></p>
+                    <p><span class="text-gray-500 mr-2">{{ __('file.invoice_date') }}:</span> <span class="font-medium text-gray-900">{{ now()->format('M d, Y') }}</span></p>
+                    <p><span class="text-gray-500 mr-2">{{ __('file.order_date') }}:</span> <span class="font-medium text-gray-900">{{ $order->placed_at ? $order->placed_at->format('M d, Y') : $order->created_at->format('M d, Y') }}</span></p>
+                    <p><span class="text-gray-500 mr-2">{{ __('file.payment_method') }}:</span> <span class="font-medium text-gray-900 uppercase">{{ $order->payment_method ?: 'N/A' }}</span></p>
                 </div>
             </div>
         </div>
@@ -98,10 +98,10 @@
             <table class="w-full text-left border-collapse">
                 <thead>
                     <tr class="border-b-2 border-gray-800">
-                        <th class="py-3 text-xs font-semibold text-gray-600 uppercase tracking-wider">Item Details</th>
-                        <th class="py-3 text-xs font-semibold text-gray-600 uppercase tracking-wider text-right">Unit Price</th>
-                        <th class="py-3 text-xs font-semibold text-gray-600 uppercase tracking-wider text-center">Qty</th>
-                        <th class="py-3 text-xs font-semibold text-gray-600 uppercase tracking-wider text-right">Line Total</th>
+                        <th class="py-3 text-xs font-semibold text-gray-600 uppercase tracking-wider">{{ __('file.item_details') }}</th>
+                        <th class="py-3 text-xs font-semibold text-gray-600 uppercase tracking-wider text-right">{{ __('file.unit_price') }}</th>
+                        <th class="py-3 text-xs font-semibold text-gray-600 uppercase tracking-wider text-center">{{ __('file.qty') }}</th>
+                        <th class="py-3 text-xs font-semibold text-gray-600 uppercase tracking-wider text-right">{{ __('file.line_total') }}</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-200">
@@ -111,15 +111,15 @@
                                 <div class="font-medium text-gray-900">{{ $item->product_name_snapshot }}</div>
                                 @if($item->variant_attributes)
                                     <div class="text-xs text-gray-500 mt-1">
-                                        @foreach(json_decode($item->variant_attributes, true) ?? [] as $key => $val)
+                                        @foreach(($item->variant_attributes ?? []) as $key => $val)
                                             <span class="mr-2">{{ ucfirst($key) }}: {{ $val }}</span>
                                         @endforeach
                                     </div>
                                 @endif
                             </td>
-                            <td class="py-4 text-right text-gray-600">{{ $order->currency }} {{ number_format($item->unit_price, 2) }}</td>
+                            <td class="py-4 text-right text-gray-600">@price($item->unit_price)</td>
                             <td class="py-4 text-center text-gray-900 font-medium">x{{ $item->quantity }}</td>
-                            <td class="py-4 text-right font-medium text-gray-900">{{ $order->currency }} {{ number_format($item->total, 2) }}</td>
+                            <td class="py-4 text-right font-medium text-gray-900">@price($item->total)</td>
                         </tr>
                     @endforeach
                 </tbody>
@@ -131,30 +131,30 @@
             <div class="w-full sm:w-1/3">
                 <table class="w-full text-right text-sm">
                     <tr>
-                        <td class="py-2 text-gray-500">Subtotal</td>
-                        <td class="py-2 font-medium text-gray-900">{{ $order->currency }} {{ number_format($order->subtotal, 2) }}</td>
+                        <td class="py-2 text-gray-500">{{ __('file.subtotal') }}</td>
+                        <td class="py-2 font-medium text-gray-900">@price($order->subtotal)</td>
                     </tr>
                     @if($order->discount_amount > 0)
                     <tr>
-                        <td class="py-2 text-gray-500">Discount</td>
-                        <td class="py-2 font-medium text-red-600">-{{ $order->currency }} {{ number_format($order->discount_amount, 2) }}</td>
+                        <td class="py-2 text-gray-500">{{ __('file.discount') }}</td>
+                        <td class="py-2 font-medium text-red-600">-@price($order->discount_amount)</td>
                     </tr>
                     @endif
                     @if($order->shipping_amount > 0)
                     <tr>
-                        <td class="py-2 text-gray-500">Shipping</td>
-                        <td class="py-2 font-medium text-gray-900">{{ $order->currency }} {{ number_format($order->shipping_amount, 2) }}</td>
+                        <td class="py-2 text-gray-500">{{ __('file.shipping') }}</td>
+                        <td class="py-2 font-medium text-gray-900">@price($order->shipping_amount)</td>
                     </tr>
                     @endif
                     @if($order->tax_amount > 0)
                     <tr>
-                        <td class="py-2 text-gray-500">Tax</td>
-                        <td class="py-2 font-medium text-gray-900">{{ $order->currency }} {{ number_format($order->tax_amount, 2) }}</td>
+                        <td class="py-2 text-gray-500">{{ __('file.tax') }}</td>
+                        <td class="py-2 font-medium text-gray-900">@price($order->tax_amount)</td>
                     </tr>
                     @endif
                     <tr class="border-t-2 border-gray-800">
-                        <td class="py-3 text-base font-bold text-gray-900">Total</td>
-                        <td class="py-3 text-lg font-bold text-gray-900">{{ $order->currency }} {{ number_format($order->total_amount, 2) }}</td>
+                        <td class="py-3 text-base font-bold text-gray-900">{{ __('file.total') }}</td>
+                        <td class="py-3 text-lg font-bold text-gray-900">@price($order->total_amount)</td>
                     </tr>
                 </table>
             </div>
@@ -162,8 +162,8 @@
 
         <!-- Footer Notes -->
         <div class="mt-16 text-center text-sm text-gray-500 border-t pt-8">
-            <p>Thank you for your business!</p>
-            <p class="mt-1">If you have any questions about this invoice, please contact support.</p>
+            <p>{{ __('file.thank_you_for_your_business') }}</p>
+            <p class="mt-1">{{ __('file.invoice_questions_contact_support') }}</p>
         </div>
 
     </div>

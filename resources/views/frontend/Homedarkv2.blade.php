@@ -12,8 +12,8 @@
         --bg-4:      #333333;
         --white:     #ffffff;
         --off-white: #f0f0f0;
-        --silver:    #aaaaaa;
-        --dim:       #666666;
+        --silver:    #d1d5db;
+        --dim:       #a1a1aa;
         --gold:      #c8a96e;
         --gold-bg:   rgba(200,169,110,0.1);
         --red:       #cc3333;
@@ -609,7 +609,7 @@
                 </h1>
                 <p class="slide-sub">{{ $sl['sub'] }}</p>
                 <div class="slide-actions">
-                    <a href="{{ route('products.index') }}" class="btn-gold">
+                    <a href="{{ route('frontend.products.index') }}" class="btn-gold">
                         Shop Now
                         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                     </a>
@@ -656,7 +656,7 @@
 ═══════════════════════════════════════════════════ --}}
 <div class="cat-bar">
     <div class="cat-bar-inner">
-        <a class="cat-tab active" href="{{ route('products.index') }}">All <span class="cat-count-chip">34</span></a>
+        <a class="cat-tab active" href="{{ route('frontend.products.index') }}">All <span class="cat-count-chip">34</span></a>
         <a class="cat-tab" href="#">New Arrivals <span class="cat-count-chip">12</span></a>
         <a class="cat-tab" href="#">T-Shirts <span class="cat-count-chip">18</span></a>
         <a class="cat-tab" href="#">Polo Shirts <span class="cat-count-chip">8</span></a>
@@ -677,7 +677,7 @@
                 <p class="sec-eyebrow">Just Dropped</p>
                 <h2 class="sec-title">New Arrivals</h2>
             </div>
-            <a href="{{ route('products.index') }}" class="sec-link">
+            <a href="{{ route('frontend.products.index') }}" class="sec-link">
                 View All
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
             </a>
@@ -686,10 +686,10 @@
         <div class="product-grid-4">
             @php
             $newArrivals = [
-                ['brand'=>'Edge Casuals','name'=>'Textured Pattern Polo T-Shirt','price'=>'Rs. 2,990','orig'=>null,'ribbon'=>'New Arrival','rc'=>'','colors'=>['#8b7355','#3a8fd1','#c8c066'],'img'=>'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80','inst'=>'3 × Rs. 996.66'],
-                ['brand'=>'Edge Casuals','name'=>'Solid Polo T-Shirt — 53738','price'=>'Rs. 2,290','orig'=>null,'ribbon'=>'New Arrival','rc'=>'','colors'=>['#8b2020','#c8a96e','#3a8fd1','#c8c066'],'img'=>'https://images.unsplash.com/photo-1516826957135-700dedea698c?w=600&q=80','inst'=>'3 × Rs. 763.33'],
-                ['brand'=>'Edge Casuals','name'=>'Sportswear T-Shirt SPW-43','price'=>'Rs. 2,990','orig'=>null,'ribbon'=>'New Arrival','rc'=>'','colors'=>['#2d2d2d','#1a1a1a','#1a3a6e'],'img'=>'https://images.unsplash.com/photo-1571945153237-4929e783af4a?w=600&q=80','inst'=>'3 × Rs. 996.66'],
-                ['brand'=>'Edge Casuals','name'=>'Sportswear T-Shirt SPW-31','price'=>'Rs. 2,990','orig'=>null,'ribbon'=>'New Arrival','rc'=>'','colors'=>['#8b2020','#555555','#3a9e5f','#3a8fd1'],'img'=>'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&q=80','inst'=>'3 × Rs. 996.66'],
+                ['brand'=>'Edge Casuals','name'=>'Textured Pattern Polo T-Shirt','price'=>2990,'orig'=>null,'ribbon'=>'New Arrival','rc'=>'','colors'=>['#8b7355','#3a8fd1','#c8c066'],'img'=>'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80','inst'=>996.66],
+                ['brand'=>'Edge Casuals','name'=>'Solid Polo T-Shirt — 53738','price'=>2290,'orig'=>null,'ribbon'=>'New Arrival','rc'=>'','colors'=>['#8b2020','#c8a96e','#3a8fd1','#c8c066'],'img'=>'https://images.unsplash.com/photo-1516826957135-700dedea698c?w=600&q=80','inst'=>763.33],
+                ['brand'=>'Edge Casuals','name'=>'Sportswear T-Shirt SPW-43','price'=>2990,'orig'=>null,'ribbon'=>'New Arrival','rc'=>'','colors'=>['#2d2d2d','#1a1a1a','#1a3a6e'],'img'=>'https://images.unsplash.com/photo-1571945153237-4929e783af4a?w=600&q=80','inst'=>996.66],
+                ['brand'=>'Edge Casuals','name'=>'Sportswear T-Shirt SPW-31','price'=>2990,'orig'=>null,'ribbon'=>'New Arrival','rc'=>'','colors'=>['#8b2020','#555555','#3a9e5f','#3a8fd1'],'img'=>'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&q=80','inst'=>996.66],
             ];
             @endphp
             @foreach($newArrivals as $p)
@@ -707,10 +707,10 @@
                     <p class="p-brand">{{ $p['brand'] }}</p>
                     <p class="p-name">{{ $p['name'] }}</p>
                     <div class="p-price-row">
-                        <span class="p-price">{{ $p['price'] }} LKR</span>
-                        @if($p['orig'])<span class="p-price-was">{{ $p['orig'] }}</span>@endif
+                        <span class="p-price">@price($p['price'])</span>
+                        @if($p['orig'])<span class="p-price-was">@price($p['orig'])</span>@endif
                     </div>
-                    <p class="p-install">3 × <strong>{{ explode('× ',$p['inst'])[1] }}</strong> &amp; get up to <span class="cb">4% Cashback</span> with<span class="mintpay">MintPay</span></p>
+                    <p class="p-install">3 × <strong>@price($p['inst'])</strong> &amp; get up to <span class="cb">4% Cashback</span> with<span class="mintpay">MintPay</span></p>
                     <div class="p-swatches">@foreach($p['colors'] as $c)<span class="p-dot" style="background:{{ $c }};"></span>@endforeach</div>
                 </div>
             </div>
@@ -741,7 +741,7 @@
                 <p class="sec-eyebrow">Shop by Collection</p>
                 <h2 class="sec-title">Featured Collections</h2>
             </div>
-            <a href="{{ route('products.index') }}" class="sec-link">Browse All <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+            <a href="{{ route('frontend.products.index') }}" class="sec-link">Browse All <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
         </div>
     </div>
     <div style="max-width:1600px;margin:0 auto;padding:0 2rem;">
@@ -781,15 +781,15 @@
                 <p class="sec-eyebrow">Customer Favourites</p>
                 <h2 class="sec-title">Best Sellers</h2>
             </div>
-            <a href="{{ route('products.index') }}" class="sec-link">View All <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+            <a href="{{ route('frontend.products.index') }}" class="sec-link">View All <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
         </div>
 
         <div class="product-grid-4">
             @php $bestSellers = [
-                ['brand'=>'Edge Casuals','name'=>'Classic Chino Trouser','price'=>'Rs. 3,490','orig'=>'Rs. 4,200','ribbon'=>'Sale','rc'=>'sale','colors'=>['#8b7355','#4a3f38','#1a1a1a'],'img'=>'https://images.unsplash.com/photo-1594938298603-c8148c4b4e3d?w=600&q=80','inst'=>'3 × Rs. 1,163.33'],
-                ['brand'=>'Edge Casuals','name'=>'Slim Fit Jeans SFJ-22','price'=>'Rs. 4,590','orig'=>null,'ribbon'=>'Best Seller','rc'=>'top','colors'=>['#1a2a3a','#2d2d2d','#6b5e52'],'img'=>'https://images.unsplash.com/photo-1542272604-787c3835535d?w=600&q=80','inst'=>'3 × Rs. 1,530.00'],
-                ['brand'=>'Edge Active','name'=>'Performance DRI-FIT Polo','price'=>'Rs. 2,790','orig'=>null,'ribbon'=>'Best Seller','rc'=>'top','colors'=>['#1a1a1a','#2d5a8e','#2d7a4f'],'img'=>'https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=600&q=80','inst'=>'3 × Rs. 930.00'],
-                ['brand'=>'Edge Kids','name'=>'Boys Graphic Tee Multipack','price'=>'Rs. 1,890','orig'=>null,'ribbon'=>'New Arrival','rc'=>'','colors'=>['#cc3333','#3a8fd1','#2d7a4f','#c8a96e'],'img'=>'https://images.unsplash.com/photo-1503944583220-79d8926ad5e2?w=600&q=80','inst'=>'3 × Rs. 630.00'],
+                ['brand'=>'Edge Casuals','name'=>'Classic Chino Trouser','price'=>3490,'orig'=>4200,'ribbon'=>'Sale','rc'=>'sale','colors'=>['#8b7355','#4a3f38','#1a1a1a'],'img'=>'https://images.unsplash.com/photo-1594938298603-c8148c4b4e3d?w=600&q=80','inst'=>1163.33],
+                ['brand'=>'Edge Casuals','name'=>'Slim Fit Jeans SFJ-22','price'=>4590,'orig'=>null,'ribbon'=>'Best Seller','rc'=>'top','colors'=>['#1a2a3a','#2d2d2d','#6b5e52'],'img'=>'https://images.unsplash.com/photo-1542272604-787c3835535d?w=600&q=80','inst'=>1530.00],
+                ['brand'=>'Edge Active','name'=>'Performance DRI-FIT Polo','price'=>2790,'orig'=>null,'ribbon'=>'Best Seller','rc'=>'top','colors'=>['#1a1a1a','#2d5a8e','#2d7a4f'],'img'=>'https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=600&q=80','inst'=>930.00],
+                ['brand'=>'Edge Kids','name'=>'Boys Graphic Tee Multipack','price'=>1890,'orig'=>null,'ribbon'=>'New Arrival','rc'=>'','colors'=>['#cc3333','#3a8fd1','#2d7a4f','#c8a96e'],'img'=>'https://images.unsplash.com/photo-1503944583220-79d8926ad5e2?w=600&q=80','inst'=>630.00],
             ]; @endphp
             @foreach($bestSellers as $p)
             <div class="p-card reveal">
@@ -835,7 +835,7 @@
         </p>
         <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
             <a href="#" class="btn-gold">Our Story <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
-            <a href="{{ route('products.index') }}" class="btn-outline-dark">Shop Now</a>
+            <a href="{{ route('frontend.products.index') }}" class="btn-outline-dark">Shop Now</a>
         </div>
     </div>
 </section>
@@ -982,3 +982,4 @@ window.addEventListener('load', () => {
 </script>
 
 @endsection
+

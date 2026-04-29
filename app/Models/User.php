@@ -13,6 +13,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'google_id',
+        'avatar',
+        'email_verified_at',
     ];
 
     protected $hidden = [
@@ -23,6 +26,26 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    // -----------------------------------------------------------------------
+    // Helpers
+    // -----------------------------------------------------------------------
+
+    /** True when this account was created / linked via Google OAuth. */
+    public function isGoogleAccount(): bool
+    {
+        return ! is_null($this->google_id);
+    }
+
+    /** True when the user has a traditional password set. */
+    public function hasPassword(): bool
+    {
+        return ! is_null($this->password);
+    }
+
+    // -----------------------------------------------------------------------
+    // Relationships
+    // -----------------------------------------------------------------------
 
     public function customer()
     {

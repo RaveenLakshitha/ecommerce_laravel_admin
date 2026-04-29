@@ -47,8 +47,7 @@
                             </svg>
                         </div>
                     </div>
-                    <p class="text-2xl font-bold text-gray-900 dark:text-white tabular-nums">{{ $currency_symbol }}
-                        {{ number_format($todaysSales, 2) }}
+                    <p class="text-2xl font-bold text-gray-900 dark:text-white tabular-nums">@price($todaysSales)
                     </p>
                     <span class="text-xs text-gray-400 dark:text-gray-500">Revenue today</span>
                 </div>
@@ -145,9 +144,7 @@
                             </svg>
                         </div>
                     </div>
-                    <p class="text-2xl font-bold text-gray-900 dark:text-white tabular-nums">{{ $currency_symbol }}
-                        {{ number_format($thisMonthRevenue, 0) }}
-                    </p>
+                    <p class="text-2xl font-bold text-gray-900 dark:text-white tabular-nums">@price($thisMonthRevenue)</p>
                     <span class="text-xs text-gray-400 dark:text-gray-500">This month</span>
                 </div>
 
@@ -163,7 +160,7 @@
                     <div
                         class="bg-white dark:bg-surface-tonal-a20 rounded-2xl shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                         <div
-                            class="px-6 py-4 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50/50 dark:bg-surface-tonal-a20 flex items-center justify-between">
+                            class="px-6 py-4 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20 flex items-center justify-between">
                             <div>
                                 <h2 class="font-semibold text-gray-900 dark:text-white">Recent Orders</h2>
                                 <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Latest 10 orders placed in your
@@ -182,7 +179,7 @@
                             <table class="w-full text-left">
                                 <thead>
                                     <tr
-                                        class="bg-gray-50/50 dark:bg-surface-tonal-a10/50 border-b border-gray-100 dark:border-surface-tonal-a30">
+                                        class="bg-gray-100/50 dark:bg-surface-tonal-a10/50 border-b border-gray-100 dark:border-surface-tonal-a30">
                                         <th
                                             class="px-6 py-3 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                                             Order #</th>
@@ -202,7 +199,7 @@
                                 </thead>
                                 <tbody class="divide-y divide-gray-50 dark:divide-surface-tonal-a30">
                                     @forelse($recentOrders as $order)
-                                        <tr class="hover:bg-gray-50/50 dark:hover:bg-surface-tonal-a20/50 transition-colors">
+                                        <tr class="hover:bg-gray-100 dark:hover:bg-white/5 transition-colors">
                                             <td class="px-6 py-4">
                                                 <a href="{{ route('orders.show', $order) }}"
                                                     class="font-semibold text-indigo-600 dark:text-indigo-400 hover:underline underline-offset-4 text-sm">
@@ -249,8 +246,7 @@
                                             </td>
                                             <td class="px-6 py-4 text-right">
                                                 <span
-                                                    class="text-sm font-semibold text-gray-900 dark:text-white">{{ $currency_symbol }}
-                                                    {{ number_format($order->total_amount, 2) }}</span>
+                                                    class="text-sm font-semibold text-gray-900 dark:text-white">@price($order->total_amount)</span>
                                             </td>
                                         </tr>
                                     @empty
@@ -273,7 +269,7 @@
                         <div
                             class="bg-white dark:bg-surface-tonal-a20 rounded-2xl shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                             <div
-                                class="px-6 py-4 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50/50 dark:bg-surface-tonal-a20 flex items-center justify-between">
+                                class="px-6 py-4 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20 flex items-center justify-between">
                                 <div>
                                     <h2 class="font-semibold text-gray-900 dark:text-white">Low Stock Alerts</h2>
                                     <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Products needing restock</p>
@@ -288,7 +284,7 @@
                             <div class="divide-y divide-gray-50 dark:divide-surface-tonal-a30">
                                 @forelse($lowStockAlerts as $variant)
                                     <div
-                                        class="px-6 py-4 flex items-center justify-between gap-4 hover:bg-gray-50/50 dark:hover:bg-surface-tonal-a30/50 transition-colors group">
+                                        class="px-6 py-4 flex items-center justify-between gap-4 hover:bg-gray-100 dark:hover:bg-white/5 transition-colors group">
                                         <div class="flex items-center gap-3 min-w-0">
                                             <div
                                                 class="w-10 h-10 rounded-xl bg-gray-100 dark:bg-surface-tonal-a30 border border-gray-200 dark:border-surface-tonal-a40 flex items-center justify-center shrink-0 overflow-hidden">
@@ -338,7 +334,7 @@
                         <div
                             class="bg-white dark:bg-surface-tonal-a20 rounded-2xl shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                             <div
-                                class="px-6 py-4 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50/50 dark:bg-surface-tonal-a20 flex items-center justify-between">
+                                class="px-6 py-4 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20 flex items-center justify-between">
                                 <div>
                                     <h2 class="font-semibold text-gray-900 dark:text-white">Top Selling Products</h2>
                                     <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Best performers this period
@@ -356,7 +352,7 @@
                                             class="w-6 h-6 rounded-lg bg-gray-50 dark:bg-surface-tonal-a30/50 border border-gray-100 dark:border-surface-tonal-a40 flex items-center justify-center shrink-0">
                                             <span
                                                 class="text-xs font-bold tabular-nums
-                                                            {{ $index === 0 ? 'text-amber-500' : ($index === 1 ? 'text-slate-400' : ($index === 2 ? 'text-orange-400' : 'text-gray-400')) }}">
+                                                                    {{ $index === 0 ? 'text-amber-500' : ($index === 1 ? 'text-slate-400' : ($index === 2 ? 'text-orange-400' : 'text-gray-400')) }}">
                                                 {{ $index + 1 }}
                                             </span>
                                         </div>
@@ -407,13 +403,13 @@
                     <div
                         class="bg-white dark:bg-surface-tonal-a20 rounded-2xl shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                         <div
-                            class="px-6 py-4 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50/50 dark:bg-surface-tonal-a20">
+                            class="px-6 py-4 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
                             <h2 class="font-semibold text-gray-900 dark:text-white">Quick Actions</h2>
                             <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Common tasks at a glance</p>
                         </div>
                         <div class="p-5 grid grid-cols-2 gap-3">
                             <a href="{{ route('products.create') }}"
-                                class="flex flex-col items-start gap-3 p-4 rounded-xl border border-gray-200 dark:border-surface-tonal-a30 bg-gray-50/50 dark:bg-surface-tonal-a30/50 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 hover:border-indigo-200 dark:hover:border-indigo-500/30 transition-all group">
+                                class="flex flex-col items-start gap-3 p-4 rounded-xl border border-gray-200 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a30/50 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 hover:border-indigo-200 dark:hover:border-indigo-500/30 transition-all group">
                                 <div
                                     class="w-9 h-9 rounded-xl bg-indigo-100 dark:bg-indigo-500/20 flex items-center justify-center text-indigo-600 dark:text-indigo-400 transition-transform group-hover:scale-110">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -426,7 +422,7 @@
                                     Product</span>
                             </a>
                             <a href="{{ route('coupons.create') }}"
-                                class="flex flex-col items-start gap-3 p-4 rounded-xl border border-gray-200 dark:border-surface-tonal-a30 bg-gray-50/50 dark:bg-surface-tonal-a30/50 hover:bg-amber-50 dark:hover:bg-amber-500/10 hover:border-amber-200 dark:hover:border-amber-500/30 transition-all group">
+                                class="flex flex-col items-start gap-3 p-4 rounded-xl border border-gray-200 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a30/50 hover:bg-amber-50 dark:hover:bg-amber-500/10 hover:border-amber-200 dark:hover:border-amber-500/30 transition-all group">
                                 <div
                                     class="w-9 h-9 rounded-xl bg-amber-100 dark:bg-amber-500/20 flex items-center justify-center text-amber-600 dark:text-amber-400 transition-transform group-hover:scale-110">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -439,7 +435,7 @@
                                     Coupon</span>
                             </a>
                             <a href="{{ route('shipping.shipments.datatable') }}"
-                                class="flex flex-col items-start gap-3 p-4 rounded-xl border border-gray-200 dark:border-surface-tonal-a30 bg-gray-50/50 dark:bg-surface-tonal-a30/50 hover:bg-blue-50 dark:hover:bg-blue-500/10 hover:border-blue-200 dark:hover:border-blue-500/30 transition-all group">
+                                class="flex flex-col items-start gap-3 p-4 rounded-xl border border-gray-200 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a30/50 hover:bg-blue-50 dark:hover:bg-blue-500/10 hover:border-blue-200 dark:hover:border-blue-500/30 transition-all group">
                                 <div
                                     class="w-9 h-9 rounded-xl bg-blue-100 dark:bg-blue-500/20 flex items-center justify-center text-blue-600 dark:text-blue-400 transition-transform group-hover:scale-110">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -452,7 +448,7 @@
                                     Shipments</span>
                             </a>
                             <a href="{{ route('customers.index') }}"
-                                class="flex flex-col items-start gap-3 p-4 rounded-xl border border-gray-200 dark:border-surface-tonal-a30 bg-gray-50/50 dark:bg-surface-tonal-a30/50 hover:bg-violet-50 dark:hover:bg-violet-500/10 hover:border-violet-200 dark:hover:border-violet-500/30 transition-all group">
+                                class="flex flex-col items-start gap-3 p-4 rounded-xl border border-gray-200 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a30/50 hover:bg-violet-50 dark:hover:bg-violet-500/10 hover:border-violet-200 dark:hover:border-violet-500/30 transition-all group">
                                 <div
                                     class="w-9 h-9 rounded-xl bg-violet-100 dark:bg-violet-500/20 flex items-center justify-center text-violet-600 dark:text-violet-400 transition-transform group-hover:scale-110">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -470,7 +466,7 @@
                     <div
                         class="bg-white dark:bg-surface-tonal-a20 rounded-2xl shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                         <div
-                            class="px-6 py-4 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50/50 dark:bg-surface-tonal-a20">
+                            class="px-6 py-4 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
                             <h2 class="font-semibold text-gray-900 dark:text-white">Pending Tasks</h2>
                             <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Items requiring your attention</p>
                         </div>

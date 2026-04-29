@@ -13,6 +13,14 @@ class ShippingZoneController extends Controller
         return view('admin.shipping.zones.index');
     }
 
+    public function create(Request $request)
+    {
+        if ($request->ajax()) {
+            return view('admin.shipping.zones.partials.form', ['zone' => null])->render();
+        }
+        return view('admin.shipping.zones.create');
+    }
+
     public function datatable(Request $request)
     {
         $draw = $request->input('draw');
@@ -88,7 +96,19 @@ class ShippingZoneController extends Controller
         $data['is_active'] = $request->has('is_active');
         ShippingZone::create($data);
 
+        if ($request->ajax()) {
+            return response()->json(['success' => true, 'message' => 'Shipping Zone created successfully.']);
+        }
+
         return back()->with('success', 'Shipping Zone created successfully.');
+    }
+
+    public function edit(Request $request, ShippingZone $zone)
+    {
+        if ($request->ajax()) {
+            return view('admin.shipping.zones.partials.form', compact('zone'))->render();
+        }
+        return view('admin.shipping.zones.edit', compact('zone'));
     }
 
     public function update(Request $request, ShippingZone $zone)
@@ -101,6 +121,10 @@ class ShippingZoneController extends Controller
 
         $data['is_active'] = $request->has('is_active');
         $zone->update($data);
+
+        if ($request->ajax()) {
+            return response()->json(['success' => true, 'message' => 'Shipping Zone updated successfully.']);
+        }
 
         return back()->with('success', 'Shipping Zone updated successfully.');
     }

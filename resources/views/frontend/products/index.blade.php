@@ -8,8 +8,8 @@
             --bg-4: #333333;
             --white: #ffffff;
             --off-white: #f0f0f0;
-            --silver: #aaaaaa;
-            --dim: #666666;
+            --silver: #d1d5db;
+            --dim: #a1a1aa;
             --gold: #c8a96e;
             --gold-bg: rgba(200, 169, 110, 0.1);
             --red: #cc3333;
@@ -1522,9 +1522,9 @@
                                 <p class="p-brand">{{ $p->brand->name ?? 'Karbnzol' }}</p>
                                 <p class="p-name">{{ $p->name }}</p>
                                 <div class="p-price-row">
-                                    <span class="p-price">{{ $currency_symbol }} {{ number_format($p->sale_price ? $p->sale_price : $p->base_price, 2) }}</span>
+                                    <span class="p-price">@price($p->sale_price ? $p->sale_price : $p->base_price)</span>
                                     @if($p->sale_price && $p->sale_price < $p->base_price)
-                                        <span class="p-was">{{ $currency_symbol }} {{ number_format($p->base_price, 2) }}</span>
+                                        <span class="p-was">@price($p->base_price)</span>
                                     @endif
                                 </div>
                                 <div class="p-swatches">

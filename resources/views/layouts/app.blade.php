@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="google" content="notranslate">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@if(View::hasSection('title'))@yield('title') | {{ $site_name }}@else{{ $site_name }}@endif</title>
@@ -34,8 +35,7 @@
 </head>
 
 <body
-    class="min-h-screen bg-gray-50 dark:bg-surface-tonal-a10 text-gray-900 dark:text-gray-50 transition-colors duration-300"
-    style="font-family:'Inter',system-ui,sans-serif;">
+    class="min-h-screen bg-gray-50 dark:bg-surface-tonal-a10 text-gray-900 dark:text-gray-50 transition-colors duration-300 font-inter">
 
     <div id="notification-container"></div>
 
@@ -62,7 +62,7 @@
                             d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10">
                         </path>
                     </svg>
-                    Order Manager
+                    {{ __('file.order_manager') }}
                 </a>
             </div>
 
@@ -89,7 +89,7 @@
                             <input type="hidden" name="locale" value="en">
                             <button type="submit"
                                 class="w-full text-left px-4 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition">
-                                {{ __('English') }}
+                                {{ __('file.english') }}
                             </button>
                         </form>
                         <form method="POST" action="{{ route('language.switch') }}">
@@ -97,7 +97,7 @@
                             <input type="hidden" name="locale" value="es">
                             <button type="submit"
                                 class="w-full text-left px-4 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition">
-                                {{ __('Español') }}
+                                {{ __('file.spanish') }}
                             </button>
                         </form>
                     </div>
@@ -149,7 +149,7 @@
                             @csrf
                             <button type="submit"
                                 class="w-full text-left px-4 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition">
-                                {{ __('Log Out') }}
+                                {{ __('file.sign_out') }}
                             </button>
                         </form>
                     </div>
@@ -158,10 +158,13 @@
         </nav>
 
         <main class="pt-32 p-4 sm:p-6 min-h-screen bg-gray-50 dark:bg-surface-tonal-a10"
-            style="transition: background-color 0.3s; position: relative; z-index: 10;">
+            style="transition: background-color 0.3s;">
             @yield('content')
         </main>
     </div>
+
+    {{-- Body-level drawers rendered outside stacking contexts --}}
+    @stack('drawers')
 
     @stack('scripts')
 

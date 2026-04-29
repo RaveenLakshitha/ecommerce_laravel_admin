@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Customer;
 use App\Models\Note;
 use App\Models\Tag;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 
 class CustomerController extends Controller
@@ -65,7 +66,7 @@ class CustomerController extends Controller
                 'name_html' => $nameHtml,
                 'email' => htmlspecialchars($customer->email),
                 'orders_count' => $customer->orders_count,
-                'total_spent_html' => '<div class="text-sm font-medium text-gray-900 dark:text-primary-a0">$' . number_format($customer->total_spent, 2) . '</div>',
+                'total_spent_html' => '<div class="text-sm font-medium text-gray-900 dark:text-primary-a0">' . Setting::formatPrice($customer->total_spent) . '</div>',
                 'status_html' => $statusHtml,
                 'show_url' => route('customers.show', $customer->id),
                 'delete_url' => route('customers.destroy', $customer->id),

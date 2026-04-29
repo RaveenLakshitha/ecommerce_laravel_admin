@@ -20,4 +20,7 @@ return [
     'Sign in to Dashboard' => 'Iniciar sesión',
     'Need help accessing your account?' => '¿Necesitas ayuda para acceder a tu cuenta?',
     'Contact IT Support' => 'Contactar Soporte de TI',
+    'Admin Portal' => 'Portal de Administración',
+    'Please enter your admin credentials.' => 'Por favor, ingrese sus credenciales de administrador.',
+    'Sign in to Admin Dashboard' => 'Iniciar sesión en el Panel de Administración',
 ];

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Refund;
+use App\Models\Setting;
 
 class RefundController extends Controller
 {
@@ -34,7 +35,7 @@ class RefundController extends Controller
                 return '<span class="text-gray-500">N/A</span>';
             })
             ->addColumn('amount_html', function ($row) {
-                return $row->currency . ' ' . number_format($row->amount, 2);
+                return Setting::formatPrice($row->amount);
             })
             ->addColumn('status_html', function ($row) {
                 $colors = [

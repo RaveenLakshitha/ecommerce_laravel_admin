@@ -83,6 +83,7 @@ class AppServiceProvider extends ServiceProvider
 
             // Business info
             'free_shipping_threshold' => $setting->free_shipping_threshold ?? 5000,
+            'shipping_cost_per_order' => $setting->shipping_cost_per_order ?? 0,
             'return_period_days' => $setting->return_period_days ?? 14,
         ]);
 
@@ -97,6 +98,11 @@ class AppServiceProvider extends ServiceProvider
                 ->orderBy('name')
                 ->get();
             $view->with('globalCategories', $categories);
+        });
+
+        // Register custom blade directives
+        \Illuminate\Support\Facades\Blade::directive('price', function ($expression) {
+            return "<?php echo \App\Models\Setting::formatPrice($expression); ?>";
         });
     }
 }
