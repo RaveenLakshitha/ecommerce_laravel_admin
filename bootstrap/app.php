@@ -4,6 +4,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use App\Http\Middleware\SetAppLocale;
+use App\Http\Middleware\SetAdminSessionCookie;
 use App\Services\AppointmentService; // ← add this
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -20,8 +21,14 @@ return Application::configure(basePath: dirname(__DIR__))
             'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
         ]);
 
+        // Must be PREPENDED so it runs before StartSession and can
+        // change config('session.cookie') before the session is booted.
+        $middleware->web(prepend: [
+            SetAdminSessionCookie::class,
+        ]);
+
         $middleware->web(append: [
-            \App\Http\Middleware\SetAppLocale::class,
+            SetAppLocale::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
@@ -30,8 +37,15 @@ return Application::configure(basePath: dirname(__DIR__))
             if ($request->expectsJson()) {
                 return response()->json(['message' => 'CSRF token mismatch. Please refresh and try again.'], 419);
             }
-            return redirect()->route('login')
-                ->with('status', __('file.session_expired_login_again') ?? 'Your session expired. Please log in again.');
+
+            // Redirect admins to the admin login; customers to the shop login.
+            $isAdmin = $request->is('admin*') || $request->getHost() === 'admin.karbnzol.com';
+
+            return $isAdmin
+                ? redirect()->route('admin.login')
+                    ->with('status', __('file.session_expired_login_again') ?? 'Your session expired. Please log in again.')
+                : redirect()->route('login')
+                    ->with('status', __('file.session_expired_login_again') ?? 'Your session expired. Please log in again.');
         });
 
         $exceptions->render(function (Symfony\Component\HttpKernel\Exception\HttpExceptionInterface $e, Illuminate\Http\Request $request) {

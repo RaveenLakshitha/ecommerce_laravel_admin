@@ -13,6 +13,14 @@ class PickupLocationController extends Controller
         return view('admin.shipping.pickups.index');
     }
 
+    public function create(Request $request)
+    {
+        if ($request->ajax()) {
+            return view('admin.shipping.pickups.partials.form', ['location' => null])->render();
+        }
+        return view('admin.shipping.pickups.create');
+    }
+
     public function datatable(Request $request)
     {
         $draw = $request->input('draw');
@@ -94,7 +102,19 @@ class PickupLocationController extends Controller
         $data['is_active'] = $request->has('is_active');
         PickupLocation::create($data);
 
+        if ($request->ajax()) {
+            return response()->json(['success' => true, 'message' => 'Pickup Location created successfully.']);
+        }
+
         return back()->with('success', 'Pickup Location created.');
+    }
+
+    public function edit(Request $request, PickupLocation $pickup)
+    {
+        if ($request->ajax()) {
+            return view('admin.shipping.pickups.partials.form', ['location' => $pickup])->render();
+        }
+        return view('admin.shipping.pickups.edit', compact('pickup'));
     }
 
     public function update(Request $request, PickupLocation $pickup)
@@ -113,6 +133,10 @@ class PickupLocationController extends Controller
 
         $data['is_active'] = $request->has('is_active');
         $pickup->update($data);
+
+        if ($request->ajax()) {
+            return response()->json(['success' => true, 'message' => 'Pickup Location updated successfully.']);
+        }
 
         return back()->with('success', 'Pickup Location updated.');
     }

@@ -27,10 +27,11 @@
             --bg-3: #2a2a2a;
             --bg-4: #333333;
             --bg-panel: #1e1e1e;
+            --bg-creamy: #fdfbf7;
             --white: #ffffff;
             --off-white: #f0f0f0;
-            --silver: #aaaaaa;
-            --dim: #666666;
+            --silver: #d1d5db;
+            --dim: #a1a1aa;
             --gold: #c8a96e;
             --gold-bg: rgba(200, 169, 110, 0.12);
             --red: #cc3333;
@@ -58,6 +59,15 @@
             background: var(--bg);
             color: var(--off-white);
             overflow-x: hidden;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        /* ── Light Page Theme ────────────────────── */
+        body.light-page {
+            background: var(--bg-creamy) !important;
+        }
+        .light-page main {
+            color: #1a1a1a;
         }
 
         a {
@@ -140,7 +150,7 @@
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border-bottom: 1px solid var(--bg-4);
-            transition: border-color 0.3s, box-shadow 0.3s;
+            transition: border-color 0.3s, box-shadow 0.3s, background 0.3s;
         }
 
         .site-header.scrolled {
@@ -310,8 +320,12 @@
             left: 0;
             right: 0;
             width: 100%;
-            transform: translateY(-8px);
+            transform: translateY(-4px);
             min-width: 0;
+            max-height: 65vh;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: var(--gold) var(--bg-2);
         }
 
         /* Invisible hover bridge — fills any pixel gap between the
@@ -348,7 +362,7 @@
             display: flex;
             padding: 0;
             width: 100%;
-            min-height: 280px;
+            min-height: 240px;
         }
 
         /* Fixed-size promo image column */
@@ -356,7 +370,7 @@
             width: 300px;
             min-width: 300px;
             max-width: 300px;
-            min-height: 300px;
+            min-height: 280px;
             background: var(--bg-3);
             position: relative;
             overflow: hidden;
@@ -427,7 +441,7 @@
         .dd-cols {
             flex: 1;
             display: flex;
-            padding: 2rem 2rem 2rem 0;
+            padding: 1.75rem 2rem 1.75rem 0;
             min-width: 0;
         }
 
@@ -454,8 +468,8 @@
             letter-spacing: 0.26em;
             text-transform: uppercase;
             color: var(--gold);
-            margin-bottom: 1rem;
-            padding-bottom: 0.625rem;
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.5rem;
             border-bottom: 1px solid var(--bg-4);
             display: flex;
             align-items: center;
@@ -481,7 +495,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0.45rem 0.5rem;
+            padding: 0.35rem 0.5rem;
             font-size: 0.9rem;
             color: var(--silver);
             font-weight: 400;
@@ -534,7 +548,7 @@
 
         .dd-simple-list {
             list-style: none;
-            padding: 0.625rem 0;
+            padding: 0.4rem 0;
         }
 
         .dd-simple-list li {}
@@ -543,7 +557,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0.65rem 1.5rem;
+            padding: 0.5rem 1.5rem;
             font-size: 0.875rem;
             color: var(--silver);
             letter-spacing: 0.04em;
@@ -1249,6 +1263,128 @@
             font-weight: 600;
         }
 
+        /* ── User Account Dropdown ───────────────── */
+        .user-avatar-wrap {
+            position: relative;
+            display: flex;
+            align-items: center;
+            height: var(--nav-h);
+        }
+        .user-avatar-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            height: var(--nav-h);
+            padding: 0 0.75rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--silver);
+            transition: color 0.2s, background 0.2s;
+        }
+        .user-avatar-btn:hover { color: var(--white); background: var(--bg-3); }
+        .user-avatar-img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--gold);
+            flex-shrink: 0;
+        }
+        .user-avatar-initials {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--gold);
+            color: var(--bg);
+            font-family: var(--font-display);
+            font-size: 0.75rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            letter-spacing: 0.05em;
+        }
+        .user-name-label {
+            font-family: var(--font-display);
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            max-width: 140px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            color: var(--white);
+        }
+        .user-dropdown {
+            position: absolute;
+            top: calc(var(--nav-h) - 1px);
+            right: 0;
+            min-width: 220px;
+            background: var(--bg-2);
+            border: 1px solid var(--bg-4);
+            border-top: 2px solid var(--gold);
+            box-shadow: 0 24px 64px rgba(0,0,0,0.55);
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(-8px);
+            transition: opacity 0.22s var(--ease-out), transform 0.22s var(--ease-out);
+            z-index: 300;
+        }
+        .user-avatar-wrap.dd-open .user-dropdown {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
+        .user-dd-header {
+            padding: 1rem 1.25rem 0.75rem;
+            border-bottom: 1px solid var(--bg-4);
+        }
+        .user-dd-name {
+            font-family: var(--font-display);
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            color: var(--white);
+        }
+        .user-dd-email {
+            font-size: 0.75rem;
+            color: var(--dim);
+            margin-top: 0.15rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .user-dd-list {
+            list-style: none;
+            padding: 0.5rem 0;
+        }
+        .user-dd-list a, .user-dd-list button {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            width: 100%;
+            padding: 0.6rem 1.25rem;
+            font-size: 0.875rem;
+            color: var(--silver);
+            background: none;
+            border: none;
+            text-align: left;
+            cursor: pointer;
+            transition: color 0.15s, background 0.15s, padding-left 0.2s;
+            letter-spacing: 0.02em;
+        }
+        .user-dd-list a:hover, .user-dd-list button:hover {
+            color: var(--off-white);
+            background: var(--bg-3);
+            padding-left: 1.5rem;
+        }
+        .user-dd-divider { height: 1px; background: var(--bg-4); margin: 0.25rem 0; }
+        .user-dd-list .logout-btn { color: var(--red); }
+        .user-dd-list .logout-btn:hover { color: #ff6b6b; background: rgba(204,51,51,0.08); }
+
         .mob-lang-row {
             padding: 1rem 1.5rem;
             display: flex;
@@ -1278,7 +1414,7 @@
     </style>
 </head>
 
-<body>
+<body class="@yield('body_class')">
     <div id="page-wipe"></div>
 
     <!-- Announcement bar -->
@@ -1360,16 +1496,16 @@
                                                     $grandchildChunks = $child->children->isNotEmpty() ? $child->children->chunk(8) : collect([collect()]);
                                                 @endphp
                                                 @foreach($grandchildChunks as $index => $chunk)
-                                                    <div class="dd-col" style="min-width: 200px; flex: 0 0 auto; margin-bottom: 2rem;">
+                                                    <div class="dd-col" style="min-width: 200px; flex: 0 0 auto; margin-bottom: 1rem;">
                                                         <p class="dd-col-head">
                                                             <a href="{{ route('frontend.products.index', ['category' => $child->slug]) }}" style="text-decoration:none; color:inherit; {{ $index > 0 ? 'visibility:hidden;' : '' }}">{{ $child->name }}</a>
                                                         </p>
                                                         @if($chunk->isNotEmpty())
-                                                        <ul>
-                                                            @foreach($chunk as $grandchild)
-                                                                <li><a href="{{ route('frontend.products.index', ['category' => $grandchild->slug]) }}">{{ $grandchild->name }} <span class="dd-arrow"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></a></li>
-                                                            @endforeach
-                                                        </ul>
+                                                            <ul>
+                                                                @foreach($chunk as $grandchild)
+                                                                    <li><a href="{{ route('frontend.products.index', ['category' => $grandchild->slug]) }}">{{ $grandchild->name }} <span class="dd-arrow"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></a></li>
+                                                                @endforeach
+                                                            </ul>
                                                         @endif
                                                     </div>
                                                 @endforeach
@@ -1393,10 +1529,10 @@
 
 
                     <!-- About (no dropdown) -->
-                    <li class="nav-item"><a href="#">{{ __('file.about') }}</a></li>
+                    <li class="nav-item"><a href="{{ route('frontend.about') }}">{{ __('file.about') }}</a></li>
 
                     <!-- Contact (no dropdown) -->
-                    <li class="nav-item"><a href="#">{{ __('file.contact') }}</a></li>
+                    <li class="nav-item"><a href="{{ route('frontend.contact') }}">{{ __('file.contact') }}</a></li>
 
                 </ul>
             </nav>
@@ -1430,9 +1566,70 @@
                 </div>
 
                 @auth('web')
-                    <a href="{{ route('account.dashboard') }}" class="nav-icon" aria-label="Account">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                    </a>
+                    @php $authUser = auth('web')->user(); @endphp
+                    <div class="user-avatar-wrap nav-item has-drop" id="userAvatarWrap">
+                        <button class="user-avatar-btn" id="userAvatarBtn"
+                            aria-label="Account menu" aria-haspopup="true" aria-expanded="false">
+                            @if($authUser->avatar)
+                                <img src="{{ $authUser->avatar }}" alt="{{ $authUser->name }}" class="user-avatar-img">
+                            @else
+                                <span class="user-avatar-initials">
+                                    @php
+                                        $nameParts = explode(' ', trim($authUser->name));
+                                        $initials = strtoupper(substr($nameParts[0], 0, 1));
+                                        if (count($nameParts) > 1) {
+                                            $initials .= strtoupper(substr(end($nameParts), 0, 1));
+                                        }
+                                    @endphp
+                                    {{ $initials }}
+                                </span>
+                            @endif
+                            <span class="user-name-label">{{ explode(' ', $authUser->name)[0] }}</span>
+                            <svg class="nav-chevron" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 1 5 5 9 1"/></svg>
+                        </button>
+                        <div class="user-dropdown" role="menu">
+                            <div class="user-dd-header">
+                                <div class="user-dd-name">{{ $authUser->name }}</div>
+                                <div class="user-dd-email">{{ $authUser->email }}</div>
+                            </div>
+                            <ul class="user-dd-list">
+                                <li>
+                                    <a href="{{ route('account.dashboard', ['tab' => 'profile']) }}" role="menuitem">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                                        {{ __('file.profile_details') }}
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('account.dashboard', ['tab' => 'orders']) }}" role="menuitem">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                                        {{ __('file.my_orders') }}
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('account.dashboard') }}" role="menuitem">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="3" y1="9" x2="21" y2="9"/></svg>
+                                        {{ __('file.my_account') }}
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('cart.index') }}" role="menuitem">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                                        {{ __('file.my_bag') }}
+                                    </a>
+                                </li>
+                                <li><div class="user-dd-divider"></div></li>
+                                <li>
+                                    <form method="POST" action="{{ route('logout') }}" style="margin:0">
+                                        @csrf
+                                        <button type="submit" class="logout-btn" role="menuitem">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                                            {{ __('file.sign_out') ?? 'Sign Out' }}
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 @else
                     <div class="nav-auth">
                         <a href="#" onclick="openAuthModal('login'); return false;" class="auth-link">{{ __('file.sign_in') }}</a>
@@ -1527,7 +1724,36 @@
 
         <!-- Auth buttons -->
         @auth('web')
+            @php $authUser = auth('web')->user(); @endphp
+            <div class="mob-item mob-plain" style="display:flex;align-items:center;gap:0.75rem;padding:0.875rem 1.5rem;border-bottom:1px solid var(--bg-4);">
+                @if($authUser->avatar)
+                    <img src="{{ $authUser->avatar }}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:2px solid var(--gold);flex-shrink:0;">
+                @else
+                    <span style="width:36px;height:36px;border-radius:50%;background:var(--gold);color:var(--bg);font-family:var(--font-display);font-size:0.8rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                        @php
+                            $nameParts = explode(' ', trim($authUser->name));
+                            $initials = strtoupper(substr($nameParts[0], 0, 1));
+                            if (count($nameParts) > 1) {
+                                $initials .= strtoupper(substr(end($nameParts), 0, 1));
+                            }
+                        @endphp
+                        {{ $initials }}
+                    </span>
+                @endif
+                <div>
+                    <div style="font-family:var(--font-display);font-size:0.8rem;font-weight:600;color:var(--white);letter-spacing:0.06em;">{{ $authUser->name }}</div>
+                    <div style="font-size:0.7rem;color:var(--dim);">{{ $authUser->email }}</div>
+                </div>
+            </div>
+            <div class="mob-item mob-plain"><a href="{{ route('account.dashboard', ['tab' => 'profile']) }}">{{ __('file.profile_details') }}</a></div>
+            <div class="mob-item mob-plain"><a href="{{ route('account.dashboard', ['tab' => 'orders']) }}">{{ __('file.my_orders') }}</a></div>
             <div class="mob-item mob-plain"><a href="{{ route('account.dashboard') }}">{{ __('file.my_account') }}</a></div>
+            <div class="mob-item mob-plain">
+                <form method="POST" action="{{ route('logout') }}" style="margin:0">
+                    @csrf
+                    <button type="submit" style="display:block;width:100%;text-align:left;padding:0.875rem 1.5rem;background:none;border:none;font-family:var(--font-display);font-size:1rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--red);cursor:pointer;">{{ __('file.sign_out') ?? 'Sign Out' }}</button>
+                </form>
+            </div>
         @else
             <div class="mob-auth">
                 <a href="#" onclick="openAuthModal('login'); return false;" class="mob-signin">{{ __('file.sign_in') }}</a>
@@ -1578,7 +1804,8 @@
                         <li><a href="#">{{ __('file.size_guide') }}</a></li>
                         <li><a href="#">{{ __('file.track_order') }}</a></li>
                         <li><a href="#">{{ __('file.faq') }}</a></li>
-                        <li><a href="#">{{ __('file.contact_us') }}</a></li>
+                        <li><a href="{{ route('frontend.about') }}">{{ __('file.about_us') ?? 'About Us' }}</a></li>
+                        <li><a href="{{ route('frontend.contact') }}">{{ __('file.contact_us') }}</a></li>
                     </ul>
                 </div>
                 <div class="g-up">
@@ -1621,7 +1848,7 @@
     <!-- ═══════════════════════════════════════════
          SCRIPTS
     ═══════════════════════════════════════════ -->
-    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    <script>
     window.addEventListener('pageshow', (event) => {
         if (event.persisted) {
             const wipe = document.getElementById('page-wipe');
@@ -1664,7 +1891,7 @@
             if (!hdr) return;
             const bottom = hdr.getBoundingClientRect().bottom;
             document.querySelectorAll('.nav-dropdown.mega').forEach(d => {
-                d.style.top = bottom + 'px';
+                d.style.top = (bottom - 2) + 'px';
             });
         }
         setMegaTop();
@@ -1801,6 +2028,32 @@
                 });
             });
         });
+
+        /* ── Open modal from session flash ────────── */
+        @if(session('open_modal'))
+            setTimeout(() => {
+                if (typeof openAuthModal === 'function') {
+                    openAuthModal('{{ session('open_modal') }}');
+                }
+            }, 800);
+        @endif
+
+        /* ── User Dropdown Toggle (Click) ─────────── */
+        const userBtn = document.getElementById('userAvatarBtn');
+        const userWrap = document.getElementById('userAvatarWrap');
+        if (userBtn && userWrap) {
+            userBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const isOpen = userWrap.classList.contains('dd-open');
+                // Close other nav items
+                document.querySelectorAll('.nav-item.has-drop.dd-open').forEach(el => {
+                    if (el !== userWrap) el.classList.remove('dd-open');
+                });
+                userWrap.classList.toggle('dd-open', !isOpen);
+                userBtn.setAttribute('aria-expanded', !isOpen);
+            });
+        }
     });
 
     /* ── Mobile accordion toggle (global so onclick= works) ── */

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ShippingRate;
 use App\Models\ShippingZone;
 use App\Models\Courier;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 
 class ShippingRateController extends Controller
@@ -15,6 +16,20 @@ class ShippingRateController extends Controller
         $zones = ShippingZone::all();
         $couriers = Courier::all();
         return view('admin.shipping.rates.index', compact('zones', 'couriers'));
+    }
+
+    public function create(Request $request)
+    {
+        $zones = ShippingZone::all();
+        $couriers = Courier::all();
+        if ($request->ajax()) {
+            return view('admin.shipping.rates.partials.form', [
+                'rate' => null,
+                'zones' => $zones,
+                'couriers' => $couriers
+            ])->render();
+        }
+        return view('admin.shipping.rates.create', compact('zones', 'couriers'));
     }
 
     public function datatable(Request $request)
@@ -60,15 +75,15 @@ class ShippingRateController extends Controller
 
             $zoneHtml = '<div class="text-sm text-gray-500 dark:text-gray-400">' . ($rate->zone ? htmlspecialchars($rate->zone->name) : '') . '</div>';
 
-            $amountHtml = '<div class="text-sm font-bold text-gray-900 dark:text-primary-a0">Rs. ' . number_format($rate->rate_amount, 2) . '</div>';
+            $amountHtml = '<div class="text-sm font-bold text-gray-900 dark:text-primary-a0">' . Setting::formatPrice($rate->rate_amount) . '</div>';
 
             $conditionsHtml = '<div class="text-xs text-gray-500 space-y-1">';
             if ($rate->min_weight || $rate->max_weight)
                 $conditionsHtml .= '<div>Weight: ' . ($rate->min_weight ?: 0) . 'kg - ' . ($rate->max_weight ?: '∞') . 'kg</div>';
             if ($rate->min_price || $rate->max_price)
-                $conditionsHtml .= '<div>Price: Rs.' . ($rate->min_price ?: 0) . ' - Rs.' . ($rate->max_price ?: '∞') . '</div>';
+                $conditionsHtml .= '<div>Price: ' . Setting::formatPrice($rate->min_price ?: 0) . ' - ' . Setting::formatPrice($rate->max_price ?: 0) . '</div>';
             if ($rate->free_shipping_threshold)
-                $conditionsHtml .= '<div class="text-green-600 font-medium tracking-tight">Free over Rs.' . number_format($rate->free_shipping_threshold) . '</div>';
+                $conditionsHtml .= '<div class="text-green-600 font-medium tracking-tight">Free over ' . Setting::formatPrice($rate->free_shipping_threshold) . '</div>';
             if (!$rate->min_weight && !$rate->max_weight && !$rate->min_price && !$rate->max_price && !$rate->free_shipping_threshold)
                 $conditionsHtml .= '<div><em>No conditions (Flat Rate)</em></div>';
             $conditionsHtml .= '</div>';
@@ -109,7 +124,25 @@ class ShippingRateController extends Controller
         $data['is_active'] = $request->has('is_active');
         ShippingRate::create($data);
 
+        if ($request->ajax()) {
+            return response()->json(['success' => true, 'message' => 'Shipping Rate created successfully.']);
+        }
+
         return back()->with('success', 'Shipping Rate created successfully.');
+    }
+
+    public function edit(Request $request, ShippingRate $rate)
+    {
+        $zones = ShippingZone::all();
+        $couriers = Courier::all();
+        if ($request->ajax()) {
+            return view('admin.shipping.rates.partials.form', [
+                'rate' => $rate,
+                'zones' => $zones,
+                'couriers' => $couriers
+            ])->render();
+        }
+        return view('admin.shipping.rates.edit', compact('rate', 'zones', 'couriers'));
     }
 
     public function update(Request $request, ShippingRate $rate)
@@ -128,6 +161,10 @@ class ShippingRateController extends Controller
 
         $data['is_active'] = $request->has('is_active');
         $rate->update($data);
+
+        if ($request->ajax()) {
+            return response()->json(['success' => true, 'message' => 'Shipping Rate updated successfully.']);
+        }
 
         return back()->with('success', 'Shipping Rate updated successfully.');
     }

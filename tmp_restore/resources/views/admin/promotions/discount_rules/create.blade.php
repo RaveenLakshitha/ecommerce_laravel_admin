@@ -32,7 +32,7 @@
                         <div
                             class="bg-white dark:bg-surface-tonal-a20 rounded-2xl shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                             <div
-                                class="px-6 py-4 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50/50 dark:bg-surface-tonal-a20">
+                                class="px-6 py-4 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
                                 <h2 class="font-semibold text-gray-900 dark:text-white">Rule Settings</h2>
                             </div>
                             <div class="p-6 space-y-5">
@@ -110,7 +110,7 @@
                         <div
                             class="bg-white dark:bg-surface-tonal-a20 rounded-2xl shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                             <div
-                                class="px-6 py-4 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50/50 dark:bg-surface-tonal-a20">
+                                class="px-6 py-4 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
                                 <h2 class="font-semibold text-gray-900 dark:text-white">Requirements & Scope</h2>
                             </div>
                             <div class="p-6 space-y-6">
@@ -144,20 +144,20 @@
 
                                 {{-- Dynamic Selectors --}}
                                 <div x-show="appliesTo === 'products'" x-transition.opacity class="space-y-3" x-data="{ 
-                                            search: '', 
-                                            page: 1, 
-                                            perPage: 10,
-                                            products: [ @foreach($products as $p) { id: {{ $p->id }}, name: '{{ addslashes($p->name) }}', checked: {{ (is_array(old('product_ids')) && in_array($p->id, old('product_ids'))) ? 'true' : 'false' }} }, @endforeach ],
-                                            get filtered() {
-                                                return this.products.filter(p => p.name.toLowerCase().includes(this.search.toLowerCase()));
-                                            },
-                                            get paginated() {
-                                                return this.filtered.slice((this.page - 1) * this.perPage, this.page * this.perPage);
-                                            },
-                                            get totalPages() {
-                                                return Math.ceil(this.filtered.length / this.perPage) || 1;
-                                            }
-                                         }">
+                                                search: '', 
+                                                page: 1, 
+                                                perPage: 10,
+                                                products: [ @foreach($products as $p) { id: {{ $p->id }}, name: '{{ addslashes($p->name) }}', checked: {{ (is_array(old('product_ids')) && in_array($p->id, old('product_ids'))) ? 'true' : 'false' }} }, @endforeach ],
+                                                get filtered() {
+                                                    return this.products.filter(p => p.name.toLowerCase().includes(this.search.toLowerCase()));
+                                                },
+                                                get paginated() {
+                                                    return this.filtered.slice((this.page - 1) * this.perPage, this.page * this.perPage);
+                                                },
+                                                get totalPages() {
+                                                    return Math.ceil(this.filtered.length / this.perPage) || 1;
+                                                }
+                                             }">
                                     <div class="flex items-center justify-between gap-4">
                                         <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300">Select
                                             Products</label>
@@ -218,20 +218,20 @@
                                 </div>
 
                                 <div x-show="appliesTo === 'categories'" x-transition.opacity class="space-y-3" x-data="{ 
-                                            search: '', 
-                                            page: 1, 
-                                            perPage: 10,
-                                            categories: [ @foreach($categories as $c) { id: {{ $c->id }}, name: '{{ addslashes($c->name) }}', checked: {{ (is_array(old('category_ids')) && in_array($c->id, old('category_ids'))) ? 'true' : 'false' }} }, @endforeach ],
-                                            get filtered() {
-                                                return this.categories.filter(c => c.name.toLowerCase().includes(this.search.toLowerCase()));
-                                            },
-                                            get paginated() {
-                                                return this.filtered.slice((this.page - 1) * this.perPage, this.page * this.perPage);
-                                            },
-                                            get totalPages() {
-                                                return Math.ceil(this.filtered.length / this.perPage) || 1;
-                                            }
-                                         }">
+                                                search: '', 
+                                                page: 1, 
+                                                perPage: 10,
+                                                categories: [ @foreach($categories as $c) { id: {{ $c->id }}, name: '{{ addslashes($c->name) }}', checked: {{ (is_array(old('category_ids')) && in_array($c->id, old('category_ids'))) ? 'true' : 'false' }} }, @endforeach ],
+                                                get filtered() {
+                                                    return this.categories.filter(c => c.name.toLowerCase().includes(this.search.toLowerCase()));
+                                                },
+                                                get paginated() {
+                                                    return this.filtered.slice((this.page - 1) * this.perPage, this.page * this.perPage);
+                                                },
+                                                get totalPages() {
+                                                    return Math.ceil(this.filtered.length / this.perPage) || 1;
+                                                }
+                                             }">
                                     <div class="flex items-center justify-between gap-4">
                                         <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300">Select
                                             Categories</label>
@@ -291,20 +291,20 @@
                                 </div>
 
                                 <div x-show="appliesTo === 'collections'" x-transition.opacity class="space-y-3" x-data="{ 
-                                            search: '', 
-                                            page: 1, 
-                                            perPage: 10,
-                                            collections: [ @foreach($collections as $c) { id: {{ $c->id }}, name: '{{ addslashes($c->name) }}', checked: {{ (is_array(old('collection_ids')) && in_array($c->id, old('collection_ids'))) ? 'true' : 'false' }} }, @endforeach ],
-                                            get filtered() {
-                                                return this.collections.filter(c => c.name.toLowerCase().includes(this.search.toLowerCase()));
-                                            },
-                                            get paginated() {
-                                                return this.filtered.slice((this.page - 1) * this.perPage, this.page * this.perPage);
-                                            },
-                                            get totalPages() {
-                                                return Math.ceil(this.filtered.length / this.perPage) || 1;
-                                            }
-                                         }">
+                                                search: '', 
+                                                page: 1, 
+                                                perPage: 10,
+                                                collections: [ @foreach($collections as $c) { id: {{ $c->id }}, name: '{{ addslashes($c->name) }}', checked: {{ (is_array(old('collection_ids')) && in_array($c->id, old('collection_ids'))) ? 'true' : 'false' }} }, @endforeach ],
+                                                get filtered() {
+                                                    return this.collections.filter(c => c.name.toLowerCase().includes(this.search.toLowerCase()));
+                                                },
+                                                get paginated() {
+                                                    return this.filtered.slice((this.page - 1) * this.perPage, this.page * this.perPage);
+                                                },
+                                                get totalPages() {
+                                                    return Math.ceil(this.filtered.length / this.perPage) || 1;
+                                                }
+                                             }">
                                     <div class="flex items-center justify-between gap-4">
                                         <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300">Select
                                             Collections</label>
@@ -369,7 +369,7 @@
                         <div
                             class="bg-white dark:bg-surface-tonal-a20 rounded-2xl shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                             <div
-                                class="px-6 py-4 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50/50 dark:bg-surface-tonal-a20 flex items-center justify-between">
+                                class="px-6 py-4 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20 flex items-center justify-between">
                                 <h2 class="font-semibold text-gray-900 dark:text-white">Promotional Banners</h2>
                                 <button type="button" onclick="addBannerRow()"
                                     class="inline-flex items-center px-4 py-2 text-sm font-bold text-white bg-indigo-600 rounded-xl hover:bg-indigo-700 shadow-lg shadow-indigo-500/30 transition-all active:scale-95">
@@ -405,7 +405,7 @@
                         <div
                             class="bg-white dark:bg-surface-tonal-a20 rounded-2xl shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden sticky top-24">
                             <div
-                                class="px-6 py-4 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50/50 dark:bg-surface-tonal-a20">
+                                class="px-6 py-4 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
                                 <h2 class="font-semibold text-gray-900 dark:text-white">Status & Visibility</h2>
                             </div>
                             <div class="p-6 space-y-6">
@@ -498,39 +498,39 @@
                 row.className = 'relative rounded-2xl border border-gray-100 dark:border-surface-tonal-a30 p-6 bg-gray-50/30 dark:bg-surface-tonal-a30/10 hover:border-indigo-200 dark:hover:border-indigo-900 transition-all group animate-fade-in-up';
 
                 row.innerHTML = `
-                            <button type="button" onclick="removeBannerRow(${index})"
-                                    class="absolute top-4 right-4 p-2 rounded-full text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-surface-tonal-a30 transition-all opacity-0 group-hover:opacity-100">
-                                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
-                            </button>
-                            <div class="grid grid-cols-1 md:grid-cols-5 gap-6">
-                                <div class="md:col-span-2">
-                                    <p class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Banner Image</p>
-                                    <div class="aspect-[16/7] rounded-xl border-2 border-dashed border-gray-200 dark:border-surface-tonal-a30 bg-white dark:bg-surface-tonal-a20 overflow-hidden cursor-pointer hover:border-indigo-400 dark:hover:border-indigo-600 transition-all relative flex flex-col items-center justify-center gap-2 group/picker"
-                                         onclick="document.getElementById('banner-img-${index}').click()">
-                                        <img id="preview-${index}" src="${data.image_url || ''}" class="absolute inset-0 w-full h-full object-cover ${data.image_url ? '' : 'hidden'}">
-                                        <div id="placeholder-${index}" class="flex flex-col items-center gap-1 transition-transform group-hover/picker:scale-110 ${data.image_url ? 'hidden' : ''}">
-                                            <svg class="h-8 w-8 text-gray-300 dark:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-                                            <p class="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Choose Image</p>
+                                    <button type="button" onclick="removeBannerRow(${index})"
+                                            class="absolute top-4 right-4 p-2 rounded-full text-gray-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-surface-tonal-a30 transition-all opacity-0 group-hover:opacity-100">
+                                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                                    </button>
+                                    <div class="grid grid-cols-1 md:grid-cols-5 gap-6">
+                                        <div class="md:col-span-2">
+                                            <p class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Banner Image</p>
+                                            <div class="aspect-[16/7] rounded-xl border-2 border-dashed border-gray-200 dark:border-surface-tonal-a30 bg-white dark:bg-surface-tonal-a20 overflow-hidden cursor-pointer hover:border-indigo-400 dark:hover:border-indigo-600 transition-all relative flex flex-col items-center justify-center gap-2 group/picker"
+                                                 onclick="document.getElementById('banner-img-${index}').click()">
+                                                <img id="preview-${index}" src="${data.image_url || ''}" class="absolute inset-0 w-full h-full object-cover ${data.image_url ? '' : 'hidden'}">
+                                                <div id="placeholder-${index}" class="flex flex-col items-center gap-1 transition-transform group-hover/picker:scale-110 ${data.image_url ? 'hidden' : ''}">
+                                                    <svg class="h-8 w-8 text-gray-300 dark:text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                                                    <p class="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Choose Image</p>
+                                                </div>
+                                            </div>
+                                            <input type="file" name="banners[${index}][image]" id="banner-img-${index}" class="hidden" onchange="previewBanner(this, ${index})" accept="image/*">
+                                        </div>
+                                        <div class="md:col-span-3 space-y-4">
+                                            <div class="space-y-1.5">
+                                                <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-widest">Banner Title</label>
+                                                <input type="text" name="banners[${index}][title]" value="${data.title || ''}"
+                                                       placeholder="Catchy headline..."
+                                                       class="block w-full rounded-xl border-gray-200 dark:border-surface-tonal-a30 bg-white dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-bold text-gray-700 dark:text-white focus:ring-2 focus:ring-indigo-500 transition-all">
+                                            </div>
+                                            <div class="space-y-1.5">
+                                                <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-widest">Description</label>
+                                                <textarea name="banners[${index}][description]" rows="2"
+                                                          placeholder="Sub-text highlighting the offer..."
+                                                          class="block w-full rounded-xl border-gray-200 dark:border-surface-tonal-a30 bg-white dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm text-gray-600 dark:text-gray-400 focus:ring-2 focus:ring-indigo-500 transition-all resize-none">${data.description || ''}</textarea>
+                                            </div>
                                         </div>
                                     </div>
-                                    <input type="file" name="banners[${index}][image]" id="banner-img-${index}" class="hidden" onchange="previewBanner(this, ${index})" accept="image/*">
-                                </div>
-                                <div class="md:col-span-3 space-y-4">
-                                    <div class="space-y-1.5">
-                                        <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-widest">Banner Title</label>
-                                        <input type="text" name="banners[${index}][title]" value="${data.title || ''}"
-                                               placeholder="Catchy headline..."
-                                               class="block w-full rounded-xl border-gray-200 dark:border-surface-tonal-a30 bg-white dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-bold text-gray-700 dark:text-white focus:ring-2 focus:ring-indigo-500 transition-all">
-                                    </div>
-                                    <div class="space-y-1.5">
-                                        <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-widest">Description</label>
-                                        <textarea name="banners[${index}][description]" rows="2"
-                                                  placeholder="Sub-text highlighting the offer..."
-                                                  class="block w-full rounded-xl border-gray-200 dark:border-surface-tonal-a30 bg-white dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm text-gray-600 dark:text-gray-400 focus:ring-2 focus:ring-indigo-500 transition-all resize-none">${data.description || ''}</textarea>
-                                    </div>
-                                </div>
-                            </div>
-                        `;
+                                `;
 
                 container.appendChild(row);
             }
@@ -568,7 +568,7 @@
                         });
                     @endforeach
                 @endif
-                    });
+                            });
         </script>
 
         <style>

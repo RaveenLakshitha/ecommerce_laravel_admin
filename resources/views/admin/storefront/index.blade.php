@@ -28,11 +28,11 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Support Phone Number</label>
-                                <input type="text" name="phone" value="{{ old('phone', $setting->phone) }}" maxlength="20" class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-transparent dark:text-primary-a0 transition-shadow">
+                                <input type="text" name="phone" value="{{ old('phone', $setting->phone) }}" maxlength="20" class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-transparent dark:text-primary-a0 transition-shadow">
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Support Email</label>
-                                <input type="email" name="email" value="{{ old('email', $setting->email) }}" maxlength="255" class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-transparent dark:text-primary-a0 transition-shadow">
+                                <input type="email" name="email" value="{{ old('email', $setting->email) }}" maxlength="255" class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-transparent dark:text-primary-a0 transition-shadow">
                             </div>
                         </div>
                     </div>
@@ -43,11 +43,11 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Announcement Text <span class="text-xs text-gray-400 font-normal ml-2">(Repeats in marquee)</span></label>
-                                <input type="text" name="storefront_offer_text" value="{{ old('storefront_offer_text', $setting->storefront_offer_text ?? '') }}" maxlength="50" placeholder="e.g., FREE SHIPPING ON ORDERS OVER RS. 5,000" class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-transparent dark:text-primary-a0 transition-shadow">
+                                <input type="text" name="storefront_offer_text" value="{{ old('storefront_offer_text', $setting->storefront_offer_text ?? '') }}" maxlength="50" placeholder="e.g., FREE SHIPPING ON ORDERS OVER RS. 5,000" class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-transparent dark:text-primary-a0 transition-shadow">
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Announcement Link (Optional)</label>
-                                <input type="text" name="storefront_offer_link" value="{{ old('storefront_offer_link', $setting->storefront_offer_link ?? '') }}" maxlength="255" placeholder="e.g., /collections/sale" class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-transparent dark:text-primary-a0 transition-shadow">
+                                <input type="text" name="storefront_offer_link" value="{{ old('storefront_offer_link', $setting->storefront_offer_link ?? '') }}" maxlength="255" placeholder="e.g., /collections/sale" class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-transparent dark:text-primary-a0 transition-shadow">
                             </div>
                         </div>
                     </div>
@@ -58,11 +58,11 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Marquee Text <span class="text-xs text-gray-400 font-normal ml-2">(Use '|' to separate multiple messages)</span></label>
-                                <input type="text" name="storefront_marquee_text" value="{{ old('storefront_marquee_text', $setting->storefront_marquee_text ?? '') }}" maxlength="255" placeholder="e.g., Free Delivery | New Arrivals | MintPay Available" class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-transparent dark:text-primary-a0 transition-shadow">
+                                <input type="text" name="storefront_marquee_text" value="{{ old('storefront_marquee_text', $setting->storefront_marquee_text ?? '') }}" maxlength="255" placeholder="e.g., Free Delivery | New Arrivals | MintPay Available" class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-transparent dark:text-primary-a0 transition-shadow">
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Marquee Link (Optional)</label>
-                                <input type="text" name="storefront_marquee_link" value="{{ old('storefront_marquee_link', $setting->storefront_marquee_link ?? '') }}" maxlength="255" placeholder="e.g., /collections/new-arrivals" class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-transparent dark:text-primary-a0 transition-shadow">
+                                <input type="text" name="storefront_marquee_link" value="{{ old('storefront_marquee_link', $setting->storefront_marquee_link ?? '') }}" maxlength="255" placeholder="e.g., /collections/new-arrivals" class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-transparent dark:text-primary-a0 transition-shadow">
                             </div>
                         </div>
                     </div>
@@ -72,7 +72,7 @@
                         <h2 class="text-xl font-semibold text-gray-900 dark:text-primary-a0 mb-6">About Us (Footer)</h2>
                         <div>
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Short Description <span class="text-xs text-gray-400 font-normal ml-2">(Max 250 characters)</span></label>
-                            <textarea name="storefront_about_us" rows="4" maxlength="250" class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-transparent dark:text-primary-a0 transition-shadow">{{ old('storefront_about_us', $setting->storefront_about_us) }}</textarea>
+                            <textarea name="storefront_about_us" rows="4" maxlength="250" class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-transparent dark:text-primary-a0 transition-shadow">{{ old('storefront_about_us', $setting->storefront_about_us) }}</textarea>
                         </div>
                     </div>
 
@@ -80,7 +80,7 @@
                     <div>
                         <div class="flex items-center justify-between mb-6">
                             <h2 class="text-xl font-semibold text-gray-900 dark:text-primary-a0">Hero Banners / Sliders</h2>
-                            <button type="button" id="add-banner-btn" class="inline-flex items-center justify-center px-4 py-2 bg-gray-100 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 text-xs font-medium rounded hover:bg-gray-200 dark:bg-transparent dark:hover:bg-gray-700 transition">
+                            <button type="button" id="add-banner-btn" class="inline-flex items-center justify-center px-4 py-2 bg-gray-100 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 text-xs font-semibold rounded-xl hover:bg-gray-200 dark:bg-transparent dark:hover:bg-gray-700 transition">
                                 + Add Banner
                             </button>
                         </div>
@@ -162,7 +162,7 @@
             </div>
 
             <div class="flex flex-col sm:flex-row gap-3 pt-2">
-                <button type="submit" class="inline-flex items-center justify-center px-6 py-3 bg-gray-900 border border-gray-300 dark:border-gray-600 dark:bg-white dark:text-gray-500 text-white text-sm font-medium rounded-lg hover:bg-gray-800 dark:hover:bg-gray-700 transition-colors duration-200">
+                <button type="submit" class="inline-flex items-center justify-center px-6 py-3 bg-gray-900 border border-gray-300 dark:border-gray-600 dark:bg-white dark:text-gray-500 text-white text-sm font-semibold rounded-xl hover:bg-gray-800 dark:hover:bg-gray-700 transition-colors duration-200">
                     Save Changes
                 </button>
             </div>

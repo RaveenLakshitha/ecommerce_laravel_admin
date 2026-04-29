@@ -90,12 +90,19 @@ class AccountController extends Controller
 
     public function updatePassword(Request $request)
     {
+        $user = Auth::user();
+
+        // Google-only accounts have no password — skip password change for them
+        if (! $user->hasPassword()) {
+            return redirect()->route('account.dashboard', ['tab' => 'profile'])
+                ->withErrors(['current_password' => 'Your account uses Google sign-in. Set a password via your Google account.']);
+        }
+
         $request->validate([
             'current_password' => 'required|current_password',
             'password' => 'required|string|min:8|confirmed',
         ]);
 
-        $user = Auth::user();
         $user->update([
             'password' => \Illuminate\Support\Facades\Hash::make($request->password),
         ]);
@@ -165,5 +172,19 @@ class AccountController extends Controller
         }
 
         return redirect()->back()->with('error', 'Unauthorized action.');
+    }
+
+    public function showOrder(\App\Models\Order $order)
+    {
+        $user = Auth::user();
+
+        // Ensure the user owns this order
+        if ($order->user_id !== $user->id) {
+            abort(403, 'Unauthorized access to this order.');
+        }
+
+        $order->load(['items.variant.product', 'shippingAddress']);
+
+        return view('frontend.account.order', compact('order'));
     }
 }

@@ -1073,7 +1073,7 @@
             </p>
 
             <div class="hero-actions bloom-up">
-                <a href="{{ route('products.index') }}" class="btn-petal">
+                <a href="{{ route('frontend.products.index') }}" class="btn-petal">
                     Explore Collection
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
                         stroke-linecap="round" stroke-linejoin="round">
@@ -1144,7 +1144,7 @@
                     <p class="sec-eyebrow">Just Landed</p>
                     <h2 class="sec-title">New <em>Arrivals</em></h2>
                 </div>
-                <a href="{{ route('products.index') }}" class="sec-all-link">
+                <a href="{{ route('frontend.products.index') }}" class="sec-all-link">
                     View all
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                         stroke-linecap="round" stroke-linejoin="round">
@@ -1286,7 +1286,7 @@
                     <p class="sec-eyebrow">Customer Favourites</p>
                     <h2 class="sec-title"><em>Best</em> Sellers</h2>
                 </div>
-                <a href="{{ route('products.index') }}" class="sec-all-link">View all <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+                <a href="{{ route('frontend.products.index') }}" class="sec-all-link">View all <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
             </div>
 
             <div class="product-grid-bloom">
@@ -1495,3 +1495,4 @@
     </script>
 
 @endsection
+

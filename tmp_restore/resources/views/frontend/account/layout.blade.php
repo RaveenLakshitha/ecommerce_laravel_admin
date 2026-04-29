@@ -3,7 +3,8 @@
 @section('title', 'My Account')
 
 @section('content')
-    <div class="bg-gray-50 dark:bg-surface-tonal-a10 min-h-screen py-10" x-data="accountTabs('{{ $activeTab ?? 'dashboard' }}')">
+    <div class="bg-gray-50 dark:bg-surface-tonal-a10 min-h-screen py-10"
+        x-data="accountTabs('{{ $activeTab ?? 'dashboard' }}')">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
             <div class="lg:grid lg:grid-cols-12 lg:gap-8">
@@ -14,7 +15,8 @@
                         class="space-y-1 bg-white dark:bg-surface-tonal-a20 p-4 rounded-xl shadow-sm border border-gray-100 dark:border-surface-tonal-a30">
 
                         {{-- User Preview --}}
-                        <div class="flex items-center space-x-3 mb-6 pb-6 border-b border-gray-100 dark:border-surface-tonal-a30">
+                        <div
+                            class="flex items-center space-x-3 mb-6 pb-6 border-b border-gray-100 dark:border-surface-tonal-a30">
                             <div class="flex-shrink-0">
                                 <img class="h-12 w-12 rounded-full ring-2 ring-primary-100 dark:ring-primary-900 object-cover"
                                     src="https://ui-avatars.com/api/?name={{ urlencode($user->name) }}&background=E0E7FF&color=4F46E5"
@@ -23,7 +25,8 @@
                             <div>
                                 <p class="text-sm font-medium text-gray-900 dark:text-primary-a0">Welcome back,</p>
                                 <p class="text-base font-bold text-gray-900 dark:text-primary-a0 truncate">
-                                    {{ $customer->first_name ?? $user->name }}</p>
+                                    {{ $customer->first_name ?? $user->name }}
+                                </p>
                             </div>
                         </div>
 
@@ -107,7 +110,8 @@
                                                 <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Total Orders
                                                 </p>
                                                 <p class="text-2xl font-bold text-gray-900 dark:text-primary-a0">
-                                                    {{ $totalOrders }}</p>
+                                                    {{ $totalOrders }}
+                                                </p>
                                             </div>
                                         </div>
 
@@ -122,7 +126,8 @@
                                                 <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Wishlist
                                                     Items</p>
                                                 <p class="text-2xl font-bold text-gray-900 dark:text-primary-a0">
-                                                    {{ $wishlistItems }}</p>
+                                                    {{ $wishlistItems }}
+                                                </p>
                                             </div>
                                         </div>
 
@@ -137,7 +142,8 @@
                                                 <p class="text-sm font-medium text-gray-500 dark:text-gray-400">Saved
                                                     Addresses</p>
                                                 <p class="text-2xl font-bold text-gray-900 dark:text-primary-a0">
-                                                    {{ $user->addresses->count() }}</p>
+                                                    {{ $user->addresses->count() }}
+                                                </p>
                                             </div>
                                         </div>
 
@@ -157,7 +163,8 @@
                                             </a>
                                         </div>
                                     @else
-                                        <div class="overflow-x-auto rounded-xl border border-gray-200 dark:border-surface-tonal-a30">
+                                        <div
+                                            class="overflow-x-auto rounded-xl border border-gray-200 dark:border-surface-tonal-a30">
                                             <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                                                 <thead class="bg-gray-50 dark:bg-surface-tonal-a20">
                                                     <tr>
@@ -190,9 +197,9 @@
                                                             <td class="px-6 py-4 whitespace-nowrap">
                                                                 <span
                                                                     class="px-2.5 py-1 inline-flex text-xs leading-5 font-semibold rounded-full 
-                                                        @if(strtolower($order->status) == 'delivered') bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400
-                                                        @elseif(strtolower($order->status) == 'cancelled') bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400
-                                                        @else bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400 @endif">
+                                                                    @if(strtolower($order->status) == 'delivered') bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400
+                                                                    @elseif(strtolower($order->status) == 'cancelled') bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400
+                                                                    @else bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400 @endif">
                                                                     {{ ucfirst($order->status) }}
                                                                 </span>
                                                             </td>
@@ -218,7 +225,8 @@
 
                             <div x-show="activeTab === 'orders'" x-cloak x-transition.opacity.duration.300ms>
                                 <div>
-                                    <h2 class="text-2xl font-bold text-gray-900 dark:text-primary-a0 mb-6">Order History</h2>
+                                    <h2 class="text-2xl font-bold text-gray-900 dark:text-primary-a0 mb-6">Order History
+                                    </h2>
 
                                     <!-- Sub-tabs for All vs Active Orders -->
                                     <div x-data="{ orderTab: 'all' }" class="mb-8">
@@ -247,7 +255,8 @@
                                                 <div
                                                     class="text-center py-12 bg-gray-50 dark:bg-surface-tonal-a20/50 rounded-xl border border-dashed border-gray-200 dark:border-surface-tonal-a30">
                                                     <i data-feather="package" class="h-12 w-12 text-gray-400 mx-auto mb-4"></i>
-                                                    <h3 class="text-lg font-medium text-gray-900 dark:text-primary-a0 mb-2">No orders
+                                                    <h3 class="text-lg font-medium text-gray-900 dark:text-primary-a0 mb-2">No
+                                                        orders
                                                         found</h3>
                                                     <p class="text-gray-500 dark:text-gray-400">You haven't placed any orders
                                                         with us yet.</p>
@@ -267,7 +276,8 @@
                                                 <div
                                                     class="text-center py-12 bg-gray-50 dark:bg-surface-tonal-a20/50 rounded-xl border border-dashed border-gray-200 dark:border-surface-tonal-a30">
                                                     <i data-feather="truck" class="h-12 w-12 text-gray-400 mx-auto mb-4"></i>
-                                                    <h3 class="text-lg font-medium text-gray-900 dark:text-primary-a0 mb-2">No active
+                                                    <h3 class="text-lg font-medium text-gray-900 dark:text-primary-a0 mb-2">No
+                                                        active
                                                         orders</h3>
                                                     <p class="text-gray-500 dark:text-gray-400">You don't have any pending or
                                                         currently shipping orders.</p>
@@ -287,7 +297,8 @@
                             <div x-show="activeTab === 'addresses'" x-cloak x-transition.opacity.duration.300ms>
                                 <div x-data="{ showAddForm: false }">
                                     <div class="flex items-center justify-between mb-6">
-                                        <h2 class="text-2xl font-bold text-gray-900 dark:text-primary-a0">Shipping Addresses</h2>
+                                        <h2 class="text-2xl font-bold text-gray-900 dark:text-primary-a0">Shipping Addresses
+                                        </h2>
                                         <button @click="showAddForm = true"
                                             class="inline-flex items-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors">
                                             <i data-feather="plus" class="w-4 h-4 mr-2"></i> Add New Address
@@ -299,7 +310,8 @@
                                         class="mb-8 bg-gray-50 dark:bg-surface-tonal-a20/50 rounded-xl border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                                         <div
                                             class="px-6 py-5 border-b border-gray-200 dark:border-surface-tonal-a30 flex justify-between items-center bg-white dark:bg-surface-tonal-a20">
-                                            <h3 class="text-lg font-medium text-gray-900 dark:text-primary-a0">Add New Address
+                                            <h3 class="text-lg font-medium text-gray-900 dark:text-primary-a0">Add New
+                                                Address
                                             </h3>
                                             <button @click="showAddForm = false"
                                                 class="text-gray-400 hover:text-gray-500 dark:hover:text-gray-300">
@@ -467,14 +479,16 @@
 
                             <div x-show="activeTab === 'profile'" x-cloak x-transition.opacity.duration.300ms>
                                 <div>
-                                    <h2 class="text-2xl font-bold text-gray-900 dark:text-primary-a0 mb-6">Account Information
+                                    <h2 class="text-2xl font-bold text-gray-900 dark:text-primary-a0 mb-6">Account
+                                        Information
                                     </h2>
 
                                     <div
                                         class="bg-white dark:bg-surface-tonal-a20 border border-gray-100 dark:border-surface-tonal-a30 rounded-xl shadow-sm overflow-hidden mb-8">
                                         <div
-                                            class="px-6 py-5 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50/50 dark:bg-surface-tonal-a20/50">
-                                            <h3 class="text-lg font-medium text-gray-900 dark:text-primary-a0">Profile Details
+                                            class="px-6 py-5 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20/50">
+                                            <h3 class="text-lg font-medium text-gray-900 dark:text-primary-a0">Profile
+                                                Details
                                             </h3>
                                             <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Update your account's
                                                 profile information and email address.</p>
@@ -548,8 +562,9 @@
                                     <div
                                         class="bg-white dark:bg-surface-tonal-a20 border border-gray-100 dark:border-surface-tonal-a30 rounded-xl shadow-sm overflow-hidden">
                                         <div
-                                            class="px-6 py-5 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50/50 dark:bg-surface-tonal-a20/50">
-                                            <h3 class="text-lg font-medium text-gray-900 dark:text-primary-a0">Update Password
+                                            class="px-6 py-5 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20/50">
+                                            <h3 class="text-lg font-medium text-gray-900 dark:text-primary-a0">Update
+                                                Password
                                             </h3>
                                             <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Ensure your account is
                                                 using a long, random password to stay secure.</p>
@@ -609,7 +624,8 @@
                                             class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-pink-100 dark:bg-pink-900/30 mb-4">
                                             <i data-feather="heart" class="h-8 w-8 text-pink-600 dark:text-pink-400"></i>
                                         </div>
-                                        <h3 class="text-xl font-bold text-gray-900 dark:text-primary-a0 mb-2">Your wishlist is
+                                        <h3 class="text-xl font-bold text-gray-900 dark:text-primary-a0 mb-2">Your wishlist
+                                            is
                                             empty</h3>
                                         <p class="text-gray-500 dark:text-gray-400 max-w-sm mx-auto mb-6">
                                             Find something you love but aren't ready to buy yet? Save it here for later.
@@ -624,7 +640,8 @@
 
                             <div x-show="activeTab === 'returns'" x-cloak x-transition.opacity.duration.300ms>
                                 <div>
-                                    <h2 class="text-2xl font-bold text-gray-900 dark:text-primary-a0 mb-6">Returns & Exchanges
+                                    <h2 class="text-2xl font-bold text-gray-900 dark:text-primary-a0 mb-6">Returns &
+                                        Exchanges
                                     </h2>
 
                                     <div
@@ -634,7 +651,8 @@
                                             <i data-feather="refresh-cw"
                                                 class="h-8 w-8 text-blue-600 dark:text-blue-400"></i>
                                         </div>
-                                        <h3 class="text-xl font-bold text-gray-900 dark:text-primary-a0 mb-2">Coming Soon</h3>
+                                        <h3 class="text-xl font-bold text-gray-900 dark:text-primary-a0 mb-2">Coming Soon
+                                        </h3>
                                         <p class="text-gray-500 dark:text-gray-400 max-w-sm mx-auto mb-6">
                                             We are currently building out a robust self-service returns platform. For now,
                                             please contact our support team.
@@ -676,4 +694,3 @@
         });
     </script>
 @endsection
-

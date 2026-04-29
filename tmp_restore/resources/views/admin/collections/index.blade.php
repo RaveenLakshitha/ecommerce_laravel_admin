@@ -157,7 +157,7 @@
                     ]},
                     topEnd: 'search', bottomStart: 'info', bottomEnd: 'paging'
                 },
-                pageLength: 25, lengthMenu: [10, 25, 50, 100],
+                pageLength: 10, lengthMenu: [10, 25, 50, 100],
                 language: {
                     search: "", searchPlaceholder: "Search collections...",
                     lengthMenu: "Show _MENU_ entries", info: "Showing _START_ to _END_ of _TOTAL_ entries",

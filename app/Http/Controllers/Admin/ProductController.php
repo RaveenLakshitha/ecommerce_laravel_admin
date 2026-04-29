@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Attribute;
 use App\Models\AttributeValue;
 use App\Models\Product;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -67,16 +68,16 @@ class ProductController extends Controller
 
             $brandHtml = '<span class="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium bg-gray-100 text-gray-800 dark:bg-surface-tonal-a30 dark:text-gray-300">' . htmlspecialchars($product->brand ? $product->brand->name : '—') . '</span>';
 
-            $priceHtml = '$' . number_format($product->base_price, 2);
+            $priceHtml = Setting::formatPrice($product->base_price);
 
             $statusHtml = '<div class="flex flex-col items-center gap-1">';
             if ($product->is_visible) {
-                $statusHtml .= '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5"></span> Visible</span>';
+                $statusHtml .= '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800"><span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5"></span> ' . __('file.visible') . '</span>';
             } else {
-                $statusHtml .= '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-surface-tonal-a20 dark:text-gray-300 border border-gray-200 dark:border-surface-tonal-a30"><span class="w-1.5 h-1.5 rounded-full bg-gray-500 mr-1.5"></span> Hidden</span>';
+                $statusHtml .= '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-surface-tonal-a20 dark:text-gray-300 border border-gray-200 dark:border-surface-tonal-a30"><span class="w-1.5 h-1.5 rounded-full bg-gray-500 mr-1.5"></span> ' . __('file.hidden') . '</span>';
             }
             if ($product->is_featured) {
-                $statusHtml .= '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400 border border-amber-200 dark:border-amber-800 mt-1"><svg class="w-3 h-3 mr-1 text-amber-500" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg> Featured</span>';
+                $statusHtml .= '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400 border border-amber-200 dark:border-amber-800 mt-1"><svg class="w-3 h-3 mr-1 text-amber-500" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg> ' . __('file.featured') . '</span>';
             }
             $statusHtml .= '</div>';
 
@@ -148,7 +149,7 @@ class ProductController extends Controller
 
         $this->syncVariants($product, $request);
 
-        return redirect()->route('products.edit', $product->id)->with('success', 'Product created successfully. Add or review variants below.');
+        return redirect()->route('products.edit', $product->id)->with('success', __('file.product_created_successfully'));
     }
 
     protected function handleImages(\App\Models\Product $product, $images)
@@ -223,7 +224,7 @@ class ProductController extends Controller
 
         $this->syncVariants($product, $request);
 
-        return redirect()->route('products.edit', $product->id)->with('success', 'Product updated successfully.');
+        return redirect()->route('products.edit', $product->id)->with('success', __('file.product_updated_successfully'));
     }
 
     /**
@@ -356,7 +357,7 @@ class ProductController extends Controller
 
         $product->delete();
 
-        return redirect()->route('products.index')->with('success', 'Product deleted successfully.');
+        return redirect()->route('products.index')->with('success', __('file.product_deleted_successfully'));
     }
 
     public function deleteImage($id, $imageId)
@@ -372,7 +373,7 @@ class ProductController extends Controller
         // Delete from database
         $image->delete();
 
-        return response()->json(['success' => true, 'message' => 'Image deleted successfully']);
+        return response()->json(['success' => true, 'message' => __('file.image_deleted_successfully')]);
     }
 
     public function bulkDelete(Request $request)
@@ -384,7 +385,7 @@ class ProductController extends Controller
         }
 
         if (!is_array($ids) || empty($ids)) {
-            return response()->json(['success' => false, 'message' => 'No items selected.'], 400);
+            return response()->json(['success' => false, 'message' => __('file.no_items_selected')], 400);
         }
 
         $products = Product::whereIn('id', $ids)->get();
@@ -400,7 +401,7 @@ class ProductController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Selected products deleted successfully.'
+            'message' => __('file.selected_products_deleted_successfully')
         ]);
     }
 }

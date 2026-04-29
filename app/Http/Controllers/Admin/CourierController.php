@@ -14,6 +14,14 @@ class CourierController extends Controller
         return view('admin.shipping.couriers.index');
     }
 
+    public function create(Request $request)
+    {
+        if ($request->ajax()) {
+            return view('admin.shipping.couriers.partials.form', ['courier' => null])->render();
+        }
+        return view('admin.shipping.couriers.create');
+    }
+
     public function datatable(Request $request)
     {
         $draw = $request->input('draw');
@@ -79,10 +87,6 @@ class CourierController extends Controller
         ]);
     }
 
-    public function create()
-    {
-        return view('admin.shipping.couriers.create');
-    }
 
     public function store(Request $request)
     {
@@ -113,11 +117,19 @@ class CourierController extends Controller
         }
 
         Courier::create($data);
+
+        if ($request->ajax()) {
+            return response()->json(['success' => true, 'message' => 'Courier created successfully.']);
+        }
+
         return redirect()->route('shipping.couriers.index')->with('success', 'Courier created successfully.');
     }
 
-    public function edit(Courier $courier)
+    public function edit(Request $request, Courier $courier)
     {
+        if ($request->ajax()) {
+            return view('admin.shipping.couriers.partials.form', compact('courier'))->render();
+        }
         return view('admin.shipping.couriers.edit', compact('courier'));
     }
 
@@ -144,6 +156,11 @@ class CourierController extends Controller
         }
 
         $courier->update($data);
+
+        if ($request->ajax()) {
+            return response()->json(['success' => true, 'message' => 'Courier updated successfully.']);
+        }
+
         return redirect()->route('shipping.couriers.index')->with('success', 'Courier updated successfully.');
     }
 

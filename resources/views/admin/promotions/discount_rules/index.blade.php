@@ -3,66 +3,85 @@
 @section('title', __('file.discount_rules') ?? 'Discount Rules')
 
 @section('content')
-<div class="px-4 sm:px-6 lg:px-8 pb-4 sm:py-12 pt-20">
-    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-        <div>
-            <h1 class="text-2xl sm:text-3xl font-semibold text-gray-900 dark:text-primary-a0">
-                {{ __('file.discount_rules') ?? 'Discount Rules' }}
-            </h1>
-            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                {{ __('file.manage_discount_rules') ?? 'Configure automatic pricing rules and flash sales' }}
-            </p>
-        </div>
-        <a href="{{ route('discount-rules.create') }}"
-            class="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm font-medium transition shadow-sm">
-            <svg class="h-4 w-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+<div class="admin-page animate-fade-in-up">
+    <div class="admin-page-inner">
+        <nav class="admin-breadcrumb mt-6" aria-label="Breadcrumb">
+            <a href="{{ route('admin.dashboard') }}">
+                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                </svg>
+                {{ __('file.dashboard') }}
+            </a>
+            <svg viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd"
+                    d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                    clip-rule="evenodd" />
             </svg>
-            {{ __('file.add_rule') ?? 'Add Rule' }}
-        </a>
-    </div>
+            <span class="active">{{ __('file.discount_rules') ?? 'Discount Rules' }}</span>
+        </nav>
+
+        <div class="admin-page-header">
+            <div>
+                <h1 class="admin-page-title">{{ __('file.discount_rules') ?? 'Discount Rules' }}</h1>
+                <p class="admin-page-subtitle">{{ __('file.manage_discount_rules') ?? 'Configure automatic pricing rules and flash sales' }}</p>
+            </div>
+            <div class="flex items-center gap-3">
+                <a href="{{ route('discount-rules.create') }}" class="admin-btn-add">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                    </svg>
+                    {{ __('file.add_rule') ?? 'Add Rule' }}
+                </a>
+            </div>
+        </div>
 
     @if(session('success'))
-        <div class="mb-4 bg-green-50 border-l-4 border-green-500 p-4">
-            <div class="flex text-green-700">
-                <svg class="h-5 w-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
-                <p class="text-sm font-medium">{{ session('success') }}</p>
-            </div>
+        <div class="admin-alert-success animate-fade-in-scale">
+            <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+            </svg>
+            {{ session('success') }}
         </div>
     @endif
 
-    <div id="bulk-delete-form" class="hidden mb-6">
+    <div id="bulk-delete-form" class="hidden animate-fade-in-scale sticky top-20 z-30 mb-6">
         <form method="POST" action="{{ route('discount-rules.bulkDelete') }}" id="bulk-delete-form-el"
-            class="bg-red-50 dark:bg-red-900/20 border border-red-300 dark:border-red-800 rounded-lg p-4 flex justify-between items-center">
+            class="admin-bulk-bar">
             @csrf
-            <div id="bulk-ids-container"></div>
-            <span class="text-sm font-medium text-red-800 dark:text-red-300">
-                <span id="selected-count">0</span> items selected
-            </span>
+            <div id="bulk-ids-container" class="hidden"></div>
+            <div class="flex items-center gap-3">
+                <div class="selection-count" id="selected-count">0</div>
+                <span>{{ __('file.rules_selected') ?? 'Rules Selected' }}</span>
+            </div>
             <button type="submit"
-                class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-md transition">
+                class="inline-flex items-center gap-2 px-6 py-2.5 bg-red-600 hover:bg-red-700 text-white text-[11px] font-bold uppercase tracking-wider rounded-xl transition-all shadow-lg shadow-red-600/20 active:scale-95 whitespace-nowrap border border-red-500/30">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                </svg>
                 {{ __('file.delete_selected') ?? 'Delete Selected' }}
             </button>
         </form>
     </div>
 
-    <div class="bg-white dark:bg-surface-tonal-a10 rounded-xl shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
+    <div class="admin-card">
         <div class="overflow-x-auto">
-            <table id="application-table" class="w-full divide-y divide-gray-200 dark:divide-surface-tonal-a30 nowrap" style="width:100%">
-                <thead class="bg-gray-50 dark:bg-surface-tonal-a10 border-b border-gray-200 dark:border-surface-tonal-a30">
+            <table id="application-table" class="w-full" style="width:100%">
+                <thead>
                     <tr>
-                        <th class="px-4 sm:px-6 py-3 text-right" style="width: 80px; min-width: 80px;">
-                            <input type="checkbox" id="select-all" class="w-4 h-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 transition-all">
+                        <th class="!text-center !px-4" style="width: 50px; min-width: 50px;">
+                            <input type="checkbox" id="select-all" class="w-4 h-4 rounded border-gray-300 dark:border-surface-tonal-a30 text-gray-900 focus:ring-gray-300">
                         </th>
-                        <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider all">Status</th>
-                        <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider all">Rule Information</th>
-                        <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider desktop">Promotion</th>
-                        <th scope="col" class="px-6 py-4 text-center text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider desktop">Priority</th>
-                        <th scope="col" class="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider desktop">Dates</th>
-                        <th scope="col" class="px-6 py-4 text-right text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider all">Actions</th>
+                        <th>Status</th>
+                        <th>Rule Information</th>
+                        <th>Promotion</th>
+                        <th class="!text-center">Priority</th>
+                        <th>Dates</th>
+                        <th class="!text-right">Actions</th>
                     </tr>
                 </thead>
-                <tbody class="bg-white dark:bg-surface-tonal-a10 divide-y divide-gray-200 dark:divide-surface-tonal-a30 [&>tr]:group transition-all">
+                <tbody>
                 </tbody>
             </table>
         </div>
@@ -87,7 +106,7 @@
             columns: [
                 {
                     data: 'id',
-                    render: data => `<input type="checkbox" name="ids[]" value="${data}" class="row-checkbox w-4 h-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500 transition-all">`,
+                    render: data => `<input type="checkbox" name="ids[]" value="${data}" class="row-checkbox w-4 h-4 rounded border-gray-300 dark:border-surface-tonal-a30 text-gray-900 focus:ring-gray-300">`,
                     className: 'text-center',
                     orderable: false
                 },
@@ -213,4 +232,5 @@
     });
 </script>
 @endpush
+</div>
 @endsection

@@ -766,7 +766,7 @@
 
             <!-- Center links -->
             <nav class="nav-center" aria-label="Main">
-                <a href="{{ route('products.index') }}">Shop</a>
+                <a href="{{ route('frontend.products.index') }}">Shop</a>
                 <a href="#" style="position:relative;">
                     New In
                     <span class="nav-badge">New</span>
@@ -823,7 +823,7 @@
 
     <!-- Mobile drawer -->
     <nav class="mobile-drawer" id="mobileDrawer" aria-label="Mobile navigation">
-        <a href="{{ route('products.index') }}">Shop</a>
+        <a href="{{ route('frontend.products.index') }}">Shop</a>
         <a href="#">New In</a>
         <a href="#">Collections</a>
         <a href="#">Lookbook</a>
@@ -881,7 +881,7 @@
                 <div class="reveal">
                     <p class="footer-col-title">Explore</p>
                     <ul class="footer-col-links">
-                        <li><a href="{{ route('products.index') }}">All Products</a></li>
+                        <li><a href="{{ route('frontend.products.index') }}">All Products</a></li>
                         <li><a href="#">New Arrivals</a></li>
                         <li><a href="#">Collections</a></li>
                         <li><a href="#">Lookbook</a></li>
@@ -895,7 +895,8 @@
                         <li><a href="#">Size Guide</a></li>
                         <li><a href="#">Track My Order</a></li>
                         <li><a href="#">FAQ</a></li>
-                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="{{ route('frontend.about') }}">About Us</a></li>
+                        <li><a href="{{ route('frontend.contact') }}">Contact Us</a></li>
                     </ul>
                 </div>
                 <div class="footer-contact reveal">
@@ -1048,3 +1049,4 @@
 </body>
 
 </html>
+

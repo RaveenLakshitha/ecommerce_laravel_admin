@@ -1,11 +1,11 @@
+@import './admin.css';
+@import './layout-styles.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 /* ── Admin Design System ──────────────────────────────────────────────── */
-@import './admin.css';
-@import './layout-styles.css';
-@import './layout-styles.css';
 
 
 /* ═══════════════════════════════════════════════════════════════════════
@@ -25,17 +25,19 @@
 
 /* Header */
 #application-table thead th {
-    @apply px-5 py-3.5 text-left text-[11px] font-semibold uppercase tracking-wider
-           text-gray-500 dark:text-gray-400
-           bg-gray-50/80 dark:bg-surface-tonal-a10
-           border-b border-gray-100 dark:border-surface-tonal-a30;
+    @apply px-5 py-3.5 text-left text-[11px] font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400 bg-gray-50/80 dark:bg-surface-tonal-a10 border-b border-gray-100 dark:border-surface-tonal-a30 relative;
+}
+
+#application-table thead th.sorting,
+#application-table thead th.sorting_asc,
+#application-table thead th.sorting_desc {
+    @apply cursor-pointer select-none;
+    padding-right: 2rem !important;
 }
 
 /* Body cells */
 #application-table tbody td {
-    @apply px-5 py-3.5 text-sm text-gray-700 dark:text-gray-300
-           bg-white dark:bg-transparent
-           border-b border-gray-50 dark:border-surface-tonal-a30;
+    @apply px-5 py-3.5 text-sm text-gray-700 dark:text-gray-300 bg-white dark:bg-transparent border-b border-gray-50 dark:border-surface-tonal-a30;
 }
 
 /* Row hover */
@@ -56,57 +58,37 @@
 }
 
 
-/* ── SORTING INDICATORS ──────────────────────────────────────────────── */
+/* ── SORTING HANDLES (DataTables 2.0) ────────────────────────────── */
 
-#application-table_wrapper .sorting,
-#application-table_wrapper .sorting_asc,
-#application-table_wrapper .sorting_desc {
-    @apply relative cursor-pointer select-none;
-    padding-right: 1.75rem !important;
+#application-table_wrapper thead th .dt-column-order {
+    @apply absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 flex items-center justify-center opacity-20 transition-all duration-200;
+    display: flex !important;
 }
 
-#application-table_wrapper .sorting:after,
-#application-table_wrapper .sorting_asc:after,
-#application-table_wrapper .sorting_desc:after {
-    @apply absolute right-2 top-1/2 -translate-y-1/2 text-[10px] font-bold;
+#application-table_wrapper thead th.sorting:hover .dt-column-order,
+#application-table_wrapper thead th.sorting_asc .dt-column-order,
+#application-table_wrapper thead th.sorting_desc .dt-column-order {
+    @apply opacity-100;
 }
 
-#application-table_wrapper .sorting:after {
-    content: "⇅";
-    @apply text-gray-300 dark:text-gray-600;
-}
-
-#application-table_wrapper .sorting_asc:after {
-    content: "↑";
-    @apply text-gray-700 dark:text-gray-300;
-}
-
-#application-table_wrapper .sorting_desc:after {
-    content: "↓";
-    @apply text-gray-700 dark:text-gray-300;
+#application-table_wrapper thead th.sorting_asc .dt-column-order,
+#application-table_wrapper thead th.sorting_desc .dt-column-order {
+    @apply text-gray-900 dark:text-white;
 }
 
 
 /* ── COLUMN ORDER BUTTONS ────────────────────────────────────────────── */
 
-#application-table_wrapper .dt-column-order {
-    @apply absolute right-1 top-1/2 -translate-y-1/2 w-5 h-5
-           flex items-center justify-center text-xs font-bold
-           text-gray-400 dark:text-gray-500
-           hover:text-gray-700 dark:hover:text-gray-200
-           transition-all;
-}
-
-#application-table_wrapper .dt-column-order.dt-ordering-asc,
-#application-table_wrapper .dt-column-order.dt-ordering-desc {
-    @apply text-gray-900 dark:text-white;
+/* These are the internal DataTables 2.0 arrow icons. We'll let them show by default but ensure they are positioned. */
+#application-table_wrapper thead th .dt-column-order {
+    @apply absolute right-2 top-1/2 -translate-y-1/2;
 }
 
 
 /* ── TOP CONTROLS: Show Entries & Search ─────────────────────────────── */
 
 /* Wrapper layout */
-#application-table_wrapper > div:first-child {
+#application-table_wrapper>div:first-child {
     @apply flex flex-wrap items-center justify-between gap-3 px-5 py-4 border-b border-gray-100 dark:border-surface-tonal-a30;
 }
 
@@ -120,31 +102,33 @@
 }
 
 #application-table_wrapper .dataTables_length select {
-    @apply min-w-[5rem] px-3 py-2 text-xs font-medium
-           border border-gray-200 dark:border-surface-tonal-a30
-           bg-white dark:bg-surface-tonal-a30
-           text-gray-700 dark:text-gray-300
-           rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-300/50
-           dark:focus:ring-surface-tonal-a50 cursor-pointer;
+    @apply min-w-[5rem] px-3 py-2 text-xs font-medium border border-gray-200 dark:border-surface-tonal-a30 bg-white dark:bg-surface-tonal-a30 text-gray-700 dark:text-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-300/50 dark:focus:ring-surface-tonal-a50 cursor-pointer;
 }
 
-/* Search box */
+/* Search box wrapper */
+#application-table_wrapper .dataTables_filter {
+    @apply relative flex items-center;
+}
+
+#application-table_wrapper .dataTables_filter label {
+    @apply relative w-full;
+}
+
 #application-table_wrapper .dataTables_filter input {
-    @apply w-full max-w-[220px] px-3.5 py-2 text-sm
-           border border-gray-200 dark:border-surface-tonal-a30
-           bg-gray-50 dark:bg-surface-tonal-a30
-           text-gray-700 dark:text-gray-300
-           rounded-xl placeholder-gray-400 dark:placeholder-gray-500
-           focus:outline-none focus:ring-2 focus:ring-gray-200 dark:focus:ring-surface-tonal-a40
-           focus:border-gray-300 dark:focus:border-surface-tonal-a40
-           transition-all;
+    @apply w-full max-w-[280px] pl-10 pr-4 py-2.5 text-sm border border-gray-200 dark:border-white/5 bg-gray-100/50 dark:bg-surface-tonal-a10 text-gray-700 dark:text-gray-300 rounded-2xl placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-4 focus:ring-gray-900/5 dark:focus:ring-white/5 focus:border-gray-300 dark:focus:border-white/10 transition-all;
+}
+
+/* Add search icon before input */
+#application-table_wrapper .dataTables_filter::before {
+    content: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%239ca3af' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z' /%3E%3C/svg%3E");
+    @apply absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 z-10 opacity-60;
 }
 
 
 /* ── BOTTOM CONTROLS: Info & Pagination ──────────────────────────────── */
 
 /* Wrapper layout */
-#application-table_wrapper > div:last-child {
+#application-table_wrapper>div:last-child {
     @apply flex flex-wrap items-center justify-between gap-3 px-5 py-3.5 border-t border-gray-100 dark:border-surface-tonal-a30;
 }
 
@@ -155,15 +139,11 @@
 
 /* Pagination */
 #application-table_wrapper .dataTables_paginate .paginate_button {
-    @apply px-3 py-1.5 mx-0.5 rounded-lg text-xs font-medium
-           text-gray-600 dark:text-gray-400
-           hover:bg-gray-100 dark:hover:bg-surface-tonal-a30
-           transition-all cursor-pointer;
+    @apply px-3 py-1.5 mx-0.5 rounded-lg text-xs font-medium text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-surface-tonal-a30 transition-all cursor-pointer;
 }
 
 #application-table_wrapper .dataTables_paginate .paginate_button.current {
-    @apply bg-gray-900 dark:bg-white text-white dark:text-gray-900 font-semibold
-           hover:bg-gray-800 dark:hover:bg-gray-100;
+    @apply bg-gray-900 dark:bg-white text-white dark:text-gray-900 font-semibold hover:bg-gray-800 dark:hover:bg-gray-100;
 }
 
 #application-table_wrapper .dataTables_paginate .paginate_button.disabled {
@@ -178,12 +158,15 @@
 }
 
 #application-table_wrapper .dt-buttons .dt-button {
-    @apply px-3.5 py-2 text-xs font-medium
-           border border-gray-200 dark:border-surface-tonal-a30
-           bg-white dark:bg-surface-tonal-a30
-           text-gray-600 dark:text-gray-300
-           rounded-lg hover:bg-gray-50 dark:hover:bg-surface-tonal-a40
-           transition-all cursor-pointer;
+    @apply px-4 py-2 text-[10px] font-bold uppercase tracking-widest border border-gray-200 dark:border-white/5 bg-white dark:bg-surface-tonal-a10 text-gray-500 dark:text-gray-400 rounded-xl hover:bg-gray-50 dark:hover:bg-surface-tonal-a20 hover:text-gray-900 dark:hover:text-white transition-all cursor-pointer shadow-sm;
+}
+
+#application-table_wrapper .dt-button-collection {
+    @apply !bg-white dark: !bg-surface-tonal-a20 !border !border-gray-100 dark: !border-white/10 !rounded-2xl !p-2 !shadow-2xl;
+}
+
+#application-table_wrapper .dt-button-collection .dt-button {
+    @apply !w-full !text-left !border-0 !rounded-xl !px-4 !py-2.5 !text-xs !font-semibold !bg-transparent hover: !bg-gray-50 dark:hover: !bg-surface-tonal-a30;
 }
 
 
@@ -304,7 +287,7 @@ table.dataTable>tbody>tr.child span.dtr-data {
    ═══════════════════════════════════════════════════════════════════════ */
 
 @media screen and (max-width: 768px) {
-    #application-table_wrapper > div:first-child {
+    #application-table_wrapper>div:first-child {
         @apply flex-col items-stretch px-3 py-3;
     }
 
@@ -362,8 +345,14 @@ table.dataTable>tbody>tr.child span.dtr-data {
    ═══════════════════════════════════════════════════════════════════════ */
 
 /* Hide scrollbar utility */
-.no-scrollbar::-webkit-scrollbar { display: none; }
-.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
 
 /* Clean dark mode borders */
 .dark .dark\:border-gray-800,

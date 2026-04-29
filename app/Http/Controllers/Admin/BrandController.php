@@ -56,9 +56,9 @@ class BrandController extends Controller
                 $nameHtml .= '<a href="' . htmlspecialchars($brand->website_url) . '" target="_blank" class="text-xs text-indigo-500 hover:underline flex items-center gap-1 mt-1">' . htmlspecialchars($host) . '<svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg></a>';
             }
 
-            $productsHtml = '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-surface-tonal-a30 dark:text-gray-300">' . $brand->products_count . ' Products</span>';
+            $productsHtml = '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-surface-tonal-a30 dark:text-gray-300">' . $brand->products_count . ' ' . __('file.Products') . '</span>';
 
-            $statusHtml = $brand->is_featured ? '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400 border border-amber-200 dark:border-amber-800"><svg class="w-3 h-3 mr-1 text-amber-500" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>Featured</span>' : '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-500 dark:bg-surface-tonal-a20 dark:text-gray-400 border border-transparent">Standard</span>';
+            $statusHtml = $brand->is_featured ? '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400 border border-amber-200 dark:border-amber-800"><svg class="w-3 h-3 mr-1 text-amber-500" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>' . __('file.featured') . '</span>' : '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-500 dark:bg-surface-tonal-a20 dark:text-gray-400 border border-transparent">' . __('file.Standard') . '</span>';
 
             return [
                 'id' => $brand->id,
@@ -80,8 +80,11 @@ class BrandController extends Controller
         ]);
     }
 
-    public function create()
+    public function create(Request $request)
     {
+        if ($request->ajax()) {
+            return view('admin.brands.partials.form', ['brand' => null])->render();
+        }
         return view('admin.brands.create');
     }
 
@@ -109,11 +112,18 @@ class BrandController extends Controller
 
         Brand::create($validated);
 
-        return redirect()->route('brands.index')->with('success', 'Brand created successfully.');
+        if ($request->ajax()) {
+            return response()->json(['success' => true, 'message' => __('file.brand_created_successfully')]);
+        }
+
+        return redirect()->route('brands.index')->with('success', __('file.brand_created_successfully'));
     }
 
-    public function edit(Brand $brand)
+    public function edit(Request $request, Brand $brand)
     {
+        if ($request->ajax()) {
+            return view('admin.brands.partials.form', compact('brand'))->render();
+        }
         return view('admin.brands.edit', compact('brand'));
     }
 
@@ -154,16 +164,20 @@ class BrandController extends Controller
 
         $brand->update($validated);
 
-        return redirect()->route('brands.index')->with('success', 'Brand updated successfully.');
+        if ($request->ajax()) {
+            return response()->json(['success' => true, 'message' => __('file.brand_updated_successfully')]);
+        }
+
+        return redirect()->route('brands.index')->with('success', __('file.brand_updated_successfully'));
     }
 
     public function destroy(Brand $brand)
     {
         if ($brand->products()->count() > 0) {
             if (request()->ajax()) {
-                return response()->json(['success' => false, 'message' => 'Cannot delete brand because it has associated products.'], 400);
+                return response()->json(['success' => false, 'message' => __('file.cannot_delete_brand_products')], 400);
             }
-            return redirect()->route('brands.index')->with('error', 'Cannot delete brand because it has associated products.');
+            return redirect()->route('brands.index')->with('error', __('file.cannot_delete_brand_products'));
         }
 
         if ($brand->logo_path && Storage::disk('public')->exists($brand->logo_path)) {
@@ -173,10 +187,10 @@ class BrandController extends Controller
         $brand->delete();
 
         if (request()->ajax()) {
-            return response()->json(['success' => true, 'message' => 'Brand deleted successfully.']);
+            return response()->json(['success' => true, 'message' => __('file.brand_deleted_successfully')]);
         }
 
-        return redirect()->route('brands.index')->with('success', 'Brand deleted successfully.');
+        return redirect()->route('brands.index')->with('success', __('file.brand_deleted_successfully'));
     }
 
     public function bulkDelete(Request $request)
@@ -188,7 +202,7 @@ class BrandController extends Controller
         }
 
         if (!is_array($ids) || empty($ids)) {
-            return response()->json(['success' => false, 'message' => 'No items selected.'], 400);
+            return response()->json(['success' => false, 'message' => __('file.no_items_selected')], 400);
         }
 
         $brands = \App\Models\Brand::whereIn('id', $ids)->get();
@@ -204,7 +218,7 @@ class BrandController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Selected brands deleted successfully. Brands with associated products were skipped.'
+            'message' => __('file.brands_bulk_deleted_successfully')
         ]);
     }
 }

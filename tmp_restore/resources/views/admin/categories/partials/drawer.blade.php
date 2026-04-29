@@ -89,7 +89,7 @@
             </form>
         </div>
 
-        <div class="px-8 py-6 bg-gray-50/50 dark:bg-surface-tonal-a10 border-t border-gray-100 dark:border-white/5 flex gap-4">
+        <div class="px-8 py-6 bg-gray-100/50 dark:bg-surface-tonal-a10 border-t border-gray-100 dark:border-white/5 flex gap-4">
             <button onclick="closeCreateDrawer()" class="flex-1 px-6 py-4 bg-white dark:bg-surface-tonal-a30 border border-gray-100 dark:border-white/5 text-gray-500 hover:text-gray-900 dark:hover:text-white font-black text-xs uppercase tracking-[0.2em] rounded-2xl transition-all shadow-sm active:scale-95">
                 Cancel
             </button>

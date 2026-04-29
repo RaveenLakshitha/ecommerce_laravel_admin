@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\DiscountRule;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 
 class DiscountRuleController extends Controller
@@ -69,7 +70,7 @@ class DiscountRuleController extends Controller
             if ($rule->type === 'percentage') {
                 $typeHtml .= rtrim(rtrim((string) $rule->value, '0'), '.') . '% Off';
             } elseif ($rule->type === 'fixed') {
-                $typeHtml .= '$' . number_format($rule->value, 2) . ' Off';
+                $typeHtml .= Setting::formatPrice($rule->value) . ' Off';
             } elseif ($rule->type === 'bogo') {
                 $typeHtml .= 'BOGO (Buy ' . $rule->buy_quantity . ', Get ' . $rule->get_quantity . ')';
             } else {

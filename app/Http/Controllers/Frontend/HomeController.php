@@ -69,4 +69,15 @@ class HomeController extends Controller
             'storefront'
         ));
     }
+    public function about()
+    {
+        $storefront = \App\Models\Setting::getAll();
+        return view('frontend.pages.about', compact('storefront'));
+    }
+
+    public function contact()
+    {
+        $storefront = \App\Models\Setting::getAll();
+        return view('frontend.pages.contact', compact('storefront'));
+    }
 }

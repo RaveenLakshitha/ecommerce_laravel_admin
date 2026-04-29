@@ -184,4 +184,34 @@ class Setting extends Model
         }
         return $settings ? ($settings->{$key} ?? $default) : $default;
     }
+
+    /**
+     * Format a given price based on store currency settings.
+     *
+     * @param float|int $amount
+     * @param string|null $overrideCurrencySymbol
+     * @return string
+     */
+    public static function formatPrice($amount, $overrideCurrencySymbol = null)
+    {
+        try {
+            $settings = cache('settings') ?? self::first();
+        } catch (\Exception $e) {
+            $settings = null;
+        }
+        
+        $symbol = $overrideCurrencySymbol ?? ($settings->currency_symbol ?? '$');
+        $position = $settings->currency_position ?? 'left';
+        $decimals = $settings->number_of_decimals ?? 2;
+        $dec_point = $settings->decimal_separator ?? '.';
+        $thousands_sep = $settings->thousands_separator ?? ',';
+
+        $formattedNumber = number_format((float)$amount, (int)$decimals, $dec_point, $thousands_sep);
+
+        if ($position === 'right') {
+            return $formattedNumber . ' ' . $symbol;
+        }
+
+        return $symbol . $formattedNumber;
+    }
 }

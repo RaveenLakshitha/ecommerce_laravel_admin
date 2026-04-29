@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\OrderRefund;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -95,7 +96,7 @@ class OrderController extends Controller
                 'returned' => 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300'
             ];
             $colorClass = $statusColors[$order->status] ?? 'bg-gray-100 text-gray-800';
-            $statusHtml = '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ' . $colorClass . '">' . $order->display_status . '</span>';
+            $statusHtml = '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ' . $colorClass . '">' . __('file.' . $order->status) . '</span>';
             
             $payColors = [
                 'pending' => 'text-yellow-600 dark:text-yellow-400',
@@ -105,7 +106,7 @@ class OrderController extends Controller
                 'partially_refunded' => 'text-orange-500'
             ];
             $pClass = $payColors[$order->payment_status] ?? 'text-gray-500';
-            $payStatus = ucfirst(str_replace('_', ' ', $order->payment_status));
+            $payStatus = __('file.' . $order->payment_status);
 
             $paymentHtml = '
                 <div class="font-medium ' . $pClass . '">' . $payStatus . '</div>
@@ -128,7 +129,7 @@ class OrderController extends Controller
                 'customer_html' => $customerHtml,
                 'status_html' => $statusHtml,
                 'payment_html' => $paymentHtml,
-                'total_amount_html' => '<div class="font-medium text-gray-900 dark:text-white">' . $order->currency . ' ' . number_format($order->total_amount, 2) . '</div>',
+                'total_amount_html' => '<div class="font-medium text-gray-900 dark:text-white">' . Setting::formatPrice($order->total_amount) . '</div>',
                 'show_url' => route('orders.show', $order->id),
                 'invoice_url' => route('orders.invoice', $order->id),
                 'delete_url' => route('orders.destroy', $order->id),
@@ -166,7 +167,7 @@ class OrderController extends Controller
             'status' => $request->status
         ]);
 
-        return redirect()->back()->with('success', 'Order status updated successfully.');
+        return redirect()->back()->with('success', __('file.order_status_updated_successfully'));
     }
 
     /**
@@ -209,7 +210,7 @@ class OrderController extends Controller
             $order->update(['payment_status' => 'partially_refunded']);
         }
 
-        return redirect()->back()->with('success', 'Refund processed successfully.');
+        return redirect()->back()->with('success', __('file.refund_processed_successfully'));
     }
 
     /**
@@ -225,7 +226,7 @@ class OrderController extends Controller
             'internal_notes' => $request->internal_notes
         ]);
 
-        return redirect()->back()->with('success', 'Internal notes updated successfully.');
+        return redirect()->back()->with('success', __('file.internal_notes_updated_successfully'));
     }
 
     /**

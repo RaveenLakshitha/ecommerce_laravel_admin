@@ -1,148 +1,171 @@
 @extends('layouts.app')
 
-@section('title', 'Create User')
+@section('title', __('file.add_new_user'))
 
 @section('content')
-    <div class="px-4 sm:px-6 lg:px-8 pb-4 sm:py-12 pt-20">
-        <div class="max-w-[1400px] mx-auto">
+    <div class="admin-page animate-fade-in-up">
+        <div class="admin-page-inner">
+
+            {{-- Breadcrumbs --}}
+            <div class="mb-4 mt-10">
+                <a href="{{ route('users.index') }}"
+                    class="text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 transition-colors uppercase tracking-wider inline-block">
+                    &larr; {{ __('file.back_to_user_directory') }}
+                </a>
+            </div>
 
             {{-- Header --}}
-            <div class="mb-8 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
+            <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
                 <div>
-                    <a href="{{ route('users.index') }}"
-                        class="text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 transition-colors uppercase tracking-wider">&larr;
-                        Back to User Directory</a>
-                    <h1 class="mt-2 text-3xl font-bold tracking-tight text-gray-900 dark:text-white">Provision New User</h1>
-                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Grant access and define permissions for a new administrative account.</p>
+                    <h1 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                        {{ __('file.add_new_user') }}</h1>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">{{ __('file.create_user_helper') }}</p>
+                </div>
+                <div class="flex items-center gap-3">
+                    <button type="submit" form="create-user-form"
+                        class="inline-flex items-center gap-2 px-5 py-2.5 bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-sm font-semibold rounded-xl transition-all shadow-sm active:scale-[0.98]">
+                        {{ __('file.save_user') }}
+                    </button>
                 </div>
             </div>
 
-            <form action="{{ route('users.store') }}" method="POST" class="space-y-6">
+            <form action="{{ route('users.store') }}" method="POST" id="create-user-form">
                 @csrf
 
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
 
-                    {{-- Left Column: Identity & Access --}}
-                    <div class="lg:col-span-2 space-y-6">
+                    {{-- Left Column --}}
+                    <div class="lg:col-span-2 space-y-4">
 
                         {{-- Personnel Identity --}}
                         <div
-                            class="bg-white dark:bg-surface-tonal-a20 rounded-2xl shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
+                            class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                             <div
-                                class="px-6 py-4 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50/50 dark:bg-surface-tonal-a20">
-                                <h2 class="font-semibold text-gray-900 dark:text-white">Personnel Identity</h2>
+                                class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
+                                <h2 class="text-sm font-bold text-gray-900 dark:text-white">
+                                    {{ __('file.personnel_identity') }}</h2>
                             </div>
-                            <div class="p-6 space-y-5">
+                            <div class="p-4">
                                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                                    <div class="space-y-1.5">
+                                    <div>
                                         <label for="name"
-                                            class="block text-sm font-semibold text-gray-700 dark:text-gray-300">Full Legal Name <span
-                                                class="text-red-500">*</span></label>
-                                        <input type="text" name="name" id="name" value="{{ old('name') }}" required placeholder="e.g. Alexander Sterling"
-                                            class="block w-full rounded-xl border-gray-200 dark:border-surface-tonal-a30 bg-white dark:bg-surface-tonal-a30 px-4 py-3 text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all shadow-sm">
-                                        @error('name') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
+                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.full_legal_name') }}
+                                            <span class="text-red-500">*</span></label>
+                                        <input type="text" name="name" id="name" value="{{ old('name') }}" required
+                                            placeholder="e.g. Alexander Sterling"
+                                            class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/50 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5">
+                                        @error('name') <p class="text-xs text-red-500 mt-1 font-medium px-1">{{ $message }}</p> @enderror
                                     </div>
-                                    <div class="space-y-1.5">
+                                    <div>
                                         <label for="email"
-                                            class="block text-sm font-semibold text-gray-700 dark:text-gray-300">Corporate Email <span
-                                                class="text-red-500">*</span></label>
-                                        <input type="email" name="email" id="email" value="{{ old('email') }}" required placeholder="user@enterprise.com"
-                                            class="block w-full rounded-xl border-gray-200 dark:border-surface-tonal-a30 bg-white dark:bg-surface-tonal-a30 px-4 py-3 text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all shadow-sm">
-                                        @error('email') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
+                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.corporate_email') }}
+                                            <span class="text-red-500">*</span></label>
+                                        <input type="email" name="email" id="email" value="{{ old('email') }}" required
+                                            placeholder="user@enterprise.com"
+                                            class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/50 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5">
+                                        @error('email') <p class="text-xs text-red-500 mt-1 font-medium px-1">{{ $message }}</p> @enderror
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        {{-- Authentication Credentials --}}
+                        {{-- Security Credentials --}}
                         <div
-                            class="bg-white dark:bg-surface-tonal-a20 rounded-2xl shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
+                            class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                             <div
-                                class="px-6 py-4 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50/50 dark:bg-surface-tonal-a20">
-                                <h2 class="font-semibold text-gray-900 dark:text-white">Security Credentials</h2>
+                                class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
+                                <h2 class="text-sm font-bold text-gray-900 dark:text-white">
+                                    {{ __('file.security_credentials') }}</h2>
                             </div>
-                            <div class="p-6 space-y-5">
+                            <div class="p-4">
                                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                                    <div class="space-y-1.5">
+                                    <div>
                                         <label for="password"
-                                            class="block text-sm font-semibold text-gray-700 dark:text-gray-300">Temporary Password <span
-                                                class="text-red-500">*</span></label>
+                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.temporary_password') }}
+                                            <span class="text-red-500">*</span></label>
                                         <input type="password" name="password" id="password" required
-                                            class="block w-full rounded-xl border-gray-200 dark:border-surface-tonal-a30 bg-white dark:bg-surface-tonal-a30 px-4 py-3 text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all shadow-sm">
-                                        @error('password') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
+                                            class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/50 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5">
+                                        @error('password') <p class="text-xs text-red-500 mt-1 font-medium px-1">{{ $message }}</p> @enderror
                                     </div>
-                                    <div class="space-y-1.5">
+                                    <div>
                                         <label for="password_confirmation"
-                                            class="block text-sm font-semibold text-gray-700 dark:text-gray-300">Verify Password <span
-                                                class="text-red-500">*</span></label>
-                                        <input type="password" name="password_confirmation" id="password_confirmation" required
-                                            class="block w-full rounded-xl border-gray-200 dark:border-surface-tonal-a30 bg-white dark:bg-surface-tonal-a30 px-4 py-3 text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all shadow-sm">
+                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.verify_password') }}
+                                            <span class="text-red-500">*</span></label>
+                                        <input type="password" name="password_confirmation" id="password_confirmation"
+                                            required
+                                            class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/50 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5">
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        {{-- Role Architecture --}}
+                        {{-- Inherited Authority --}}
                         <div
-                            class="bg-white dark:bg-surface-tonal-a20 rounded-2xl shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
+                            class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                             <div
-                                class="px-6 py-4 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50/50 dark:bg-surface-tonal-a20">
-                                <h2 class="font-semibold text-gray-900 dark:text-white">Inherited Authority</h2>
+                                class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
+                                <h2 class="text-sm font-bold text-gray-900 dark:text-white">
+                                    {{ __('file.inherited_authority') }}</h2>
                             </div>
-                            <div class="p-6">
-                                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <div class="p-4">
+                                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                                     @foreach($roles as $role)
-                                        <label class="relative flex items-center p-4 rounded-2xl border border-gray-100 dark:border-surface-tonal-a30 hover:bg-indigo-50/50 dark:hover:bg-indigo-950/10 cursor-pointer transition group">
+                                        <label
+                                            class="relative flex items-center p-3 rounded-xl border border-gray-100 dark:border-white/5 bg-gray-50/30 dark:bg-surface-tonal-a10 cursor-pointer hover:bg-gray-50 dark:hover:bg-surface-tonal-a20 transition-colors group">
                                             <input type="radio" name="role_id" value="{{ $role->id }}" required {{ old('role_id') == $role->id ? 'checked' : '' }}
-                                                class="h-5 w-5 rounded-full border-gray-300 dark:border-surface-tonal-a30 text-indigo-600 focus:ring-indigo-500">
-                                            <div class="ml-4">
-                                                <p class="text-sm font-black text-gray-900 dark:text-white uppercase tracking-tighter">{{ $role->name }}</p>
-                                                <p class="text-[10px] text-gray-400 font-medium">Full System Access</p>
+                                                class="h-4 w-4 rounded-full border-gray-300 dark:border-surface-tonal-a30 text-indigo-600 focus:ring-indigo-500">
+                                            <div class="ml-3">
+                                                <p
+                                                    class="text-sm font-semibold text-gray-900 dark:text-white">
+                                                    {{ $role->name }}</p>
+                                                <p class="text-xs font-bold text-gray-400 uppercase tracking-wider">
+                                                    {{ __('file.assigned_role') }}</p>
                                             </div>
                                         </label>
                                     @endforeach
                                 </div>
-                                @error('role_id') <p class="text-xs text-red-500 mt-4">{{ $message }}</p> @enderror
+                                @error('role_id') <p class="text-xs text-red-500 mt-4 font-medium px-1">{{ $message }}</p> @enderror
                             </div>
                         </div>
-
                     </div>
 
-                    {{-- Right Column: Status Card --}}
-                    <div class="lg:col-span-1 space-y-6">
-
-                        {{-- account health --}}
+                    {{-- Right Column --}}
+                    <div class="lg:col-span-1 space-y-4">
+                        {{-- Account Disposition --}}
                         <div
-                            class="bg-white dark:bg-surface-tonal-a20 rounded-2xl shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden sticky top-24">
+                            class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden sticky top-24">
                             <div
-                                class="px-6 py-4 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50/50 dark:bg-surface-tonal-a20">
-                                <h2 class="font-semibold text-gray-900 dark:text-white">Account Disposition</h2>
+                                class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
+                                <h2 class="text-sm font-bold text-gray-900 dark:text-white">
+                                    {{ __('file.account_disposition') }}</h2>
                             </div>
-                            <div class="p-6 space-y-6">
-
+                            <div class="p-4 space-y-6">
                                 <label
-                                    class="flex items-center p-3 rounded-xl border border-gray-100 dark:border-surface-tonal-a30 hover:bg-gray-50 dark:hover:bg-surface-tonal-a30/50 transition cursor-pointer">
+                                    class="flex items-start p-3 rounded-xl border border-gray-100 dark:border-white/5 bg-gray-50/30 dark:bg-surface-tonal-a10 cursor-pointer hover:bg-gray-50 dark:hover:bg-surface-tonal-a20 transition-colors">
                                     <input type="checkbox" name="is_active" id="is_active" value="1" {{ old('is_active', true) ? 'checked' : '' }}
-                                        class="h-5 w-5 rounded-md border-gray-300 dark:border-surface-tonal-a30 text-emerald-500 focus:ring-emerald-500 transition-all">
-                                    <div class="ml-4">
-                                        <p class="text-sm font-bold text-gray-900 dark:text-white">Account Enabled</p>
-                                        <p class="text-xs text-gray-500 dark:text-gray-400">Permit login activities</p>
+                                        class="mt-1 h-4 w-4 rounded border-gray-300 dark:border-surface-tonal-a30 text-emerald-500 focus:ring-emerald-500 transition-all">
+                                    <div class="ml-3">
+                                        <h3
+                                            class="text-sm font-semibold text-gray-900 dark:text-white">
+                                            {{ __('file.account_enabled') }}</h3>
+                                        <p
+                                            class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                                            {{ __('file.permit_login_activities') }}</p>
                                     </div>
                                 </label>
 
-                                <div class="pt-4 flex flex-col gap-3">
-                                    <button type="submit"
-                                        class="w-full h-12 flex items-center justify-center rounded-xl bg-gray-900 dark:bg-white text-[10px] font-black text-white dark:text-gray-900 uppercase tracking-widest hover:bg-black dark:hover:bg-gray-100 transition-all shadow-xl shadow-gray-200 dark:shadow-none focus:ring-4 focus:ring-indigo-500/20 active:scale-[0.98]">
-                                        Provision Account
+                                <div class="space-y-3">
+                                    <button type="submit" form="create-user-form"
+                                        class="w-full py-3 bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-sm font-semibold rounded-xl hover:bg-black dark:hover:bg-gray-100 transition-all shadow-lg active:scale-[0.98]">
+                                        {{ __('file.save_user') }}
                                     </button>
                                     <a href="{{ route('users.index') }}"
-                                        class="w-full flex items-center justify-center px-6 py-3 rounded-xl border border-gray-200 dark:border-surface-tonal-a30 bg-transparent text-[10px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest hover:bg-gray-50 dark:hover:bg-surface-tonal-a30/50 transition-all">
-                                        Cancel Protocol
+                                        class="w-full flex items-center justify-center py-2.5 border border-gray-200 dark:border-surface-tonal-a30 text-sm font-medium text-gray-500 dark:text-gray-400 rounded-xl hover:bg-gray-50 dark:hover:bg-surface-tonal-a30 transition-all">
+                                        {{ __('file.cancel') }}
                                     </a>
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </form>

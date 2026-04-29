@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\PaymentTransaction;
 use App\Models\Order;
+use App\Models\Setting;
 
 class PaymentTransactionController extends Controller
 {
@@ -46,7 +47,7 @@ class PaymentTransactionController extends Controller
                 return '<span class="text-gray-500">Guest</span>';
             })
             ->addColumn('amount_html', function ($row) {
-                return $row->currency . ' ' . number_format($row->amount, 2);
+                return Setting::formatPrice($row->amount);
             })
             ->addColumn('status_html', function ($row) {
                 $colors = [

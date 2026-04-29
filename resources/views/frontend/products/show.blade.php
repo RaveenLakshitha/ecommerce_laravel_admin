@@ -1,6 +1,7 @@
 @extends('frontend.layouts.app')
 
 @section('title', $product->name . ' | Karbnzol')
+@section('body_class', 'light-page')
 
 @section('content')
 
@@ -20,7 +21,7 @@
         --sand:  #ede9e1;
         --mink:  #7a6f66;
         --sage:  #7a9e7e;
-        --white: #faf9f7;
+        --white: var(--bg-creamy, #faf9f7);
         --pd-font-display: 'Cormorant Garamond', Georgia, serif;
         --pd-font-body:    'Jost', sans-serif;
         --nav-h: 80px;
@@ -1152,12 +1153,12 @@
                 {{-- Price --}}
                 <div class="pd-price-wrap" id="pdPriceWrap">
                     @if($product->sale_price && $product->sale_price < $product->base_price)
-                        <span class="pd-price-orig">{{ $currency_symbol }} {{ number_format($product->base_price, 2) }}</span>
-                        <span class="pd-price-sale" id="pdSalePrice">{{ $currency_symbol }} {{ number_format($product->sale_price, 2) }}</span>
+                        <span class="pd-price-orig">@price($product->base_price)</span>
+                        <span class="pd-price-sale" id="pdSalePrice">@price($product->sale_price)</span>
                         @php $discount = round((($product->base_price - $product->sale_price) / $product->base_price) * 100); @endphp
                         <span class="pd-price-badge" id="pdPriceBadge">−{{ $discount }}%</span>
                     @else
-                        <span class="pd-price" id="pdBasePrice">{{ $currency_symbol }} {{ number_format($product->base_price, 2) }}</span>
+                        <span class="pd-price" id="pdBasePrice">@price($product->base_price)</span>
                     @endif
                 </div>
 
@@ -1373,14 +1374,14 @@
                                         <span class="pd-del-icon">🚚</span>
                                         <div>
                                             <div class="pd-del-title">Standard Delivery</div>
-                                            <div class="pd-del-sub">Rs. 350 · 3–5 business days<br>Free on orders over Rs. 7,500</div>
+                                            <div class="pd-del-sub">@price($shipping_cost_per_order) · 3–5 business days<br>Free on orders over @price($free_shipping_threshold)</div>
                                         </div>
                                     </div>
                                     <div class="pd-del-item">
                                         <span class="pd-del-icon">⚡</span>
                                         <div>
                                             <div class="pd-del-title">Express Delivery</div>
-                                            <div class="pd-del-sub">Rs. 650 · Next business day<br>Order before 1 PM</div>
+                                            <div class="pd-del-sub">@price(650) · Next business day<br>Order before 1 PM</div>
                                         </div>
                                     </div>
                                     <div class="pd-del-item">
@@ -1554,10 +1555,10 @@
                             <div class="pd-card-name">{{ $rp->name }}</div>
                             <div class="pd-card-price">
                                 @if($rp->sale_price && $rp->sale_price < $rp->base_price)
-                                    <span class="pd-card-price-sale">{{ $currency_symbol }} {{ number_format($rp->sale_price, 2) }}</span>
-                                    <span class="pd-card-price-orig">{{ $currency_symbol }} {{ number_format($rp->base_price, 2) }}</span>
+                                    <span class="pd-card-price-sale">@price($rp->sale_price)</span>
+                                    <span class="pd-card-price-orig">@price($rp->base_price)</span>
                                 @else
-                                    <span>{{ $currency_symbol }} {{ number_format($rp->base_price, 2) }}</span>
+                                    <span>@price($rp->base_price)</span>
                                 @endif
                             </div>
                             <div class="pd-card-stars">
@@ -1864,9 +1865,9 @@
             addToCartBtn.textContent = inStock ? 'Add to Bag' : 'Out of Stock';
 
             // Update Price
-            const basePriceFmt = new Intl.NumberFormat('en-IN', {minimumFractionDigits: 2}).format(exactMatch.price);
+            const basePriceFmt = new Intl.NumberFormat('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(exactMatch.price);
             if (exactMatch.sale_price && exactMatch.sale_price < exactMatch.price) {
-                const salePriceFmt = new Intl.NumberFormat('en-IN', {minimumFractionDigits: 2}).format(exactMatch.sale_price);
+                const salePriceFmt = new Intl.NumberFormat('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(exactMatch.sale_price);
                 const discount = Math.round(((exactMatch.price - exactMatch.sale_price) / exactMatch.price) * 100);
                 document.getElementById('pdPriceWrap').innerHTML = `
                     <span class="pd-price-orig">{{ $currency_symbol }} ${basePriceFmt}</span>

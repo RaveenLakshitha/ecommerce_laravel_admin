@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Auth\GoogleAuthController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Admin\Auth\LoginController as AdminLoginController;
@@ -12,10 +13,17 @@ Route::domain('karbnzol.com')->group(function () {
     Route::redirect('/{any}', 'http://shop.karbnzol.com/{any}', 301)->where('any', '.*');
 });
 
+Route::domain('shop.karbnzol.com')->group(function () {
+    Route::get('/wheels', [App\Http\Controllers\Frontend\WheelsController::class, 'index'])->name('homewheels');
+});
+
 // Customer / Shop routes
 Route::domain('shop.karbnzol.com')->group(function () {
 
     Route::get('/', [App\Http\Controllers\Frontend\HomeController::class, 'index'])->name('home');
+
+    Route::get('/about', [App\Http\Controllers\Frontend\HomeController::class, 'about'])->name('frontend.about');
+    Route::get('/contact', [App\Http\Controllers\Frontend\HomeController::class, 'contact'])->name('frontend.contact');
 
     Route::get('/products', [App\Http\Controllers\Frontend\ProductController::class, 'index'])->name('frontend.products.index');
     Route::get('/products/{slug}', [App\Http\Controllers\Frontend\ProductController::class, 'show'])->name('frontend.products.show');
@@ -32,6 +40,12 @@ Route::domain('shop.karbnzol.com')->group(function () {
         Route::delete('/remove/{rowId}', [App\Http\Controllers\Frontend\CartController::class, 'remove'])->name('remove');
     });
 
+    // Checkout routes
+    Route::prefix('checkout')->name('checkout.')->group(function () {
+        Route::get('/', [App\Http\Controllers\Frontend\CheckoutController::class, 'index'])->name('index');
+        Route::post('/process', [App\Http\Controllers\Frontend\CheckoutController::class, 'process'])->name('process');
+        Route::get('/success', [App\Http\Controllers\Frontend\CheckoutController::class, 'success'])->name('success');
+    });
 
     Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [AuthController::class, 'login']);
@@ -40,13 +54,20 @@ Route::domain('shop.karbnzol.com')->group(function () {
     Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
     Route::post('/register', [AuthController::class, 'register']);
 
+    // Google OAuth (Socialite)
+    Route::get('/auth/google', [GoogleAuthController::class, 'redirect'])->name('auth.google');
+    Route::get('/auth/google/callback', [GoogleAuthController::class, 'callback'])->name('auth.google.callback');
+
     Route::middleware('auth:web')->group(function () {
         Route::get('/account', [\App\Http\Controllers\Frontend\AccountController::class, 'index'])->name('account.dashboard');
-        
+
         // Profile update
         Route::put('/account/profile', [\App\Http\Controllers\Frontend\AccountController::class, 'updateProfile'])->name('account.profile.update');
         Route::put('/account/password', [\App\Http\Controllers\Frontend\AccountController::class, 'updatePassword'])->name('account.password.update');
-        
+
+        // Orders
+        Route::get('/account/orders/{order}', [\App\Http\Controllers\Frontend\AccountController::class, 'showOrder'])->name('account.orders.show');
+
         // Address management
         Route::post('/account/addresses', [\App\Http\Controllers\Frontend\AccountController::class, 'storeAddress'])->name('account.addresses.store');
         Route::put('/account/addresses/{address}', [\App\Http\Controllers\Frontend\AccountController::class, 'updateAddress'])->name('account.addresses.update');
@@ -62,8 +83,8 @@ Route::post('/language', [LanguageController::class, 'switch'])->name('language.
 // Admin routes
 Route::domain('admin.karbnzol.com')->group(function () {
     Route::get('/', function () {
-        return auth('admin')->check() 
-            ? redirect()->route('admin.dashboard') 
+        return auth('admin')->check()
+            ? redirect()->route('admin.dashboard')
             : redirect()->route('admin.login');
     });
 
@@ -83,13 +104,13 @@ Route::domain('admin.karbnzol.com')->group(function () {
         Route::get('brands/datatable', [\App\Http\Controllers\Admin\BrandController::class, 'datatable'])->name('brands.datatable');
         Route::post('brands/bulk-delete', [\App\Http\Controllers\Admin\BrandController::class, 'bulkDelete'])->name('brands.bulkDelete');
         Route::resource('brands', \App\Http\Controllers\Admin\BrandController::class);
-        
+
         // Product Management
         Route::get('products/datatable', [\App\Http\Controllers\Admin\ProductController::class, 'datatable'])->name('products.datatable');
         Route::post('products/bulk-delete', [\App\Http\Controllers\Admin\ProductController::class, 'bulkDelete'])->name('products.bulkDelete');
         Route::resource('products', \App\Http\Controllers\Admin\ProductController::class);
         Route::delete('products/{product}/images/{image}', [\App\Http\Controllers\Admin\ProductController::class, 'deleteImage'])->name('products.images.destroy');
-        
+
         // Product Variants
         Route::resource('products.variants', \App\Http\Controllers\Admin\VariantController::class)->except(['index', 'show']);
         Route::delete('products/{product}/variants/{variant}/images/{image}', [\App\Http\Controllers\Admin\VariantController::class, 'deleteImage'])->name('products.variants.images.destroy');
@@ -123,7 +144,7 @@ Route::domain('admin.karbnzol.com')->group(function () {
         Route::get('subscribers/datatable', [\App\Http\Controllers\Admin\SubscriberController::class, 'datatable'])->name('subscribers.datatable');
         Route::post('subscribers/bulk-delete', [\App\Http\Controllers\Admin\SubscriberController::class, 'bulkDelete'])->name('subscribers.bulkDelete');
         Route::resource('subscribers', \App\Http\Controllers\Admin\SubscriberController::class)->only(['index', 'destroy']);
-        
+
         Route::get('reviews/datatable', [\App\Http\Controllers\Admin\ReviewController::class, 'datatable'])->name('reviews.datatable');
         Route::post('reviews/bulk-delete', [\App\Http\Controllers\Admin\ReviewController::class, 'bulkDelete'])->name('reviews.bulkDelete');
         Route::resource('reviews', \App\Http\Controllers\Admin\ReviewController::class)->only(['index', 'update', 'destroy']);
@@ -147,7 +168,7 @@ Route::domain('admin.karbnzol.com')->group(function () {
         Route::delete('inventory/{variant}', [\App\Http\Controllers\Admin\InventoryController::class, 'destroy'])->name('inventory.destroy');
 
         // Shipping & Delivery
-        Route::prefix('shipping')->name('shipping.')->group(function() {
+        Route::prefix('shipping')->name('shipping.')->group(function () {
             Route::get('couriers/datatable', [\App\Http\Controllers\Admin\CourierController::class, 'datatable'])->name('couriers.datatable');
             Route::post('couriers/bulk-delete', [\App\Http\Controllers\Admin\CourierController::class, 'bulkDelete'])->name('couriers.bulkDelete');
             Route::resource('couriers', \App\Http\Controllers\Admin\CourierController::class);

@@ -13,7 +13,8 @@
                         class="text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 transition-colors uppercase tracking-wider">&larr;
                         Back to User Directory</a>
                     <h1 class="mt-2 text-3xl font-bold tracking-tight text-gray-900 dark:text-white">Provision New User</h1>
-                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Grant access and define permissions for a new administrative account.</p>
+                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Grant access and define permissions for a new
+                        administrative account.</p>
                 </div>
             </div>
 
@@ -29,24 +30,26 @@
                         <div
                             class="bg-white dark:bg-surface-tonal-a20 rounded-2xl shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                             <div
-                                class="px-6 py-4 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50/50 dark:bg-surface-tonal-a20">
+                                class="px-6 py-4 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
                                 <h2 class="font-semibold text-gray-900 dark:text-white">Personnel Identity</h2>
                             </div>
                             <div class="p-6 space-y-5">
                                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                                     <div class="space-y-1.5">
                                         <label for="name"
-                                            class="block text-sm font-semibold text-gray-700 dark:text-gray-300">Full Legal Name <span
-                                                class="text-red-500">*</span></label>
-                                        <input type="text" name="name" id="name" value="{{ old('name') }}" required placeholder="e.g. Alexander Sterling"
+                                            class="block text-sm font-semibold text-gray-700 dark:text-gray-300">Full Legal
+                                            Name <span class="text-red-500">*</span></label>
+                                        <input type="text" name="name" id="name" value="{{ old('name') }}" required
+                                            placeholder="e.g. Alexander Sterling"
                                             class="block w-full rounded-xl border-gray-200 dark:border-surface-tonal-a30 bg-white dark:bg-surface-tonal-a30 px-4 py-3 text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all shadow-sm">
                                         @error('name') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
                                     </div>
                                     <div class="space-y-1.5">
                                         <label for="email"
-                                            class="block text-sm font-semibold text-gray-700 dark:text-gray-300">Corporate Email <span
-                                                class="text-red-500">*</span></label>
-                                        <input type="email" name="email" id="email" value="{{ old('email') }}" required placeholder="user@enterprise.com"
+                                            class="block text-sm font-semibold text-gray-700 dark:text-gray-300">Corporate
+                                            Email <span class="text-red-500">*</span></label>
+                                        <input type="email" name="email" id="email" value="{{ old('email') }}" required
+                                            placeholder="user@enterprise.com"
                                             class="block w-full rounded-xl border-gray-200 dark:border-surface-tonal-a30 bg-white dark:bg-surface-tonal-a30 px-4 py-3 text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all shadow-sm">
                                         @error('email') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
                                     </div>
@@ -58,24 +61,25 @@
                         <div
                             class="bg-white dark:bg-surface-tonal-a20 rounded-2xl shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                             <div
-                                class="px-6 py-4 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50/50 dark:bg-surface-tonal-a20">
+                                class="px-6 py-4 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
                                 <h2 class="font-semibold text-gray-900 dark:text-white">Security Credentials</h2>
                             </div>
                             <div class="p-6 space-y-5">
                                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                                     <div class="space-y-1.5">
                                         <label for="password"
-                                            class="block text-sm font-semibold text-gray-700 dark:text-gray-300">Temporary Password <span
-                                                class="text-red-500">*</span></label>
+                                            class="block text-sm font-semibold text-gray-700 dark:text-gray-300">Temporary
+                                            Password <span class="text-red-500">*</span></label>
                                         <input type="password" name="password" id="password" required
                                             class="block w-full rounded-xl border-gray-200 dark:border-surface-tonal-a30 bg-white dark:bg-surface-tonal-a30 px-4 py-3 text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all shadow-sm">
                                         @error('password') <p class="text-xs text-red-500 mt-1">{{ $message }}</p> @enderror
                                     </div>
                                     <div class="space-y-1.5">
                                         <label for="password_confirmation"
-                                            class="block text-sm font-semibold text-gray-700 dark:text-gray-300">Verify Password <span
-                                                class="text-red-500">*</span></label>
-                                        <input type="password" name="password_confirmation" id="password_confirmation" required
+                                            class="block text-sm font-semibold text-gray-700 dark:text-gray-300">Verify
+                                            Password <span class="text-red-500">*</span></label>
+                                        <input type="password" name="password_confirmation" id="password_confirmation"
+                                            required
                                             class="block w-full rounded-xl border-gray-200 dark:border-surface-tonal-a30 bg-white dark:bg-surface-tonal-a30 px-4 py-3 text-sm text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all shadow-sm">
                                     </div>
                                 </div>
@@ -86,17 +90,20 @@
                         <div
                             class="bg-white dark:bg-surface-tonal-a20 rounded-2xl shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                             <div
-                                class="px-6 py-4 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50/50 dark:bg-surface-tonal-a20">
+                                class="px-6 py-4 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
                                 <h2 class="font-semibold text-gray-900 dark:text-white">Inherited Authority</h2>
                             </div>
                             <div class="p-6">
                                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                                     @foreach($roles as $role)
-                                        <label class="relative flex items-center p-4 rounded-2xl border border-gray-100 dark:border-surface-tonal-a30 hover:bg-indigo-50/50 dark:hover:bg-indigo-950/10 cursor-pointer transition group">
+                                        <label
+                                            class="relative flex items-center p-4 rounded-2xl border border-gray-100 dark:border-surface-tonal-a30 hover:bg-indigo-50/50 dark:hover:bg-indigo-950/10 cursor-pointer transition group">
                                             <input type="radio" name="role_id" value="{{ $role->id }}" required {{ old('role_id') == $role->id ? 'checked' : '' }}
                                                 class="h-5 w-5 rounded-full border-gray-300 dark:border-surface-tonal-a30 text-indigo-600 focus:ring-indigo-500">
                                             <div class="ml-4">
-                                                <p class="text-sm font-black text-gray-900 dark:text-white uppercase tracking-tighter">{{ $role->name }}</p>
+                                                <p
+                                                    class="text-sm font-black text-gray-900 dark:text-white uppercase tracking-tighter">
+                                                    {{ $role->name }}</p>
                                                 <p class="text-[10px] text-gray-400 font-medium">Full System Access</p>
                                             </div>
                                         </label>
@@ -115,7 +122,7 @@
                         <div
                             class="bg-white dark:bg-surface-tonal-a20 rounded-2xl shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden sticky top-24">
                             <div
-                                class="px-6 py-4 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50/50 dark:bg-surface-tonal-a20">
+                                class="px-6 py-4 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
                                 <h2 class="font-semibold text-gray-900 dark:text-white">Account Disposition</h2>
                             </div>
                             <div class="p-6 space-y-6">

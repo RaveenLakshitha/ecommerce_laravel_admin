@@ -1,6 +1,7 @@
 @extends('frontend.layouts.app')
 
-@section('title', 'Shopping Cart')
+@section('title', __('file.shopping_cart'))
+@section('body_class', 'light-page')
 
 @section('content')
     <style>
@@ -569,7 +570,7 @@
 
         {{-- ─── HEADER ─────────────────────────────────────────────── --}}
         <div class="cart-header-wrap">
-            <h1>Cart</h1>
+            <h1>{{ __('file.cart') }}</h1>
             <p>
                 <span class="cart-item-count">{{ $cartItems->count() }}</span>
                 item{{ $cartItems->count() !== 1 ? 's' : '' }}
@@ -594,7 +595,7 @@
 
                 {{-- ─── LEFT: CART ITEMS ───────────────────────────────── --}}
                 <div>
-                    <p class="section-label">Cart items</p>
+                    <p class="section-label">{{ __('file.cart_items') }}</p>
                     <div class="cart-items">
                         @foreach($cartItems as $item)
                             <div class="cart-item cart-item-row" data-id="{{ $item->id }}">
@@ -605,7 +606,7 @@
                                         <img src="{{ asset('storage/' . $item->attributes['image']) }}" alt="{{ $item->name }}"
                                             class="cart-item-img" loading="lazy">
                                     @else
-                                        <div class="cart-item-img-placeholder">No Image</div>
+                                        <div class="cart-item-img-placeholder">{{ __('file.no_image') }}</div>
                                     @endif
                                 </div>
 
@@ -617,18 +618,17 @@
                                     <h3 title="{{ $item->name }}">{{ $item->name }}</h3>
                                     <p class="cart-item-meta">
                                         @if(isset($item->attributes['size']) && $item->attributes['size'])
-                                            Size: {{ $item->attributes['size'] }}
+                                            {{ __('file.size') }}: {{ $item->attributes['size'] }}
                                         @endif
                                         @if(isset($item->attributes['size']) && $item->attributes['size'] && isset($item->attributes['color']) && $item->attributes['color'])
                                             &nbsp;·&nbsp;
                                         @endif
                                         @if(isset($item->attributes['color']) && $item->attributes['color'])
-                                            Color: {{ $item->attributes['color'] }}
+                                            {{ __('file.color') }}: {{ $item->attributes['color'] }}
                                         @endif
                                     </p>
                                     <div class="cart-item-price">
-                                        {{ $currency_symbol }}&nbsp;<span
-                                            class="item-subtotal">{{ number_format($item->getPriceSumWithConditions(), 2) }}</span>
+                                        @price($item->getPriceSumWithConditions())
                                     </div>
                                 </div>
 
@@ -651,7 +651,7 @@
                                     <form action="{{ route('cart.remove', $item->id) }}" method="POST" class="cart-remove-form">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="remove-btn">Remove</button>
+                                        <button type="submit" class="remove-btn">{{ __('file.remove') }}</button>
                                     </form>
                                 </div>
 
@@ -664,7 +664,7 @@
                 <div class="cart-summary">
 
                     <div class="summary-header">
-                        <h2>Order Summary</h2>
+                        <h2>{{ __('file.order_summary') }}</h2>
                     </div>
 
                     <div class="summary-body">
@@ -672,28 +672,27 @@
                         {{-- Line rows --}}
                         <div>
                             <div class="summary-row">
-                                <span class="s-label">Subtotal ({{ $cartItems->sum('quantity') }}
-                                    item{{ $cartItems->sum('quantity') !== 1 ? 's' : '' }})</span>
-                                <span class="s-value">{{ $currency_symbol }}&nbsp;<span
-                                        class="cart-subtotal">{{ number_format($subtotal, 2) }}</span></span>
+                                <span class="s-label">{{ __('file.subtotal') }} ({{ $cartItems->sum('quantity') }}
+                                     {{ $cartItems->sum('quantity') !== 1 ? __('file.items') : __('file.item') }})</span>
+                                <span class="s-value">@price($subtotal)</span>
                             </div>
                             <div class="summary-row">
-                                <span class="s-label">Shipping</span>
-                                <span class="s-muted">Calculated at checkout</span>
+                                <span class="s-label">{{ __('file.shipping') }}</span>
+                                <span class="s-muted">{{ __('file.calculated_at_checkout') }}</span>
                             </div>
                             <div class="summary-row">
-                                <span class="s-label">Tax</span>
-                                <span class="s-muted">Included</span>
+                                <span class="s-label">{{ __('file.tax') }}</span>
+                                <span class="s-muted">{{ __('file.included') }}</span>
                             </div>
                         </div>
 
                         {{-- Promo Code --}}
                         <div class="promo-section">
-                            <span class="promo-label">Promo code</span>
+                            <span class="promo-label">{{ __('file.promo_code') }}</span>
                             <div class="promo-row">
-                                <input type="text" class="promo-input" id="promo-input" placeholder="Enter code"
+                                <input type="text" class="promo-input" id="promo-input" placeholder="{{ __('file.enter_code') }}"
                                     autocomplete="off">
-                                <button class="promo-apply-btn" type="button" onclick="applyPromo()">Apply</button>
+                                <button class="promo-apply-btn" type="button" onclick="applyPromo()">{{ __('file.apply') }}</button>
                             </div>
                             <div id="promo-message" style="font-size:0.75rem; margin-top:0.5rem; display:none;"></div>
                         </div>
@@ -702,29 +701,24 @@
 
                         {{-- Total --}}
                         <div class="summary-total-row">
-                            <span class="summary-total-label">Total</span>
+                            <span class="summary-total-label">{{ __('file.total') }}</span>
                             <span class="summary-total-amount">
-                                {{ $currency_symbol }}&nbsp;<span class="cart-total">{{ number_format($total, 2) }}</span>
+                                @price($total)
                             </span>
                         </div>
 
                         {{-- CTA --}}
-                        <a href="#" class="checkout-btn">
-                            Proceed to Checkout
+                        <a href="{{ route('checkout.index') }}" class="checkout-btn">
+                            {{ __('file.proceed_to_checkout') }}
                         </a>
                         <a href="{{ route('frontend.products.index') }}" class="continue-shopping">
-                            Continue Shopping
+                            {{ __('file.continue_shopping') }}
                         </a>
 
                         {{-- Trust signals --}}
                         <div class="trust-section">
                             <div class="secure-note">
-                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <rect x="5" y="11" width="14" height="10" rx="2" ry="2" />
-                                    <path d="M8 11V7a4 4 0 0 1 8 0v4" />
-                                </svg>
-                                Secure checkout &nbsp;·&nbsp; SSL encrypted
+                                {!! __('file.secure_checkout_ssl') !!}
                             </div>
                             <div class="payment-badges">
                                 <span class="payment-badge">Visa</span>
@@ -747,9 +741,9 @@
                         <circle cx="24" cy="52" r="3" />
                         <circle cx="44" cy="52" r="3" />
                     </svg>
-                    <h2>Your cart is empty</h2>
-                    <p>Looks like you haven't added anything yet.</p>
-                    <a href="{{ route('frontend.products.index') }}" class="btn-primary">Explore Collection</a>
+                    <h2>{{ __('file.your_cart_is_empty') }}</h2>
+                    <p>{{ __('file.looks_like_you_havent_added_anything_yet') }}</p>
+                    <a href="{{ route('frontend.products.index') }}" class="btn-primary">{{ __('file.explore_collection') }}</a>
                 </div>
 
             @endif
