@@ -8,19 +8,23 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Storage;
 
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
+
 /**
  * Curated Collection (e.g. "Summer 2026", "New Arrivals", "Sale", "Ethnic Wear")
  * Used for grouping products in frontend sections/carousels
  */
-class Collection extends Model
+class Collection extends Model implements HasMedia
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, InteractsWithMedia;
 
     protected $fillable = [
         'name',
         'slug',
         'description',
-        'banner_image_path',
+        'banner_url',
         'start_date',
         'end_date',             // for seasonal / flash collections
         'is_active',
@@ -47,11 +51,6 @@ class Collection extends Model
             ->orderByPivot('sort_order');
     }
 
-    public function getBannerUrlAttribute(): ?string
-    {
-        return $this->banner_image_path ? Storage::url($this->banner_image_path) : null;
-    }
-
     public function isActiveNow(): bool
     {
         if (!$this->start_date || !$this->end_date) {
@@ -60,5 +59,22 @@ class Collection extends Model
 
         return $this->is_active
             && now()->between($this->start_date, $this->end_date);
+    }
+
+    public function getBannerUrlAttribute(): ?string
+    {
+        $mediaUrl = $this->getFirstMediaUrl('images', 'optimized');
+        if ($mediaUrl) {
+            return $mediaUrl;
+        }
+        return ($this->attributes['banner_url'] ?? null) ? Storage::url($this->attributes['banner_url']) : null;
+    }
+
+    public function registerMediaConversions(Media $media = null): void
+    {
+        $this->addMediaConversion('optimized')
+             ->format('webp')
+             ->quality(80)
+             ->nonQueued();
     }
 }

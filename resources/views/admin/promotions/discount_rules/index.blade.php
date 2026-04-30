@@ -23,15 +23,15 @@
 
         <div class="admin-page-header">
             <div>
-                <h1 class="admin-page-title">{{ __('file.discount_rules') ?? 'Discount Rules' }}</h1>
-                <p class="admin-page-subtitle">{{ __('file.manage_discount_rules') ?? 'Configure automatic pricing rules and flash sales' }}</p>
+                <h1 class="admin-page-title">{{ __('file.discount_rules') }}</h1>
+                <p class="admin-page-subtitle">{{ __('file.manage_discount_rules') }}</p>
             </div>
             <div class="flex items-center gap-3">
                 <a href="{{ route('discount-rules.create') }}" class="admin-btn-add">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                     </svg>
-                    {{ __('file.add_rule') ?? 'Add Rule' }}
+                    {{ __('file.add_rule') }}
                 </a>
             </div>
         </div>
@@ -52,7 +52,7 @@
             <div id="bulk-ids-container" class="hidden"></div>
             <div class="flex items-center gap-3">
                 <div class="selection-count" id="selected-count">0</div>
-                <span>{{ __('file.rules_selected') ?? 'Rules Selected' }}</span>
+                <span>{{ __('file.rules_selected') }}</span>
             </div>
             <button type="submit"
                 class="inline-flex items-center gap-2 px-6 py-2.5 bg-red-600 hover:bg-red-700 text-white text-[11px] font-bold uppercase tracking-wider rounded-xl transition-all shadow-lg shadow-red-600/20 active:scale-95 whitespace-nowrap border border-red-500/30">
@@ -73,12 +73,12 @@
                         <th class="!text-center !px-4" style="width: 50px; min-width: 50px;">
                             <input type="checkbox" id="select-all" class="w-4 h-4 rounded border-gray-300 dark:border-surface-tonal-a30 text-gray-900 focus:ring-gray-300">
                         </th>
-                        <th>Status</th>
-                        <th>Rule Information</th>
-                        <th>Promotion</th>
-                        <th class="!text-center">Priority</th>
-                        <th>Dates</th>
-                        <th class="!text-right">Actions</th>
+                        <th>{{ __('file.status') }}</th>
+                        <th>{{ __('file.rule_information') }}</th>
+                        <th>{{ __('file.promotion') }}</th>
+                        <th class="!text-center">{{ __('file.priority') }}</th>
+                        <th>{{ __('file.dates') }}</th>
+                        <th class="!text-right">{{ __('file.actions') }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -152,11 +152,11 @@
             lengthMenu: [10, 25, 50, 100],
             language: {
                 search: "",
-                searchPlaceholder: "Search rules...",
-                lengthMenu: "Show _MENU_ entries",
-                info: "Showing _START_ to _END_ of _TOTAL_ entries",
-                infoEmpty: "No items found",
-                emptyTable: "No discount rules found.",
+                searchPlaceholder: "{{ __('file.search_rules') }}",
+                lengthMenu: "_MENU_",
+                info: "{{ __('file.showing_entries') }}",
+                infoEmpty: "{{ __('file.no_items_found') }}",
+                emptyTable: "{{ __('file.no_discount_rules_found') }}.",
                 processing: false,
             },
             autoWidth: false,

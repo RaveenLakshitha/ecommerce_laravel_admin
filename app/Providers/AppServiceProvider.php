@@ -81,6 +81,12 @@ class AppServiceProvider extends ServiceProvider
             'storefront_banners'    => $setting->storefront_banners,
             'storefront_about_us'   => $setting->storefront_about_us,
 
+            // SEO & Metadata
+            'meta_title' => $setting->meta_title ?? $setting->site_title ?? $setting->site_name ?? config('app.name'),
+            'meta_description' => $setting->meta_description ?? $setting->site_description ?? '',
+            'meta_keywords' => $setting->meta_keywords ?? '',
+            'og_image' => !empty($setting->og_image) ? Storage::url($setting->og_image) : (!empty($setting->logo_path) ? Storage::url($setting->logo_path) : asset('images/default-logo.png')),
+
             // Business info
             'free_shipping_threshold' => $setting->free_shipping_threshold ?? 5000,
             'shipping_cost_per_order' => $setting->shipping_cost_per_order ?? 0,

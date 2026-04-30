@@ -63,25 +63,25 @@ class ReviewController extends Controller
             }
             $starsHtml .= '</div>';
 
-            $reviewHtml = $starsHtml . '<div class="text-sm font-semibold text-gray-900 dark:text-primary-a0 max-w-sm truncate" title="' . htmlspecialchars($review->title ?? '') . '">' . htmlspecialchars($review->title ?? 'No Title') . '</div>';
+            $reviewHtml = $starsHtml . '<div class="text-sm font-semibold text-gray-900 dark:text-primary-a0 max-w-sm truncate" title="' . htmlspecialchars($review->title ?? '') . '">' . htmlspecialchars($review->title ?? __('file.no_title')) . '</div>';
             $reviewHtml .= '<div class="text-xs text-gray-500 max-w-sm truncate" title="' . htmlspecialchars($review->content ?? '') . '">' . htmlspecialchars($review->content ?? '') . '</div>';
 
             $statusHtml = '';
             if ($review->status == 'approved') {
-                $statusHtml = '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">Approved</span>';
+                $statusHtml = '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">' . __('file.approved') . '</span>';
             } elseif ($review->status == 'pending') {
-                $statusHtml = '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">Pending</span>';
+                $statusHtml = '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">' . __('file.pending') . '</span>';
             } else {
-                $statusHtml = '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">Rejected</span>';
+                $statusHtml = '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200">' . __('file.rejected') . '</span>';
             }
 
             $customerHtml = '<div class="text-sm text-gray-900 dark:text-primary-a0">';
             if ($review->is_anonymous) {
-                $customerHtml .= '<i>Anonymous</i>';
+                $customerHtml .= '<i>' . __('file.anonymous') . '</i>';
             } else {
                 $customerHtml .= '<a href="' . route('customers.show', $review->customer_id ?? 0) . '" class="text-indigo-600 dark:text-indigo-400 hover:underline">' . htmlspecialchars(optional($review->customer)->first_name . ' ' . optional($review->customer)->last_name) . '</a>';
             }
-            $customerHtml .= '</div><div class="text-xs text-gray-500">Product: <a href="' . route('products.edit', $review->product_id ?? 0) . '" class="text-indigo-600 dark:text-indigo-400 hover:underline">' . htmlspecialchars(optional($review->product)->name ?? '') . '</a></div>';
+            $customerHtml .= '</div><div class="text-xs text-gray-500">' . __('file.product') . ': <a href="' . route('products.edit', $review->product_id ?? 0) . '" class="text-indigo-600 dark:text-indigo-400 hover:underline">' . htmlspecialchars(optional($review->product)->name ?? '') . '</a></div>';
 
             return [
                 'id' => $review->id,
@@ -117,9 +117,9 @@ class ReviewController extends Controller
         ]);
 
         if (request()->ajax()) {
-            return response()->json(['success' => true, 'message' => 'Review status updated']);
+            return response()->json(['success' => true, 'message' => __('file.item_updated_successfully')]);
         }
-        return back()->with('success', 'Review status updated');
+        return back()->with('success', __('file.item_updated_successfully'));
     }
 
     public function destroy($id)
@@ -127,10 +127,10 @@ class ReviewController extends Controller
         Review::findOrFail($id)->delete();
 
         if (request()->ajax()) {
-            return response()->json(['success' => true, 'message' => 'Review deleted completely']);
+            return response()->json(['success' => true, 'message' => __('file.item_deleted_successfully')]);
         }
 
-        return back()->with('success', 'Review deleted completely');
+        return back()->with('success', __('file.item_deleted_successfully'));
     }
 
     public function bulkDelete(Request $request)
@@ -142,14 +142,14 @@ class ReviewController extends Controller
         }
 
         if (!is_array($ids) || empty($ids)) {
-            return response()->json(['success' => false, 'message' => 'No items selected.'], 400);
+            return response()->json(['success' => false, 'message' => __('file.no_items_selected')], 400);
         }
 
         \App\Models\Review::whereIn('id', $ids)->delete();
 
         return response()->json([
             'success' => true,
-            'message' => 'Selected reviews deleted successfully.'
+            'message' => __('file.selected_items_deleted_successfully')
         ]);
     }
 }

@@ -23,8 +23,8 @@
 
             <div class="admin-page-header">
                 <div>
-                    <h1 class="admin-page-title">{{ __('file.pickup_locations') ?? 'Pickup Locations' }}</h1>
-                    <p class="admin-page-subtitle">{{ __('file.manage_pickup_locations') ?? 'Manage localized pickup points for click-and-collect fulfillment' }}</p>
+                    <h1 class="admin-page-title">{{ __('file.pickup_locations') }}</h1>
+                    <p class="admin-page-subtitle">{{ __('file.manage_pickup_locations') }}</p>
                 </div>
                 <div class="flex items-center gap-3">
                     <button type="button" onclick="openPickupDrawer()" class="admin-btn-add">
@@ -32,7 +32,7 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0zM15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                         </svg>
-                        {{ __('file.add_location') ?? 'Add Location' }}
+                        {{ __('file.add_location') }}
                     </button>
                 </div>
             </div>
@@ -53,7 +53,7 @@
                     <div id="bulk-ids-container" class="hidden"></div>
                     <div class="flex items-center gap-3">
                         <div class="selection-count" id="selected-count">0</div>
-                        <span>{{ __('file.locations_selected') ?? 'Locations Selected' }}</span>
+                        <span>{{ __('file.locations_selected') }}</span>
                     </div>
                     <button type="submit"
                         class="inline-flex items-center gap-2 px-6 py-2.5 bg-red-600 hover:bg-red-700 text-white text-[11px] font-bold uppercase tracking-wider rounded-xl transition-all shadow-lg shadow-red-600/20 active:scale-95 whitespace-nowrap border border-red-500/30">
@@ -100,11 +100,11 @@
                 
                 <div class="flex items-center justify-between px-8 py-5 border-b border-gray-100 dark:border-white/5 bg-gray-50/50 dark:bg-white/5">
                     <div>
-                        <h3 id="pickup-drawer-title" class="text-xl font-extrabold text-gray-900 dark:text-white tracking-tight">
-                            {{ __('file.add_new_location') ?? 'Add New Pickup Location' }}
+                        <h3 id="pickup-drawer-title" class="text-xl font-bold text-gray-900 dark:text-white tracking-tight">
+                            {{ __('file.add_new_location') }}
                         </h3>
-                        <p id="pickup-drawer-subtitle" class="text-sm font-medium text-primary mt-1">
-                            {{ __('file.manage_localized_pickup_points') ?? 'Manage localized pickup points for click-and-collect' }}
+                        <p id="pickup-drawer-subtitle" class="text-sm font-medium text-primary-a0 mt-1">
+                            {{ __('file.manage_localized_pickup_points') }}
                         </p>
                     </div>
                     <button type="button" onclick="closePickupDrawer()"
@@ -136,8 +136,8 @@
                 const titleEl = document.getElementById('pickup-drawer-title');
                 const subtitleEl = document.getElementById('pickup-drawer-subtitle');
                 
-                titleEl.textContent = isEdit ? '{{ __("file.edit_pickup_location") ?? "Edit Pickup Location" }}' : '{{ __("file.add_new_location") ?? "Add New Pickup Location" }}';
-                subtitleEl.textContent = isEdit ? '{{ __("file.update_location_details") ?? "Update localized pickup point details" }}' : '{{ __("file.create_new_location_entry") ?? "Create a new localized pickup point" }}';
+                titleEl.textContent = isEdit ? '{{ __("file.edit_pickup_location") }}' : '{{ __("file.add_new_location") }}';
+                subtitleEl.textContent = isEdit ? '{{ __("file.update_location_details") }}' : '{{ __("file.create_new_location_entry") }}';
 
                 pickupDrawer.classList.remove('hidden');
                 pickupContent.innerHTML = '<div class="flex items-center justify-center h-full"><div class="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin"></div></div>';
@@ -308,7 +308,7 @@
                     lengthMenu: [10, 25, 50, 100],
                     language: {
                         search: "",
-                        searchPlaceholder: "{{ __('file.search_locations') ?? 'Search locations' }}...",
+                        searchPlaceholder: "{{ __('file.search_locations') }}...",
                         lengthMenu: "{{ __('file.show_entries') }}",
                         info: "{{ __('file.showing_entries') }}",
                         infoEmpty: "{{ __('file.no_items_found') }}",

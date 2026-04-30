@@ -44,7 +44,7 @@
                 <div id="bulk-ids-container" class="hidden"></div>
                 <div class="flex items-center gap-3">
                     <div class="selection-count" id="selected-count">0</div>
-                    <span>{{ __('file.reviews_selected') ?? 'Reviews Selected' }}</span>
+                    <span>{{ __('file.reviews_selected') }}</span>
                 </div>
                 <button type="submit"
                     class="inline-flex items-center gap-2 px-6 py-2.5 bg-red-600 hover:bg-red-700 text-white text-[11px] font-bold uppercase tracking-wider rounded-xl transition-all shadow-lg shadow-red-600/20 active:scale-95 whitespace-nowrap border border-red-500/30">
@@ -66,11 +66,11 @@
                                 <input type="checkbox" id="select-all"
                                     class="w-4 h-4 rounded border-gray-300 dark:border-surface-tonal-a30 text-gray-900 focus:ring-gray-300">
                             </th>
-                            <th>Review</th>
-                            <th class="!text-center">Status</th>
-                            <th>Customer</th>
-                            <th>Date</th>
-                            <th class="!text-right">Actions</th>
+                            <th>{{ __('file.review') }}</th>
+                            <th class="!text-center">{{ __('file.status') }}</th>
+                            <th>{{ __('file.customer') }}</th>
+                            <th>{{ __('file.date') }}</th>
+                            <th class="!text-right">{{ __('file.actions') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -165,11 +165,11 @@
                     lengthMenu: [10, 25, 50, 100],
                     language: {
                         search: "",
-                        searchPlaceholder: "Search reviews...",
-                        lengthMenu: "Show _MENU_ entries",
-                        info: "Showing _START_ to _END_ of _TOTAL_ entries",
-                        infoEmpty: "No items found",
-                        emptyTable: "No reviews found.",
+                        searchPlaceholder: "{{ __('file.search_reviews') }}",
+                        lengthMenu: "_MENU_",
+                        info: "{{ __('file.showing_reviews') }}",
+                        infoEmpty: "{{ __('file.no_reviews_found') }}",
+                        emptyTable: "{{ __('file.no_reviews_found') }}.",
                         processing: false,
                     },
                     autoWidth: false,

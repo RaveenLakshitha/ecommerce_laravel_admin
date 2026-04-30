@@ -192,7 +192,13 @@ class CategoryController extends Controller
             $validated['banner_images'] = $banners;
         }
 
-        Category::create($validated);
+        $category = Category::create($validated);
+
+        if (isset($validated['image'])) {
+            $category->addMedia(\Illuminate\Support\Facades\Storage::disk('public')->path($validated['image']))
+                     ->preservingOriginal()
+                     ->toMediaCollection('images');
+        }
 
         if ($request->wantsJson() || $request->ajax()) {
             return response()->json([
@@ -344,6 +350,13 @@ class CategoryController extends Controller
         }
 
         $category->update($validated);
+
+        if ($request->hasFile('image') && isset($validated['image'])) {
+            $category->clearMediaCollection('images');
+            $category->addMedia(\Illuminate\Support\Facades\Storage::disk('public')->path($validated['image']))
+                     ->preservingOriginal()
+                     ->toMediaCollection('images');
+        }
 
         if ($request->ajax() || $request->wantsJson()) {
             return response()->json([

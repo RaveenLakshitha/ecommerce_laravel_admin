@@ -62,7 +62,7 @@
                                     <label class="block text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-1">{{ __('file.lifecycle_status') }}</label>
                                     <select name="status" class="block w-full rounded-md border border-gray-100/50 dark:border-white/5 bg-gray-50/30 dark:bg-surface-tonal-a20 px-3 py-2 text-xs font-bold text-gray-900 dark:text-white outline-none focus:bg-white dark:focus:bg-surface-tonal-a30 cursor-pointer transition-all">
                                         @foreach(['pending','shipped','out_for_delivery','delivered','failed','returned'] as $s)
-                                            <option value="{{ $s }}" {{ $shipment->status == $s ? 'selected' : '' }}>{{ ucfirst(str_replace('_', ' ', $s)) }}</option>
+                                            <option value="{{ $s }}" {{ $shipment->status == $s ? 'selected' : '' }}>{{ __('file.' . $s) }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -122,7 +122,7 @@
                                             <div class="min-w-0 flex-1 pt-1 flex flex-col sm:flex-row sm:justify-between items-start gap-2">
                                                 <div>
                                                     <div class="flex items-center gap-2">
-                                                        <p class="text-xs font-bold text-gray-900 dark:text-white uppercase tracking-wider">{{ ucfirst(str_replace('_', ' ', $event->status)) }}</p>
+                                                        <p class="text-xs font-bold text-gray-900 dark:text-white uppercase tracking-wider">{{ __('file.' . $event->status) }}</p>
                                                         @if($event->location)
                                                             <span class="px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border border-indigo-100 dark:border-indigo-500/20 italic">{{ $event->location }}</span>
                                                         @endif
@@ -152,12 +152,12 @@
                                     <div>
                                         <label class="block text-[9px] font-black text-gray-400 uppercase tracking-widest mb-1">{{ __('file.event_status') }}</label>
                                         <select name="status" class="block w-full rounded-md border border-gray-100/50 dark:border-white/5 bg-white dark:bg-surface-tonal-a20 px-3 py-2 text-xs font-bold text-gray-900 dark:text-white outline-none focus:bg-white dark:focus:bg-surface-tonal-a30 transition-all cursor-pointer" required>
-                                            <option value="pending">Authorize: Pending</option>
-                                            <option value="shipped">Protocol: Shipped</option>
-                                            <option value="in_transit">Protocol: In Transit</option>
-                                            <option value="out_for_delivery">Final Leg: Out for Delivery</option>
-                                            <option value="delivered">Completion: Delivered</option>
-                                            <option value="failed">Exception: Failed</option>
+                                            <option value="pending">{{ __('file.pending') }}</option>
+                                            <option value="shipped">{{ __('file.shipped') }}</option>
+                                            <option value="in_transit">{{ __('file.in_transit') }}</option>
+                                            <option value="out_for_delivery">{{ __('file.out_for_delivery') }}</option>
+                                            <option value="delivered">{{ __('file.delivered') }}</option>
+                                            <option value="failed">{{ __('file.failed') }}</option>
                                         </select>
                                     </div>
                                     <div>

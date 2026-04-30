@@ -18,13 +18,13 @@
                         d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
                         clip-rule="evenodd" />
                 </svg>
-                <span class="active">{{ __('file.shipments') ?? 'Shipments' }}</span>
+                <span class="active">{{ __('file.shipments') }}</span>
             </nav>
 
             <div class="admin-page-header">
                 <div>
-                    <h1 class="admin-page-title">{{ __('file.shipments') ?? 'Shipments & Fulfillment' }}</h1>
-                    <p class="admin-page-subtitle">{{ __('file.manage_shipments') ?? 'Monitor outbound dispatch and coordinate fulfillment' }}</p>
+                    <h1 class="admin-page-title">{{ __('file.shipments') }}</h1>
+                    <p class="admin-page-subtitle">{{ __('file.manage_shipments') }}</p>
                 </div>
             </div>
 
@@ -44,7 +44,7 @@
                     <div id="bulk-ids-container" class="hidden"></div>
                     <div class="flex items-center gap-3">
                         <div class="selection-count" id="selected-count">0</div>
-                        <span>{{ __('file.shipments_selected') ?? 'Shipments Selected' }}</span>
+                        <span>{{ __('file.shipments_selected') }}</span>
                     </div>
                     <button type="submit"
                         class="inline-flex items-center gap-2 px-6 py-2.5 bg-red-600 hover:bg-red-700 text-white text-[11px] font-bold uppercase tracking-wider rounded-xl transition-all shadow-lg shadow-red-600/20 active:scale-95 whitespace-nowrap border border-red-500/30">
@@ -66,10 +66,10 @@
                                 <input type="checkbox" id="select-all"
                                     class="w-4 h-4 rounded border-gray-300 dark:border-surface-tonal-a30 text-gray-900 focus:ring-gray-300">
                             </th>
-                            <th>Manifest Identifier</th>
-                            <th>Logistics Routing</th>
-                            <th>Tracking Protocol</th>
-                            <th>Status</th>
+                            <th>{{ __('file.Manifest Identifier') }}</th>
+                            <th>{{ __('file.Logistics Routing') }}</th>
+                            <th>{{ __('file.Tracking Protocol') }}</th>
+                            <th>{{ __('file.status') }}</th>
                             <th class="!text-right">Actions</th>
                         </tr>
                     </thead>
@@ -154,11 +154,11 @@
                     lengthMenu: [10, 25, 50, 100],
                     language: {
                         search: "",
-                        searchPlaceholder: "Search shipments...",
-                        lengthMenu: "Show _MENU_ entries",
-                        info: "Showing _START_ to _END_ of _TOTAL_ entries",
-                        infoEmpty: "No items found",
-                        emptyTable: "No shipments found.",
+                        searchPlaceholder: "{{ __('file.search_shipments') ?? 'Search shipments' }}...",
+                        lengthMenu: "{{ __('file.show_entries') }}",
+                        info: "{{ __('file.showing_entries') }}",
+                        infoEmpty: "{{ __('file.no_items_found') }}",
+                        emptyTable: "{{ __('file.no_shipments_found') ?? 'No shipments found.' }}",
                         processing: false,
                     },
                     autoWidth: false,

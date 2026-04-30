@@ -157,12 +157,16 @@ class ProductController extends Controller
         foreach ($images as $index => $image) {
             $path = $image->store('products', 'public');
 
-            $product->images()->create([
+            $productImage = $product->images()->create([
                 'file_path' => $path,
                 'file_name' => $image->getClientOriginalName(),
                 'sort_order' => $product->images()->count() + $index,
                 'is_primary' => $product->images()->count() === 0 && $index === 0,
             ]);
+
+            $productImage->addMedia(\Illuminate\Support\Facades\Storage::disk('public')->path($path))
+                         ->preservingOriginal()
+                         ->toMediaCollection('images');
         }
     }
 
@@ -327,13 +331,17 @@ class ProductController extends Controller
                     'file_name' => $file->getClientOriginalName()
                 ]);
                 $path = $file->store('products', 'public');
-                $variant->images()->create([
+                $variantImage = $variant->images()->create([
                     'product_id' => $product->id,
                     'file_path'  => $path,
                     'file_name'  => $file->getClientOriginalName(),
                     'sort_order' => 0,
                     'is_primary' => true,
                 ]);
+
+                $variantImage->addMedia(\Illuminate\Support\Facades\Storage::disk('public')->path($path))
+                             ->preservingOriginal()
+                             ->toMediaCollection('images');
             }
         }
 

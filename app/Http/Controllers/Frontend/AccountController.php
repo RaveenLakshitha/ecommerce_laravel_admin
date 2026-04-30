@@ -183,8 +183,35 @@ class AccountController extends Controller
             abort(403, 'Unauthorized access to this order.');
         }
 
-        $order->load(['items.variant.product', 'shippingAddress']);
+        $order->load(['items.variant.product', 'shippingAddress', 'refunds']);
 
         return view('frontend.account.order', compact('order'));
+    }
+
+    public function requestRefund(Request $request, \App\Models\Order $order)
+    {
+        $user = Auth::user();
+
+        if ($order->user_id !== $user->id) {
+            abort(403);
+        }
+
+        if (!$order->canBeRefunded()) {
+            return back()->with('error', 'This order is not eligible for a refund.');
+        }
+
+        $request->validate([
+            'reason' => 'required|string|max:500',
+        ]);
+
+        \App\Models\OrderRefund::create([
+            'order_id' => $order->id,
+            'amount' => $order->total_amount - $order->refunded_amount,
+            'reason' => $request->reason,
+            'status' => 'pending',
+            'notes' => 'Requested by customer via account dashboard.',
+        ]);
+
+        return back()->with('success', 'Refund request submitted successfully.');
     }
 }

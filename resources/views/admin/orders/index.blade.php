@@ -101,10 +101,10 @@
             onclick="closeFilterDrawer()"></div>
         <div id="filter-panel"
             class="absolute inset-y-0 right-0 w-full md:max-w-lg bg-white dark:bg-surface-tonal-a20 shadow-2xl transform translate-x-full transition-transform duration-500 ease-in-out flex flex-col">
-            <div class="flex items-center justify-between px-8 py-4 border-b border-gray-100 dark:border-white/5">
+            <div class="flex items-center justify-between px-8 py-5 border-b border-gray-100 dark:border-white/5 bg-gray-50/50 dark:bg-white/5">
                 <div>
                     <h3 class="text-xl font-bold text-gray-900 dark:text-white tracking-tight">{{ __('file.commerce_filters') }}</h3>
-                    <p class="text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em] mt-1">{{ __('file.refine_logistic_parameters') }}</p>
+                    <p class="text-sm font-medium text-primary-a0 mt-1">{{ __('file.refine_logistic_parameters') }}</p>
                 </div>
                 <button onclick="closeFilterDrawer()"
                     class="p-2 rounded-xl hover:bg-gray-50 dark:hover:bg-white/5 text-gray-400 hover:text-gray-900 dark:hover:text-white transition-all">

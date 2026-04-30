@@ -163,9 +163,42 @@ class OrderController extends Controller
             'status' => 'required|in:pending,processing,shipped,delivered,cancelled,returned',
         ]);
 
+        // Status Transition Guards
+        $validTransitions = [
+            'pending' => ['processing', 'cancelled'],
+            'processing' => ['shipped', 'cancelled'],
+            'shipped' => ['delivered', 'returned'],
+            'delivered' => ['returned'],
+            'cancelled' => [], // Terminal state
+            'returned' => [],  // Terminal state
+        ];
+
+        $allowed = $validTransitions[$order->status] ?? [];
+        if (!in_array($request->status, $allowed) && $request->status !== $order->status) {
+            return back()->withErrors(['status' => 'Invalid status transition from ' . $order->status . ' to ' . $request->status]);
+        }
+
+        $oldStatus = $order->status;
         $order->update([
             'status' => $request->status
         ]);
+
+        // Restore inventory on cancellation or return if not already restored
+        if (($request->status === 'cancelled' || $request->status === 'returned') && !in_array($oldStatus, ['cancelled', 'returned'])) {
+            foreach ($order->items as $item) {
+                if ($item->variant) {
+                    $item->variant->increment('stock_quantity', $item->quantity);
+                    \App\Models\InventoryTransaction::create([
+                        'variant_id' => $item->variant->id,
+                        'type' => 'return',
+                        'quantity_change' => $item->quantity,
+                        'reference_type' => \App\Models\Order::class,
+                        'reference_id' => $order->id,
+                        'notes' => 'Stock restored due to order ' . $request->status . ': ' . $order->order_number,
+                    ]);
+                }
+            }
+        }
 
         return redirect()->back()->with('success', __('file.order_status_updated_successfully'));
     }
@@ -203,11 +236,28 @@ class OrderController extends Controller
         ]);
 
         // Update Order's payment_status based on total refunded amount
-        $totalRefunded = $order->refunds()->sum('amount') + $request->amount;
-        if ($totalRefunded >= $order->total_amount) {
-            $order->update(['payment_status' => 'refunded']);
-        } else {
-            $order->update(['payment_status' => 'partially_refunded']);
+        $totalRefunded = $order->refunds()->where('status', '!=', 'failed')->sum('amount');
+        $order->update([
+            'refunded_amount' => $totalRefunded,
+            'payment_status' => $totalRefunded >= $order->total_amount ? 'refunded' : 'partially_refunded'
+        ]);
+
+        // Restore inventory if this was a full refund or specific logic applies
+        // For simplicity here, we restore stock for all items if fully refunded
+        if ($order->payment_status === 'refunded' || $order->status === 'returned') {
+            foreach ($order->items as $item) {
+                if ($item->variant) {
+                    $item->variant->increment('stock_quantity', $item->quantity);
+                    \App\Models\InventoryTransaction::create([
+                        'variant_id' => $item->variant->id,
+                        'type' => 'return',
+                        'quantity_change' => $item->quantity,
+                        'reference_type' => \App\Models\Order::class,
+                        'reference_id' => $order->id,
+                        'notes' => 'Stock restored due to refund/return of order ' . $order->order_number,
+                    ]);
+                }
+            }
         }
 
         return redirect()->back()->with('success', __('file.refund_processed_successfully'));

@@ -137,7 +137,7 @@
                                                 {{ $order->created_at->format('M d, Y') }}</td>
                                             <td class="px-6 py-4">
                                                  <span
-                                                    class="px-2 py-0.5 rounded-md bg-gray-100 dark:bg-surface-tonal-a30 text-gray-600 dark:text-gray-400 text-[10px] font-bold tracking-tighter">{{ $order->status }}</span>
+                                                    class="px-2 py-0.5 rounded-md bg-gray-100 dark:bg-surface-tonal-a30 text-gray-600 dark:text-gray-400 text-[10px] font-bold tracking-tighter">{{ __('file.' . strtolower($order->status)) }}</span>
                                             </td>
                                             <td class="px-6 py-4 text-right">
                                                 <span

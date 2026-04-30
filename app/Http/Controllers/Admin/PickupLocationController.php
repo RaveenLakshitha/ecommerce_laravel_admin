@@ -59,8 +59,8 @@ class PickupLocationController extends Controller
 
         $data = $locations->map(function ($loc) {
             $statusHtml = $loc->is_active
-                ? '<span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">Active</span>'
-                : '<span class="px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">Inactive</span>';
+                ? '<span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">' . __('file.active') . '</span>'
+                : '<span class="px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">' . __('file.inactive') . '</span>';
 
             $addressHtml = $loc->address_line_1 . ($loc->address_line_2 ? ', ' . $loc->address_line_2 : '') . '<br><span class="text-xs text-gray-500">' . $loc->city . ', ' . $loc->state . ' ' . $loc->postal_code . '</span>';
 
@@ -103,10 +103,10 @@ class PickupLocationController extends Controller
         PickupLocation::create($data);
 
         if ($request->ajax()) {
-            return response()->json(['success' => true, 'message' => 'Pickup Location created successfully.']);
+            return response()->json(['success' => true, 'message' => __('file.item_created_successfully')]);
         }
 
-        return back()->with('success', 'Pickup Location created.');
+        return back()->with('success', __('file.item_created_successfully'));
     }
 
     public function edit(Request $request, PickupLocation $pickup)
@@ -135,19 +135,19 @@ class PickupLocationController extends Controller
         $pickup->update($data);
 
         if ($request->ajax()) {
-            return response()->json(['success' => true, 'message' => 'Pickup Location updated successfully.']);
+            return response()->json(['success' => true, 'message' => __('file.item_updated_successfully')]);
         }
 
-        return back()->with('success', 'Pickup Location updated.');
+        return back()->with('success', __('file.item_updated_successfully'));
     }
 
     public function destroy(PickupLocation $pickup)
     {
         $pickup->delete();
         if (request()->ajax()) {
-            return response()->json(['success' => true, 'message' => 'Pickup location deleted.']);
+            return response()->json(['success' => true, 'message' => __('file.item_deleted_successfully')]);
         }
-        return back()->with('success', 'Pickup Location deleted.');
+        return back()->with('success', __('file.item_deleted_successfully'));
     }
 
     public function bulkDelete(Request $request)
@@ -159,14 +159,14 @@ class PickupLocationController extends Controller
         }
 
         if (!is_array($ids) || empty($ids)) {
-            return response()->json(['success' => false, 'message' => 'No items selected.'], 400);
+            return response()->json(['success' => false, 'message' => __('file.no_items_selected')], 400);
         }
 
         PickupLocation::whereIn('id', $ids)->delete();
 
         return response()->json([
             'success' => true,
-            'message' => 'Selected locations deleted successfully.'
+            'message' => __('file.selected_items_deleted_successfully')
         ]);
     }
 }

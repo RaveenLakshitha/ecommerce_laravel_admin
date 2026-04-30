@@ -6,9 +6,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Category extends Model
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
+
+class Category extends Model implements HasMedia
 {
-    use HasFactory;
+    use HasFactory, InteractsWithMedia;
 
     protected $fillable = ['name', 'slug', 'parent_id', 'description', 'image', 'banner_images', 'meta_title', 'meta_description', 'is_active'];
 
@@ -35,6 +39,10 @@ class Category extends Model
 
     public function getImageUrlAttribute()
     {
+        $mediaUrl = $this->getFirstMediaUrl('images', 'optimized');
+        if ($mediaUrl) {
+            return $mediaUrl;
+        }
         return $this->image ? \Illuminate\Support\Facades\Storage::url($this->image) : asset('images/logo-main.jpg');
     }
 
@@ -57,5 +65,13 @@ class Category extends Model
         }
 
         return $banners;
+    }
+
+    public function registerMediaConversions(Media $media = null): void
+    {
+        $this->addMediaConversion('optimized')
+             ->format('webp')
+             ->quality(80)
+             ->nonQueued();
     }
 }

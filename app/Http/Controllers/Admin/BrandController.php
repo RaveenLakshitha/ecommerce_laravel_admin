@@ -110,7 +110,13 @@ class BrandController extends Controller
             $validated['logo_path'] = $request->file('logo')->store('brands', 'public');
         }
 
-        Brand::create($validated);
+        $brand = Brand::create($validated);
+
+        if (isset($validated['logo_path'])) {
+            $brand->addMedia(\Illuminate\Support\Facades\Storage::disk('public')->path($validated['logo_path']))
+                  ->preservingOriginal()
+                  ->toMediaCollection('images');
+        }
 
         if ($request->ajax()) {
             return response()->json(['success' => true, 'message' => __('file.brand_created_successfully')]);
@@ -163,6 +169,15 @@ class BrandController extends Controller
         }
 
         $brand->update($validated);
+
+        if (isset($validated['logo_path'])) {
+            $brand->clearMediaCollection('images');
+            $brand->addMedia(\Illuminate\Support\Facades\Storage::disk('public')->path($validated['logo_path']))
+                  ->preservingOriginal()
+                  ->toMediaCollection('images');
+        } elseif ($request->has('remove_logo') && $request->remove_logo == '1') {
+            $brand->clearMediaCollection('images');
+        }
 
         if ($request->ajax()) {
             return response()->json(['success' => true, 'message' => __('file.brand_updated_successfully')]);

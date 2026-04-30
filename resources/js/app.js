@@ -41,6 +41,28 @@ window.pdfMake = pdfMake;
 // 6. Make DataTable global
 window.DataTable = DataTable;
 
+// Global DataTables Error Handling
+// This suppresses the default browser alert() and shows a premium notification instead.
+DataTable.ext.errMode = function (settings, helpPage, message) {
+    console.error('DataTables Error:', message);
+    
+    // Check if it's an Ajax error
+    if (message.indexOf('Ajax error') !== -1) {
+        if (typeof window.showNotification === 'function') {
+            window.showNotification(
+                'Data Sync Error', 
+                'The system encountered an error while communicating with the server. Please check your connection or refresh the page.', 
+                'error'
+            );
+        }
+    }
+};
+
+// Global DataTable Refresh Utility
+window.refreshAllTables = function() {
+    $('.dataTable').DataTable().ajax.reload(null, false);
+};
+
 // Optional: nicer buttons layout
 DataTable.Buttons.defaults.dom.container.className = 'dt-buttons flex gap-2';
 

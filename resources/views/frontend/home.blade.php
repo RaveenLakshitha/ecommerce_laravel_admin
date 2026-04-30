@@ -699,7 +699,7 @@
                         $displayPrice = $defaultVariant ? ($defaultVariant->sale_price ?? $defaultVariant->price) : $product->sale_price ?? $product->base_price;
                         $originalPrice = ($defaultVariant && $defaultVariant->sale_price) ? $defaultVariant->price : ($product->sale_price ? $product->base_price : null);
                         $imgUrl = $product->primaryImage
-                            ? asset('storage/' . $product->primaryImage->file_path)
+                            ? $product->primaryImage->url
                             : 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80';
                     @endphp
                     <div class="p-card reveal">
@@ -788,7 +788,7 @@
                     <p class="sec-eyebrow">{{ __('file.shop_by_collection') }}</p>
                     <h2 class="sec-title">{{ __('file.featured_collections') }}</h2>
                 </div>
-                <a href="{{ route('frontend.products.index') }}" class="sec-link">{{ __('file.browse_all') }} <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+                <a href="{{ route('frontend.collections.index') }}" class="sec-link">{{ __('file.browse_all') }} <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
             </div>
         </div>
         <div style="max-width:1600px;margin:0 auto;padding:0 2rem;">
@@ -798,10 +798,10 @@
                         @php
                             $colImg = $col->banner_url
                                 ?? ($col->products->first()?->primaryImage
-                                    ? asset('storage/' . $col->products->first()->primaryImage->file_path)
+                                    ? $col->products->first()->primaryImage->url
                                     : 'https://images.unsplash.com/photo-1487222477894-8943e31ef7b2?w=900&q=80');
                         @endphp
-                        <div class="col-card reveal">
+                        <a href="{{ route('frontend.products.index', ['collection' => $col->slug]) }}" class="col-card reveal">
                             <div class="col-bg" style="background-image: url('{{ $colImg }}');"></div>
                             <div class="col-overlay"></div>
                             <div class="col-content">
@@ -813,7 +813,7 @@
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                                 </div>
                             </div>
-                        </div>
+                        </a>
                     @endforeach
                 @else
                     {{-- Fallback static collections when none configured in admin --}}
@@ -864,7 +864,7 @@
                         $displayPrice = $defaultVariant ? ($defaultVariant->sale_price ?? $defaultVariant->price) : $product->sale_price ?? $product->base_price;
                         $originalPrice = ($defaultVariant && $defaultVariant->sale_price) ? $defaultVariant->price : ($product->sale_price ? $product->base_price : null);
                         $imgUrl = $product->primaryImage
-                            ? asset('storage/' . $product->primaryImage->file_path)
+                            ? $product->primaryImage->url
                             : 'https://images.unsplash.com/photo-1594938298603-c8148c4b4e3d?w=600&q=80';
                         $ribbon = $product->is_featured ? 'top' : '';
                         $ribbonLabel = $product->is_featured ? __('file.best_seller') : __('file.popular');
@@ -926,7 +926,7 @@
                 {!! str_replace('.', '.<br>', __('file.built_for_modern_man')) !!}
             </h2>
             <p class="editorial-body">
-                {{ $storefront->storefront_about_us ?? "From everyday essentials to statement pieces, every garment we make is precision-cut and quality-tested. Sri Lanka's most trusted menswear brand — worn by thousands, loved by all." }}
+                {{ $storefront->storefront_about_us_content ?? $storefront->storefront_about_us ?? "From everyday essentials to statement pieces, every garment we make is precision-cut and quality-tested. Sri Lanka's most trusted menswear brand — worn by thousands, loved by all." }}
             </p>
             <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
                 <a href="#" class="btn-gold">{{ __('file.our_story') }} <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>

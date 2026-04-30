@@ -28,6 +28,8 @@ Route::domain('shop.karbnzol.com')->group(function () {
     Route::get('/products', [App\Http\Controllers\Frontend\ProductController::class, 'index'])->name('frontend.products.index');
     Route::get('/products/{slug}', [App\Http\Controllers\Frontend\ProductController::class, 'show'])->name('frontend.products.show');
 
+    Route::get('/collections', [App\Http\Controllers\Frontend\CollectionController::class, 'index'])->name('frontend.collections.index');
+
     // Newsletter subscription
     Route::post('/newsletter/subscribe', [App\Http\Controllers\Frontend\NewsletterController::class, 'subscribe'])
         ->name('newsletter.subscribe');
@@ -38,6 +40,8 @@ Route::domain('shop.karbnzol.com')->group(function () {
         Route::post('/add/{variant}', [App\Http\Controllers\Frontend\CartController::class, 'add'])->name('add');
         Route::patch('/update', [App\Http\Controllers\Frontend\CartController::class, 'update'])->name('update');
         Route::delete('/remove/{rowId}', [App\Http\Controllers\Frontend\CartController::class, 'remove'])->name('remove');
+        Route::post('/promo', [App\Http\Controllers\Frontend\CartController::class, 'applyPromo'])->name('promo.apply');
+        Route::delete('/promo', [App\Http\Controllers\Frontend\CartController::class, 'removePromo'])->name('promo.remove');
     });
 
     // Checkout routes
@@ -67,6 +71,7 @@ Route::domain('shop.karbnzol.com')->group(function () {
 
         // Orders
         Route::get('/account/orders/{order}', [\App\Http\Controllers\Frontend\AccountController::class, 'showOrder'])->name('account.orders.show');
+        Route::post('/account/orders/{order}/refund', [\App\Http\Controllers\Frontend\AccountController::class, 'requestRefund'])->name('account.orders.refund-request');
 
         // Address management
         Route::post('/account/addresses', [\App\Http\Controllers\Frontend\AccountController::class, 'storeAddress'])->name('account.addresses.store');
@@ -183,7 +188,7 @@ Route::domain('admin.karbnzol.com')->group(function () {
             Route::resource('rates', \App\Http\Controllers\Admin\ShippingRateController::class);
             Route::get('shipments/datatable', [\App\Http\Controllers\Admin\ShipmentController::class, 'datatable'])->name('shipments.datatable');
             Route::post('shipments/bulk-delete', [\App\Http\Controllers\Admin\ShipmentController::class, 'bulkDelete'])->name('shipments.bulkDelete');
-            Route::resource('shipments', \App\Http\Controllers\Admin\ShipmentController::class)->only(['index', 'show', 'update', 'destroy']);
+            Route::resource('shipments', \App\Http\Controllers\Admin\ShipmentController::class)->only(['index', 'show', 'update', 'destroy', 'store']);
             Route::post('shipments/{shipment}/tracking', [\App\Http\Controllers\Admin\ShipmentController::class, 'addTracking'])->name('shipments.tracking');
         });
 
@@ -205,6 +210,8 @@ Route::domain('admin.karbnzol.com')->group(function () {
         Route::get('refunds/datatable', [\App\Http\Controllers\Admin\RefundController::class, 'datatable'])->name('refunds.datatable');
         Route::post('refunds/bulk-delete', [\App\Http\Controllers\Admin\RefundController::class, 'bulkDelete'])->name('refunds.bulkDelete');
         Route::resource('refunds', \App\Http\Controllers\Admin\RefundController::class)->only(['index', 'show', 'destroy']);
+        Route::patch('refunds/{refund}/approve', [\App\Http\Controllers\Admin\RefundController::class, 'approve'])->name('refunds.approve');
+        Route::patch('refunds/{refund}/reject', [\App\Http\Controllers\Admin\RefundController::class, 'reject'])->name('refunds.reject');
 
         // General Settings
         Route::get('settings/general', [\App\Http\Controllers\SettingsController::class, 'general'])->name('settings.general');

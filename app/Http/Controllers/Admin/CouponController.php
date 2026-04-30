@@ -54,11 +54,11 @@ class CouponController extends Controller
         $data = $coupons->map(function ($coupon) {
             $statusHtml = '';
             if ($coupon->is_active && (!$coupon->starts_at || now()->gte($coupon->starts_at)) && (!$coupon->expires_at || now()->lte($coupon->expires_at))) {
-                $statusHtml = '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">Active</span>';
+                $statusHtml = '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">' . __('file.active') . '</span>';
             } elseif (!$coupon->is_active) {
-                $statusHtml = '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-surface-tonal-a30 dark:text-gray-300">Inactive</span>';
+                $statusHtml = '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-surface-tonal-a30 dark:text-gray-300">' . __('file.inactive') . '</span>';
             } else {
-                $statusHtml = '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">Scheduled / Expired</span>';
+                $statusHtml = '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">' . __('file.scheduled_expired') . '</span>';
             }
 
             $codeHtml = '<div class="text-sm font-semibold text-gray-900 dark:text-primary-a0">' . htmlspecialchars($coupon->code) . '</div>';
@@ -68,18 +68,18 @@ class CouponController extends Controller
             $discountHtml .= $coupon->type == 'percentage' ? rtrim(rtrim((string) $coupon->value, '0'), '.') . '%' : Setting::formatPrice($coupon->value);
             $discountHtml .= '</div>';
             if ($coupon->min_order_amount) {
-                $discountHtml .= '<div class="text-xs text-gray-500">Min: ' . Setting::formatPrice($coupon->min_order_amount) . '</div>';
+                $discountHtml .= '<div class="text-xs text-gray-500">' . __('file.min') . ': ' . Setting::formatPrice($coupon->min_order_amount) . '</div>';
             }
 
             $usageHtml = '<div class="text-sm text-gray-900 dark:text-primary-a0">' . $coupon->used_count . ' / ' . ($coupon->usage_limit ?? '∞') . '</div>';
 
             $datesHtml = '<div class="text-sm text-gray-500">';
             if ($coupon->starts_at || $coupon->expires_at) {
-                $startsAtStr = $coupon->starts_at ? $coupon->starts_at->format('M d, Y') : 'Always';
-                $expiresAtStr = $coupon->expires_at ? $coupon->expires_at->format('M d, Y') : 'Never';
+                $startsAtStr = $coupon->starts_at ? $coupon->starts_at->format('M d, Y') : __('file.always');
+                $expiresAtStr = $coupon->expires_at ? $coupon->expires_at->format('M d, Y') : __('file.never');
                 $datesHtml .= $startsAtStr . ' - ' . $expiresAtStr;
             } else {
-                $datesHtml .= 'No Expiry';
+                $datesHtml .= __('file.no_expiry');
             }
             $datesHtml .= '</div>';
 
@@ -138,7 +138,7 @@ class CouponController extends Controller
         $coupon = Coupon::create($data);
         $this->syncRelations($coupon, $request);
 
-        return redirect()->route('admin.coupons.index')->with('success', 'Coupon created successfully.');
+        return redirect()->route('admin.coupons.index')->with('success', __('file.item_created_successfully'));
     }
 
     public function edit(Coupon $coupon)
@@ -176,7 +176,7 @@ class CouponController extends Controller
         $coupon->update($data);
         $this->syncRelations($coupon, $request);
 
-        return redirect()->route('admin.coupons.index')->with('success', 'Coupon updated successfully.');
+        return redirect()->route('admin.coupons.index')->with('success', __('file.item_updated_successfully'));
     }
 
     protected function syncRelations(Coupon $coupon, Request $request)
@@ -205,10 +205,10 @@ class CouponController extends Controller
         $coupon->delete();
 
         if (request()->ajax()) {
-            return response()->json(['success' => true, 'message' => 'Coupon deleted successfully.']);
+            return response()->json(['success' => true, 'message' => __('file.item_deleted_successfully')]);
         }
 
-        return redirect()->route('admin.coupons.index')->with('success', 'Coupon deleted successfully.');
+        return redirect()->route('admin.coupons.index')->with('success', __('file.item_deleted_successfully'));
     }
 
     public function bulkDelete(Request $request)
@@ -220,14 +220,14 @@ class CouponController extends Controller
         }
 
         if (!is_array($ids) || empty($ids)) {
-            return response()->json(['success' => false, 'message' => 'No items selected.'], 400);
+            return response()->json(['success' => false, 'message' => __('file.no_items_selected')], 400);
         }
 
         \App\Models\Coupon::whereIn('id', $ids)->delete();
 
         return response()->json([
             'success' => true,
-            'message' => 'Selected coupons deleted successfully.'
+            'message' => __('file.selected_items_deleted_successfully')
         ]);
     }
 }

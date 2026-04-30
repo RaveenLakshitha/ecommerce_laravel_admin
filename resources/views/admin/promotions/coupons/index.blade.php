@@ -23,15 +23,15 @@
 
             <div class="admin-page-header">
                 <div>
-                    <h1 class="admin-page-title">{{ __('file.coupons') ?? 'Coupons & Promo Codes' }}</h1>
-                    <p class="admin-page-subtitle">{{ __('file.manage_coupons') ?? 'Configure promotional codes and checkout discounts' }}</p>
+                    <h1 class="admin-page-title">{{ __('file.coupons') }}</h1>
+                    <p class="admin-page-subtitle">{{ __('file.manage_coupons') }}</p>
                 </div>
                 <div class="flex items-center gap-3">
                     <a href="{{ route('coupons.create') }}" class="admin-btn-add">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                         </svg>
-                        {{ __('file.add_coupon') ?? 'Add Coupon' }}
+                        {{ __('file.add_coupon') }}
                     </a>
                 </div>
             </div>
@@ -52,7 +52,7 @@
                 <div id="bulk-ids-container" class="hidden"></div>
                 <div class="flex items-center gap-3">
                     <div class="selection-count" id="selected-count">0</div>
-                    <span>{{ __('file.coupons_selected') ?? 'Coupons Selected' }}</span>
+                    <span>{{ __('file.coupons_selected') }}</span>
                 </div>
                 <button type="submit"
                     class="inline-flex items-center gap-2 px-6 py-2.5 bg-red-600 hover:bg-red-700 text-white text-[11px] font-bold uppercase tracking-wider rounded-xl transition-all shadow-lg shadow-red-600/20 active:scale-95 whitespace-nowrap border border-red-500/30">
@@ -74,12 +74,12 @@
                                 <input type="checkbox" id="select-all"
                                     class="w-4 h-4 rounded border-gray-300 dark:border-surface-tonal-a30 text-gray-900 focus:ring-gray-300">
                             </th>
-                            <th>Status</th>
-                            <th>Identifier Code</th>
-                            <th>Incentive Logic</th>
-                            <th>Usage</th>
-                            <th>Temporal Range</th>
-                            <th class="!text-right">Actions</th>
+                            <th>{{ __('file.status') }}</th>
+                            <th>{{ __('file.identifier_code') }}</th>
+                            <th>{{ __('file.incentive_logic') }}</th>
+                            <th>{{ __('file.usage') }}</th>
+                            <th>{{ __('file.temporal_range') }}</th>
+                            <th class="!text-right">{{ __('file.actions') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -153,11 +153,11 @@
                     lengthMenu: [10, 25, 50, 100],
                     language: {
                         search: "",
-                        searchPlaceholder: "Search coupons...",
-                        lengthMenu: "Show _MENU_ entries",
-                        info: "Showing _START_ to _END_ of _TOTAL_ entries",
-                        infoEmpty: "No items found",
-                        emptyTable: "No coupons found.",
+                        searchPlaceholder: "{{ __('file.search_coupons') }}",
+                        lengthMenu: "_MENU_",
+                        info: "{{ __('file.showing_entries') }}",
+                        infoEmpty: "{{ __('file.no_items_found') }}",
+                        emptyTable: "{{ __('file.no_coupons_found') }}.",
                         processing: false,
                     },
                     autoWidth: false,

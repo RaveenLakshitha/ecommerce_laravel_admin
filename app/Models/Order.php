@@ -27,6 +27,8 @@ class Order extends Model
         'payment_status',           // 'pending', 'paid', 'failed', 'refunded', 'partially_refunded'
         'subtotal',
         'discount_amount',
+        'coupon_id',
+        'coupon_code_used',
         'shipping_amount',
         'tax_amount',
         'total_amount',
@@ -46,6 +48,11 @@ class Order extends Model
         'total_amount' => 'decimal:2',
         'placed_at' => 'datetime',
     ];
+
+    public function coupon(): BelongsTo
+    {
+        return $this->belongsTo(Coupon::class);
+    }
 
     public function user(): BelongsTo
     {
@@ -80,6 +87,11 @@ class Order extends Model
     public function transactions(): HasMany
     {
         return $this->hasMany(PaymentTransaction::class); // optional for payments
+    }
+
+    public function shipments(): HasMany
+    {
+        return $this->hasMany(Shipment::class);
     }
 
     // Helpers

@@ -59,12 +59,12 @@ class ShippingZoneController extends Controller
 
         $data = $zones->map(function ($zone) {
             $statusHtml = $zone->is_active
-                ? '<span class="text-green-600 font-medium">Active</span>'
-                : '<span class="text-red-500 font-medium">Inactive</span>';
+                ? '<span class="text-green-600 font-medium">' . __('file.active') . '</span>'
+                : '<span class="text-red-500 font-medium">' . __('file.inactive') . '</span>';
 
             $countryHtml = '<div class="flex items-center space-x-4"><div class="flex-shrink-0 h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-700 font-bold dark:bg-indigo-900/30 dark:text-indigo-400">' . htmlspecialchars($zone->country_code) . '</div></div>';
 
-            $zoneHtml = '<div class="text-sm font-medium text-gray-900 dark:text-primary-a0">' . htmlspecialchars($zone->name) . '</div><div class="text-xs text-gray-500 flex items-center gap-2 mt-1"><span>' . htmlspecialchars($zone->region ?: 'All Regions') . '</span><span>&bull;</span><span>' . $zone->rates_count . ' Rates configured</span></div>';
+            $zoneHtml = '<div class="text-sm font-medium text-gray-900 dark:text-primary-a0">' . htmlspecialchars($zone->name) . '</div><div class="text-xs text-gray-500 flex items-center gap-2 mt-1"><span>' . htmlspecialchars($zone->region ?: __('file.all_regions')) . '</span><span>&bull;</span><span>' . $zone->rates_count . ' ' . __('file.rates_configured') . '</span></div>';
 
             return [
                 'id' => $zone->id,
@@ -97,10 +97,10 @@ class ShippingZoneController extends Controller
         ShippingZone::create($data);
 
         if ($request->ajax()) {
-            return response()->json(['success' => true, 'message' => 'Shipping Zone created successfully.']);
+            return response()->json(['success' => true, 'message' => __('file.item_created_successfully')]);
         }
 
-        return back()->with('success', 'Shipping Zone created successfully.');
+        return back()->with('success', __('file.item_created_successfully'));
     }
 
     public function edit(Request $request, ShippingZone $zone)
@@ -123,19 +123,19 @@ class ShippingZoneController extends Controller
         $zone->update($data);
 
         if ($request->ajax()) {
-            return response()->json(['success' => true, 'message' => 'Shipping Zone updated successfully.']);
+            return response()->json(['success' => true, 'message' => __('file.item_updated_successfully')]);
         }
 
-        return back()->with('success', 'Shipping Zone updated successfully.');
+        return back()->with('success', __('file.item_updated_successfully'));
     }
 
     public function destroy(ShippingZone $zone)
     {
         $zone->delete();
         if (request()->ajax()) {
-            return response()->json(['success' => true, 'message' => 'Shipping Zone deleted successfully.']);
+            return response()->json(['success' => true, 'message' => __('file.item_deleted_successfully')]);
         }
-        return back()->with('success', 'Shipping Zone deleted successfully.');
+        return back()->with('success', __('file.item_deleted_successfully'));
     }
 
     public function bulkDelete(Request $request)
@@ -147,14 +147,14 @@ class ShippingZoneController extends Controller
         }
 
         if (!is_array($ids) || empty($ids)) {
-            return response()->json(['success' => false, 'message' => 'No items selected.'], 400);
+            return response()->json(['success' => false, 'message' => __('file.no_items_selected')], 400);
         }
 
         ShippingZone::whereIn('id', $ids)->delete();
 
         return response()->json([
             'success' => true,
-            'message' => 'Selected zones deleted successfully.'
+            'message' => __('file.selected_items_deleted_successfully')
         ]);
     }
 }

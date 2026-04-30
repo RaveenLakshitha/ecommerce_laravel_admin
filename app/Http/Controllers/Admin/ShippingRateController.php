@@ -71,7 +71,7 @@ class ShippingRateController extends Controller
 
         $data = $rates->map(function ($rate) {
             $rateHtml = '<div class="text-sm font-medium text-gray-900 dark:text-primary-a0">' . htmlspecialchars($rate->name) . '</div>';
-            $rateHtml .= '<div class="text-xs text-gray-500 dark:text-gray-400">' . ($rate->courier ? 'via ' . htmlspecialchars($rate->courier->name) : 'Any Courier') . (!$rate->is_active ? ' (Inactive)' : '') . '</div>';
+            $rateHtml .= '<div class="text-xs text-gray-500 dark:text-gray-400">' . ($rate->courier ? __('file.via') . ' ' . htmlspecialchars($rate->courier->name) : __('file.any_courier')) . (!$rate->is_active ? ' (' . __('file.inactive') . ')' : '') . '</div>';
 
             $zoneHtml = '<div class="text-sm text-gray-500 dark:text-gray-400">' . ($rate->zone ? htmlspecialchars($rate->zone->name) : '') . '</div>';
 
@@ -79,13 +79,13 @@ class ShippingRateController extends Controller
 
             $conditionsHtml = '<div class="text-xs text-gray-500 space-y-1">';
             if ($rate->min_weight || $rate->max_weight)
-                $conditionsHtml .= '<div>Weight: ' . ($rate->min_weight ?: 0) . 'kg - ' . ($rate->max_weight ?: '∞') . 'kg</div>';
+                $conditionsHtml .= '<div>' . __('file.weight') . ': ' . ($rate->min_weight ?: 0) . 'kg - ' . ($rate->max_weight ?: '∞') . 'kg</div>';
             if ($rate->min_price || $rate->max_price)
-                $conditionsHtml .= '<div>Price: ' . Setting::formatPrice($rate->min_price ?: 0) . ' - ' . Setting::formatPrice($rate->max_price ?: 0) . '</div>';
+                $conditionsHtml .= '<div>' . __('file.price') . ': ' . Setting::formatPrice($rate->min_price ?: 0) . ' - ' . Setting::formatPrice($rate->max_price ?: 0) . '</div>';
             if ($rate->free_shipping_threshold)
-                $conditionsHtml .= '<div class="text-green-600 font-medium tracking-tight">Free over ' . Setting::formatPrice($rate->free_shipping_threshold) . '</div>';
+                $conditionsHtml .= '<div class="text-green-600 font-medium tracking-tight">' . __('file.free_over') . ' ' . Setting::formatPrice($rate->free_shipping_threshold) . '</div>';
             if (!$rate->min_weight && !$rate->max_weight && !$rate->min_price && !$rate->max_price && !$rate->free_shipping_threshold)
-                $conditionsHtml .= '<div><em>No conditions (Flat Rate)</em></div>';
+                $conditionsHtml .= '<div><em>' . __('file.no_conditions_flat_rate') . '</em></div>';
             $conditionsHtml .= '</div>';
 
             return [
@@ -125,10 +125,10 @@ class ShippingRateController extends Controller
         ShippingRate::create($data);
 
         if ($request->ajax()) {
-            return response()->json(['success' => true, 'message' => 'Shipping Rate created successfully.']);
+            return response()->json(['success' => true, 'message' => __('file.item_created_successfully')]);
         }
 
-        return back()->with('success', 'Shipping Rate created successfully.');
+        return back()->with('success', __('file.item_created_successfully'));
     }
 
     public function edit(Request $request, ShippingRate $rate)
@@ -163,19 +163,19 @@ class ShippingRateController extends Controller
         $rate->update($data);
 
         if ($request->ajax()) {
-            return response()->json(['success' => true, 'message' => 'Shipping Rate updated successfully.']);
+            return response()->json(['success' => true, 'message' => __('file.item_updated_successfully')]);
         }
 
-        return back()->with('success', 'Shipping Rate updated successfully.');
+        return back()->with('success', __('file.item_updated_successfully'));
     }
 
     public function destroy(ShippingRate $rate)
     {
         $rate->delete();
         if (request()->ajax()) {
-            return response()->json(['success' => true, 'message' => 'Shipping Rate deleted successfully.']);
+            return response()->json(['success' => true, 'message' => __('file.item_deleted_successfully')]);
         }
-        return back()->with('success', 'Shipping Rate deleted successfully.');
+        return back()->with('success', __('file.item_deleted_successfully'));
     }
 
     public function bulkDelete(Request $request)
@@ -194,7 +194,7 @@ class ShippingRateController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Selected rates deleted successfully.'
+            'message' => __('file.selected_items_deleted_successfully')
         ]);
     }
 }

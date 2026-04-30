@@ -57,21 +57,21 @@ class CourierController extends Controller
 
         $data = $couriers->map(function ($courier) {
             $statusHtml = $courier->is_active
-                ? '<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">Active</span>'
-                : '<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-800 dark:bg-surface-tonal-a20 dark:text-gray-300">Inactive</span>';
+                ? '<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">' . __('file.active') . '</span>'
+                : '<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-800 dark:bg-surface-tonal-a20 dark:text-gray-300">' . __('file.inactive') . '</span>';
 
             $features = [];
             if ($courier->supports_tracking)
-                $features[] = 'Tracking';
+                $features[] = __('file.Tracking');
             if ($courier->supports_label_generation)
-                $features[] = 'Labels';
+                $features[] = __('file.Labels');
             if ($courier->supports_cod)
-                $features[] = 'COD';
+                $features[] = __('file.COD Support');
             $featuresHtml = '<div class="flex gap-1 flex-wrap">' . implode('', array_map(fn($f) => '<span class="px-2 py-0.5 rounded text-xs bg-gray-100 text-gray-600 dark:bg-surface-tonal-a20 dark:text-gray-400">' . $f . '</span>', $features)) . '</div>';
 
             return [
                 'id' => $courier->id,
-                'name_html' => '<div class="flex items-center"><div class="flex-shrink-0 h-10 w-10 bg-indigo-100 text-indigo-600 rounded flex items-center justify-center font-bold dark:bg-indigo-900/40 dark:text-indigo-400">' . substr($courier->name, 0, 1) . '</div><div class="ml-4"><div class="text-sm font-medium text-gray-900 dark:text-primary-a0">' . htmlspecialchars($courier->name) . '</div>' . ($courier->default_for_cod ? '<div class="text-xs text-indigo-500">Default COD</div>' : '') . '</div></div>',
+                'name_html' => '<div class="flex items-center"><div class="flex-shrink-0 h-10 w-10 bg-indigo-100 text-indigo-600 rounded flex items-center justify-center font-bold dark:bg-indigo-900/40 dark:text-indigo-400">' . substr($courier->name, 0, 1) . '</div><div class="ml-4"><div class="text-sm font-medium text-gray-900 dark:text-primary-a0">' . htmlspecialchars($courier->name) . '</div>' . ($courier->default_for_cod ? '<div class="text-xs text-indigo-500">' . __('file.Default COD') . '</div>' : '') . '</div></div>',
                 'status_html' => $statusHtml,
                 'features_html' => $featuresHtml,
                 'edit_url' => route('shipping.couriers.edit', $courier->id),
@@ -119,10 +119,10 @@ class CourierController extends Controller
         Courier::create($data);
 
         if ($request->ajax()) {
-            return response()->json(['success' => true, 'message' => 'Courier created successfully.']);
+            return response()->json(['success' => true, 'message' => __('file.item_created_successfully')]);
         }
 
-        return redirect()->route('shipping.couriers.index')->with('success', 'Courier created successfully.');
+        return redirect()->route('shipping.couriers.index')->with('success', __('file.item_created_successfully'));
     }
 
     public function edit(Request $request, Courier $courier)
@@ -158,19 +158,19 @@ class CourierController extends Controller
         $courier->update($data);
 
         if ($request->ajax()) {
-            return response()->json(['success' => true, 'message' => 'Courier updated successfully.']);
+            return response()->json(['success' => true, 'message' => __('file.item_updated_successfully')]);
         }
 
-        return redirect()->route('shipping.couriers.index')->with('success', 'Courier updated successfully.');
+        return redirect()->route('shipping.couriers.index')->with('success', __('file.item_updated_successfully'));
     }
 
     public function destroy(Courier $courier)
     {
         $courier->delete();
         if (request()->ajax()) {
-            return response()->json(['success' => true, 'message' => 'Courier deleted successfully.']);
+            return response()->json(['success' => true, 'message' => __('file.item_deleted_successfully')]);
         }
-        return redirect()->route('shipping.couriers.index')->with('success', 'Courier deleted successfully.');
+        return redirect()->route('shipping.couriers.index')->with('success', __('file.item_deleted_successfully'));
     }
 
     public function bulkDelete(Request $request)
@@ -182,14 +182,14 @@ class CourierController extends Controller
         }
 
         if (!is_array($ids) || empty($ids)) {
-            return response()->json(['success' => false, 'message' => 'No items selected.'], 400);
+            return response()->json(['success' => false, 'message' => __('file.no_items_selected')], 400);
         }
 
         Courier::whereIn('id', $ids)->delete();
 
         return response()->json([
             'success' => true,
-            'message' => 'Selected providers deleted successfully.'
+            'message' => __('file.selected_items_deleted_successfully')
         ]);
     }
 }

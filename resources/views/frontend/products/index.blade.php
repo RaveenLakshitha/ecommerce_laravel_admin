@@ -1222,6 +1222,10 @@
                 <a href="{{ route('frontend.products.index') }}">All Products</a>
                 <span class="sep">›</span>
                 <span class="current">{{ $currentCategory->name }}</span>
+            @elseif(isset($currentCollection))
+                <a href="{{ route('frontend.products.index') }}">All Products</a>
+                <span class="sep">›</span>
+                <span class="current">{{ $currentCollection->name }}</span>
             @else
                 <span class="current">All Products</span>
             @endif
@@ -1249,9 +1253,9 @@
                 <div class="slide-overlay"></div>
                 <div class="banner-content-container">
                     <div class="slide-content">
-                        <p class="slide-eyebrow">{{ $banner['eyebrow'] ?? ($currentCategory->name ?? 'Karbnzol') }}</p>
-                        <h2 class="slide-title">{!! $banner['title'] ?? ($currentCategory->name ?? '') !!}</h2>
-                        <p class="slide-sub">{{ $banner['description'] ?? '' }}</p>
+                        <p class="slide-eyebrow">{{ $banner['eyebrow'] ?? ($currentCategory->name ?? ($currentCollection->name ?? 'Karbnzol')) }}</p>
+                        <h2 class="slide-title">{!! $banner['title'] ?? ($currentCategory->name ?? ($currentCollection->name ?? '')) !!}</h2>
+                        <p class="slide-sub">{{ $banner['description'] ?? ($currentCollection->description ?? '') }}</p>
                     </div>
                 </div>
                 @if(!empty($banner['badge']))
@@ -1515,7 +1519,7 @@
                                         </svg>
                                     </button>
                                 </div>
-                                <img src="{{ $p->primaryImage ? asset('storage/' . $p->primaryImage->file_path) : asset('images/logo-main.jpg') }}" alt="{{ $p->name }}" loading="{{ $i < 4 ? 'eager' : 'lazy' }}">
+                                <img src="{{ $p->primaryImage ? $p->primaryImage->url : asset('images/logo-main.jpg') }}" alt="{{ $p->name }}" loading="{{ $i < 4 ? 'eager' : 'lazy' }}">
                                 <button class="p-add" onclick="event.preventDefault(); window.location='{{ route('frontend.products.show', $p->slug) }}'">+ Add to Bag</button>
                             </div>
                             <div class="p-info">

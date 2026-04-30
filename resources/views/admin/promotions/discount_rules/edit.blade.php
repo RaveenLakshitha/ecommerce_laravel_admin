@@ -78,12 +78,10 @@
                                             <span class="text-red-500">*</span></label>
                                         <select name="type" x-model="ruleType" required
                                             class="block w-full rounded-md border border-gray-100/50 dark:border-white/5 bg-gray-50/30 dark:bg-surface-tonal-a20 px-3 py-2 text-xs font-bold shadow-sm text-black dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 cursor-pointer">
-                                            <option value="percentage">{{ __('file.percentage_off') }} (%)</option>
-                                            <option value="fixed">{{ __('file.fixed_amount_off') }} ($)</option>
-                                            <option value="bogo">{{ __('file.bogo') }} ({{ __('file.buy_one_get_one') }})
-                                            </option>
-                                            <option value="buy_x_get_y">{{ __('file.buy_x_get_y') }}
-                                                ({{ __('file.custom') }})</option>
+                                            <option value="percentage">{{ __('file.percentage_off') }}</option>
+                                            <option value="fixed">{{ __('file.fixed_amount_off') }}</option>
+                                            <option value="bogo">{{ __('file.bogo_buy_one_get_one') }}</option>
+                                            <option value="buy_x_get_y">{{ __('file.buy_x_get_y_custom') }}</option>
                                         </select>
                                     </div>
 
@@ -186,7 +184,7 @@
                                             class="block text-[10px] font-black text-black dark:text-white uppercase tracking-widest mb-0">{{ __('file.select_products') }}</label>
                                         <div class="relative w-full sm:max-w-xs">
                                             <input type="text" x-model="search" @input="page = 1"
-                                                placeholder="Search products..."
+                                                placeholder="{{ __('file.search_products') }}"
                                                 class="block w-full rounded-md border border-gray-100/50 dark:border-white/5 bg-gray-50/30 dark:bg-surface-tonal-a20 pl-9 py-2 text-xs font-bold shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-300 text-black dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30">
                                             <svg class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400"
                                                 fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -208,12 +206,11 @@
                                             </label>
                                         </template>
                                         <div x-show="filtered.length === 0"
-                                            class="p-8 text-center text-sm text-gray-400 dark:text-gray-500">No products
-                                            found.</div>
+                                            class="p-8 text-center text-sm text-gray-400 dark:text-gray-500">{{ __('file.no_products_found') }}</div>
                                     </div>
                                     <div class="flex items-center justify-between px-1" x-show="totalPages > 1">
-                                        <span class="text-xs text-gray-400 dark:text-gray-500">Page <span
-                                                x-text="page"></span> of <span x-text="totalPages"></span></span>
+                                        <span class="text-xs text-gray-400 dark:text-gray-500">{{ __('file.Page') }} <span
+                                                x-text="page"></span> {{ __('file.of') }} <span x-text="totalPages"></span></span>
                                         <div class="flex items-center gap-1">
                                             <button type="button" @click="if(page > 1) page--" :disabled="page === 1"
                                                 class="p-1.5 rounded-lg border border-gray-200 dark:border-surface-tonal-a30 disabled:opacity-30 hover:bg-gray-50 dark:hover:bg-surface-tonal-a30 transition-all">
@@ -261,7 +258,7 @@
                                             class="block text-[10px] font-black text-black dark:text-white uppercase tracking-widest mb-0">{{ __('file.select_categories') }}</label>
                                         <div class="relative w-full sm:max-w-xs">
                                             <input type="text" x-model="search" @input="page = 1"
-                                                placeholder="Search categories..."
+                                                placeholder="{{ __('file.search_categories') }}"
                                                 class="block w-full rounded-md border border-gray-100/50 dark:border-white/5 bg-gray-50/30 dark:bg-surface-tonal-a20 pl-9 py-2 text-xs font-bold shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-300 text-black dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30">
                                             <svg class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400"
                                                 fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -283,12 +280,11 @@
                                             </label>
                                         </template>
                                         <div x-show="filtered.length === 0"
-                                            class="p-8 text-center text-sm text-gray-400 dark:text-gray-500">No categories
-                                            found.</div>
+                                            class="p-8 text-center text-sm text-gray-400 dark:text-gray-500">{{ __('file.no_categories_found') }}</div>
                                     </div>
                                     <div class="flex items-center justify-between px-1" x-show="totalPages > 1">
-                                        <span class="text-xs text-gray-400 dark:text-gray-500">Page <span
-                                                x-text="page"></span> of <span x-text="totalPages"></span></span>
+                                        <span class="text-xs text-gray-400 dark:text-gray-500">{{ __('file.Page') }} <span
+                                                x-text="page"></span> {{ __('file.of') }} <span x-text="totalPages"></span></span>
                                         <div class="flex items-center gap-1">
                                             <button type="button" @click="if(page > 1) page--" :disabled="page === 1"
                                                 class="p-1.5 rounded-lg border border-gray-200 dark:border-surface-tonal-a30 disabled:opacity-30 hover:bg-gray-50 dark:hover:bg-surface-tonal-a30 transition-all">
@@ -336,7 +332,7 @@
                                             class="block text-[10px] font-black text-black dark:text-white uppercase tracking-widest mb-0">{{ __('file.select_collections') }}</label>
                                         <div class="relative w-full sm:max-w-xs">
                                             <input type="text" x-model="search" @input="page = 1"
-                                                placeholder="Search collections..."
+                                                placeholder="{{ __('file.search_collections') }}"
                                                 class="block w-full rounded-md border border-gray-100/50 dark:border-white/5 bg-gray-50/30 dark:bg-surface-tonal-a20 pl-9 py-2 text-xs font-bold shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-300 text-black dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30">
                                             <svg class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400"
                                                 fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -358,12 +354,11 @@
                                             </label>
                                         </template>
                                         <div x-show="filtered.length === 0"
-                                            class="p-8 text-center text-sm text-gray-400 dark:text-gray-500">No collections
-                                            found.</div>
+                                            class="p-8 text-center text-sm text-gray-400 dark:text-gray-500">{{ __('file.no_collections_found') }}</div>
                                     </div>
                                     <div class="flex items-center justify-between px-1" x-show="totalPages > 1">
-                                        <span class="text-xs text-gray-400 dark:text-gray-500">Page <span
-                                                x-text="page"></span> of <span x-text="totalPages"></span></span>
+                                        <span class="text-xs text-gray-400 dark:text-gray-500">{{ __('file.Page') }} <span
+                                                x-text="page"></span> {{ __('file.of') }} <span x-text="totalPages"></span></span>
                                         <div class="flex items-center gap-1">
                                             <button type="button" @click="if(page > 1) page--" :disabled="page === 1"
                                                 class="p-1.5 rounded-lg border border-gray-200 dark:border-surface-tonal-a30 disabled:opacity-30 hover:bg-gray-50 dark:hover:bg-surface-tonal-a30 transition-all">
@@ -558,13 +553,13 @@
                             <div>
                                 <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">{{ __('file.banner_title') }}</label>
                                 <input type="text" name="banners[${index}][title]" value="${data.title || ''}"
-                                       placeholder="Catchy headline..."
+                                       placeholder="{{ __('file.catchy_headline_placeholder') }}"
                                        class="block w-full rounded-md border border-gray-100/50 dark:border-white/5 bg-white dark:bg-surface-tonal-a20 px-3 py-2 text-xs font-bold text-gray-700 dark:text-white focus:ring-2 focus:ring-indigo-500 transition-all">
                             </div>
                             <div>
                                 <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">{{ __('file.description') }}</label>
                                 <textarea name="banners[${index}][description]" rows="2"
-                                          placeholder="Sub-text highlighting the offer..."
+                                          placeholder="{{ __('file.offer_subtext_placeholder') }}"
                                           class="block w-full rounded-md border border-gray-100/50 dark:border-white/5 bg-white dark:bg-surface-tonal-a20 px-3 py-2 text-xs text-gray-600 dark:text-gray-400 focus:ring-2 focus:ring-indigo-500 transition-all resize-none">${data.description || ''}</textarea>
                             </div>
                         </div>
