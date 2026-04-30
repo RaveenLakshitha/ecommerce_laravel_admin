@@ -31,7 +31,7 @@
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                         </svg>
-                        {{ __('file.add_provider') ?? 'Add Provider' }}
+                        {{ __('file.add_provider') }}
                     </button>
                 </div>
             </div>
@@ -52,7 +52,7 @@
                     <div id="bulk-ids-container" class="hidden"></div>
                     <div class="flex items-center gap-3">
                         <div class="selection-count" id="selected-count">0</div>
-                        <span>{{ __('file.providers_selected') ?? 'Providers Selected' }}</span>
+                        <span>{{ __('file.providers_selected') }}</span>
                     </div>
                     <button type="submit"
                         class="inline-flex items-center gap-2 px-6 py-2.5 bg-red-600 hover:bg-red-700 text-white text-[11px] font-bold uppercase tracking-wider rounded-xl transition-all shadow-lg shadow-red-600/20 active:scale-95 whitespace-nowrap border border-red-500/30">
@@ -98,10 +98,10 @@
                 
                 <div class="flex items-center justify-between px-8 py-5 border-b border-gray-100 dark:border-white/5 bg-gray-50/50 dark:bg-white/5">
                     <div>
-                        <h3 id="courier-drawer-title" class="text-xl font-extrabold text-gray-900 dark:text-white tracking-tight">
+                        <h3 id="courier-drawer-title" class="text-xl font-bold text-gray-900 dark:text-white tracking-tight">
                             {{ __('file.add_new_provider') ?? 'Add New Logistics Provider' }}
                         </h3>
-                        <p id="courier-drawer-subtitle" class="text-sm font-medium text-primary mt-1">
+                        <p id="courier-drawer-subtitle" class="text-sm font-medium text-primary-a0 mt-1">
                             {{ __('file.coordinate_delivery_partnerships') ?? 'Coordinate delivery partnerships and logistics' }}
                         </p>
                     </div>
@@ -134,8 +134,8 @@
                 const titleEl = document.getElementById('courier-drawer-title');
                 const subtitleEl = document.getElementById('courier-drawer-subtitle');
                 
-                titleEl.textContent = isEdit ? '{{ __("file.edit_logistics_provider") ?? "Edit Logistics Provider" }}' : '{{ __("file.add_new_provider") ?? "Add New Logistics Provider" }}';
-                subtitleEl.textContent = isEdit ? '{{ __("file.update_provider_details") ?? "Update logistics partner configuration" }}' : '{{ __("file.create_new_provider_entry") ?? "Create a new logistics partner entry" }}';
+                titleEl.textContent = isEdit ? '{{ __("file.edit_logistics_provider") }}' : '{{ __("file.add_new_provider") }}';
+                subtitleEl.textContent = isEdit ? '{{ __("file.update_provider_details") }}' : '{{ __("file.create_new_provider_entry") }}';
 
                 courierDrawer.classList.remove('hidden');
                 courierContent.innerHTML = '<div class="flex items-center justify-center h-full"><div class="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin"></div></div>';
@@ -289,7 +289,7 @@
                     lengthMenu: [10, 25, 50, 100],
                     language: {
                         search: "",
-                        searchPlaceholder: "{{ __('file.search_providers') ?? 'Search providers' }}...",
+                        searchPlaceholder: "{{ __('file.search_providers') }}...",
                         lengthMenu: "{{ __('file.show_entries') }}",
                         info: "{{ __('file.showing_entries') }}",
                         infoEmpty: "{{ __('file.no_items_found') }}",

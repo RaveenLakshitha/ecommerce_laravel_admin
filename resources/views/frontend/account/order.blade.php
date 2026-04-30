@@ -92,7 +92,7 @@
                         <li class="p-6 flex flex-col sm:flex-row gap-6">
                             <div class="flex-shrink-0 w-24 h-24 bg-gray-50 rounded-lg border border-gray-200 overflow-hidden">
                                 @if($item->variant && $item->variant->product && $item->variant->product->primaryImage)
-                                    <img src="{{ asset('storage/' . $item->variant->product->primaryImage->file_path) }}" alt="{{ $item->product_name_snapshot }}" class="w-full h-full object-cover">
+                                    <img src="{{ $item->variant->product->primaryImage->url }}" alt="{{ $item->product_name_snapshot }}" class="w-full h-full object-cover" loading="lazy">
                                 @else
                                     <div class="w-full h-full flex items-center justify-center text-gray-400 text-xs">{{ __('file.no_image') }}</div>
                                 @endif
@@ -218,6 +218,34 @@
                         </div>
                     </div>
                 </div>
+
+                {{-- Refund Request --}}
+                @if($order->canBeRefunded())
+                    @php $pendingRefund = $order->refunds()->where('status', 'pending')->first(); @endphp
+                    <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
+                        <div class="px-6 py-5 border-b border-gray-100">
+                            <h2 class="text-lg font-bold text-gray-900">{{ __('file.refund_request') }}</h2>
+                        </div>
+                        <div class="p-6">
+                            @if($pendingRefund)
+                                <div class="bg-yellow-50 border border-yellow-200 p-4 rounded-lg">
+                                    <p class="text-sm text-yellow-800">{{ __('file.refund_request_pending') }}</p>
+                                </div>
+                            @else
+                                <form action="{{ route('account.orders.refund-request', $order->id) }}" method="POST" class="space-y-4">
+                                    @csrf
+                                    <div>
+                                        <label for="reason" class="block text-sm font-medium text-gray-700">{{ __('file.reason_for_refund') }}</label>
+                                        <textarea name="reason" id="reason" rows="3" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm" placeholder="{{ __('file.e_g_item_damaged_wrong_size') }}"></textarea>
+                                    </div>
+                                    <button type="submit" onclick="return confirm('Submit refund request?')" class="w-full bg-primary-600 text-white py-2 px-4 rounded-lg text-sm font-bold hover:bg-primary-700 transition-colors">
+                                        {{ __('file.submit_refund_request') }}
+                                    </button>
+                                </form>
+                            @endif
+                        </div>
+                    </div>
+                @endif
 
             </div>
         </div>

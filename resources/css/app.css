@@ -162,11 +162,11 @@
 }
 
 #application-table_wrapper .dt-button-collection {
-    @apply !bg-white dark: !bg-surface-tonal-a20 !border !border-gray-100 dark: !border-white/10 !rounded-2xl !p-2 !shadow-2xl;
+    @apply !bg-white dark:!bg-surface-tonal-a20 !border !border-gray-100 dark:!border-white/10 !rounded-2xl !p-2 !shadow-2xl;
 }
 
 #application-table_wrapper .dt-button-collection .dt-button {
-    @apply !w-full !text-left !border-0 !rounded-xl !px-4 !py-2.5 !text-xs !font-semibold !bg-transparent hover: !bg-gray-50 dark:hover: !bg-surface-tonal-a30;
+    @apply !w-full !text-left !border-0 !rounded-xl !px-4 !py-2.5 !text-xs !font-semibold !bg-transparent hover:!bg-gray-50 dark:hover:!bg-surface-tonal-a30;
 }
 
 

@@ -9,9 +9,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Product extends Model
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
+
+class Product extends Model implements HasMedia
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, InteractsWithMedia;
 
     protected $fillable = [
         'name',
@@ -85,5 +89,20 @@ class Product extends Model
             'id',             // local key on products
             'id'              // local key on variants
         );
+    }
+
+    public function registerMediaConversions(Media $media = null): void
+    {
+        $this->addMediaConversion('optimized')
+             ->format('webp')
+             ->quality(80)
+             ->nonQueued();
+
+        $this->addMediaConversion('thumb')
+             ->format('webp')
+             ->width(300)
+             ->height(400)
+             ->quality(80)
+             ->nonQueued();
     }
 }

@@ -140,10 +140,16 @@ class CollectionController extends Controller
         }
 
         if ($request->hasFile('banner_image')) {
-            $validated['banner_image_path'] = $request->file('banner_image')->store('collections', 'public');
+            $validated['banner_url'] = $request->file('banner_image')->store('collections', 'public');
         }
 
         $collection = Collection::create($validated);
+
+        if (isset($validated['banner_url'])) {
+            $collection->addMedia(\Illuminate\Support\Facades\Storage::disk('public')->path($validated['banner_url']))
+                       ->preservingOriginal()
+                       ->toMediaCollection('images');
+        }
 
         if ($request->has('products')) {
             $collection->products()->sync($request->products);
@@ -188,13 +194,20 @@ class CollectionController extends Controller
         $validated['is_featured'] = $request->boolean('is_featured', false);
 
         if ($request->hasFile('banner_image')) {
-            if ($collection->banner_image_path && Storage::disk('public')->exists($collection->banner_image_path)) {
-                Storage::disk('public')->delete($collection->banner_image_path);
+            if ($collection->banner_url && Storage::disk('public')->exists($collection->banner_url)) {
+                Storage::disk('public')->delete($collection->banner_url);
             }
-            $validated['banner_image_path'] = $request->file('banner_image')->store('collections', 'public');
+            $validated['banner_url'] = $request->file('banner_image')->store('collections', 'public');
         }
 
         $collection->update($validated);
+
+        if (isset($validated['banner_url'])) {
+            $collection->clearMediaCollection('images');
+            $collection->addMedia(\Illuminate\Support\Facades\Storage::disk('public')->path($validated['banner_url']))
+                       ->preservingOriginal()
+                       ->toMediaCollection('images');
+        }
 
         if ($request->has('products')) {
             $collection->products()->sync($request->products);
@@ -214,8 +227,8 @@ class CollectionController extends Controller
 
     public function destroy(Collection $collection)
     {
-        if ($collection->banner_image_path && Storage::disk('public')->exists($collection->banner_image_path)) {
-            Storage::disk('public')->delete($collection->banner_image_path);
+        if ($collection->banner_url && Storage::disk('public')->exists($collection->banner_url)) {
+            Storage::disk('public')->delete($collection->banner_url);
         }
         $collection->delete();
 
@@ -257,8 +270,8 @@ class CollectionController extends Controller
 
         $collections = Collection::whereIn('id', $ids)->get();
         foreach ($collections as $collection) {
-            if ($collection->banner_image_path && Storage::disk('public')->exists($collection->banner_image_path)) {
-                Storage::disk('public')->delete($collection->banner_image_path);
+            if ($collection->banner_url && Storage::disk('public')->exists($collection->banner_url)) {
+                Storage::disk('public')->delete($collection->banner_url);
             }
             $collection->delete();
         }

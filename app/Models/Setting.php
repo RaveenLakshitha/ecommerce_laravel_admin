@@ -117,6 +117,7 @@ class Setting extends Model
         'storefront_offer_text',
         'storefront_offer_link',
         'storefront_about_us',
+        'storefront_about_us_content',
         'storefront_marquee_text',
         'storefront_marquee_link',
         'phone',

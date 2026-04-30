@@ -9,12 +9,16 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Storage;
 
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
+
 /**
  * Brand / Designer (e.g. "Nike", "Adidas", "Local Brand XYZ")
  */
-class Brand extends Model
+class Brand extends Model implements HasMedia
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, InteractsWithMedia;
 
     protected $fillable = [
         'name',
@@ -38,6 +42,18 @@ class Brand extends Model
 
     public function getLogoUrlAttribute(): ?string
     {
+        $mediaUrl = $this->getFirstMediaUrl('images', 'optimized');
+        if ($mediaUrl) {
+            return $mediaUrl;
+        }
         return $this->logo_path ? Storage::url($this->logo_path) : null;
+    }
+
+    public function registerMediaConversions(Media $media = null): void
+    {
+        $this->addMediaConversion('optimized')
+             ->format('webp')
+             ->quality(80)
+             ->nonQueued();
     }
 }

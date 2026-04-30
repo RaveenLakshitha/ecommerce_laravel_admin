@@ -48,7 +48,7 @@
                     @foreach($order->items->take(4) as $item)
                         <div class="relative group">
                             @if($item->variant && $item->variant->product && $item->variant->product->primaryImage)
-                                <img src="{{ asset('storage/' . $item->variant->product->primaryImage->file_path) }}"
+                                <img src="{{ $item->variant->product->primaryImage->url }}"
                                     alt="{{ $item->product_name_snapshot }}"
                                     class="w-16 h-16 object-cover rounded-lg border border-gray-200">
                             @else

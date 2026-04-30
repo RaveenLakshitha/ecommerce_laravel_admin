@@ -25,6 +25,23 @@ class ProductController extends Controller
             }
         }
 
+        $currentCollection = null;
+        if ($request->has('collection') && $request->collection !== '') {
+            $currentCollection = \App\Models\Collection::where('slug', $request->collection)->first();
+            if ($currentCollection) {
+                $query->whereHas('collections', fn($q) => $q->where('collections.id', $currentCollection->id));
+                // If the collection has a banner, we could use it too
+                if ($currentCollection->banner_url) {
+                    $categoryBanners[] = [
+                        'image_url' => $currentCollection->banner_url,
+                        'title' => $currentCollection->name,
+                        'subtitle' => $currentCollection->description,
+                        'link' => '#'
+                    ];
+                }
+            }
+        }
+
         // Fetch active Discount Rule banners
         $activeRules = \App\Models\DiscountRule::where('is_active', true)
             ->where(function ($q) {
@@ -88,7 +105,7 @@ class ProductController extends Controller
             $q->whereIn('product_id', $productIds);
         })->get() : collect();
 
-        return view('frontend.products.index', compact('products', 'categories', 'colors', 'sizes', 'currentCategory', 'banners'));
+        return view('frontend.products.index', compact('products', 'categories', 'colors', 'sizes', 'currentCategory', 'currentCollection', 'banners'));
     }
 
     public function show($slug)

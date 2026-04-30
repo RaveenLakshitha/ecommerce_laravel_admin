@@ -47,7 +47,7 @@
                         <div class="flex items-center gap-2">
                             <span class="selection-count px-3 py-1 bg-red-100 dark:bg-red-500/20 text-red-700 dark:text-red-400 font-bold rounded-lg text-sm tabular-nums" id="selected-count">0</span>
                             <span
-                                class="text-sm font-medium text-red-900 dark:text-red-100 whitespace-nowrap">{{ __('file.customers_selected') ?? 'Customers Selected' }}</span>
+                                class="text-sm font-medium text-red-900 dark:text-red-100 whitespace-nowrap">{{ __('file.customers_selected') }}</span>
                         </div>
                     </div>
                     <button type="submit"
@@ -70,12 +70,12 @@
                                     <input type="checkbox" id="select-all"
                                         class="w-4 h-4 rounded border-gray-300 dark:border-surface-tonal-a30 text-gray-900 focus:ring-gray-300">
                                 </th>
-                                <th>Customer</th>
-                                <th>Email</th>
-                                <th>Orders</th>
-                                <th>Total Spent</th>
-                                <th class="!text-center">Status</th>
-                                <th class="!text-right">Actions</th>
+                                <th>{{ __('file.customer') }}</th>
+                                <th>{{ __('file.email') }}</th>
+                                <th>{{ __('file.orders') }}</th>
+                                <th>{{ __('file.total_spent') }}</th>
+                                <th class="!text-center">{{ __('file.status') }}</th>
+                                <th class="!text-right">{{ __('file.actions') }}</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -117,7 +117,7 @@
                                                     </div>
                                                     <div class="flex flex-col">
                                                         <span class="text-sm font-bold text-gray-900 dark:text-white leading-tight">${data}</span>
-                                                        <span class="text-[10px] text-gray-400 font-medium tracking-tight">Verified Identity</span>
+                                                        <span class="text-[10px] text-gray-400 font-medium tracking-tight">{{ __('file.verified_identity') }}</span>
                                                     </div>
                                                 </div>`;
                             }
@@ -166,7 +166,7 @@
                                 { extend: 'pageLength', className: 'dt-button' },
                                 {
                                     extend: 'collection',
-                                    text: "Export",
+                                    text: "{{ __('file.export') }}",
                                     className: 'dt-button',
                                     buttons: [
                                         { extend: 'copy', className: 'dt-button' },
@@ -186,11 +186,11 @@
                     lengthMenu: [10, 25, 50, 100],
                     language: {
                         search: "",
-                        searchPlaceholder: "Search Customers...",
+                        searchPlaceholder: "{{ __('file.search_customers') }}",
                         lengthMenu: "_MENU_",
-                        info: "Showing _START_ to _END_ of _TOTAL_ Customers",
-                        infoEmpty: "No customers found",
-                        emptyTable: "No customers found.",
+                        info: "{{ __('file.showing_customers') }}",
+                        infoEmpty: "{{ __('file.no_customers_found') }}",
+                        emptyTable: "{{ __('file.no_customers_found') }}.",
                         processing: '<div class="admin-loader"></div>',
                         paginate: {
                             next: '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>',

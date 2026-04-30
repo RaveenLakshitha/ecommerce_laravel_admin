@@ -7,12 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Storage;
 
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
+
 /**
  * Product image (gallery) – can be product-level or variant-specific
  */
-class ProductImage extends Model
+class ProductImage extends Model implements HasMedia
 {
-    use HasFactory;
+    use HasFactory, InteractsWithMedia;
 
     protected $fillable = [
         'product_id',
@@ -38,6 +42,27 @@ class ProductImage extends Model
 
     public function getUrlAttribute()
     {
+        // Try to get optimized webp image from media library first
+        $mediaUrl = $this->getFirstMediaUrl('images', 'optimized');
+        if ($mediaUrl) {
+            return $mediaUrl;
+        }
+        
+        // Fallback to original path
         return Storage::url($this->file_path);
+    }
+
+    public function registerMediaConversions(Media $media = null): void
+    {
+        $this->addMediaConversion('optimized')
+             ->format('webp')
+             ->quality(80)
+             ->nonQueued();
+
+        $this->addMediaConversion('thumb')
+             ->format('webp')
+             ->width(400)
+             ->quality(80)
+             ->nonQueued();
     }
 }

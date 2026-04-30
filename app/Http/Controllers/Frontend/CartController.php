@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Variant;
+use App\Services\DiscountService;
 use Darryldecode\Cart\Facades\CartFacade as Cart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,14 +12,35 @@ use App\Models\Setting;
 
 class CartController extends Controller
 {
+    protected DiscountService $discountService;
+
+    public function __construct(DiscountService $discountService)
+    {
+        $this->discountService = $discountService;
+    }
+
     public function index()
     {
-        $cartItems      = Cart::getContent();
-        $subtotal       = Cart::getSubTotal();
-        $total          = Cart::getTotal();
+        $cartItems = Cart::getContent();
+        $subtotal  = Cart::getSubTotal();
+
+        // Coupon discount from session
+        $appliedCoupon   = $this->discountService->getAppliedCoupon();
+        $couponDiscount  = $this->discountService->getCouponDiscount();
+
+        // Automatic discount rules
+        $autoDiscount    = $this->discountService->calculateAutomaticDiscount($subtotal);
+        $bestRule        = $this->discountService->getBestActiveRule();
+
+        // Use whichever is bigger (coupon OR automatic), but don't stack both on this summary.
+        // At checkout they are combined; here just show the best savings.
+        $totalDiscount = max($couponDiscount, $autoDiscount);
+        $total = max(0, $subtotal - $couponDiscount - $autoDiscount);
 
         return view('frontend.cart.index', compact(
-            'cartItems', 'subtotal', 'total'
+            'cartItems', 'subtotal', 'total',
+            'appliedCoupon', 'couponDiscount',
+            'autoDiscount', 'bestRule', 'totalDiscount'
         ));
     }
 
@@ -94,7 +116,6 @@ class CartController extends Controller
             return back()->with('error', 'Not enough stock available.');
         }
 
-        // darryldecode/laravelshoppingcart: update(rowId, array|int)
         Cart::update($request->rowId, [
             'quantity' => [
                 'relative' => false,
@@ -106,12 +127,16 @@ class CartController extends Controller
             Cart::session(Auth::id());
         }
 
-        // Re-fetch updated item for its new subtotal
-        $updatedItem   = Cart::get($request->rowId);
-        $itemSubtotal  = $updatedItem ? Setting::formatPrice($updatedItem->getPriceSumWithConditions()) : Setting::formatPrice(0);
-        $cartSubtotal  = Setting::formatPrice(Cart::getSubTotal());
-        $cartTotal     = Setting::formatPrice(Cart::getTotal());
-        $cartCount     = Cart::getTotalQuantity();
+        $updatedItem  = Cart::get($request->rowId);
+        $newSubtotal  = Cart::getSubTotal();
+        $couponDiscount = $this->discountService->getCouponDiscount();
+        $autoDiscount   = $this->discountService->calculateAutomaticDiscount($newSubtotal);
+        $newTotal     = max(0, $newSubtotal - $couponDiscount - $autoDiscount);
+
+        $itemSubtotal = $updatedItem ? Setting::formatPrice($updatedItem->getPriceSumWithConditions()) : Setting::formatPrice(0);
+        $cartSubtotal = Setting::formatPrice($newSubtotal);
+        $cartTotal    = Setting::formatPrice($newTotal);
+        $cartCount    = Cart::getTotalQuantity();
 
         if ($request->ajax() || $request->wantsJson()) {
             return response()->json([
@@ -135,8 +160,13 @@ class CartController extends Controller
             Cart::session(Auth::id());
         }
 
-        $cartSubtotal = Setting::formatPrice(Cart::getSubTotal());
-        $cartTotal    = Setting::formatPrice(Cart::getTotal());
+        $newSubtotal    = Cart::getSubTotal();
+        $couponDiscount = $this->discountService->getCouponDiscount();
+        $autoDiscount   = $this->discountService->calculateAutomaticDiscount($newSubtotal);
+        $newTotal       = max(0, $newSubtotal - $couponDiscount - $autoDiscount);
+
+        $cartSubtotal = Setting::formatPrice($newSubtotal);
+        $cartTotal    = Setting::formatPrice($newTotal);
         $cartCount    = Cart::getTotalQuantity();
 
         if ($request->ajax() || $request->wantsJson()) {
@@ -153,7 +183,50 @@ class CartController extends Controller
     }
 
     /**
-     * Merge guest cart with logged-in user's cart after login
+     * Apply a coupon / promo code from the cart page.
+     */
+    public function applyPromo(Request $request)
+    {
+        $request->validate(['code' => 'required|string|max:100']);
+
+        $subtotal = Cart::getSubTotal();
+        $result   = $this->discountService->applyCoupon($request->code, $subtotal);
+
+        if ($result['success']) {
+            $newTotal = max(0, $subtotal - $result['discount'] - $this->discountService->calculateAutomaticDiscount($subtotal));
+            return response()->json([
+                'success'        => true,
+                'message'        => $result['message'],
+                'discount'       => Setting::formatPrice($result['discount']),
+                'discountRaw'    => $result['discount'],
+                'cartTotal'      => Setting::formatPrice($newTotal),
+                'code'           => $result['coupon']->code,
+            ]);
+        }
+
+        return response()->json(['success' => false, 'message' => $result['message']], 422);
+    }
+
+    /**
+     * Remove the applied coupon.
+     */
+    public function removePromo(Request $request)
+    {
+        $this->discountService->removeCoupon();
+
+        $subtotal     = Cart::getSubTotal();
+        $autoDiscount = $this->discountService->calculateAutomaticDiscount($subtotal);
+        $newTotal     = max(0, $subtotal - $autoDiscount);
+
+        return response()->json([
+            'success'   => true,
+            'message'   => 'Coupon removed.',
+            'cartTotal' => Setting::formatPrice($newTotal),
+        ]);
+    }
+
+    /**
+     * Merge guest cart with logged-in user's cart after login.
      */
     public static function mergeAfterLogin()
     {

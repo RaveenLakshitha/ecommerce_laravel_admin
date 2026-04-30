@@ -674,8 +674,26 @@
                             <div class="summary-row">
                                 <span class="s-label">{{ __('file.subtotal') }} ({{ $cartItems->sum('quantity') }}
                                      {{ $cartItems->sum('quantity') !== 1 ? __('file.items') : __('file.item') }})</span>
-                                <span class="s-value">@price($subtotal)</span>
+                                <span class="s-value cart-subtotal">@price($subtotal)</span>
                             </div>
+
+                            @if($autoDiscount > 0 && $bestRule)
+                                <div class="summary-row" id="auto-discount-row">
+                                    <span class="s-label" style="color:#16a34a;">
+                                        🏷 {{ $bestRule->name }}
+                                    </span>
+                                    <span class="s-value" style="color:#16a34a;">−@price($autoDiscount)</span>
+                                </div>
+                            @endif
+
+                            <div class="summary-row" id="coupon-discount-row" style="{{ $couponDiscount > 0 ? '' : 'display:none;' }}">
+                                <span class="s-label" style="color:#16a34a;">
+                                    🎟 <span id="applied-coupon-code">{{ $appliedCoupon['code'] ?? '' }}</span>
+                                    <button type="button" onclick="removePromo()" style="margin-left:6px;font-size:0.65rem;color:#b85c38;text-decoration:underline;background:none;border:none;cursor:pointer;" title="Remove coupon">✕ Remove</button>
+                                </span>
+                                <span class="s-value" style="color:#16a34a;">−<span id="coupon-discount-display">@price($couponDiscount)</span></span>
+                            </div>
+
                             <div class="summary-row">
                                 <span class="s-label">{{ __('file.shipping') }}</span>
                                 <span class="s-muted">{{ __('file.calculated_at_checkout') }}</span>
@@ -687,7 +705,7 @@
                         </div>
 
                         {{-- Promo Code --}}
-                        <div class="promo-section">
+                        <div class="promo-section" id="promo-input-section" style="{{ $couponDiscount > 0 ? 'display:none;' : '' }}">
                             <span class="promo-label">{{ __('file.promo_code') }}</span>
                             <div class="promo-row">
                                 <input type="text" class="promo-input" id="promo-input" placeholder="{{ __('file.enter_code') }}"
@@ -702,7 +720,7 @@
                         {{-- Total --}}
                         <div class="summary-total-row">
                             <span class="summary-total-label">{{ __('file.total') }}</span>
-                            <span class="summary-total-amount">
+                            <span class="summary-total-amount cart-total">
                                 @price($total)
                             </span>
                         </div>
@@ -835,44 +853,97 @@
         /* ─── PROMO CODE ──────────────────────────────────────────── */
         function applyPromo() {
             const input = document.getElementById('promo-input');
-            const msg = document.getElementById('promo-message');
-            const code = input.value.trim().toUpperCase();
+            const msg   = document.getElementById('promo-message');
+            const code  = input.value.trim().toUpperCase();
 
             if (!code) {
                 msg.style.display = 'block';
-                msg.style.color = '#b85c38';
-                msg.textContent = 'Please enter a promo code.';
+                msg.style.color   = '#b85c38';
+                msg.textContent   = 'Please enter a promo code.';
                 return;
             }
 
-            fetch('/cart/promo', {
+            const btn = document.querySelector('.promo-apply-btn');
+            btn.disabled    = true;
+            btn.textContent = '...';
+
+            fetch('{{ route("cart.promo.apply") }}', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                    'Accept': 'application/json'
+                    'Accept':       'application/json'
                 },
                 body: JSON.stringify({ code })
             })
-                .then(res => res.json())
-                .then(data => {
-                    msg.style.display = 'block';
-                    if (data.success) {
-                        msg.style.color = '#27ae60';
-                        msg.textContent = data.message || 'Promo code applied!';
-                        if (data.cartTotal) {
-                            document.querySelectorAll('.cart-total').forEach(el => el.textContent = data.cartTotal);
-                        }
-                    } else {
-                        msg.style.color = '#b85c38';
-                        msg.textContent = data.message || 'Invalid promo code.';
+            .then(res => res.json())
+            .then(data => {
+                msg.style.display = 'block';
+                if (data.success) {
+                    msg.style.color = '#27ae60';
+                    msg.textContent = data.message || 'Coupon applied!';
+
+                    // Show discount row
+                    const discountRow = document.getElementById('coupon-discount-row');
+                    if (discountRow) {
+                        document.getElementById('applied-coupon-code').textContent = data.code;
+                        document.getElementById('coupon-discount-display').textContent = data.discount;
+                        discountRow.style.display = '';
                     }
-                })
-                .catch(() => {
-                    msg.style.display = 'block';
+
+                    // Update total
+                    document.querySelectorAll('.cart-total').forEach(el => el.textContent = data.cartTotal);
+
+                    // Hide input section
+                    const promoSection = document.getElementById('promo-input-section');
+                    if (promoSection) promoSection.style.display = 'none';
+
+                } else {
                     msg.style.color = '#b85c38';
-                    msg.textContent = 'Something went wrong. Please try again.';
-                });
+                    msg.textContent = data.message || 'Invalid promo code.';
+                }
+            })
+            .catch(() => {
+                msg.style.display = 'block';
+                msg.style.color   = '#b85c38';
+                msg.textContent   = 'Something went wrong. Please try again.';
+            })
+            .finally(() => {
+                btn.disabled    = false;
+                btn.textContent = '{{ __('file.apply') }}';
+            });
+        }
+
+        function removePromo() {
+            fetch('{{ route("cart.promo.remove") }}', {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    'Accept':       'application/json'
+                }
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    // Hide discount row
+                    const discountRow = document.getElementById('coupon-discount-row');
+                    if (discountRow) discountRow.style.display = 'none';
+
+                    // Show input section again
+                    const promoSection = document.getElementById('promo-input-section');
+                    if (promoSection) promoSection.style.display = '';
+
+                    // Clear input & message
+                    const input = document.getElementById('promo-input');
+                    if (input) input.value = '';
+                    const msg = document.getElementById('promo-message');
+                    if (msg) { msg.style.display = 'none'; msg.textContent = ''; }
+
+                    // Update total
+                    document.querySelectorAll('.cart-total').forEach(el => el.textContent = data.cartTotal);
+                }
+            })
+            .catch(err => console.error(err));
         }
 
         document.getElementById('promo-input')?.addEventListener('keydown', e => {

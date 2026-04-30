@@ -45,7 +45,7 @@
                     <div id="bulk-ids-container" class="hidden"></div>
                     <div class="flex items-center gap-3">
                         <div class="selection-count" id="selected-count">0</div>
-                        <span>{{ __('file.subscribers_selected') ?? 'Subscribers Selected' }}</span>
+                        <span>{{ __('file.subscribers_selected') }}</span>
                     </div>
                     <button type="submit"
                         class="inline-flex items-center gap-2 px-6 py-2.5 bg-red-600 hover:bg-red-700 text-white text-[11px] font-bold uppercase tracking-wider rounded-xl transition-all shadow-lg shadow-red-600/20 active:scale-95 whitespace-nowrap border border-red-500/30">
@@ -67,12 +67,12 @@
                                     <input type="checkbox" id="select-all"
                                         class="w-4 h-4 rounded border-gray-300 dark:border-surface-tonal-a30 text-gray-900 focus:ring-gray-300">
                                 </th>
-                                <th>Email Address</th>
-                                <th>Name</th>
-                                <th>Source</th>
-                                <th class="!text-center">Status</th>
-                                <th>Subscribed At</th>
-                                <th class="!text-right">Actions</th>
+                                <th>{{ __('file.email_address') }}</th>
+                                <th>{{ __('file.name') }}</th>
+                                <th>{{ __('file.source') }}</th>
+                                <th class="!text-center">{{ __('file.status') }}</th>
+                                <th>{{ __('file.subscribed_at') }}</th>
+                                <th class="!text-right">{{ __('file.actions') }}</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -160,11 +160,11 @@
                     lengthMenu: [10, 25, 50, 100],
                     language: {
                         search: "",
-                        searchPlaceholder: "Search Subscribers...",
+                        searchPlaceholder: "{{ __('file.search_subscribers') }}",
                         lengthMenu: "_MENU_",
-                        info: "Showing _START_ to _END_ of _TOTAL_ Subscribers",
-                        infoEmpty: "No subscribers found",
-                        emptyTable: "No subscribers found.",
+                        info: "{{ __('file.showing_subscribers') }}",
+                        infoEmpty: "{{ __('file.no_subscribers_found') }}",
+                        emptyTable: "{{ __('file.no_subscribers_found') }}.",
                         processing: '<div class="admin-loader"></div>',
                         paginate: {
                             next: '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>',

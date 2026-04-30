@@ -5,7 +5,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title') | {{ $store_name ?? 'Karbnzol' }}</title>
+    
+    <!-- Primary Meta Tags -->
+    <title>@hasSection('title')@yield('title') | {{ $store_name ?? 'Karbnzol' }}@else{{ $meta_title ?? $store_name ?? 'Karbnzol' }}@endif</title>
+    <meta name="title" content="@yield('meta_title', $meta_title ?? '')">
+    <meta name="description" content="@yield('meta_description', $meta_description ?? '')">
+    <meta name="keywords" content="@yield('meta_keywords', $meta_keywords ?? '')">
+    <meta name="author" content="{{ $store_name ?? 'Karbnzol' }}">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="@yield('og_type', 'website')">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:title" content="@yield('meta_title', $meta_title ?? '')">
+    <meta property="og:description" content="@yield('meta_description', $meta_description ?? '')">
+    <meta property="og:image" content="@yield('og_image', $og_image ?? '')">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="{{ url()->current() }}">
+    <meta property="twitter:title" content="@yield('meta_title', $meta_title ?? '')">
+    <meta property="twitter:description" content="@yield('meta_description', $meta_description ?? '')">
+    <meta property="twitter:image" content="@yield('og_image', $og_image ?? '')">
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <link rel="preconnect" href="https://fonts.googleapis.com">

@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Refund;
+use App\Models\OrderRefund;
 use App\Models\Setting;
 
 class RefundController extends Controller
@@ -22,7 +22,7 @@ class RefundController extends Controller
      */
     public function datatable(Request $request)
     {
-        $query = Refund::with(['order', 'transaction', 'approver']);
+        $query = OrderRefund::with(['order', 'performedBy']);
 
         return datatables()->of($query)
             ->addColumn('refund_id_html', function ($row) {
@@ -39,7 +39,7 @@ class RefundController extends Controller
             })
             ->addColumn('status_html', function ($row) {
                 $colors = [
-                    'completed' => 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400',
+                    'processed' => 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400',
                     'pending' => 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400',
                     'failed' => 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400',
                 ];
@@ -62,14 +62,15 @@ class RefundController extends Controller
     /**
      * Display the specified refund.
      */
-    public function show(Refund $refund)
+    public function show($id)
     {
-        $refund->load(['order', 'transaction', 'approver']);
+        $refund = OrderRefund::with(['order', 'performedBy'])->findOrFail($id);
         return view('admin.refunds.show', compact('refund'));
     }
 
-    public function destroy(Refund $refund)
+    public function destroy($id)
     {
+        $refund = OrderRefund::findOrFail($id);
         $refund->delete();
         if (request()->ajax()) {
             return response()->json(['success' => true, 'message' => 'Refund deleted successfully.']);
@@ -89,11 +90,43 @@ class RefundController extends Controller
             return response()->json(['success' => false, 'message' => 'No items selected.'], 400);
         }
 
-        Refund::whereIn('id', $ids)->delete();
+        OrderRefund::whereIn('id', $ids)->delete();
 
         return response()->json([
             'success' => true,
             'message' => 'Selected refunds deleted successfully.'
         ]);
+    }
+
+    public function approve($id)
+    {
+        $refund = OrderRefund::findOrFail($id);
+        $refund->update([
+            'status' => 'processed',
+            'refunded_at' => now(),
+            'performed_by' => auth()->id()
+        ]);
+
+        // Update order payment status and refunded amount
+        $order = $refund->order;
+        $totalRefunded = $order->refunds()->where('status', 'processed')->sum('amount');
+        
+        $order->update([
+            'refunded_amount' => $totalRefunded,
+            'payment_status' => $totalRefunded >= $order->total_amount ? 'refunded' : 'partially_refunded'
+        ]);
+
+        return back()->with('success', 'Refund approved successfully.');
+    }
+
+    public function reject($id)
+    {
+        $refund = OrderRefund::findOrFail($id);
+        $refund->update([
+            'status' => 'failed',
+            'performed_by' => auth()->id()
+        ]);
+
+        return back()->with('success', 'Refund rejected.');
     }
 }

@@ -46,7 +46,7 @@ class HomeController extends Controller
             ->where('is_active', true)
             ->with('products.primaryImage')
             ->latest()
-            ->take(4)
+            ->take(5)
             ->get();
 
         // ── Categories for tab bar (root-level, with product count) ──────

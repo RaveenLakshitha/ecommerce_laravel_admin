@@ -799,7 +799,7 @@
                         @php
                             $colImg = $col->banner_url
                                 ?? ($col->products->first()?->primaryImage
-                                    ? asset('storage/' . $col->products->first()->primaryImage->file_path)
+                                    ? $col->products->first()->primaryImage->url
                                     : 'https://images.unsplash.com/photo-1487222477894-8943e31ef7b2?w=900&q=80');
                         @endphp
                         <div class="col-card reveal">

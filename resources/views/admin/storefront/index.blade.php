@@ -69,10 +69,16 @@
 
                     <!-- About Us Section -->
                     <div class="border-b border-gray-200 dark:border-surface-tonal-a30 pb-6">
-                        <h2 class="text-xl font-semibold text-gray-900 dark:text-primary-a0 mb-6">About Us (Footer)</h2>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Short Description <span class="text-xs text-gray-400 font-normal ml-2">(Max 250 characters)</span></label>
-                            <textarea name="storefront_about_us" rows="4" maxlength="250" class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-transparent dark:text-primary-a0 transition-shadow">{{ old('storefront_about_us', $setting->storefront_about_us) }}</textarea>
+                        <h2 class="text-xl font-semibold text-gray-900 dark:text-primary-a0 mb-6">About Us Content</h2>
+                        <div class="space-y-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Footer About Us <span class="text-xs text-gray-400 font-normal ml-2">(Max 100 characters)</span></label>
+                                <textarea name="storefront_about_us" rows="2" maxlength="100" class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-transparent dark:text-primary-a0 transition-shadow">{{ old('storefront_about_us', $setting->storefront_about_us) }}</textarea>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">About Us Page Content <span class="text-xs text-gray-400 font-normal ml-2">(Detailed description for the about page)</span></label>
+                                <textarea name="storefront_about_us_content" rows="6" class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-transparent dark:text-primary-a0 transition-shadow">{{ old('storefront_about_us_content', $setting->storefront_about_us_content) }}</textarea>
+                            </div>
                         </div>
                     </div>
 

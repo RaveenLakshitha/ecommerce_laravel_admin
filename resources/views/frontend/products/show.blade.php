@@ -1092,11 +1092,11 @@
                     {{-- Main image --}}
                     @if($product->primaryImage)
                         <img id="mainProductImage" class="pd-main-img"
-                             src="{{ asset('storage/' . $product->primaryImage->file_path) }}"
+                             src="{{ $product->primaryImage->url }}"
                              alt="{{ $product->name }}">
                     @elseif($product->images && $product->images->count() > 0)
                         <img id="mainProductImage" class="pd-main-img"
-                             src="{{ asset('storage/' . $product->images->first()->file_path) }}"
+                             src="{{ $product->images->first()->url }}"
                              alt="{{ $product->name }}">
                     @else
                         <img id="mainProductImage" class="pd-main-img"
@@ -1110,9 +1110,9 @@
                     @if($product->images && $product->images->count() > 0)
                         @foreach($product->images as $index => $image)
                             <button class="pd-thumb-btn {{ $index === 0 ? 'active' : '' }}"
-                                    onclick="switchImage('{{ asset('storage/' . $image->file_path) }}', this)"
+                                    onclick="switchImage('{{ $image->url }}', this)"
                                     aria-label="View image {{ $index + 1 }}">
-                                <img src="{{ asset('storage/' . $image->file_path) }}" alt="{{ $product->name }} {{ $index + 1 }}">
+                                <img src="{{ $image->url }}" alt="{{ $product->name }} {{ $index + 1 }}">
                             </button>
                         @endforeach
                     @else
@@ -1545,11 +1545,11 @@
                                     </svg>
                                 </button>
                                 @if($rp->primaryImage)
-                                    <img src="{{ asset('storage/' . $rp->primaryImage->file_path) }}" alt="{{ $rp->name }}">
+                                    <img src="{{ $rp->primaryImage->url }}" alt="{{ $rp->name }}" loading="lazy">
                                 @elseif($rp->images && $rp->images->count() > 0)
-                                    <img src="{{ asset('storage/' . $rp->images->first()->file_path) }}" alt="{{ $rp->name }}">
+                                    <img src="{{ $rp->images->first()->url }}" alt="{{ $rp->name }}" loading="lazy">
                                 @else
-                                    <img src="{{ asset('images/placeholder.jpg') }}" alt="{{ $rp->name }}">
+                                    <img src="{{ asset('images/placeholder.jpg') }}" alt="{{ $rp->name }}" loading="lazy">
                                 @endif
                             </div>
                             <div class="pd-card-name">{{ $rp->name }}</div>

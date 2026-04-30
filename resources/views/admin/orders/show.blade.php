@@ -325,10 +325,10 @@
                                     {{ $order->shippingAddress->first_name }} {{ $order->shippingAddress->last_name }}</p>
                                 <div
                                     class="text-xs font-bold text-gray-500 dark:text-gray-400 leading-relaxed uppercase tracking-tighter">
-                                    {{ $order->shippingAddress->address_line_1 }}<br>
-                                    @if($order->shippingAddress->address_line_2)
-                                    {{ $order->shippingAddress->address_line_2 }}<br> @endif
-                                    {{ $order->shippingAddress->city }}, {{ $order->shippingAddress->state }}
+                                    {{ $order->shippingAddress->address_line1 }}<br>
+                                    @if($order->shippingAddress->address_line2)
+                                    {{ $order->shippingAddress->address_line2 }}<br> @endif
+                                    {{ $order->shippingAddress->city }}, {{ $order->shippingAddress->province }}
                                     {{ $order->shippingAddress->postal_code }}<br>
                                     <span
                                         class="text-indigo-600 dark:text-indigo-400">{{ $order->shippingAddress->country }}</span>
@@ -337,6 +337,63 @@
                         @else
                             <p class="text-xs italic text-gray-400 font-bold uppercase tracking-widest relative z-10">
                                 {{ __('file.no_destination_defined') }}</p>
+                        @endif
+                    </div>
+
+                    {{-- Shipment Control --}}
+                    <div
+                        class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 p-4">
+                        <h3 class="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-4">
+                            {{ __('file.shipment_management') }}</h3>
+                        
+                        @if($order->shipments->count() > 0)
+                            <div class="space-y-4">
+                                @foreach($order->shipments as $shipment)
+                                    <div class="p-3 rounded-xl bg-gray-50 dark:bg-surface-tonal-a30/50 border border-gray-100 dark:border-surface-tonal-a30">
+                                        <div class="flex justify-between items-start mb-2">
+                                            @php
+                                                $shipStatusColors = [
+                                                    'pending' => 'text-gray-500',
+                                                    'shipped' => 'text-blue-500',
+                                                    'out_for_delivery' => 'text-yellow-500',
+                                                    'delivered' => 'text-green-500',
+                                                    'failed' => 'text-red-500',
+                                                    'returned' => 'text-orange-500',
+                                                ];
+                                                $sColor = $shipStatusColors[$shipment->status] ?? 'text-gray-500';
+                                            @endphp
+                                            <span class="text-[10px] font-black {{ $sColor }} uppercase tracking-widest">
+                                                {{ __('file.' . $shipment->status) }}
+                                            </span>
+                                            <a href="{{ route('shipping.shipments.show', $shipment->id) }}" class="text-[9px] font-bold text-gray-400 hover:text-indigo-500 uppercase tracking-widest">
+                                                {{ __('file.manage') }} &rarr;
+                                            </a>
+                                        </div>
+                                        <div class="space-y-1">
+                                            <p class="text-[10px] font-bold text-gray-500 uppercase">
+                                                {{ __('file.tracking_number') }}: 
+                                                <span class="text-gray-700 dark:text-gray-200 font-mono">{{ $shipment->tracking_number ?? 'N/A' }}</span>
+                                            </p>
+                                            <p class="text-[10px] font-bold text-gray-500 uppercase">
+                                                {{ __('file.courier') }}: 
+                                                <span class="text-gray-700 dark:text-gray-200">{{ $shipment->courier->name ?? 'N/A' }}</span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        @else
+                            <div class="text-center py-4">
+                                <p class="text-[10px] font-bold text-gray-400 uppercase mb-3">{{ __('file.no_shipment_found') }}</p>
+                                <form action="{{ route('shipping.shipments.store') }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="order_id" value="{{ $order->id }}">
+                                    <input type="hidden" name="status" value="pending">
+                                    <button type="submit" class="w-full py-2 bg-indigo-600 text-white text-[10px] font-black uppercase tracking-widest rounded-lg hover:bg-indigo-700 transition-all shadow-sm">
+                                        {{ __('file.create_shipment') }}
+                                    </button>
+                                </form>
+                            </div>
                         @endif
                     </div>
 

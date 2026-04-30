@@ -33,7 +33,8 @@ class StorefrontController extends Controller
             'storefront_offer_link' => 'nullable|string|max:255',
             'storefront_marquee_text' => 'nullable|string|max:100',
             'storefront_marquee_link' => 'nullable|string|max:255',
-            'storefront_about_us' => 'nullable|string|max:250',
+            'storefront_about_us' => 'nullable|string|max:100',
+            'storefront_about_us_content' => 'nullable|string',
             
             'banners' => 'nullable|array',
             'banners.*.tag' => 'nullable|string|max:25',
@@ -47,6 +48,7 @@ class StorefrontController extends Controller
             'phone',
             'email',
             'storefront_about_us',
+            'storefront_about_us_content',
             'storefront_offer_text',
             'storefront_offer_link',
             'storefront_marquee_text',

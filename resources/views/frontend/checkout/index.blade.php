@@ -356,7 +356,7 @@
                 @foreach($cartItems as $item)
                     <div class="summary-item">
                         @if(isset($item->attributes['image']))
-                            <img src="{{ asset('storage/' . $item->attributes['image']) }}" alt="{{ $item->name }}" class="summary-item-img">
+                            <img src="{{ asset('storage/' . $item->attributes['image']) }}" alt="{{ $item->name }}" class="summary-item-img" loading="lazy">
                         @else
                             <div class="summary-item-img" style="display:flex; align-items:center; justify-content:center; font-size:0.6rem; color:#999;">{{ __('file.no_image') }}</div>
                         @endif
@@ -380,6 +380,21 @@
                     <span>{{ __('file.subtotal') }}</span>
                     <span>@price($subtotal)</span>
                 </div>
+
+                @if(isset($autoDiscount) && $autoDiscount > 0)
+                    <div class="summary-row" style="color:#16a34a;">
+                        <span>🏷 {{ __('file.automatic_discount') ?? 'Automatic Discount' }}</span>
+                        <span>−@price($autoDiscount)</span>
+                    </div>
+                @endif
+
+                @if(isset($appliedCoupon) && $appliedCoupon && $couponDiscount > 0)
+                    <div class="summary-row" style="color:#16a34a;">
+                        <span>🎟 {{ $appliedCoupon['code'] }}</span>
+                        <span>−@price($couponDiscount)</span>
+                    </div>
+                @endif
+
                 <div class="summary-row">
                     <span>{{ __('file.shipping') }}</span>
                     <span id="summary-shipping-display">@price(0)</span>
@@ -394,30 +409,30 @@
 </div>
 
 <script>
+    const cartSubtotal  = {{ $subtotal }};
+    const totalDiscount = {{ $totalDiscount ?? 0 }};
+
     function updateTotal() {
         const selectedShipping = document.querySelector('input[name="shipping_rate_id"]:checked');
         if (selectedShipping) {
             const shippingCost = parseFloat(selectedShipping.dataset.cost || 0);
-            const subtotal = {{ $subtotal }};
-            const total = subtotal + shippingCost;
-            
-            // For the summary display, we'll do a simple replacement if we don't have a JS formatter
-            // Ideally we'd have a window.currency_format function
-            const symbol = "{{ $currency_symbol }}";
+            const discounted   = Math.max(0, cartSubtotal - totalDiscount);
+            const total        = discounted + shippingCost;
+
+            const symbol   = "{{ $currency_symbol }}";
             const position = "{{ Setting::getValue('currency_position', 'left') }}";
             const decimals = {{ Setting::getValue('number_of_decimals', 2) }};
-            
+
             const format = (val) => {
                 const formatted = val.toLocaleString(undefined, {minimumFractionDigits: decimals, maximumFractionDigits: decimals});
                 return position === 'left' ? symbol + formatted : formatted + ' ' + symbol;
             };
 
             document.getElementById('summary-shipping-display').textContent = format(shippingCost);
-            document.getElementById('summary-total-display').textContent = format(total);
+            document.getElementById('summary-total-display').textContent    = format(total);
         }
     }
 
-    // Run on load
     document.addEventListener('DOMContentLoaded', updateTotal);
 </script>
 @endsection

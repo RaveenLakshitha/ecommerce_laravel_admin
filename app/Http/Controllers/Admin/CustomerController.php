@@ -59,7 +59,7 @@ class CustomerController extends Controller
         $data = $customers->map(function ($customer) {
             $nameHtml = '<div class="text-sm font-medium text-gray-900 dark:text-primary-a0">' . htmlspecialchars($customer->first_name . ' ' . $customer->last_name) . '</div>';
 
-            $statusHtml = '<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-400 uppercase">' . htmlspecialchars($customer->status) . '</span>';
+            $statusHtml = '<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-400 uppercase">' . __('file.' . strtolower($customer->status ?? 'active')) . '</span>';
 
             return [
                 'id' => $customer->id,
@@ -106,7 +106,7 @@ class CustomerController extends Controller
             'is_internal' => true,
         ]);
 
-        return back()->with('success', 'Note added successfully');
+        return back()->with('success', __('file.item_created_successfully'));
     }
 
     public function syncTags(Request $request, $id)
@@ -116,16 +116,16 @@ class CustomerController extends Controller
 
         $customer->tags()->sync($request->tags ?? []);
 
-        return back()->with('success', 'Customer tags updated');
+        return back()->with('success', __('file.item_updated_successfully'));
     }
 
     public function destroy(Customer $customer)
     {
         $customer->delete();
         if (request()->ajax()) {
-            return response()->json(['success' => true, 'message' => 'Customer deleted successfully.']);
+            return response()->json(['success' => true, 'message' => __('file.item_deleted_successfully')]);
         }
-        return back()->with('success', 'Customer deleted successfully.');
+        return back()->with('success', __('file.item_deleted_successfully'));
     }
 
     public function bulkDelete(Request $request)
@@ -137,14 +137,14 @@ class CustomerController extends Controller
         }
 
         if (!is_array($ids) || empty($ids)) {
-            return response()->json(['success' => false, 'message' => 'No items selected.'], 400);
+            return response()->json(['success' => false, 'message' => __('file.no_items_selected')], 400);
         }
 
         Customer::whereIn('id', $ids)->delete();
 
         return response()->json([
             'success' => true,
-            'message' => 'Selected customers deleted successfully.'
+            'message' => __('file.selected_items_deleted_successfully')
         ]);
     }
 }

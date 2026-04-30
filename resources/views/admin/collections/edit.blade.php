@@ -156,6 +156,7 @@
                                                     x-text="product.name"></span>
                                             </label>
                                         </template>
+                                        <div x-show="filtered.length === 0"
                                             class="p-8 text-center text-sm text-gray-400 dark:text-gray-500">{{ __('file.no_products_found') }}</div>
                                     </div>
                                     <div class="flex items-center justify-between px-1" x-show="totalPages > 1">

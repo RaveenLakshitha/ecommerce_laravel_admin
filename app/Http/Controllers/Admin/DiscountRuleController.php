@@ -53,14 +53,14 @@ class DiscountRuleController extends Controller
         $data = $rules->map(function ($rule) {
             $statusHtml = '';
             if ($rule->is_active && (!$rule->starts_at || now()->gte($rule->starts_at)) && (!$rule->expires_at || now()->lte($rule->expires_at))) {
-                $statusHtml = '<span class="rule-status-badge status-active">Active</span>';
+                $statusHtml = '<span class="rule-status-badge status-active">' . __('file.active') . '</span>';
             } elseif (!$rule->is_active) {
-                $statusHtml = '<span class="rule-status-badge status-inactive">Inactive</span>';
+                $statusHtml = '<span class="rule-status-badge status-inactive">' . __('file.inactive') . '</span>';
             } else {
-                $statusHtml = '<span class="rule-status-badge status-inactive">Scheduled / Expired</span>';
+                $statusHtml = '<span class="rule-status-badge status-inactive">' . __('file.scheduled_expired') . '</span>';
             }
             if ($rule->is_flash_sale) {
-                $statusHtml .= '<span class="ml-2 rule-status-badge status-flash">Flash Sale</span>';
+                $statusHtml .= '<span class="ml-2 rule-status-badge status-flash">' . __('file.flash_sale') . '</span>';
             }
 
             $nameHtml = '<div class="text-sm font-semibold text-gray-900 dark:text-primary-a0">' . htmlspecialchars($rule->name) . '</div>';
@@ -68,23 +68,23 @@ class DiscountRuleController extends Controller
 
             $typeHtml = '<div class="text-sm text-gray-900 dark:text-primary-a0">';
             if ($rule->type === 'percentage') {
-                $typeHtml .= rtrim(rtrim((string) $rule->value, '0'), '.') . '% Off';
+                $typeHtml .= rtrim(rtrim((string) $rule->value, '0'), '.') . '% ' . __('file.off');
             } elseif ($rule->type === 'fixed') {
-                $typeHtml .= Setting::formatPrice($rule->value) . ' Off';
+                $typeHtml .= Setting::formatPrice($rule->value) . ' ' . __('file.off');
             } elseif ($rule->type === 'bogo') {
-                $typeHtml .= 'BOGO (Buy ' . $rule->buy_quantity . ', Get ' . $rule->get_quantity . ')';
+                $typeHtml .= __('file.bogo') . ' (' . __('file.buy') . ' ' . $rule->buy_quantity . ', ' . __('file.get') . ' ' . $rule->get_quantity . ')';
             } else {
-                $typeHtml .= 'Buy ' . $rule->buy_quantity . ', Get ' . $rule->get_quantity . ' (' . htmlspecialchars($rule->type) . ')';
+                $typeHtml .= __('file.buy') . ' ' . $rule->buy_quantity . ', ' . __('file.get') . ' ' . $rule->get_quantity . ' (' . htmlspecialchars($rule->type) . ')';
             }
             $typeHtml .= '</div>';
 
             $datesHtml = '<div class="text-sm text-gray-500">';
             if ($rule->starts_at || $rule->expires_at) {
-                $startsAtStr = $rule->starts_at ? $rule->starts_at->format('M d, Y H:i') : 'Always';
-                $expiresAtStr = $rule->expires_at ? $rule->expires_at->format('M d, Y H:i') : 'Never';
+                $startsAtStr = $rule->starts_at ? $rule->starts_at->format('M d, Y H:i') : __('file.always');
+                $expiresAtStr = $rule->expires_at ? $rule->expires_at->format('M d, Y H:i') : __('file.never');
                 $datesHtml .= '<div>' . $startsAtStr . ' - <br>' . $expiresAtStr . '</div>';
             } else {
-                $datesHtml .= 'No Expiry';
+                $datesHtml .= __('file.no_expiry');
             }
             $datesHtml .= '</div>';
 
@@ -112,7 +112,7 @@ class DiscountRuleController extends Controller
     public function duplicate(DiscountRule $discountRule)
     {
         $newRule = $discountRule->replicate();
-        $newRule->name = $discountRule->name . ' (Copy)';
+        $newRule->name = $discountRule->name . ' ' . __('file.copy_suffix');
         $newRule->is_active = false; // Always disable copies by default
         $newRule->save();
 
@@ -127,7 +127,7 @@ class DiscountRuleController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Rule duplicated successfully! You can now edit the copy.',
+            'message' => __('file.item_created_successfully'),
             'redirect' => route('discount-rules.edit', $newRule->id)
         ]);
     }
@@ -194,7 +194,7 @@ class DiscountRuleController extends Controller
         $discountRule = DiscountRule::create($data);
         $this->syncRelations($discountRule, $request);
 
-        return redirect()->route('discount-rules.index')->with('success', 'Discount rule created successfully.');
+        return redirect()->route('discount-rules.index')->with('success', __('file.item_created_successfully'));
     }
 
     public function edit(DiscountRule $discountRule)
@@ -275,7 +275,7 @@ class DiscountRuleController extends Controller
         $discountRule->update($data);
         $this->syncRelations($discountRule, $request);
 
-        return redirect()->route('discount-rules.index')->with('success', 'Discount rule updated successfully.');
+        return redirect()->route('discount-rules.index')->with('success', __('file.item_updated_successfully'));
     }
 
     protected function syncRelations(DiscountRule $discountRule, Request $request)
@@ -304,10 +304,10 @@ class DiscountRuleController extends Controller
         $discountRule->delete();
 
         if (request()->ajax()) {
-            return response()->json(['success' => true, 'message' => 'Discount rule deleted successfully.']);
+            return response()->json(['success' => true, 'message' => __('file.item_deleted_successfully')]);
         }
 
-        return redirect()->route('admin.discount-rules.index')->with('success', 'Discount rule deleted successfully.');
+        return redirect()->route('admin.discount-rules.index')->with('success', __('file.item_deleted_successfully'));
     }
 
     public function bulkDelete(Request $request)
@@ -319,14 +319,14 @@ class DiscountRuleController extends Controller
         }
 
         if (!is_array($ids) || empty($ids)) {
-            return response()->json(['success' => false, 'message' => 'No items selected.'], 400);
+            return response()->json(['success' => false, 'message' => __('file.no_items_selected')], 400);
         }
 
         \App\Models\DiscountRule::whereIn('id', $ids)->delete();
 
         return response()->json([
             'success' => true,
-            'message' => 'Selected discount rules deleted successfully.'
+            'message' => __('file.selected_items_deleted_successfully')
         ]);
     }
 }

@@ -88,126 +88,11 @@
     </div>
 @endsection
 
-@push('drawers')
-    {{-- Collection Drawer --}}
-    <div id="collection-drawer" class="fixed inset-0 z-[9999] hidden overflow-hidden">
-        <div id="collection-drawer-overlay"
-            class="absolute inset-0 bg-black/40 backdrop-blur-sm opacity-0 transition-opacity duration-300"
-            onclick="closeCollectionDrawer()"></div>
-        <div id="collection-drawer-panel"
-            class="absolute inset-y-0 right-0 w-full md:max-w-lg bg-white dark:bg-surface-tonal-a20 shadow-2xl transform translate-x-full transition-transform duration-500 ease-in-out flex flex-col">
-            
-            <div class="flex items-center justify-between px-8 py-5 border-b border-gray-100 dark:border-white/5 bg-gray-50/50 dark:bg-white/5">
-                <div>
-                    <h3 id="collection-drawer-title" class="text-xl font-extrabold text-gray-900 dark:text-white tracking-tight">
-                        {{ __('file.add_new_collection') }}
-                    </h3>
-                    <p id="collection-drawer-subtitle" class="text-sm font-medium text-primary mt-1">
-                        {{ __('file.create_new_collection_entry') ?? 'Set up a new collection with products and schedule.' }}
-                    </p>
-                </div>
-                <button type="button" onclick="closeCollectionDrawer()"
-                    class="p-2.5 rounded-xl hover:bg-white dark:hover:bg-white/10 text-gray-400 hover:text-gray-900 dark:hover:text-white transition-all">
-                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                </button>
-            </div>
 
-            <div id="collection-drawer-content" class="flex-1 overflow-y-auto p-8 custom-scrollbar">
-                <div class="flex items-center justify-center h-full">
-                    <div class="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-@endpush
 
     @push('scripts')
     <script type="module">
-        const colDrawer = document.getElementById('collection-drawer');
-        const colOverlay = document.getElementById('collection-drawer-overlay');
-        const colPanel = document.getElementById('collection-drawer-panel');
-        const colContent = document.getElementById('collection-drawer-content');
 
-        window.openCollectionDrawer = (url = null) => {
-            const isEdit = url && !url.includes('create');
-            const titleEl = document.getElementById('collection-drawer-title');
-            const subtitleEl = document.getElementById('collection-drawer-subtitle');
-            
-            titleEl.textContent = isEdit ? '{{ __("file.edit_collection") ?? "Edit Collection" }}' : '{{ __("file.add_new_collection") }}';
-            subtitleEl.textContent = isEdit ? '{{ __("file.update_collection_details") ?? "Update collection items and settings" }}' : '{{ __("file.create_new_collection_entry") ?? "Set up a new collection with products and schedule." }}';
-
-            colDrawer.classList.remove('hidden');
-            colContent.innerHTML = '<div class="flex items-center justify-center h-full"><div class="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin"></div></div>';
-            
-            setTimeout(() => {
-                colOverlay.classList.replace('opacity-0', 'opacity-100');
-                colPanel.classList.remove('translate-x-full');
-            }, 10);
-            
-            document.body.style.overflow = 'hidden';
-
-            const fetchUrl = url || '{{ route("collections.create") }}';
-            fetch(fetchUrl, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
-                .then(res => res.text())
-                .then(html => {
-                    colContent.innerHTML = html;
-                    setupCollectionFormHandler();
-                })
-                .catch(err => {
-                    colContent.innerHTML = `<div class="p-4 text-red-500 text-center">${err.message}</div>`;
-                });
-        };
-
-        window.closeCollectionDrawer = () => {
-            colOverlay.classList.replace('opacity-100', 'opacity-0');
-            colPanel.classList.add('translate-x-full');
-            document.body.style.overflow = '';
-            setTimeout(() => colDrawer.classList.add('hidden'), 500);
-        };
-
-        function setupCollectionFormHandler() {
-            const form = document.getElementById('collection-drawer-form');
-            if (!form) return;
-
-            form.addEventListener('submit', function (e) {
-                e.preventDefault();
-                const formData = new FormData(this);
-                const submitBtn = form.querySelector('button[type="submit"]');
-                const loader = document.getElementById('collection-drawer-loader');
-                const saveText = document.getElementById('collection-drawer-save-text');
-
-                submitBtn.disabled = true;
-                loader.classList.remove('hidden');
-                saveText.classList.add('invisible');
-
-                fetch(this.action, {
-                    method: 'POST',
-                    body: formData,
-                    headers: { 'X-Requested-With': 'XMLHttpRequest' }
-                })
-                .then(res => res.json())
-                .then(res => {
-                    if (res.success) {
-                        closeCollectionDrawer();
-                        if (window.collectionTable) window.collectionTable.draw(false);
-                        if (typeof showNotification === 'function') showNotification('{{ __("file.Success") }}', res.message, 'success');
-                    } else {
-                        if (typeof showNotification === 'function') showNotification('{{ __("file.Error") }}', res.message || 'Something went wrong', 'error');
-                    }
-                })
-                .catch(err => {
-                    console.error(err);
-                    if (typeof showNotification === 'function') showNotification('{{ __("file.Error") }}', 'An unexpected error occurred', 'error');
-                })
-                .finally(() => {
-                    submitBtn.disabled = false;
-                    loader.classList.add('hidden');
-                    saveText.classList.remove('invisible');
-                });
-            });
-        }
 
         const initCollectionsTable = () => {
             if (!window.jQuery) {
@@ -270,13 +155,13 @@
                             className: 'text-right whitespace-nowrap !px-4',
                             render: (data, type, row) => `
                                 <div class="flex items-center justify-end gap-2 px-3">
-                                    <button type="button" onclick="openCollectionDrawer('${row.edit_url}')" 
-                                        class="p-2 rounded-xl text-gray-400 hover:text-primary dark:hover:text-primary hover:bg-primary/10 transition-all group/btn" 
+                                    <a href="${row.edit_url}" 
+                                        class="p-2 rounded-xl text-gray-400 hover:text-primary dark:hover:text-primary hover:bg-primary/10 transition-all group/btn inline-flex" 
                                         title="{{ __('file.edit') }}">
                                         <svg class="w-5 h-5 group-hover/btn:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
                                         </svg>
-                                    </button>
+                                    </a>
                                     <button type="button" onclick="confirmDelete('${row.delete_url}')" 
                                         class="p-2 rounded-xl text-gray-400 hover:text-error dark:hover:text-error hover:bg-error/10 transition-all group/btn" 
                                         title="{{ __('file.delete') }}">

@@ -58,7 +58,7 @@
                                     <label
                                         class="block text-[10px] font-black text-black dark:text-white uppercase tracking-widest mb-1">{{ __('file.internal_description') }}</label>
                                     <textarea name="description" id="description" rows="2"
-                                        placeholder="What is this coupon for?"
+                                        placeholder="{{ __('file.coupon_purpose_placeholder') }}"
                                         class="block w-full rounded-md border border-gray-100/50 dark:border-white/5 bg-gray-50/30 dark:bg-surface-tonal-a20 px-3 py-2 text-xs font-bold shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-300 text-black dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-indigo-300 dark:focus:border-indigo-500/50 focus:ring-2 focus:ring-indigo-500/5 focus:shadow-md resize-y">{{ old('description') }}</textarea>
                                 </div>
                             </div>
@@ -80,9 +80,8 @@
                                         <select name="type" id="type" required
                                             class="block w-full rounded-md border border-gray-100/50 dark:border-white/5 bg-gray-50/30 dark:bg-surface-tonal-a20 px-3 py-2 text-xs font-bold shadow-sm text-black dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-indigo-300 dark:focus:border-indigo-500/50 focus:ring-2 focus:ring-indigo-500/5 focus:shadow-md">
                                             <option value="percentage" {{ old('type') == 'percentage' ? 'selected' : '' }}>
-                                                Percentage (%)</option>
-                                            <option value="fixed" {{ old('type') == 'fixed' ? 'selected' : '' }}>Fixed Amount
-                                                ($)</option>
+                                                {{ __('file.percentage') }}</option>
+                                            <option value="fixed" {{ old('type') == 'fixed' ? 'selected' : '' }}>{{ __('file.fixed_amount') }}</option>
                                         </select>
                                     </div>
                                     <div>
@@ -135,12 +134,10 @@
                                             class="block text-[10px] font-black text-black dark:text-white uppercase tracking-widest mb-1">{{ __('file.applies_to') }}</label>
                                         <select name="applies_to" id="applies_to" required
                                             class="block w-full rounded-md border border-gray-100/50 dark:border-white/5 bg-gray-50/30 dark:bg-surface-tonal-a20 px-3 py-2 text-xs font-bold shadow-sm text-black dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-indigo-300 dark:focus:border-indigo-500/50 focus:ring-2 focus:ring-indigo-500/5 focus:shadow-md">
-                                            <option value="all" {{ old('applies_to') == 'all' ? 'selected' : '' }}>Entire
-                                                Order</option>
-                                            <option value="specific_products" {{ old('applies_to') == 'specific_products' ? 'selected' : '' }}>Specific Products</option>
-                                            <option value="specific_categories" {{ old('applies_to') == 'specific_categories' ? 'selected' : '' }}>Specific Categories</option>
-                                            <option value="specific_collections" {{ old('applies_to') == 'specific_collections' ? 'selected' : '' }}>Specific
-                                                Collections</option>
+                                            <option value="all" {{ old('applies_to') == 'all' ? 'selected' : '' }}>{{ __('file.entire_order') }}</option>
+                                            <option value="specific_products" {{ old('applies_to') == 'specific_products' ? 'selected' : '' }}>{{ __('file.specific_products') }}</option>
+                                            <option value="specific_categories" {{ old('applies_to') == 'specific_categories' ? 'selected' : '' }}>{{ __('file.specific_categories') }}</option>
+                                            <option value="specific_collections" {{ old('applies_to') == 'specific_collections' ? 'selected' : '' }}>{{ __('file.specific_collections') }}</option>
                                         </select>
                                     </div>
                                 </div>
@@ -188,14 +185,14 @@
                                         <label
                                             class="block text-[10px] font-black text-black dark:text-white uppercase tracking-widest mb-1">{{ __('file.global_usage_limit') }}</label>
                                         <input type="number" min="1" name="usage_limit" id="usage_limit"
-                                            value="{{ old('usage_limit') }}" placeholder="∞ Unlimited"
+                                            value="{{ old('usage_limit') }}" placeholder="{{ __('file.unlimited_placeholder') }}"
                                             class="block w-full rounded-md border border-gray-100/50 dark:border-white/5 bg-gray-50/30 dark:bg-surface-tonal-a20 px-3 py-2 text-xs font-bold shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-300 text-black dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-indigo-300 dark:focus:border-indigo-500/50 focus:ring-2 focus:ring-indigo-500/5 focus:shadow-md">
                                     </div>
                                     <div>
                                         <label
                                             class="block text-[10px] font-black text-black dark:text-white uppercase tracking-widest mb-1">{{ __('file.usage_limit_per_user') }}</label>
                                         <input type="number" min="1" name="usage_per_user" id="usage_per_user"
-                                            value="{{ old('usage_per_user') }}" placeholder="∞ Unlimited"
+                                            value="{{ old('usage_per_user') }}" placeholder="{{ __('file.unlimited_placeholder') }}"
                                             class="block w-full rounded-md border border-gray-100/50 dark:border-white/5 bg-gray-50/30 dark:bg-surface-tonal-a20 px-3 py-2 text-xs font-bold shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-300 text-black dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-indigo-300 dark:focus:border-indigo-500/50 focus:ring-2 focus:ring-indigo-500/5 focus:shadow-md">
                                     </div>
                                 </div>

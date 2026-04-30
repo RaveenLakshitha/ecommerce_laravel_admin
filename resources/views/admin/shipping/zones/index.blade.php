@@ -23,15 +23,15 @@
 
             <div class="admin-page-header">
                 <div>
-                    <h1 class="admin-page-title">{{ __('file.shipping_zones') ?? 'Shipping Zones' }}</h1>
-                    <p class="admin-page-subtitle">{{ __('file.manage_shipping_zones') ?? 'Define regional boundaries to apply precision-targeted shipping rate structures' }}</p>
+                    <h1 class="admin-page-title">{{ __('file.shipping_zones') }}</h1>
+                    <p class="admin-page-subtitle">{{ __('file.manage_shipping_zones') }}</p>
                 </div>
                 <div class="flex items-center gap-3">
                     <button type="button" onclick="openZoneDrawer()" class="admin-btn-add">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                         </svg>
-                        {{ __('file.add_zone') ?? 'Add Zone' }}
+                        {{ __('file.add_zone') }}
                     </button>
                 </div>
             </div>
@@ -52,7 +52,7 @@
                     <div id="bulk-ids-container" class="hidden"></div>
                     <div class="flex items-center gap-3">
                         <div class="selection-count" id="selected-count">0</div>
-                        <span>{{ __('file.zones_selected') ?? 'Zones Selected' }}</span>
+                        <span>{{ __('file.zones_selected') }}</span>
                     </div>
                     <button type="submit"
                         class="inline-flex items-center gap-2 px-6 py-2.5 bg-red-600 hover:bg-red-700 text-white text-[11px] font-bold uppercase tracking-wider rounded-xl transition-all shadow-lg shadow-red-600/20 active:scale-95 whitespace-nowrap border border-red-500/30">
@@ -98,11 +98,11 @@
                 
                 <div class="flex items-center justify-between px-8 py-5 border-b border-gray-100 dark:border-white/5 bg-gray-50/50 dark:bg-white/5">
                     <div>
-                        <h3 id="zone-drawer-title" class="text-xl font-extrabold text-gray-900 dark:text-white tracking-tight">
-                            {{ __('file.add_new_zone') ?? 'Add New Shipping Zone' }}
+                        <h3 id="zone-drawer-title" class="text-xl font-bold text-gray-900 dark:text-white tracking-tight">
+                            {{ __('file.add_new_zone') }}
                         </h3>
-                        <p id="zone-drawer-subtitle" class="text-sm font-medium text-primary mt-1">
-                            {{ __('file.define_regional_boundaries') ?? 'Define regional boundaries for shipping' }}
+                        <p id="zone-drawer-subtitle" class="text-sm font-medium text-primary-a0 mt-1">
+                            {{ __('file.define_regional_boundaries') }}
                         </p>
                     </div>
                     <button type="button" onclick="closeZoneDrawer()"
@@ -134,8 +134,8 @@
                 const titleEl = document.getElementById('zone-drawer-title');
                 const subtitleEl = document.getElementById('zone-drawer-subtitle');
                 
-                titleEl.textContent = isEdit ? '{{ __("file.edit_shipping_zone") ?? "Edit Shipping Zone" }}' : '{{ __("file.add_new_zone") ?? "Add New Shipping Zone" }}';
-                subtitleEl.textContent = isEdit ? '{{ __("file.update_zone_details") ?? "Update shipping zone configuration" }}' : '{{ __("file.create_new_zone_entry") ?? "Create a new shipping zone entry" }}';
+                titleEl.textContent = isEdit ? '{{ __("file.edit_shipping_zone") }}' : '{{ __("file.add_new_zone") }}';
+                subtitleEl.textContent = isEdit ? '{{ __("file.update_zone_details") }}' : '{{ __("file.create_new_zone_entry") }}';
 
                 zoneDrawer.classList.remove('hidden');
                 zoneContent.innerHTML = '<div class="flex items-center justify-center h-full"><div class="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin"></div></div>';
@@ -289,7 +289,7 @@
                     lengthMenu: [10, 25, 50, 100],
                     language: {
                         search: "",
-                        searchPlaceholder: "{{ __('file.search_zones') ?? 'Search zones' }}...",
+                        searchPlaceholder: "{{ __('file.search_zones') }}...",
                         lengthMenu: "{{ __('file.show_entries') }}",
                         info: "{{ __('file.showing_entries') }}",
                         infoEmpty: "{{ __('file.no_items_found') }}",

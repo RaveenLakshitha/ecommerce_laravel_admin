@@ -6,12 +6,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 /**
  * Refund record (supports partial refunds per order or per item)
  */
 class OrderRefund extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'order_id',
@@ -40,8 +42,13 @@ class OrderRefund extends Model
         return $this->belongsTo(OrderItem::class, 'order_item_id');
     }
 
-    public function user(): BelongsTo
+    public function performedBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'performed_by');
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->performedBy();
     }
 }
