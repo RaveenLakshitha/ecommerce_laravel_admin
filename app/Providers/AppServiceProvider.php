@@ -80,6 +80,10 @@ class AppServiceProvider extends ServiceProvider
             'storefront_marquee_link' => $setting->storefront_marquee_link,
             'storefront_banners'    => $setting->storefront_banners,
             'storefront_about_us'   => $setting->storefront_about_us,
+            'storefront_stats'      => $setting->storefront_stats,
+            'storefront_trust_items' => $setting->storefront_trust_items,
+            'storefront_logo_text'   => $setting->storefront_logo_text,
+            'storefront_logo_subtext' => $setting->storefront_logo_subtext,
 
             // SEO & Metadata
             'meta_title' => $setting->meta_title ?? $setting->site_title ?? $setting->site_name ?? config('app.name'),
@@ -109,6 +113,15 @@ class AppServiceProvider extends ServiceProvider
         // Register custom blade directives
         \Illuminate\Support\Facades\Blade::directive('price', function ($expression) {
             return "<?php echo \App\Models\Setting::formatPrice($expression); ?>";
+        });
+
+        \Illuminate\Support\Facades\Blade::directive('placeholder', function ($expression) {
+            return "<?php 
+                \$placeholders = ['white.png', 'black.png', 'mink.png'];
+                // Use the expression as a seed for consistent placeholder picking if provided
+                \$seed = !empty($expression) ? (is_numeric($expression) ? (int)$expression : crc32((string)$expression)) : rand(0, 2000);
+                echo asset('images/placeholders/' . \$placeholders[abs(\$seed) % 3]);
+            ?>";
         });
     }
 }

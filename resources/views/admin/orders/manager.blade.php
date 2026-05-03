@@ -142,7 +142,7 @@
                                 </p>
                             </div>
                             <div class="flex items-center gap-2 shrink-0 flex-wrap">
-                                <a :href="'/admin/orders/' + selectedOrder.id + '/invoice'" target="_blank"
+                                <button @click="printInvoice()"
                                     class="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-surface-tonal-a0 border border-gray-200 dark:border-surface-tonal-a30 rounded-md shadow-sm hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-accent/50">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                         stroke-width="2">
@@ -152,8 +152,8 @@
                                         <rect x="6" y="14" width="12" height="8" />
                                     </svg>
                                     {{ __('file.print_invoice') }}
-                                </a>
-                                <a :href="'/admin/orders/' + selectedOrder.id"
+                                </button>
+                                <a :href="'{{ route('orders.show', ['order' => ':id']) }}'.replace(':id', selectedOrder.id)"
                                     class="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-gray-900 dark:text-gray-900 bg-gray-200 dark:bg-gray-200 border border-transparent rounded-md shadow-sm hover:bg-gray-300 dark:hover:bg-gray-300 transition-colors focus:outline-none focus:ring-2 focus:ring-accent/50">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                         stroke-width="2">
@@ -411,7 +411,7 @@
                                                         class="text-gray-500 dark:text-gray-400 block mb-1 uppercase tracking-wider text-[10px] font-semibold">{{ __('file.account_info') }}</span>
                                                     <span class="text-gray-700 dark:text-gray-300 text-xs">{{ __('file.internal_customer') }}</span>
                                                 </div>
-                                                <a :href="'/admin/customers/' + selectedOrder.customer_id"
+                                                <a :href="'{{ route('customers.show', ['customer' => ':id']) }}'.replace(':id', selectedOrder.customer_id)"
                                                     class="text-accent dark:text-accent hover:underline text-xs font-medium">{{ __('file.view') }}
                                                     &rarr;</a>
                                             </div>
@@ -489,6 +489,8 @@
             </div>
         </div>
     </div>
+    <!-- Hidden iframe for printing -->
+    <iframe id="print-iframe" class="hidden" style="display:none;"></iframe>
 @endsection
 
 @push('scripts')
@@ -656,7 +658,8 @@
                     }
 
                     try {
-                        const response = await fetch(`/admin/orders/${this.selectedOrder.id}/status`, {
+                        const url = "{{ route('orders.update-status', ['order' => ':id']) }}".replace(':id', this.selectedOrder.id);
+                        const response = await fetch(url, {
                             method: 'PATCH',
                             headers: {
                                 'Content-Type': 'application/json',
@@ -687,6 +690,19 @@
                             window.showNotification('{{ __('file.error') }}', this.translations['error_occurred'], 'error');
                         }
                     }
+                },
+
+                printInvoice() {
+                    if (!this.selectedOrder) return;
+                    const url = "{{ route('orders.invoice', ['order' => ':id']) }}".replace(':id', this.selectedOrder.id);
+                    const iframe = document.getElementById('print-iframe');
+                    iframe.src = url;
+                    iframe.onload = () => {
+                        setTimeout(() => {
+                            iframe.contentWindow.focus();
+                            iframe.contentWindow.print();
+                        }, 500);
+                    };
                 }
             }));
         });

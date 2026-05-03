@@ -23,7 +23,6 @@ Route::domain('shop.karbnzol.com')->group(function () {
     Route::get('/', [App\Http\Controllers\Frontend\HomeController::class, 'index'])->name('home');
 
     Route::get('/about', [App\Http\Controllers\Frontend\HomeController::class, 'about'])->name('frontend.about');
-    Route::get('/contact', [App\Http\Controllers\Frontend\HomeController::class, 'contact'])->name('frontend.contact');
 
     Route::get('/products', [App\Http\Controllers\Frontend\ProductController::class, 'index'])->name('frontend.products.index');
     Route::get('/products/{slug}', [App\Http\Controllers\Frontend\ProductController::class, 'show'])->name('frontend.products.show');
@@ -49,6 +48,9 @@ Route::domain('shop.karbnzol.com')->group(function () {
         Route::get('/', [App\Http\Controllers\Frontend\CheckoutController::class, 'index'])->name('index');
         Route::post('/process', [App\Http\Controllers\Frontend\CheckoutController::class, 'process'])->name('process');
         Route::get('/success', [App\Http\Controllers\Frontend\CheckoutController::class, 'success'])->name('success');
+        Route::post('/stripe/confirm', [App\Http\Controllers\Frontend\CheckoutController::class, 'stripeConfirm'])->name('stripe.confirm');
+        Route::get('/stripe/pay', [App\Http\Controllers\Frontend\CheckoutController::class, 'stripePayPage'])->name('stripe.pay');
+        Route::get('/stripe/return', [App\Http\Controllers\Frontend\CheckoutController::class, 'stripeReturn'])->name('stripe.return');
     });
 
     Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
@@ -84,6 +86,9 @@ Route::domain('shop.karbnzol.com')->group(function () {
 
 // Language switch
 Route::post('/language', [LanguageController::class, 'switch'])->name('language.switch');
+
+// Stripe Webhook (CSRF excluded in bootstrap/app.php)
+Route::post('/stripe/webhook', [App\Http\Controllers\Frontend\StripeWebhookController::class, 'handle'])->name('stripe.webhook');
 
 // Admin routes
 Route::domain('admin.karbnzol.com')->group(function () {

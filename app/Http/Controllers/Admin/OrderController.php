@@ -175,7 +175,11 @@ class OrderController extends Controller
 
         $allowed = $validTransitions[$order->status] ?? [];
         if (!in_array($request->status, $allowed) && $request->status !== $order->status) {
-            return back()->withErrors(['status' => 'Invalid status transition from ' . $order->status . ' to ' . $request->status]);
+            $msg = 'Invalid status transition from ' . $order->status . ' to ' . $request->status;
+            if ($request->ajax() || $request->wantsJson()) {
+                return response()->json(['success' => false, 'message' => $msg], 422);
+            }
+            return back()->withErrors(['status' => $msg]);
         }
 
         $oldStatus = $order->status;
@@ -198,6 +202,14 @@ class OrderController extends Controller
                     ]);
                 }
             }
+        }
+
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => __('file.order_status_updated_successfully'),
+                'status' => $request->status
+            ]);
         }
 
         return redirect()->back()->with('success', __('file.order_status_updated_successfully'));

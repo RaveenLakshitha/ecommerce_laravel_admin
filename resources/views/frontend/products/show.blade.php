@@ -143,7 +143,7 @@
 
     .pd-title {
         font-family: var(--pd-font-display);
-        font-size: clamp(2rem, 3.2vw, 2.8rem);
+        font-size: var(--fs-detail-title);
         font-weight: 300;
         line-height: 1.08;
         letter-spacing: -0.01em;
@@ -175,13 +175,13 @@
         gap: 0.75rem;
         margin-bottom: 0.5rem;
     }
-    .pd-price { font-size: 1.5rem; font-weight: 500; color: var(--ink); }
+    .pd-price { font-size: var(--fs-detail-price); font-weight: 600; color: var(--ink); }
     .pd-price-orig {
         font-size: 1rem;
         color: var(--mink);
         text-decoration: line-through;
     }
-    .pd-price-sale { font-size: 1.5rem; font-weight: 500; color: var(--rust); }
+    .pd-price-sale { font-size: var(--fs-detail-price); font-weight: 600; color: var(--rust); }
     .pd-price-badge {
         background: var(--rust);
         color: #fff;
@@ -216,7 +216,7 @@
     .pd-stock.out-stock .pd-stock-label { color: #c4402a; }
 
     .pd-short-desc {
-        font-size: 0.9375rem;
+        font-size: var(--fs-detail-desc);
         color: var(--mink);
         line-height: 1.7;
         margin-bottom: 2rem;
@@ -390,8 +390,8 @@
         color: var(--white);
         border: none;
         font-family: var(--pd-font-body);
-        font-weight: 600;
-        font-size: 0.75rem;
+        font-weight: 700;
+        font-size: 16px;
         letter-spacing: 0.15em;
         text-transform: uppercase;
         cursor: pointer;
@@ -461,7 +461,7 @@
         justify-content: space-between;
         padding: 1.1rem 0;
         font-family: var(--pd-font-body);
-        font-size: 0.72rem;
+        font-size: var(--fs-section-title);
         font-weight: 600;
         letter-spacing: 0.14em;
         text-transform: uppercase;
@@ -1100,7 +1100,7 @@
                              alt="{{ $product->name }}">
                     @else
                         <img id="mainProductImage" class="pd-main-img"
-                             src="{{ asset('images/placeholder.jpg') }}"
+                             src="@placeholder($product->id)"
                              alt="{{ $product->name }}">
                     @endif
                 </div>
@@ -1117,7 +1117,7 @@
                         @endforeach
                     @else
                         <button class="pd-thumb-btn active">
-                            <img src="{{ asset('images/placeholder.jpg') }}" alt="Placeholder">
+                            <img src="@placeholder($product->id)" alt="Placeholder">
                         </button>
                     @endif
                 </div>
@@ -1549,7 +1549,7 @@
                                 @elseif($rp->images && $rp->images->count() > 0)
                                     <img src="{{ $rp->images->first()->url }}" alt="{{ $rp->name }}" loading="lazy">
                                 @else
-                                    <img src="{{ asset('images/placeholder.jpg') }}" alt="{{ $rp->name }}" loading="lazy">
+                                    <img src="@placeholder($rp->id)" alt="{{ $rp->name }}" loading="lazy">
                                 @endif
                             </div>
                             <div class="pd-card-name">{{ $rp->name }}</div>
@@ -1777,7 +1777,7 @@
         };
     });
 
-    const productPrimaryImage = @json($product->primaryImage ? $product->primaryImage->url : ($product->images->first() ? $product->images->first()->url : asset('images/placeholder.jpg')));
+    const productPrimaryImage = @json($product->primaryImage ? $product->primaryImage->url : ($product->images->first() ? $product->images->first()->url : null)) || "@placeholder($product->id)";
 
     const numRequiredAttributes = @json(isset($productAttributes) ? $productAttributes->count() : 0);
     // Disable add to cart button initially if there are attributes needed

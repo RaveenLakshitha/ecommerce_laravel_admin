@@ -53,14 +53,14 @@
         .slide-eyebrow {
             display: inline-flex; align-items: center; gap: 0.6rem;
             font-family: var(--font-display);
-            font-size: 0.68rem; font-weight: 500;
+            font-size: var(--fs-tag); font-weight: 500;
             letter-spacing: 0.28em; text-transform: uppercase;
             color: var(--gold); margin-bottom: 1.25rem;
         }
         .slide-eyebrow::before { content: ''; width: 24px; height: 1.5px; background: var(--gold); }
         .slide-title {
             font-family: var(--font-display);
-            font-size: clamp(3.5rem, 9vw, 7.5rem);
+            font-size: clamp(28px, 6vw, var(--fs-title));
             font-weight: 700; letter-spacing: 0.04em;
             text-transform: uppercase; color: var(--white);
             line-height: 0.88; margin-bottom: 1.5rem;
@@ -68,7 +68,7 @@
         .slide-title .stroke { -webkit-text-stroke: 1.5px var(--off-white); color: transparent; display: block; }
         .slide-title .gold  { color: var(--gold); display: block; }
         .slide-sub {
-            font-size: 0.9375rem; color: rgba(240,240,240,0.62);
+            font-size: var(--fs-sub); color: rgba(240,240,240,0.62);
             line-height: 1.65; margin-bottom: 2rem;
             font-weight: 300; max-width: 400px;
         }
@@ -124,7 +124,7 @@
             display: inline-flex; align-items: center; gap: 0.55rem;
             background: var(--gold); color: var(--bg);
             padding: 0.85rem 2.25rem;
-            font-family: var(--font-display); font-size: 0.72rem; font-weight: 700;
+            font-family: var(--font-display); font-size: var(--fs-btn); font-weight: 700;
             letter-spacing: 0.18em; text-transform: uppercase;
             transition: background 0.2s, transform 0.15s;
         }
@@ -165,7 +165,7 @@
         }
         .sec-eyebrow {
             font-family: var(--font-display);
-            font-size: 0.62rem; font-weight: 500;
+            font-size: var(--fs-tag); font-weight: 500;
             letter-spacing: 0.26em; text-transform: uppercase;
             color: var(--gold); margin-bottom: 0.35rem;
             display: flex; align-items: center; gap: 0.5rem;
@@ -266,7 +266,7 @@
             position: absolute; top: 0; left: 0;
             background: rgba(26,26,26,0.85); backdrop-filter: blur(4px);
             color: var(--off-white);
-            font-family: var(--font-display); font-size: 0.52rem; font-weight: 600;
+            font-family: var(--font-display); font-size: var(--fs-p-badge); font-weight: 600;
             letter-spacing: 0.22em; text-transform: uppercase;
             padding: 0.35rem 0.75rem; z-index: 2;
         }
@@ -308,17 +308,17 @@
             border-top: 1px solid var(--bg-4);
         }
         .p-brand {
-            font-family: var(--font-display); font-size: 0.54rem; font-weight: 600;
+            font-family: var(--font-display); font-size: var(--fs-p-cat); font-weight: 600;
             letter-spacing: 0.2em; text-transform: uppercase; color: var(--dim);
             margin-bottom: 0.25rem;
         }
         .p-name {
-            font-family: var(--font-display); font-size: 0.78rem; font-weight: 500;
+            font-family: var(--font-display); font-size: var(--fs-p-name); font-weight: 500;
             letter-spacing: 0.08em; text-transform: uppercase;
             color: var(--off-white); line-height: 1.35; margin-bottom: 0.45rem;
         }
         .p-price-row { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.35rem; }
-        .p-price { font-family: var(--font-display); font-size: 0.875rem; font-weight: 600; letter-spacing: 0.06em; color: var(--off-white); }
+        .p-price { font-family: var(--font-display); font-size: var(--fs-p-price); font-weight: 600; letter-spacing: 0.06em; color: var(--off-white); }
         .p-price-was { font-family: var(--font-display); font-size: 0.72rem; color: var(--dim); text-decoration: line-through; }
         .p-install {
             font-size: 0.68rem; color: var(--dim); margin-bottom: 0.5rem; line-height: 1.4;
@@ -647,15 +647,24 @@
     {{-- ═══════════════════════════════════════════════════
          STATS BAR
     ═══════════════════════════════════════════════════ --}}
+    @if($storefront->storefront_stats_show ?? true)
     <div class="stats-bar">
-        @php $stats = [['n' => '12K+', 'l' => __('file.orders_shipped')], ['n' => '500+', 'l' => __('file.styles_in_stock')], ['n' => '98%', 'l' => __('file.five_star_reviews')], ['n' => '48H', 'l' => __('file.island_delivery')]]; @endphp
+        @php 
+            $stats = is_array($storefront_stats) && count($storefront_stats) > 0 ? $storefront_stats : [
+                ['number' => '12K+', 'label' => __('file.orders_shipped')], 
+                ['number' => '500+', 'label' => __('file.styles_in_stock')], 
+                ['number' => '98%', 'label' => __('file.five_star_reviews')], 
+                ['number' => '48H', 'label' => __('file.island_delivery')]
+            ]; 
+        @endphp
         @foreach($stats as $s)
             <div class="stat-item reveal">
-                <div class="stat-num">{{ $s['n'] }}</div>
-                <div class="stat-lbl">{{ $s['l'] }}</div>
+                <div class="stat-num">{{ $s['number'] ?? $s['n'] ?? '' }}</div>
+                <div class="stat-lbl">{{ $s['label'] ?? $s['l'] ?? '' }}</div>
             </div>
         @endforeach
     </div>
+    @endif
 
     {{-- ═══════════════════════════════════════════════════
          CATEGORY TABS
@@ -700,7 +709,7 @@
                         $originalPrice = ($defaultVariant && $defaultVariant->sale_price) ? $defaultVariant->price : ($product->sale_price ? $product->base_price : null);
                         $imgUrl = $product->primaryImage
                             ? $product->primaryImage->url
-                            : 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80';
+                            : \Illuminate\Support\Facades\Blade::render("@placeholder($product->id)");
                     @endphp
                     <div class="p-card reveal">
                         <a href="{{ route('frontend.products.show', $product->slug) }}" class="p-img-wrap" style="display:block;">
@@ -799,7 +808,7 @@
                             $colImg = $col->banner_url
                                 ?? ($col->products->first()?->primaryImage
                                     ? $col->products->first()->primaryImage->url
-                                    : 'https://images.unsplash.com/photo-1487222477894-8943e31ef7b2?w=900&q=80');
+                                    : \Illuminate\Support\Facades\Blade::render("@placeholder($col->id)"));
                         @endphp
                         <a href="{{ route('frontend.products.index', ['collection' => $col->slug]) }}" class="col-card reveal">
                             <div class="col-bg" style="background-image: url('{{ $colImg }}');"></div>
@@ -865,7 +874,7 @@
                         $originalPrice = ($defaultVariant && $defaultVariant->sale_price) ? $defaultVariant->price : ($product->sale_price ? $product->base_price : null);
                         $imgUrl = $product->primaryImage
                             ? $product->primaryImage->url
-                            : 'https://images.unsplash.com/photo-1594938298603-c8148c4b4e3d?w=600&q=80';
+                            : \Illuminate\Support\Facades\Blade::render("@placeholder($product->id)");
                         $ribbon = $product->is_featured ? 'top' : '';
                         $ribbonLabel = $product->is_featured ? __('file.best_seller') : __('file.popular');
                     @endphp
@@ -916,42 +925,53 @@
     {{-- ═══════════════════════════════════════════════════
          EDITORIAL STRIP
     ═══════════════════════════════════════════════════ --}}
+    @if($storefront->storefront_our_story_show ?? true)
     <section class="editorial-strip">
         <div class="editorial-img reveal-x">
-            <img src="https://images.unsplash.com/photo-1487222477894-8943e31ef7b2?w=900&q=80" alt="About Karbnzol" loading="lazy">
+            @php
+                $ourStoryImg = $storefront->storefront_our_story_image 
+                    ? asset('storage/' . $storefront->storefront_our_story_image) 
+                    : 'https://images.unsplash.com/photo-1487222477894-8943e31ef7b2?w=900&q=80';
+            @endphp
+            <img src="{{ $ourStoryImg }}" alt="{{ $storefront->storefront_our_story_title ?? __('file.our_story') }}" loading="lazy">
         </div>
         <div class="editorial-text reveal">
             <p class="editorial-tag">{{ __('file.our_story') }}</p>
             <h2 class="editorial-headline">
-                {!! str_replace('.', '.<br>', __('file.built_for_modern_man')) !!}
+                @if($storefront->storefront_our_story_title)
+                    {!! str_replace('.', '.<br>', e($storefront->storefront_our_story_title)) !!}
+                @else
+                    {!! str_replace('.', '.<br>', __('file.built_for_modern_man')) !!}
+                @endif
             </h2>
             <p class="editorial-body">
-                {{ $storefront->storefront_about_us_content ?? $storefront->storefront_about_us ?? "From everyday essentials to statement pieces, every garment we make is precision-cut and quality-tested. Sri Lanka's most trusted menswear brand — worn by thousands, loved by all." }}
+                {{ $storefront->storefront_our_story_content ?? $storefront->storefront_about_us_content ?? $storefront->storefront_about_us ?? "From everyday essentials to statement pieces, every garment we make is precision-cut and quality-tested. Sri Lanka's most trusted menswear brand — worn by thousands, loved by all." }}
             </p>
-            <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
-                <a href="#" class="btn-gold">{{ __('file.our_story') }} <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
-                <a href="{{ route('frontend.products.index') }}" class="btn-outline-dark">{{ __('file.shop_now') }}</a>
-            </div>
         </div>
     </section>
+    @endif
 
     {{-- ═══════════════════════════════════════════════════
          TRUST BAR
     ═══════════════════════════════════════════════════ --}}
+    @if($storefront->storefront_trust_show ?? true)
     <div class="trust-bar">
-        @php $trusts = [
-            ['svg' => '<rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>', 'h' => __('file.free_delivery_trust'), 'p' => __('file.free_delivery_trust_subtitle')],
-            ['svg' => '<polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>', 'h' => __('file.easy_returns'), 'p' => __('file.easy_returns_subtitle')],
-            ['svg' => '<rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/>', 'h' => __('file.secure_payment'), 'p' => __('file.secure_payment_subtitle')],
-            ['svg' => '<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.41 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.52 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.16 6.16l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>', 'h' => __('file.customer_support'), 'p' => __('file.customer_support_subtitle')],
-        ]; @endphp
+        @php 
+            $trusts = is_array($storefront_trust_items) && count($storefront_trust_items) > 0 ? $storefront_trust_items : [
+                ['svg' => '<rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>', 'title' => __('file.free_delivery_trust'), 'subtitle' => __('file.free_delivery_trust_subtitle')],
+                ['svg' => '<polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>', 'title' => __('file.easy_returns'), 'subtitle' => __('file.easy_returns_subtitle')],
+                ['svg' => '<rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/>', 'title' => __('file.secure_payment'), 'subtitle' => __('file.secure_payment_subtitle')],
+                ['svg' => '<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.41 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.52 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.16 6.16l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>', 'title' => __('file.customer_support'), 'subtitle' => __('file.customer_support_subtitle')],
+            ]; 
+        @endphp
         @foreach($trusts as $t)
             <div class="trust-cell reveal">
                 <div class="trust-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">{!! $t['svg'] !!}</svg></div>
-                <div><p class="trust-h">{{ $t['h'] }}</p><p class="trust-p">{{ $t['p'] }}</p></div>
+                <div><p class="trust-h">{{ $t['title'] ?? $t['h'] ?? '' }}</p><p class="trust-p">{{ $t['subtitle'] ?? $t['p'] ?? '' }}</p></div>
             </div>
         @endforeach
     </div>
+    @endif
 
     {{-- ═══════════════════════════════════════════════════
          NEWSLETTER

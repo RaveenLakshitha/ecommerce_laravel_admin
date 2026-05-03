@@ -74,7 +74,7 @@
 
     .form-label {
         display: block;
-        font-size: 0.75rem;
+        font-size: var(--fs-label);
         font-weight: 600;
         text-transform: uppercase;
         letter-spacing: 0.05em;
@@ -171,6 +171,7 @@
 
     .summary-item-title {
         font-weight: 600;
+        font-size: var(--fs-cart-item);
         color: #1a1a1a;
         margin-bottom: 0.25rem;
     }
@@ -188,14 +189,14 @@
         display: flex;
         justify-content: space-between;
         margin-bottom: 0.75rem;
-        font-size: 0.875rem;
+        font-size: var(--fs-label);
         color: #1a1a1a;
     }
 
     .summary-total {
         font-family: var(--font-display, Georgia, serif);
-        font-size: 1.25rem;
-        font-weight: 500;
+        font-size: var(--fs-cart-total);
+        font-weight: 700;
         border-top: 1px solid #e2dcd4;
         padding-top: 1rem;
         margin-top: 0.5rem;
@@ -254,21 +255,21 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label class="form-label">{{ __('file.first_name') }}</label>
-                        <input type="text" name="first_name" class="form-control" value="{{ old('first_name', $user->customer->first_name ?? $user->name ?? '') }}" required>
+                        <input type="text" name="first_name" class="form-control" value="{{ old('first_name', $user?->customer?->first_name ?? $user?->name ?? '') }}" required>
                     </div>
                     <div class="form-group">
                         <label class="form-label">{{ __('file.last_name') }}</label>
-                        <input type="text" name="last_name" class="form-control" value="{{ old('last_name', $user->customer->last_name ?? '') }}" required>
+                        <input type="text" name="last_name" class="form-control" value="{{ old('last_name', $user?->customer?->last_name ?? '') }}" required>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
                         <label class="form-label">{{ __('file.email') }}</label>
-                        <input type="email" name="email" class="form-control" value="{{ old('email', $user->email ?? '') }}" required>
+                        <input type="email" name="email" class="form-control" value="{{ old('email', $user?->email ?? '') }}" required>
                     </div>
                     <div class="form-group">
                         <label class="form-label">{{ __('file.phone') }}</label>
-                        <input type="tel" name="phone" class="form-control" value="{{ old('phone', $user->customer->phone ?? '') }}" required>
+                        <input type="tel" name="phone" class="form-control" value="{{ old('phone', $user?->customer?->phone ?? '') }}" required>
                     </div>
                 </div>
 
@@ -281,30 +282,30 @@
 
                 <div class="form-group">
                     <label class="form-label">{{ __('file.address_line_1') }}</label>
-                    <input type="text" name="address_line1" class="form-control" value="{{ old('address_line1', $defaultAddress->address_line1 ?? '') }}" required>
+                    <input type="text" name="address_line1" class="form-control" value="{{ old('address_line1', $defaultAddress?->address_line1 ?? '') }}" required>
                 </div>
                 <div class="form-group">
                     <label class="form-label">{{ __('file.address_line_2_optional') }}</label>
-                    <input type="text" name="address_line2" class="form-control" value="{{ old('address_line2', $defaultAddress->address_line2 ?? '') }}">
+                    <input type="text" name="address_line2" class="form-control" value="{{ old('address_line2', $defaultAddress?->address_line2 ?? '') }}">
                 </div>
                 <div class="form-row">
                     <div class="form-group">
                         <label class="form-label">{{ __('file.city') }}</label>
-                        <input type="text" name="city" class="form-control" value="{{ old('city', $defaultAddress->city ?? '') }}" required>
+                        <input type="text" name="city" class="form-control" value="{{ old('city', $defaultAddress?->city ?? '') }}" required>
                     </div>
                     <div class="form-group">
                         <label class="form-label">{{ __('file.state_province') }}</label>
-                        <input type="text" name="state" class="form-control" value="{{ old('state', $defaultAddress->province ?? '') }}" required>
+                        <input type="text" name="state" class="form-control" value="{{ old('state', $defaultAddress?->province ?? '') }}" required>
                     </div>
                 </div>
                 <div class="form-row">
                     <div class="form-group">
                         <label class="form-label">{{ __('file.postal_code') }}</label>
-                        <input type="text" name="postal_code" class="form-control" value="{{ old('postal_code', $defaultAddress->postal_code ?? '') }}" required>
+                        <input type="text" name="postal_code" class="form-control" value="{{ old('postal_code', $defaultAddress?->postal_code ?? '') }}" required>
                     </div>
                     <div class="form-group">
                         <label class="form-label">{{ __('file.country') }}</label>
-                        <input type="text" name="country" class="form-control" value="{{ old('country', $defaultAddress->country ?? '') }}" required>
+                        <input type="text" name="country" class="form-control" value="{{ old('country', $defaultAddress?->country ?? '') }}" required>
                     </div>
                 </div>
 
@@ -342,6 +343,16 @@
                             <div class="method-desc">{{ __('file.make_your_payment_directly_into_our_bank_account') }}</div>
                         </div>
                     </label>
+
+                    @if(isset($stripePublicKey) && $stripePublicKey)
+                        <label class="payment-method-card">
+                            <input type="radio" name="payment_method" value="stripe" class="method-radio">
+                            <div class="method-details">
+                                <div class="method-name">💳 {{ __('file.credit_debit_card') ?? 'Credit / Debit Card' }} (Stripe)</div>
+                                <div class="method-desc">{{ __('file.pay_securely_via_stripe') ?? 'Pay securely with your credit or debit card.' }}</div>
+                            </div>
+                        </label>
+                    @endif
                 </div>
 
                 <button type="submit" class="btn-submit">{{ __('file.place_order') }}</button>
@@ -420,8 +431,8 @@
             const total        = discounted + shippingCost;
 
             const symbol   = "{{ $currency_symbol }}";
-            const position = "{{ Setting::getValue('currency_position', 'left') }}";
-            const decimals = {{ Setting::getValue('number_of_decimals', 2) }};
+            const position = "{{ $currency_position }}";
+            const decimals = {{ $currency_decimals }};
 
             const format = (val) => {
                 const formatted = val.toLocaleString(undefined, {minimumFractionDigits: decimals, maximumFractionDigits: decimals});

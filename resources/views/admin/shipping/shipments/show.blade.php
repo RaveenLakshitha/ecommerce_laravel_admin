@@ -2,19 +2,44 @@
 
 @section('title', __('file.shipment_dynamics') . ': #' . str_pad($shipment->id, 5, '0', STR_PAD_LEFT))
 
+@push('styles')
+<style>
+    @media print {
+        body * {
+            visibility: hidden;
+        }
+        #printable-waybill, #printable-waybill * {
+            visibility: visible;
+        }
+        #printable-waybill {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            background: white;
+            color: black;
+            padding: 40px;
+        }
+        .no-print {
+            display: none !important;
+        }
+    }
+</style>
+@endpush
+
 @section('content')
 <div class="admin-page animate-fade-in-up">
     <div class="admin-page-inner">
 
         {{-- Breadcrumbs --}}
-        <div class="mb-4 mt-10">
+        <div class="mb-4 mt-10 no-print">
             <a href="{{ route('shipping.shipments.index') }}" class="text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 transition-colors uppercase tracking-wider inline-block">
                 &larr; {{ __('file.back_to_logistics_manifest') }}
             </a>
         </div>
 
         {{-- Header Area --}}
-        <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
+        <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8 no-print">
             <div>
                 <div class="flex items-center gap-4">
                     <h1 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white uppercase tracking-tighter">{{ __('file.shipment_manifest') }} #{{ str_pad($shipment->id, 5, '0', STR_PAD_LEFT) }}</h1>
@@ -34,7 +59,7 @@
             </div>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 no-print">
             {{-- Left Column: Config & Timeline --}}
             <div class="lg:col-span-2 space-y-4">
                 
@@ -254,6 +279,96 @@
                     </button>
                 </div>
 
+            </div>
+        </div>
+
+        {{-- Hidden Printable Waybill --}}
+        <div id="printable-waybill" class="hidden">
+            <div class="flex justify-between items-start border-b-2 border-black pb-6 mb-8">
+                <div>
+                    <h1 class="text-3xl font-black uppercase tracking-tighter">{{ __('file.shipment_manifest') }}</h1>
+                    <p class="text-lg font-bold">#{{ str_pad($shipment->id, 5, '0', STR_PAD_LEFT) }}</p>
+                </div>
+                <div class="text-right">
+                    <p class="text-sm font-bold uppercase">{{ config('app.name') }} Logistics</p>
+                    <p class="text-xs">{{ now()->format('M j, Y — h:i A') }}</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-10 mb-10">
+                <div>
+                    <h3 class="text-xs font-black uppercase tracking-widest text-gray-500 mb-2">{{ __('file.consignee_intelligence') }}</h3>
+                    <p class="text-xl font-black uppercase">{{ $shipment->order->customer?->first_name }} {{ $shipment->order->customer?->last_name }}</p>
+                    <p class="text-sm font-bold">{{ $shipment->order->customer?->email }}</p>
+                    <p class="text-sm font-bold">{{ $shipment->order->customer?->phone }}</p>
+                </div>
+                <div>
+                    <h3 class="text-xs font-black uppercase tracking-widest text-gray-500 mb-2">{{ __('file.geodesic_destination') }}</h3>
+                    @if($shipment->pickupLocation)
+                        <p class="text-sm font-black uppercase">{{ __('file.protocol_in_hub_pickup') }}</p>
+                        <p class="text-lg font-black">{{ $shipment->pickupLocation->name }}</p>
+                        <p class="text-sm">{{ $shipment->pickupLocation->address_line_1 }}, {{ $shipment->pickupLocation->city }}</p>
+                    @else
+                        <p class="text-sm font-black uppercase">{{ __('file.protocol_direct_fulfillment') }}</p>
+                        @if($shipment->order->deliveryAddress)
+                            <p class="text-lg font-black">{{ $shipment->order->deliveryAddress->address_line_1 }}</p>
+                            @if($shipment->order->deliveryAddress->address_line_2)
+                                <p class="text-sm">{{ $shipment->order->deliveryAddress->address_line_2 }}</p>
+                            @endif
+                            <p class="text-md font-bold">{{ $shipment->order->deliveryAddress->city }}, {{ $shipment->order->deliveryAddress->postal_code }}</p>
+                            <p class="text-xs font-bold uppercase">{{ $shipment->order->deliveryAddress->country }}</p>
+                        @endif
+                    @endif
+                </div>
+            </div>
+
+            <div class="border-2 border-black p-6 mb-10">
+                <div class="grid grid-cols-3 gap-4">
+                    <div>
+                        <h4 class="text-[10px] font-black uppercase text-gray-500">{{ __('file.order_reference') }}</h4>
+                        <p class="text-lg font-black">#{{ str_pad($shipment->order->id, 5, '0', STR_PAD_LEFT) }}</p>
+                    </div>
+                    <div>
+                        <h4 class="text-[10px] font-black uppercase text-gray-500">{{ __('file.target_courier') }}</h4>
+                        <p class="text-lg font-black uppercase">{{ $shipment->courier?->name ?? __('file.in_store_pickup') }}</p>
+                    </div>
+                    <div>
+                        <h4 class="text-[10px] font-black uppercase text-gray-500">{{ __('file.carrier_tracking_protocol') }}</h4>
+                        <p class="text-lg font-bold font-mono">{{ $shipment->tracking_number ?? 'N/A' }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-10">
+                <h3 class="text-xs font-black uppercase tracking-widest text-gray-500 mb-4">{{ __('file.order_manifest') }}</h3>
+                <table class="w-full text-left">
+                    <thead>
+                        <tr class="border-b-2 border-black">
+                            <th class="py-2 text-xs font-black uppercase">{{ __('file.product') }}</th>
+                            <th class="py-2 text-xs font-black uppercase text-right">{{ __('file.qty') }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($shipment->order->items as $item)
+                        <tr class="border-b border-gray-200">
+                            <td class="py-3">
+                                <p class="font-black uppercase text-sm">{{ $item->product_name }}</p>
+                                <p class="text-[10px] text-gray-500 font-bold uppercase">{{ $item->variant_name }}</p>
+                            </td>
+                            <td class="py-3 text-right font-black">{{ $item->quantity }}</td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mt-20 flex justify-between items-end italic">
+                <div class="border-t border-black pt-2 w-48 text-center">
+                    <p class="text-[10px] font-bold uppercase">Authorized Signature</p>
+                </div>
+                <div class="text-right">
+                    <p class="text-[10px] font-black uppercase opacity-20">Generated by {{ config('app.name') }} ERP</p>
+                </div>
             </div>
         </div>
     </div>

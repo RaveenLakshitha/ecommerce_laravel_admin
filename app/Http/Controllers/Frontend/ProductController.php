@@ -79,7 +79,52 @@ class ProductController extends Controller
         // Merge: Promotions first, then Category banners
         $banners = array_merge($promoBanners, $categoryBanners);
 
-        $products = $query->latest()->paginate(12)->withQueryString();
+        // Apply Filters
+        if ($request->has('colors') && is_array($request->colors)) {
+            $query->whereHas('variants.attributeValues', function ($q) use ($request) {
+                $q->whereIn('slug', $request->colors);
+            });
+        }
+
+        if ($request->has('sizes') && is_array($request->sizes)) {
+            $query->whereHas('variants.attributeValues', function ($q) use ($request) {
+                $q->whereIn('slug', $request->sizes);
+            });
+        }
+
+        if ($request->has('max_price') && $request->max_price != '') {
+            $maxPrice = (float) $request->max_price;
+            $query->where(function($q) use ($maxPrice) {
+                $q->where('base_price', '<=', $maxPrice)
+                  ->orWhere('sale_price', '<=', $maxPrice);
+            });
+        }
+        
+        // Sorting
+        if ($request->has('sort') && $request->sort !== '') {
+            switch ($request->sort) {
+                case 'az':
+                    $query->orderBy('name', 'asc');
+                    break;
+                case 'za':
+                    $query->orderBy('name', 'desc');
+                    break;
+                case 'lh':
+                    $query->orderByRaw('COALESCE(sale_price, base_price) ASC');
+                    break;
+                case 'hl':
+                    $query->orderByRaw('COALESCE(sale_price, base_price) DESC');
+                    break;
+                case 'new':
+                default:
+                    $query->latest();
+                    break;
+            }
+        } else {
+            $query->latest();
+        }
+
+        $products = $query->paginate(12)->withQueryString();
 
         $categories = \App\Models\Category::where('is_active', true)
             ->where(function ($q) {

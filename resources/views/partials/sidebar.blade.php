@@ -62,7 +62,7 @@ style="width: 16rem; max-height: 100vh;">
 
                 {{-- ──────────────── STORE MANAGEMENT ──────────────── --}}
                 <div class="px-4 py-2 mt-4 text-[11px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest sidebar-text">
-                    Store Management
+                    {{ __('file.store_management') }}
                 </div>
 
                 {{-- Orders --}}
@@ -91,7 +91,7 @@ style="width: 16rem; max-height: 100vh;">
                                 @include('partials.sidebar-sub-item', ['route' => 'categories.index', 'active' => request()->routeIs('categories.*'), 'label' => __('file.categories') ?? 'Categories'])
                             @endcan
                             @can('collections.index')
-                                @include('partials.sidebar-sub-item', ['route' => 'collections.index', 'active' => request()->routeIs('collections.*'), 'label' => 'Collections'])
+                                @include('partials.sidebar-sub-item', ['route' => 'collections.index', 'active' => request()->routeIs('collections.*'), 'label' => __('file.collections')])
                             @endcan
                             @can('brands.index')
                                 @include('partials.sidebar-sub-item', ['route' => 'brands.index', 'active' => request()->routeIs('brands.*'), 'label' => __('file.brands') ?? 'Brands'])
@@ -107,11 +107,11 @@ style="width: 16rem; max-height: 100vh;">
                 <div x-data="{ group: 'inventory' }">
                     @include('partials.sidebar-group-btn', [
                         'name' => 'inventory',
-                        'label' => 'Inventory',
+                        'label' => __('file.inventory'),
                         'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>',
                     ])
                     <div x-show="activeGroup === 'inventory'" x-transition x-cloak class="ml-8 space-y-1 mt-1">
-                        @include('partials.sidebar-sub-item', ['route' => 'inventory.index', 'active' => request()->routeIs('inventory.*'), 'label' => 'Stock Status'])
+                        @include('partials.sidebar-sub-item', ['route' => 'inventory.index', 'active' => request()->routeIs('inventory.*'), 'label' => __('file.stock_status')])
                     </div>
                 </div>
 
@@ -119,22 +119,22 @@ style="width: 16rem; max-height: 100vh;">
                 <div x-data="{ group: 'shipping' }">
                     @include('partials.sidebar-group-btn', [
                         'name' => 'shipping',
-                        'label' => 'Shipping',
+                        'label' => __('file.shipping'),
                         'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>',
                     ])
                     <div x-show="activeGroup === 'shipping'" x-transition x-cloak class="ml-8 space-y-1 mt-1">
-                        @include('partials.sidebar-sub-item', ['route' => 'shipping.shipments.index', 'active' => request()->routeIs('shipping.shipments.*'), 'label' => 'Fulfillment'])
-                        @include('partials.sidebar-sub-item', ['route' => 'shipping.rates.index', 'active' => request()->routeIs('shipping.rates.*'), 'label' => 'Shipping Rates'])
-                        @include('partials.sidebar-sub-item', ['route' => 'shipping.zones.index', 'active' => request()->routeIs('shipping.zones.*'), 'label' => 'Shipping Zones'])
-                        @include('partials.sidebar-sub-item', ['route' => 'shipping.couriers.index', 'active' => request()->routeIs('shipping.couriers.*'), 'label' => 'Local Couriers'])
-                        @include('partials.sidebar-sub-item', ['route' => 'shipping.pickups.index', 'active' => request()->routeIs('shipping.pickups.*'), 'label' => 'Pickup Locations'])
+                        @include('partials.sidebar-sub-item', ['route' => 'shipping.shipments.index', 'active' => request()->routeIs('shipping.shipments.*'), 'label' => __('file.fulfillment')])
+                        @include('partials.sidebar-sub-item', ['route' => 'shipping.rates.index', 'active' => request()->routeIs('shipping.rates.*'), 'label' => __('file.shipping_rates')])
+                        @include('partials.sidebar-sub-item', ['route' => 'shipping.zones.index', 'active' => request()->routeIs('shipping.zones.*'), 'label' => __('file.shipping_zones')])
+                        @include('partials.sidebar-sub-item', ['route' => 'shipping.couriers.index', 'active' => request()->routeIs('shipping.couriers.*'), 'label' => __('file.local_couriers')])
+                        @include('partials.sidebar-sub-item', ['route' => 'shipping.pickups.index', 'active' => request()->routeIs('shipping.pickups.*'), 'label' => __('file.pickup_locations')])
                     </div>
                 </div>
 
 
                 {{-- ──────────────── CUSTOMERS & MARKETING ──────────────── --}}
                 <div class="px-4 py-2 mt-6 border-t border-gray-100 dark:border-surface-tonal-a30 pt-4 text-[11px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest sidebar-text">
-                    Customers & Marketing
+                    {{ __('file.customers_marketing') }}
                 </div>
 
                 {{-- CRM & Customers --}}
@@ -155,32 +155,32 @@ style="width: 16rem; max-height: 100vh;">
                 <div x-data="{ group: 'promotions' }">
                     @include('partials.sidebar-group-btn', [
                         'name' => 'promotions',
-                        'label' => 'Promotions',
+                        'label' => __('file.promotion'),
                         'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />',
                     ])
                     <div x-show="activeGroup === 'promotions'" x-transition x-cloak class="ml-8 space-y-1 mt-1">
-                        @include('partials.sidebar-sub-item', ['route' => 'coupons.index', 'active' => request()->routeIs('coupons.*'), 'label' => 'Coupons'])
-                        @include('partials.sidebar-sub-item', ['route' => 'discount-rules.index', 'active' => request()->routeIs('discount-rules.*'), 'label' => 'Discount Rules'])
+                        @include('partials.sidebar-sub-item', ['route' => 'coupons.index', 'active' => request()->routeIs('coupons.*'), 'label' => __('file.add_coupon')])
+                        @include('partials.sidebar-sub-item', ['route' => 'discount-rules.index', 'active' => request()->routeIs('discount-rules.*'), 'label' => __('file.manage_discount_rules')])
                     </div>
                 </div>
 
 
                 {{-- ──────────────── FINANCE & SYSTEM ──────────────── --}}
                 <div class="px-4 py-2 mt-6 border-t border-gray-100 dark:border-surface-tonal-a30 pt-4 text-[11px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest sidebar-text">
-                    System & Settings
+                    {{ __('file.system_settings') }}
                 </div>
 
                 {{-- Payments & Finances --}}
                 <div x-data="{ group: 'finances' }">
                     @include('partials.sidebar-group-btn', [
                         'name' => 'finances',
-                        'label' => 'Finances',
+                        'label' => __('file.finances'),
                         'icon' => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />',
                     ])
                     <div x-show="activeGroup === 'finances'" x-transition x-cloak class="ml-8 space-y-1 mt-1">
-                        @include('partials.sidebar-sub-item', ['route' => 'transactions.index', 'active' => request()->routeIs('transactions.*'), 'label' => 'Transactions'])
-                        @include('partials.sidebar-sub-item', ['route' => 'refunds.index', 'active' => request()->routeIs('refunds.*'), 'label' => 'Refunds'])
-                        @include('partials.sidebar-sub-item', ['route' => 'settings.payment-gateways', 'active' => request()->routeIs('settings.payment-gateways'), 'label' => 'Gateways'])
+                        @include('partials.sidebar-sub-item', ['route' => 'transactions.index', 'active' => request()->routeIs('transactions.*'), 'label' => __('file.transactions')])
+                        @include('partials.sidebar-sub-item', ['route' => 'refunds.index', 'active' => request()->routeIs('refunds.*'), 'label' => __('file.refunds')])
+                        @include('partials.sidebar-sub-item', ['route' => 'settings.payment-gateways', 'active' => request()->routeIs('settings.payment-gateways'), 'label' => __('file.gateways')])
                     </div>
                 </div>
 
@@ -215,8 +215,8 @@ style="width: 16rem; max-height: 100vh;">
                                 @include('partials.sidebar-sub-item', ['route' => 'roles.index', 'active' => request()->routeIs('roles.*'), 'label' => __('file.roles_management') ?? 'Roles'])
                             @endcan
                             @can('settings.index')
-                                @include('partials.sidebar-sub-item', ['route' => 'settings.general', 'active' => request()->routeIs('settings.*'), 'label' => __('file.general_settings') ?? 'General'])
-                                @include('partials.sidebar-sub-item', ['route' => 'admin.storefront.index', 'active' => request()->routeIs('admin.storefront.*'), 'label' => 'Storefront'])
+                                @include('partials.sidebar-sub-item', ['route' => 'settings.general', 'active' => request()->routeIs('settings.*'), 'label' => __('file.general_settings')])
+                                @include('partials.sidebar-sub-item', ['route' => 'admin.storefront.index', 'active' => request()->routeIs('admin.storefront.*'), 'label' => __('file.storefront')])
                             @endcan
 
                         </div>
