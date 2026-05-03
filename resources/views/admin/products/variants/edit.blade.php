@@ -323,7 +323,11 @@
         function deleteVariantImage(productId, variantId, imageId) {
             if (!confirm('{{ __('file.confirm_delete_variant_image') }}')) return;
 
-            fetch(`/admin/products/${productId}/variants/${variantId}/images/${imageId}`, {
+            const url = "{{ route('products.variants.images.destroy', ['product' => ':pId', 'variant' => ':vId', 'image' => ':iId']) }}"
+                .replace(':pId', productId)
+                .replace(':vId', variantId)
+                .replace(':iId', imageId);
+            fetch(url, {
                 method: 'DELETE',
                 headers: {
                     'X-CSRF-TOKEN': '{{ csrf_token() }}',

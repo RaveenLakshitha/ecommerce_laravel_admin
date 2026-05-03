@@ -112,7 +112,7 @@
             border: none;
             cursor: pointer;
             font-family: var(--font-display);
-            font-size: 0.62rem;
+            font-size: var(--fs-sidebar-title);
             font-weight: 600;
             letter-spacing: 0.2em;
             text-transform: uppercase;
@@ -189,7 +189,7 @@
         }
 
         .f-label {
-            font-size: 0.78rem;
+            font-size: var(--fs-sidebar-opt);
             color: var(--silver);
             flex: 1;
         }
@@ -351,7 +351,7 @@
 
         .sidebar-head-title {
             font-family: var(--font-display);
-            font-size: 0.62rem;
+            font-size: var(--fs-sidebar-title);
             font-weight: 700;
             letter-spacing: 0.22em;
             text-transform: uppercase;
@@ -666,7 +666,7 @@
             background: rgba(26, 26, 26, 0.85);
             backdrop-filter: blur(4px);
             font-family: var(--font-display);
-            font-size: 0.52rem;
+            font-size: var(--fs-p-badge);
             font-weight: 600;
             letter-spacing: 0.22em;
             text-transform: uppercase;
@@ -764,7 +764,7 @@
 
         .p-brand {
             font-family: var(--font-display);
-            font-size: 0.52rem;
+            font-size: var(--fs-p-cat);
             font-weight: 600;
             letter-spacing: 0.2em;
             text-transform: uppercase;
@@ -774,7 +774,7 @@
 
         .p-name {
             font-family: var(--font-display);
-            font-size: 0.78rem;
+            font-size: var(--fs-p-name);
             font-weight: 500;
             letter-spacing: 0.08em;
             text-transform: uppercase;
@@ -792,7 +792,7 @@
 
         .p-price {
             font-family: var(--font-display);
-            font-size: 0.875rem;
+            font-size: var(--fs-p-price);
             font-weight: 600;
             letter-spacing: 0.06em;
             color: var(--off-white);
@@ -1238,7 +1238,7 @@
         @php
             $displayBanners = !empty($banners) ? $banners : [
                 [
-                    'image_url' => asset('images/logo-main.jpg'),
+                    'image_url' => \Illuminate\Support\Facades\Blade::render("@placeholder(100)"),
                     'title' => "Luxury Craft.<br>Modern Detail.",
                     'description' => 'Elegance in every piece · Modern luxury',
                     'eyebrow' => 'Premium Collection',
@@ -1279,13 +1279,25 @@
 </div>
 
     {{-- ── SHOP PAGE ───────────────────────────────────────── --}}
+    <form id="filterForm" method="GET" action="{{ route('frontend.products.index') }}">
+        @if(request('category'))
+            <input type="hidden" name="category" value="{{ request('category') }}">
+        @endif
+        @if(request('collection'))
+            <input type="hidden" name="collection" value="{{ request('collection') }}">
+        @endif
     <div class="shop-page">
 
         {{-- ════════ SIDEBAR ════════ --}}
         <aside class="sidebar" id="filterSidebar" aria-label="Product filters">
             <div class="sidebar-head">
                 <span class="sidebar-head-title">Filters</span>
-                <span class="filter-active-count" id="activeCount">0</span>
+                @php
+                    $filterCount = (request()->has('colors') ? count(request('colors')) : 0) +
+                                   (request()->has('sizes') ? count(request('sizes')) : 0) +
+                                   (request('max_price') && request('max_price') != 15000 ? 1 : 0);
+                @endphp
+                <span class="filter-active-count {{ $filterCount > 0 ? 'visible' : '' }}" id="activeCount">{{ $filterCount }}</span>
             </div>
 
             {{-- Availability --}}
@@ -1320,10 +1332,10 @@
                     <div class="price-wrap">
                         <div class="price-vals">
                             <span>{{ $currency_symbol }} 500</span>
-                            <span id="priceDisplay">{{ $currency_symbol }} 15,000</span>
+                            <span id="priceDisplay">{{ $currency_symbol }} {{ number_format(request('max_price', 15000)) }}</span>
                         </div>
-                        <input class="price-range" type="range" min="500" max="15000" value="15000" step="100"
-                            oninput="document.getElementById('priceDisplay').textContent='{{ $currency_symbol }} '+parseInt(this.value).toLocaleString()">
+                        <input class="price-range" type="range" name="max_price" min="500" max="15000" value="{{ request('max_price', 15000) }}" step="100"
+                            oninput="document.getElementById('priceDisplay').textContent='{{ $currency_symbol }} '+parseInt(this.value).toLocaleString()" onchange="this.form.submit()">
                     </div>
                 </div>
             </div>
@@ -1343,8 +1355,9 @@
                             @php
                                 $sc = $colorMap->value ?? '#000000';
                             @endphp
-                            <div class="cf-sw" style="background:{{ $sc }};"
-                                onclick="this.classList.toggle('on'); updateFilters();" title="{{ $colorMap->name }}"></div>
+                            <label class="cf-sw {{ in_array($colorMap->slug, request('colors', [])) ? 'on' : '' }}" style="background:{{ $sc }};" title="{{ $colorMap->name }}">
+                                <input type="checkbox" name="colors[]" value="{{ $colorMap->slug }}" class="d-none" onchange="this.form.submit()" {{ in_array($colorMap->slug, request('colors', [])) ? 'checked' : '' }} style="display:none;">
+                            </label>
                         @endforeach
                     </div>
                 </div>
@@ -1362,7 +1375,10 @@
                 <div class="filter-body open">
                     <div class="size-grid">
                         @foreach($sizes as $sz)
-                            <button class="sz-btn" onclick="this.classList.toggle('on'); updateFilters();">{{ $sz->name }}</button>
+                            <label class="sz-btn {{ in_array($sz->slug, request('sizes', [])) ? 'on' : '' }}" style="cursor: pointer;">
+                                <input type="checkbox" name="sizes[]" value="{{ $sz->slug }}" onchange="this.form.submit()" {{ in_array($sz->slug, request('sizes', [])) ? 'checked' : '' }} style="display:none;">
+                                {{ $sz->name }}
+                            </label>
                         @endforeach
                     </div>
                 </div>
@@ -1484,23 +1500,41 @@
                         </button>
                     </div>
                 </div>
-                <select class="sort-dd" aria-label="Sort products">
+                <select class="sort-dd" name="sort" aria-label="Sort products" onchange="this.form.submit()">
                     <option value="">Sort By</option>
-                    <option value="az">Name: A–Z</option>
-                    <option value="za">Name: Z–A</option>
-                    <option value="lh">Price: Low to High</option>
-                    <option value="hl">Price: High to Low</option>
-                    <option value="new">Newest First</option>
-                    <option value="bs">Best Sellers</option>
-                    <option value="top">Top Rated</option>
+                    <option value="az" {{ request('sort') == 'az' ? 'selected' : '' }}>Name: A–Z</option>
+                    <option value="za" {{ request('sort') == 'za' ? 'selected' : '' }}>Name: Z–A</option>
+                    <option value="lh" {{ request('sort') == 'lh' ? 'selected' : '' }}>Price: Low to High</option>
+                    <option value="hl" {{ request('sort') == 'hl' ? 'selected' : '' }}>Price: High to Low</option>
+                    <option value="new" {{ request('sort') == 'new' ? 'selected' : '' }}>Newest First</option>
+                    <option value="bs" {{ request('sort') == 'bs' ? 'selected' : '' }}>Best Sellers</option>
+                    <option value="top" {{ request('sort') == 'top' ? 'selected' : '' }}>Top Rated</option>
                 </select>
             </div>
 
             {{-- Active filter chips --}}
-            <div class="active-filters" id="activeFilters">
+            @php
+                $hasActiveFilters = request()->hasAny(['colors', 'sizes', 'sort']) || request('max_price') != 15000;
+            @endphp
+            <div class="active-filters {{ $hasActiveFilters ? 'show' : '' }}" id="activeFilters">
                 <span class="af-label">Active:</span>
-                <span class="af-chip">In Stock <button onclick="this.parentElement.remove()">×</button></span>
-                <button class="af-clear-all" onclick="clearAll()">Clear All</button>
+                @if(request('max_price') && request('max_price') != 15000)
+                    <span class="af-chip">Max Price: {{ $currency_symbol }}{{ number_format(request('max_price')) }}</span>
+                @endif
+                @if(request('colors'))
+                    @foreach(request('colors') as $cSlug)
+                        <span class="af-chip">Color: {{ ucfirst($cSlug) }}</span>
+                    @endforeach
+                @endif
+                @if(request('sizes'))
+                    @foreach(request('sizes') as $sSlug)
+                        <span class="af-chip">Size: {{ strtoupper($sSlug) }}</span>
+                    @endforeach
+                @endif
+                @if(request('sort'))
+                    <span class="af-chip">Sorted</span>
+                @endif
+                <button type="button" class="af-clear-all" onclick="clearAll()">Clear All</button>
             </div>
 
             {{-- Product Grid --}}
@@ -1519,7 +1553,7 @@
                                         </svg>
                                     </button>
                                 </div>
-                                <img src="{{ $p->primaryImage ? $p->primaryImage->url : asset('images/logo-main.jpg') }}" alt="{{ $p->name }}" loading="{{ $i < 4 ? 'eager' : 'lazy' }}">
+                                <img src="{{ $p->primaryImage ? $p->primaryImage->url : null }}@if(!$p->primaryImage)@placeholder($p->id)@endif" alt="{{ $p->name }}" loading="{{ $i < 4 ? 'eager' : 'lazy' }}">
                                 <button class="p-add" onclick="event.preventDefault(); window.location='{{ route('frontend.products.show', $p->slug) }}'">+ Add to Bag</button>
                             </div>
                             <div class="p-info">
@@ -1562,6 +1596,7 @@
             </nav>
         </div>
     </div>
+    </form>
 
     <script>
 
@@ -1665,10 +1700,14 @@
 
         /* ── Clear all ────────────────────────────────── */
         function clearAll() {
-            document.querySelectorAll('.f-cb').forEach(c => c.checked = false);
-            document.querySelectorAll('.sz-btn.on').forEach(b => b.classList.remove('on'));
-            document.querySelectorAll('.cf-sw.on').forEach(s => s.classList.remove('on'));
-            updateFilters();
+            let url = new URL("{{ route('frontend.products.index') }}");
+            @if(request('category'))
+                url.searchParams.set('category', '{{ request('category') }}');
+            @endif
+            @if(request('collection'))
+                url.searchParams.set('collection', '{{ request('collection') }}');
+            @endif
+            window.location.href = url.toString();
         }
 
         /* ── Swatch active toggle ─────────────────────── */

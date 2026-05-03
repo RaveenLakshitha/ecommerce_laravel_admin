@@ -759,8 +759,8 @@
                     @foreach($globalCategories as $category)
                         <li><a href="{{ route('frontend.products.index', ['category' => $category->slug]) }}">{{ $category->name }}</a></li>
                     @endforeach
-                    <li><a href="#">About</a></li>
-                    <li><a href="#">Contact</a></li>
+                    <li><a href="{{ route('frontend.about') }}">About</a></li>
+                    <li><a href="{{ route('frontend.about') }}#contact-info">Contact</a></li>
                     <li><a href="#">Careers</a></li>
                 </ul>
             </nav>
@@ -813,8 +813,8 @@
         @foreach($globalCategories as $category)
             <a href="{{ route('frontend.products.index', ['category' => $category->slug]) }}">{{ $category->name }}</a>
         @endforeach
-        <a href="#">About</a>
-        <a href="#">Contact</a>
+        <a href="{{ route('frontend.about') }}">About</a>
+        <a href="{{ route('frontend.about') }}#contact-info">Contact</a>
         <a href="#">Careers</a>
         <a href="{{ route('cart.index') }}">My Bag (0)</a>
         @auth('web')
@@ -865,7 +865,7 @@
                         <li><a href="#">Track Order</a></li>
                         <li><a href="#">FAQ</a></li>
                         <li><a href="{{ route('frontend.about') }}">About Us</a></li>
-                        <li><a href="{{ route('frontend.contact') }}">Contact Us</a></li>
+                        <li><a href="{{ route('frontend.about') }}#contact-info">Contact Us</a></li>
                     </ul>
                 </div>
 

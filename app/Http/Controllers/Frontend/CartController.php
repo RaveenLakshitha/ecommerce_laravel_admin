@@ -60,7 +60,9 @@ class CartController extends Controller
             return back()->with('error', 'Not enough stock available.');
         }
 
-        Cart::add([
+        $cart = Auth::check() ? Cart::session(Auth::id()) : Cart::getFacadeRoot();
+
+        $cart->add([
             'id'       => $variant->id,
             'name'     => $variant->product->name,
             'price'    => $variant->display_price ?? $variant->price,
@@ -74,11 +76,7 @@ class CartController extends Controller
             'associatedModel' => $variant,
         ]);
 
-        if (Auth::check()) {
-            Cart::session(Auth::id());
-        }
-
-        $cartCount = Cart::getTotalQuantity();
+        $cartCount = $cart->getTotalQuantity();
 
         if ($request->ajax() || $request->wantsJson()) {
             return response()->json([
@@ -98,7 +96,8 @@ class CartController extends Controller
             'quantity' => 'required|integer|min:1',
         ]);
 
-        $item = Cart::get($request->rowId);
+        $cart = Auth::check() ? Cart::session(Auth::id()) : Cart::getFacadeRoot();
+        $item = $cart->get($request->rowId);
 
         if (!$item) {
             if ($request->ajax() || $request->wantsJson()) {
@@ -116,19 +115,15 @@ class CartController extends Controller
             return back()->with('error', 'Not enough stock available.');
         }
 
-        Cart::update($request->rowId, [
+        $cart->update($request->rowId, [
             'quantity' => [
                 'relative' => false,
                 'value'    => (int) $request->quantity,
             ],
         ]);
 
-        if (Auth::check()) {
-            Cart::session(Auth::id());
-        }
-
-        $updatedItem  = Cart::get($request->rowId);
-        $newSubtotal  = Cart::getSubTotal();
+        $updatedItem  = $cart->get($request->rowId);
+        $newSubtotal  = $cart->getSubTotal();
         $couponDiscount = $this->discountService->getCouponDiscount();
         $autoDiscount   = $this->discountService->calculateAutomaticDiscount($newSubtotal);
         $newTotal     = max(0, $newSubtotal - $couponDiscount - $autoDiscount);
@@ -136,7 +131,7 @@ class CartController extends Controller
         $itemSubtotal = $updatedItem ? Setting::formatPrice($updatedItem->getPriceSumWithConditions()) : Setting::formatPrice(0);
         $cartSubtotal = Setting::formatPrice($newSubtotal);
         $cartTotal    = Setting::formatPrice($newTotal);
-        $cartCount    = Cart::getTotalQuantity();
+        $cartCount    = $cart->getTotalQuantity();
 
         if ($request->ajax() || $request->wantsJson()) {
             return response()->json([
@@ -154,20 +149,17 @@ class CartController extends Controller
 
     public function remove(Request $request, $rowId)
     {
-        Cart::remove($rowId);
+        $cart = Auth::check() ? Cart::session(Auth::id()) : Cart::getFacadeRoot();
+        $cart->remove($rowId);
 
-        if (Auth::check()) {
-            Cart::session(Auth::id());
-        }
-
-        $newSubtotal    = Cart::getSubTotal();
+        $newSubtotal    = $cart->getSubTotal();
         $couponDiscount = $this->discountService->getCouponDiscount();
         $autoDiscount   = $this->discountService->calculateAutomaticDiscount($newSubtotal);
         $newTotal       = max(0, $newSubtotal - $couponDiscount - $autoDiscount);
 
         $cartSubtotal = Setting::formatPrice($newSubtotal);
         $cartTotal    = Setting::formatPrice($newTotal);
-        $cartCount    = Cart::getTotalQuantity();
+        $cartCount    = $cart->getTotalQuantity();
 
         if ($request->ajax() || $request->wantsJson()) {
             return response()->json([
@@ -231,14 +223,21 @@ class CartController extends Controller
     public static function mergeAfterLogin()
     {
         if (Auth::check()) {
-            Cart::session(Auth::id());
+            $guestCart = Cart::getFacadeRoot()->getContent();
+            $userCart  = Cart::session(Auth::id());
 
-            $guestCart = Cart::getContent();
             foreach ($guestCart as $item) {
-                Cart::session(Auth::id())->add($item);
+                $userCart->add([
+                    'id'       => $item->id,
+                    'name'     => $item->name,
+                    'price'    => $item->price,
+                    'quantity' => $item->quantity,
+                    'attributes' => $item->attributes->toArray(),
+                    'associatedModel' => $item->associatedModel,
+                ]);
             }
 
-            Cart::clear();
+            Cart::getFacadeRoot()->clear();
         }
     }
 }

@@ -321,7 +321,10 @@
             function deleteImage(productId, imageId) {
                 if (!confirm("{{ __('file.confirm_delete_image') }}")) return;
 
-                fetch(`/admin/products/${productId}/images/${imageId}`, {
+                const url = "{{ route('products.images.destroy', ['product' => ':pId', 'image' => ':iId']) }}"
+                    .replace(':pId', productId)
+                    .replace(':iId', imageId);
+                fetch(url, {
                     method: 'DELETE',
                     headers: {
                         'X-CSRF-TOKEN': '{{ csrf_token() }}',
@@ -377,7 +380,9 @@
             function confirmDeleteVariant(productId, variantId) {
                 if (confirm("{{ __('file.confirm_delete_variant') }}")) {
                     const form = document.getElementById('delete-variant-form');
-                    form.action = `/admin/products/${productId}/variants/${variantId}`;
+                    form.action = "{{ route('products.variants.update', ['product' => ':pId', 'variant' => ':vId']) }}"
+                        .replace(':pId', productId)
+                        .replace(':vId', variantId);
                     form.submit();
                 }
             }

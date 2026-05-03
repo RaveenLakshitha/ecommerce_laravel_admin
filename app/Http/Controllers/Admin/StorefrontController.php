@@ -31,11 +31,30 @@ class StorefrontController extends Controller
             'email' => 'nullable|email|max:255',
             'storefront_offer_text' => 'nullable|string|max:50',
             'storefront_offer_link' => 'nullable|string|max:255',
-            'storefront_marquee_text' => 'nullable|string|max:100',
+            'storefront_marquee_text' => 'nullable|string|max:255',
             'storefront_marquee_link' => 'nullable|string|max:255',
-            'storefront_about_us' => 'nullable|string|max:100',
+            'storefront_about_us' => 'nullable|string|max:1000',
             'storefront_about_us_content' => 'nullable|string',
+            'storefront_our_story_title' => 'nullable|string|max:100',
+            'storefront_our_story_content' => 'nullable|string',
+            'storefront_our_story_image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:4096',
             
+            'storefront_logo_text' => 'nullable|string|max:50',
+            'storefront_logo_subtext' => 'nullable|string|max:100',
+
+            'storefront_our_story_show' => 'nullable|boolean',
+            'storefront_stats_show' => 'nullable|boolean',
+            'storefront_trust_show' => 'nullable|boolean',
+
+            'storefront_stats' => 'nullable|array',
+            'storefront_stats.*.number' => 'nullable|string|max:20',
+            'storefront_stats.*.label' => 'nullable|string|max:50',
+
+            'storefront_trust_items' => 'nullable|array',
+            'storefront_trust_items.*.title' => 'nullable|string|max:50',
+            'storefront_trust_items.*.subtitle' => 'nullable|string|max:120',
+            'storefront_trust_items.*.svg' => 'nullable|string',
+
             'banners' => 'nullable|array',
             'banners.*.tag' => 'nullable|string|max:25',
             'banners.*.title' => 'nullable|string|max:25',
@@ -52,8 +71,34 @@ class StorefrontController extends Controller
             'storefront_offer_text',
             'storefront_offer_link',
             'storefront_marquee_text',
-            'storefront_marquee_link'
+            'storefront_marquee_link',
+            'storefront_our_story_title',
+            'storefront_our_story_content',
+            'storefront_logo_text',
+            'storefront_logo_subtext',
+            'storefront_stats',
+            'storefront_trust_items',
+            'storefront_our_story_show',
+            'storefront_stats_show',
+            'storefront_trust_show'
         ]);
+
+        $data['storefront_our_story_show'] = $request->boolean('storefront_our_story_show');
+        $data['storefront_stats_show'] = $request->boolean('storefront_stats_show');
+        $data['storefront_trust_show'] = $request->boolean('storefront_trust_show');
+
+        if ($request->hasFile('storefront_our_story_image')) {
+            // Delete old image if exists
+            if ($setting->storefront_our_story_image) {
+                Storage::disk('public')->delete($setting->storefront_our_story_image);
+            }
+            $data['storefront_our_story_image'] = $request->file('storefront_our_story_image')->store('storefront', 'public');
+        } elseif ($request->boolean('remove_our_story_image')) {
+            if ($setting->storefront_our_story_image) {
+                Storage::disk('public')->delete($setting->storefront_our_story_image);
+            }
+            $data['storefront_our_story_image'] = null;
+        }
 
         $banners = is_array($setting->storefront_banners) ? $setting->storefront_banners : [];
         $newBanners = [];

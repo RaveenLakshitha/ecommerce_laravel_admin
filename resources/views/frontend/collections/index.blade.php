@@ -289,7 +289,7 @@
                         $colImg = $col->banner_url
                             ?? ($col->products->first()?->primaryImage
                                 ? $col->products->first()->primaryImage->url
-                                : 'https://images.unsplash.com/photo-1487222477894-8943e31ef7b2?w=900&q=80');
+                                : \Illuminate\Support\Facades\Blade::render("@placeholder($col->id)"));
                     @endphp
                     <a href="{{ route('frontend.products.index', ['collection' => $col->slug]) }}" class="col-card reveal" style="transition-delay: {{ $i * 0.1 }}s">
                         <div class="col-img" style="background-image: url('{{ $colImg }}');"></div>

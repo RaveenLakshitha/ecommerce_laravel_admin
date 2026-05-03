@@ -60,6 +60,33 @@
             --font-body: 'Barlow', sans-serif;
             --nav-h: 64px;
             --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+            /* ── Font Sizes ──────────────────────────── */
+            --fs-base: 16px;
+            --fs-logo: 22px;
+            --fs-nav: 15px;
+            --fs-icon: 20px;
+            --fs-tag: 13px;
+            --fs-title: 32px;
+            --fs-sub: 17px;
+            --fs-btn: 15px;
+            --fs-p-name: 15px;
+            --fs-p-price: 17px;
+            --fs-p-badge: 13px;
+            --fs-p-cat: 12px;
+            --fs-detail-title: 22px;
+            --fs-detail-price: 20px;
+            --fs-detail-desc: 15px;
+            --fs-section-title: 17px;
+            --fs-sidebar-title: 15px;
+            --fs-sidebar-opt: 14px;
+            --fs-cart-item: 15px;
+            --fs-cart-price: 17px;
+            --fs-cart-total: 20px;
+            --fs-label: 13px;
+
+            /* ── Line Height ────────────────────────── */
+            --lh-base: 1.5;
         }
 
         *,
@@ -71,7 +98,7 @@
         }
 
         html {
-            font-size: 16px;
+            font-size: var(--fs-base);
             -webkit-font-smoothing: antialiased;
         }
 
@@ -79,6 +106,7 @@
             font-family: var(--font-body);
             background: var(--bg);
             color: var(--off-white);
+            line-height: var(--lh-base);
             overflow-x: hidden;
             transition: background 0.3s ease, color 0.3s ease;
         }
@@ -199,7 +227,7 @@
 
         .logo-main {
             font-family: var(--font-display);
-            font-size: 1.625rem;
+            font-size: var(--fs-logo);
             font-weight: 700;
             letter-spacing: 0.22em;
             text-transform: uppercase;
@@ -242,7 +270,7 @@
             height: var(--nav-h);
             padding: 0 0.95rem;
             font-family: var(--font-display);
-            font-size: 0.7rem;
+            font-size: var(--fs-nav);
             font-weight: 500;
             letter-spacing: 0.14em;
             text-transform: uppercase;
@@ -648,8 +676,10 @@
             align-items: center;
             justify-content: center;
             width: 44px;
+            min-height: 44px;
             height: var(--nav-h);
             color: var(--silver);
+            font-size: var(--fs-icon);
             transition: color 0.2s, background 0.2s;
             position: relative;
         }
@@ -1289,11 +1319,13 @@
             position: relative;
             display: flex;
             align-items: center;
+            justify-content: center;
             height: var(--nav-h);
         }
         .user-avatar-btn {
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 0.5rem;
             height: var(--nav-h);
             padding: 0 0.75rem;
@@ -1432,6 +1464,29 @@
             border-color: var(--gold);
             color: var(--gold);
         }
+        /* ── MOBILE ADJUSTMENTS ────────────────────── */
+        @media (max-width: 768px) {
+            :root {
+                --fs-base: 15px;
+                --fs-title: 28px;
+                --fs-detail-title: 20px;
+                --fs-cart-total: 18px;
+            }
+
+            .nav-item > a {
+                padding: 0 0.75rem;
+                height: 44px; /* Ensure 44px tap target */
+            }
+
+            .auth-link {
+                height: 44px;
+                padding: 0 0.85rem;
+            }
+
+            button, a.btn, .nav-icon {
+                min-height: 44px;
+            }
+        }
     </style>
 </head>
 
@@ -1456,8 +1511,14 @@
     <header class="site-header" id="siteHeader">
         <div class="nav-wrap"><!-- Logo -->
             <a href="{{ route('home') }}" class="nav-logo">
-                <span class="logo-main">KARBN<em>ZOL</em></span>
-                <span class="logo-sub">T-Shirts · Jeans · Chinos</span>
+                <span class="logo-main">
+                    @if($storefront_logo_text)
+                        {!! $storefront_logo_text !!}
+                    @else
+                        KARBN<em>ZOL</em>
+                    @endif
+                </span>
+                <span class="logo-sub">{{ $storefront_logo_subtext ?? 'T-Shirts · Jeans · Chinos' }}</span>
             </a>
 
             <!-- Desktop Nav -->
@@ -1502,7 +1563,7 @@
                                     <div class="dd-inner">
                                         <!-- Promo image column -->
                                         <div class="dd-promo">
-                                            <div class="dd-promo-img" style="background-image: url('{{ $category->image_url ?? $category->banner_urls[0] ?? asset('images/default-banner.png') }}');"></div>
+                                            <div class="dd-promo-img" style="background-image: url('{{ $category->image_url ?? ($category->banner_urls[0] ?? '') }}'); @if(!$category->image_url && empty($category->banner_urls)) background-image: url('@placeholder($category->id)'); @endif"></div>
                                             <p class="dd-promo-label">{{ $category->name }}</p>
                                             <p class="dd-promo-title">NEW<br>SEASON</p>
                                             <a href="{{ route('frontend.products.index', ['category' => $category->slug]) }}" class="dd-promo-cta">
@@ -1533,27 +1594,13 @@
                                             @endforeach
                                         </div>
                                     </div>
-                                    <div class="dd-footer">
-                                        <a href="{{ route('frontend.products.index', ['category' => $category->slug]) }}">
-                                            View All {{ $category->name }}
-                                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                                        </a>
-                                        <span class="dd-footer-count">{{ $category->products_count ?? 0 }} products</span>
-                                    </div>
                                 </div>
                             @endif
                         </li>
                     @endforeach
 
-
-
-
-
                     <!-- About (no dropdown) -->
                     <li class="nav-item"><a href="{{ route('frontend.about') }}">{{ __('file.about') }}</a></li>
-
-                    <!-- Contact (no dropdown) -->
-                    <li class="nav-item"><a href="{{ route('frontend.contact') }}">{{ __('file.contact') }}</a></li>
 
                 </ul>
             </nav>
@@ -1605,7 +1652,6 @@
                                     {{ $initials }}
                                 </span>
                             @endif
-                            <span class="user-name-label">{{ explode(' ', $authUser->name)[0] }}</span>
                             <svg class="nav-chevron" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 1 5 5 9 1"/></svg>
                         </button>
                         <div class="user-dropdown" role="menu">
@@ -1662,7 +1708,7 @@
                 </a>
                 <a href="{{ route('cart.index') }}" class="nav-icon" aria-label="Shopping cart">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-                    <span class="cart-dot" id="navCartCount">{{ \Darryldecode\Cart\Facades\CartFacade::getTotalQuantity() }}</span>
+                    <span class="cart-dot" id="navCartCount">{{ Auth::check() ? \Cart::session(Auth::id())->getTotalQuantity() : \Cart::getTotalQuantity() }}</span>
                 </a>
                 <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false">
                     <span></span><span></span><span></span>
@@ -1724,8 +1770,8 @@
         @endforeach
 
         <!-- Plain links -->
-        <div class="mob-item mob-plain"><a href="#">{{ __('file.about') }}</a></div>
-        <div class="mob-item mob-plain"><a href="#">{{ __('file.contact') }}</a></div>
+        <div class="mob-item mob-plain"><a href="{{ route('frontend.about') }}">{{ __('file.about') }}</a></div>
+        <div class="mob-item mob-plain"><a href="{{ route('frontend.about') }}#contact-info">{{ __('file.contact') }}</a></div>
         <div class="mob-item mob-plain"><a href="#">{{ __('file.careers') }}</a></div>
         <div class="mob-item mob-plain"><a href="{{ route('cart.index') }}">{{ __('file.my_bag') }} ({{ \Darryldecode\Cart\Facades\CartFacade::getTotalQuantity() }})</a></div>
 
@@ -1796,8 +1842,14 @@
         <div class="footer-inner">
             <div class="footer-top">
                 <div class="footer-brand g-up">
-                    <div class="ft-logo">KARBN<em>ZOL</em></div>
-                    <div class="ft-logo-tag">T-Shirts · Jeans · Chinos</div>
+                    <div class="ft-logo">
+                        @if($storefront_logo_text)
+                            {!! $storefront_logo_text !!}
+                        @else
+                            KARBN<em>ZOL</em>
+                        @endif
+                    </div>
+                    <div class="ft-logo-tag">{{ $storefront_logo_subtext ?? 'T-Shirts · Jeans · Chinos' }}</div>
                     <p class="ft-desc">{{ $storefront->storefront_about_us ?? "Sri Lanka's premier destination for men's and kids' fashion. Quality craftsmanship, contemporary style, unbeatable value." }}</p>
                     <div class="ft-socials">
                         <a class="ft-soc" href="#" aria-label="Instagram">IG</a>
@@ -1826,7 +1878,7 @@
                         <li><a href="#">{{ __('file.track_order') }}</a></li>
                         <li><a href="#">{{ __('file.faq') }}</a></li>
                         <li><a href="{{ route('frontend.about') }}">{{ __('file.about_us') ?? 'About Us' }}</a></li>
-                        <li><a href="{{ route('frontend.contact') }}">{{ __('file.contact_us') }}</a></li>
+                        <li><a href="{{ route('frontend.about') }}#contact-info">{{ __('file.contact_us') }}</a></li>
                     </ul>
                 </div>
                 <div class="g-up">
@@ -1856,7 +1908,7 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p class="ft-copy">© {{ date('Y') }} <em>KARBNZOL</em>. All Rights Reserved.</p>
+                <p class="ft-copy">© {{ date('Y') }} <em>{{ $storefront_logo_text ? strip_tags($storefront_logo_text) : 'KARBNZOL' }}</em>. All Rights Reserved.</p>
                 <nav class="ft-legal" aria-label="Legal">
                     <a href="#">Privacy Policy</a>
                     <a href="#">Terms of Use</a>

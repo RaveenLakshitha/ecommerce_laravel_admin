@@ -773,7 +773,8 @@
                 </a>
                 <a href="#">Collections</a>
                 <a href="#">Lookbook</a>
-                <a href="#">About</a>
+                <a href="{{ route('frontend.about') }}">About</a>
+                <a href="{{ route('frontend.about') }}#contact-info">Contact</a>
             </nav>
 
             <!-- Right actions -->
@@ -827,7 +828,8 @@
         <a href="#">New In</a>
         <a href="#">Collections</a>
         <a href="#">Lookbook</a>
-        <a href="#">About</a>
+        <a href="{{ route('frontend.about') }}">About</a>
+        <a href="{{ route('frontend.about') }}#contact-info">Contact</a>
         <a href="{{ route('cart.index') }}">Bag (0)</a>
         @auth('web')
             <a href="{{ route('account.dashboard') }}">My Account</a>
@@ -896,7 +898,7 @@
                         <li><a href="#">Track My Order</a></li>
                         <li><a href="#">FAQ</a></li>
                         <li><a href="{{ route('frontend.about') }}">About Us</a></li>
-                        <li><a href="{{ route('frontend.contact') }}">Contact Us</a></li>
+                        <li><a href="{{ route('frontend.about') }}#contact-info">Contact Us</a></li>
                     </ul>
                 </div>
                 <div class="footer-contact reveal">

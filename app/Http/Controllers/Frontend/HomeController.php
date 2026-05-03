@@ -75,9 +75,4 @@ class HomeController extends Controller
         return view('frontend.pages.about', compact('storefront'));
     }
 
-    public function contact()
-    {
-        $storefront = \App\Models\Setting::getAll();
-        return view('frontend.pages.contact', compact('storefront'));
-    }
 }

@@ -175,7 +175,7 @@
         }
 
         .cart-item-brand {
-            font-size: 0.65rem;
+            font-size: var(--fs-label);
             letter-spacing: 0.1em;
             text-transform: uppercase;
             color: #555555;
@@ -184,7 +184,7 @@
 
         .cart-item-details h3 {
             font-family: var(--font-display, Georgia, serif);
-            font-size: 1rem;
+            font-size: var(--fs-cart-item);
             font-weight: 500;
             color: #000000;
             margin-bottom: 0.3rem;
@@ -201,7 +201,7 @@
         }
 
         .cart-item-price {
-            font-size: 0.95rem;
+            font-size: var(--fs-cart-price);
             font-weight: 700;
             color: #000000;
             margin-top: 0.5rem;
@@ -314,7 +314,7 @@
             justify-content: space-between;
             align-items: center;
             padding: 0.65rem 0;
-            font-size: 0.875rem;
+            font-size: var(--fs-label);
             border-bottom: 1px solid #e2dcd4;
         }
 
@@ -415,7 +415,7 @@
         }
 
         .summary-total-label {
-            font-size: 0.68rem;
+            font-size: var(--fs-label);
             text-transform: uppercase;
             letter-spacing: 0.1em;
             color: #000000;
@@ -424,8 +424,8 @@
 
         .summary-total-amount {
             font-family: var(--font-display, Georgia, serif);
-            font-size: 1.5rem;
-            font-weight: 500;
+            font-size: var(--fs-cart-total);
+            font-weight: 700;
             color: #000000;
             line-height: 1;
         }

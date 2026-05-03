@@ -120,8 +120,18 @@ class Setting extends Model
         'storefront_about_us_content',
         'storefront_marquee_text',
         'storefront_marquee_link',
+        'storefront_our_story_title',
+        'storefront_our_story_content',
+        'storefront_our_story_image',
+        'storefront_stats',
+        'storefront_trust_items',
+        'storefront_logo_text',
+        'storefront_logo_subtext',
         'phone',
         'email',
+        'storefront_our_story_show',
+        'storefront_stats_show',
+        'storefront_trust_show',
     ];
 
     protected $casts = [
@@ -158,6 +168,11 @@ class Setting extends Model
         'number_of_decimals' => 'integer',
         'low_stock_threshold' => 'integer',
         'storefront_banners' => 'json',
+        'storefront_stats' => 'json',
+        'storefront_trust_items' => 'json',
+        'storefront_our_story_show' => 'boolean',
+        'storefront_stats_show' => 'boolean',
+        'storefront_trust_show' => 'boolean',
     ];
 
     /**

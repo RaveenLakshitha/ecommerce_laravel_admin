@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Dashboard')
+@section('title', __('file.dashboard'))
 
 @section('content')
     <div class="px-4 sm:px-6 lg:px-8 pb-10 pt-20">
@@ -9,20 +9,20 @@
             {{-- ── PAGE HEADER ────────────────────────────────────────────────────── --}}
             <div class="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div>
-                    <h1 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">Dashboard</h1>
+                    <h1 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">{{ __('file.dashboard') }}</h1>
                     <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                        Overview of your store's performance and activity.
+                        {{ __('file.dashboard_overview') }}
                     </p>
                 </div>
                 <div class="flex items-center gap-3">
                     <div
                         class="flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-100 dark:border-emerald-500/20 text-emerald-700 dark:text-emerald-400 text-xs font-semibold">
                         <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                        Live
+                        {{ __('file.live') }}
                     </div>
                     <a href="{{ route('orders.index') }}"
                         class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-sm font-semibold hover:bg-black dark:hover:bg-gray-100 transition-all shadow-sm active:scale-[0.98]">
-                        View All Orders
+                        {{ __('file.view_all_orders') }}
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -38,7 +38,7 @@
                 <div
                     class="bg-white dark:bg-surface-tonal-a20 rounded-2xl shadow-sm border border-gray-200 dark:border-surface-tonal-a30 p-5 flex flex-col gap-3 hover:shadow-md transition-shadow">
                     <div class="flex items-center justify-between">
-                        <span class="text-xs font-semibold text-gray-500 dark:text-gray-400">Today's Sales</span>
+                        <span class="text-xs font-semibold text-gray-500 dark:text-gray-400">{{ __('file.todays_sales') }}</span>
                         <div
                             class="w-8 h-8 rounded-xl bg-blue-50 dark:bg-blue-500/10 flex items-center justify-center text-blue-600 dark:text-blue-400">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -49,14 +49,14 @@
                     </div>
                     <p class="text-2xl font-bold text-gray-900 dark:text-white tabular-nums">@price($todaysSales)
                     </p>
-                    <span class="text-xs text-gray-400 dark:text-gray-500">Revenue today</span>
+                    <span class="text-xs text-gray-400 dark:text-gray-500">{{ __('file.revenue_today') }}</span>
                 </div>
 
                 {{-- Orders Today --}}
                 <div
                     class="bg-white dark:bg-surface-tonal-a20 rounded-2xl shadow-sm border border-gray-200 dark:border-surface-tonal-a30 p-5 flex flex-col gap-3 hover:shadow-md transition-shadow">
                     <div class="flex items-center justify-between">
-                        <span class="text-xs font-semibold text-gray-500 dark:text-gray-400">Orders Today</span>
+                        <span class="text-xs font-semibold text-gray-500 dark:text-gray-400">{{ __('file.orders_today') }}</span>
                         <div
                             class="w-8 h-8 rounded-xl bg-emerald-50 dark:bg-emerald-500/10 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -68,14 +68,14 @@
                     <p class="text-2xl font-bold text-gray-900 dark:text-white tabular-nums">
                         {{ number_format($ordersTodayCount) }}
                     </p>
-                    <span class="text-xs text-emerald-600 dark:text-emerald-400 font-semibold">Active fulfillment</span>
+                    <span class="text-xs text-emerald-600 dark:text-emerald-400 font-semibold">{{ __('file.active_fulfillment') }}</span>
                 </div>
 
                 {{-- Pending Orders --}}
                 <div
                     class="bg-white dark:bg-surface-tonal-a20 rounded-2xl shadow-sm border border-gray-200 dark:border-surface-tonal-a30 p-5 flex flex-col gap-3 hover:shadow-md transition-shadow">
                     <div class="flex items-center justify-between">
-                        <span class="text-xs font-semibold text-gray-500 dark:text-gray-400">Pending Orders</span>
+                        <span class="text-xs font-semibold text-gray-500 dark:text-gray-400">{{ __('file.pending_orders_card') }}</span>
                         <div
                             class="w-8 h-8 rounded-xl bg-amber-50 dark:bg-amber-500/10 flex items-center justify-center text-amber-600 dark:text-amber-400">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -89,7 +89,7 @@
                     </p>
                     <div class="flex items-center gap-1">
                         <span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>
-                        <span class="text-xs text-amber-600 dark:text-amber-400 font-semibold">Awaiting process</span>
+                        <span class="text-xs text-amber-600 dark:text-amber-400 font-semibold">{{ __('file.awaiting_process') }}</span>
                     </div>
                 </div>
 
@@ -97,7 +97,7 @@
                 <div
                     class="bg-white dark:bg-surface-tonal-a20 rounded-2xl shadow-sm border border-gray-200 dark:border-surface-tonal-a30 p-5 flex flex-col gap-3 hover:shadow-md transition-shadow">
                     <div class="flex items-center justify-between">
-                        <span class="text-xs font-semibold text-gray-500 dark:text-gray-400">Low Stock Items</span>
+                        <span class="text-xs font-semibold text-gray-500 dark:text-gray-400">{{ __('file.low_stock_items') }}</span>
                         <div
                             class="w-8 h-8 rounded-xl bg-rose-50 dark:bg-rose-500/10 flex items-center justify-center text-rose-600 dark:text-rose-400">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -109,14 +109,14 @@
                     <p class="text-2xl font-bold text-gray-900 dark:text-white tabular-nums">
                         {{ number_format($lowStockCount) }}
                     </p>
-                    <span class="text-xs text-rose-600 dark:text-rose-400 font-semibold">Needs restocking</span>
+                    <span class="text-xs text-rose-600 dark:text-rose-400 font-semibold">{{ __('file.needs_restocking') }}</span>
                 </div>
 
                 {{-- COD Pending --}}
                 <div
                     class="bg-white dark:bg-surface-tonal-a20 rounded-2xl shadow-sm border border-gray-200 dark:border-surface-tonal-a30 p-5 flex flex-col gap-3 hover:shadow-md transition-shadow">
                     <div class="flex items-center justify-between">
-                        <span class="text-xs font-semibold text-gray-500 dark:text-gray-400">COD Pending</span>
+                        <span class="text-xs font-semibold text-gray-500 dark:text-gray-400">{{ __('file.cod_pending') }}</span>
                         <div
                             class="w-8 h-8 rounded-xl bg-violet-50 dark:bg-violet-500/10 flex items-center justify-center text-violet-600 dark:text-violet-400">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -128,14 +128,14 @@
                     <p class="text-2xl font-bold text-gray-900 dark:text-white tabular-nums">
                         {{ number_format($codPendingCount) }}
                     </p>
-                    <span class="text-xs text-violet-600 dark:text-violet-400 font-semibold">Cash on delivery</span>
+                    <span class="text-xs text-violet-600 dark:text-violet-400 font-semibold">{{ __('file.cash_on_delivery') }}</span>
                 </div>
 
                 {{-- Monthly Revenue --}}
                 <div
                     class="bg-white dark:bg-surface-tonal-a20 rounded-2xl shadow-sm border border-gray-200 dark:border-surface-tonal-a30 p-5 flex flex-col gap-3 hover:shadow-md transition-shadow">
                     <div class="flex items-center justify-between">
-                        <span class="text-xs font-semibold text-gray-500 dark:text-gray-400">Monthly Revenue</span>
+                        <span class="text-xs font-semibold text-gray-500 dark:text-gray-400">{{ __('file.monthly_revenue') }}</span>
                         <div
                             class="w-8 h-8 rounded-xl bg-indigo-50 dark:bg-indigo-500/10 flex items-center justify-center text-indigo-600 dark:text-indigo-400">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -145,7 +145,7 @@
                         </div>
                     </div>
                     <p class="text-2xl font-bold text-gray-900 dark:text-white tabular-nums">@price($thisMonthRevenue)</p>
-                    <span class="text-xs text-gray-400 dark:text-gray-500">This month</span>
+                    <span class="text-xs text-gray-400 dark:text-gray-500">{{ __('file.this_month') }}</span>
                 </div>
 
             </div>
@@ -162,13 +162,12 @@
                         <div
                             class="px-6 py-4 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20 flex items-center justify-between">
                             <div>
-                                <h2 class="font-semibold text-gray-900 dark:text-white">Recent Orders</h2>
-                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Latest 10 orders placed in your
-                                    store</p>
+                                <h2 class="font-semibold text-gray-900 dark:text-white">{{ __('file.recent_orders') }}</h2>
+                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{{ __('file.latest_orders_note') }}</p>
                             </div>
                             <a href="{{ route('orders.index') }}"
                                 class="flex items-center gap-1.5 text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors">
-                                View all
+                                {{ __('file.view_all') }}
                                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -182,19 +181,19 @@
                                         class="bg-gray-100/50 dark:bg-surface-tonal-a10/50 border-b border-gray-100 dark:border-surface-tonal-a30">
                                         <th
                                             class="px-6 py-3 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                                            Order #</th>
+                                            {{ __('file.order_num_alias') }}</th>
                                         <th
                                             class="px-6 py-3 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                                            Customer</th>
+                                            {{ __('file.customer') }}</th>
                                         <th
                                             class="px-6 py-3 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                                            Status</th>
+                                            {{ __('file.status') }}</th>
                                         <th
                                             class="px-6 py-3 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                                            Payment</th>
+                                            {{ __('file.payment') }}</th>
                                         <th
                                             class="px-6 py-3 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider text-right">
-                                            Total</th>
+                                            {{ __('file.total') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-gray-50 dark:divide-surface-tonal-a30">
@@ -227,13 +226,13 @@
                                                 @endphp
                                                 <span
                                                     class="inline-flex items-center px-2.5 py-1 rounded-lg border text-xs font-semibold {{ $statusClass }}">
-                                                    {{ ucfirst($order->status) }}
+                                                    {{ __('file.' . $order->status) }}
                                                 </span>
                                             </td>
                                             <td class="px-6 py-4">
                                                 <div class="flex items-center gap-1.5">
                                                     <span
-                                                        class="text-xs text-gray-500 dark:text-gray-400 uppercase font-medium">{{ $order->payment_method }}</span>
+                                                        class="text-xs text-gray-500 dark:text-gray-400 uppercase font-medium">{{ __('file.' . strtolower($order->payment_method)) }}</span>
                                                     @if($order->payment_status === 'paid')
                                                         <svg class="w-3.5 h-3.5 text-emerald-500" fill="currentColor"
                                                             viewBox="0 0 20 20">
@@ -253,7 +252,7 @@
                                         <tr>
                                             <td colspan="5"
                                                 class="px-6 py-12 text-center text-sm text-gray-400 dark:text-gray-500">
-                                                No orders found.
+                                                {{ __('file.no_orders_found') }}
                                             </td>
                                         </tr>
                                     @endforelse
@@ -271,13 +270,13 @@
                             <div
                                 class="px-6 py-4 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20 flex items-center justify-between">
                                 <div>
-                                    <h2 class="font-semibold text-gray-900 dark:text-white">Low Stock Alerts</h2>
-                                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Products needing restock</p>
+                                    <h2 class="font-semibold text-gray-900 dark:text-white">{{ __('file.low_stock_alerts') }}</h2>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{{ __('file.products_needing_restock') }}</p>
                                 </div>
                                 @if($lowStockCount > 0)
                                     <span
                                         class="px-2.5 py-1 rounded-lg bg-rose-50 dark:bg-rose-500/10 text-rose-700 dark:text-rose-400 text-xs font-semibold border border-rose-100 dark:border-rose-500/20">
-                                        {{ $lowStockCount }} items
+                                        {{ __('file.items_count', ['count' => $lowStockCount]) }}
                                     </span>
                                 @endif
                             </div>
@@ -304,14 +303,14 @@
                                                     {{ $variant->product->name }}
                                                 </p>
                                                 <p class="text-xs text-rose-600 dark:text-rose-400 font-medium mt-0.5">
-                                                    {{ $variant->stock_quantity }} left · threshold
+                                                    {{ $variant->stock_quantity }} {{ __('file.left_threshold') }}
                                                     {{ $variant->low_stock_threshold ?? 5 }}
                                                 </p>
                                             </div>
                                         </div>
                                         <a href="{{ route('products.edit', $variant->product_id) }}"
                                             class="px-3 py-1.5 rounded-lg bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-xs font-semibold hover:bg-black dark:hover:bg-gray-100 transition-all opacity-0 group-hover:opacity-100 shrink-0">
-                                            Restock
+                                            {{ __('file.restock') }}
                                         </a>
                                     </div>
                                 @empty
@@ -323,7 +322,7 @@
                                                     d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                             </svg>
                                         </div>
-                                        <p class="text-sm text-gray-500 dark:text-gray-400">All inventory levels are healthy.
+                                        <p class="text-sm text-gray-500 dark:text-gray-400">{{ __('file.inventory_levels_healthy') }}
                                         </p>
                                     </div>
                                 @endforelse
@@ -336,13 +335,13 @@
                             <div
                                 class="px-6 py-4 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20 flex items-center justify-between">
                                 <div>
-                                    <h2 class="font-semibold text-gray-900 dark:text-white">Top Selling Products</h2>
-                                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Best performers this period
+                                    <h2 class="font-semibold text-gray-900 dark:text-white">{{ __('file.top_selling_products') }}</h2>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{{ __('file.best_performers_period') }}
                                     </p>
                                 </div>
                                 <span
                                     class="px-2.5 py-1 rounded-lg bg-indigo-50 dark:bg-indigo-500/10 text-indigo-700 dark:text-indigo-400 text-xs font-semibold border border-indigo-100 dark:border-indigo-500/20">
-                                    Top 5
+                                    {{ __('file.top_5') }}
                                 </span>
                             </div>
                             <div class="p-6 space-y-4">
@@ -375,9 +374,7 @@
                                                 {{ $product->name }}
                                             </a>
                                             <div class="flex items-center gap-3 mt-1">
-                                                <span
-                                                    class="text-xs text-gray-400 dark:text-gray-500">{{ $product->order_items_count }}
-                                                    orders</span>
+                                                    {{ __('file.orders_count', ['count' => $product->order_items_count]) }}</span>
                                                 <div
                                                     class="flex-1 h-1 bg-gray-100 dark:bg-surface-tonal-a30 rounded-full overflow-hidden">
                                                     <div class="h-full bg-indigo-500/50 rounded-full"
@@ -387,8 +384,7 @@
                                         </div>
                                     </div>
                                 @empty
-                                    <div class="py-10 text-center text-sm text-gray-400 dark:text-gray-500">No sales data
-                                        available.</div>
+                                    <div class="py-10 text-center text-sm text-gray-400 dark:text-gray-500">{{ __('file.no_sales_data_available') }}</div>
                                 @endforelse
                             </div>
                         </div>
@@ -404,8 +400,8 @@
                         class="bg-white dark:bg-surface-tonal-a20 rounded-2xl shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                         <div
                             class="px-6 py-4 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
-                            <h2 class="font-semibold text-gray-900 dark:text-white">Quick Actions</h2>
-                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Common tasks at a glance</p>
+                            <h2 class="font-semibold text-gray-900 dark:text-white">{{ __('file.quick_actions') }}</h2>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{{ __('file.common_tasks_glance') }}</p>
                         </div>
                         <div class="p-5 grid grid-cols-2 gap-3">
                             <a href="{{ route('products.create') }}"
@@ -418,8 +414,7 @@
                                     </svg>
                                 </div>
                                 <span
-                                    class="text-xs font-semibold text-gray-700 dark:text-gray-300 group-hover:text-indigo-700 dark:group-hover:text-indigo-300 transition-colors leading-tight">Add
-                                    Product</span>
+                                    class="text-xs font-semibold text-gray-700 dark:text-gray-300 group-hover:text-indigo-700 dark:group-hover:text-indigo-300 transition-colors leading-tight">{{ __('file.add_product') }}</span>
                             </a>
                             <a href="{{ route('coupons.create') }}"
                                 class="flex flex-col items-start gap-3 p-4 rounded-xl border border-gray-200 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a30/50 hover:bg-amber-50 dark:hover:bg-amber-500/10 hover:border-amber-200 dark:hover:border-amber-500/30 transition-all group">
@@ -431,8 +426,7 @@
                                     </svg>
                                 </div>
                                 <span
-                                    class="text-xs font-semibold text-gray-700 dark:text-gray-300 group-hover:text-amber-700 dark:group-hover:text-amber-300 transition-colors leading-tight">Create
-                                    Coupon</span>
+                                    class="text-xs font-semibold text-gray-700 dark:text-gray-300 group-hover:text-amber-700 dark:group-hover:text-amber-300 transition-colors leading-tight">{{ __('file.add_coupon') }}</span>
                             </a>
                             <a href="{{ route('shipping.shipments.datatable') }}"
                                 class="flex flex-col items-start gap-3 p-4 rounded-xl border border-gray-200 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a30/50 hover:bg-blue-50 dark:hover:bg-blue-500/10 hover:border-blue-200 dark:hover:border-blue-500/30 transition-all group">
@@ -444,8 +438,7 @@
                                     </svg>
                                 </div>
                                 <span
-                                    class="text-xs font-semibold text-gray-700 dark:text-gray-300 group-hover:text-blue-700 dark:group-hover:text-blue-300 transition-colors leading-tight">Manage
-                                    Shipments</span>
+                                    class="text-xs font-semibold text-gray-700 dark:text-gray-300 group-hover:text-blue-700 dark:group-hover:text-blue-300 transition-colors leading-tight">{{ __('file.manage_shipments') }}</span>
                             </a>
                             <a href="{{ route('customers.index') }}"
                                 class="flex flex-col items-start gap-3 p-4 rounded-xl border border-gray-200 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a30/50 hover:bg-violet-50 dark:hover:bg-violet-500/10 hover:border-violet-200 dark:hover:border-violet-500/30 transition-all group">
@@ -457,7 +450,7 @@
                                     </svg>
                                 </div>
                                 <span
-                                    class="text-xs font-semibold text-gray-700 dark:text-gray-300 group-hover:text-violet-700 dark:group-hover:text-violet-300 transition-colors leading-tight">Customers</span>
+                                    class="text-xs font-semibold text-gray-700 dark:text-gray-300 group-hover:text-violet-700 dark:group-hover:text-violet-300 transition-colors leading-tight">{{ __('file.crm') }}</span>
                             </a>
                         </div>
                     </div>
@@ -467,8 +460,8 @@
                         class="bg-white dark:bg-surface-tonal-a20 rounded-2xl shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                         <div
                             class="px-6 py-4 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
-                            <h2 class="font-semibold text-gray-900 dark:text-white">Pending Tasks</h2>
-                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Items requiring your attention</p>
+                            <h2 class="font-semibold text-gray-900 dark:text-white">{{ __('file.pending_tasks') }}</h2>
+                            <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{{ __('file.items_requiring_attention') }}</p>
                         </div>
                         <div class="p-4 space-y-3">
 
@@ -483,8 +476,8 @@
                                     </svg>
                                 </div>
                                 <div class="flex-1 min-w-0">
-                                    <p class="text-sm font-semibold text-gray-900 dark:text-white">Pending Returns</p>
-                                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Awaiting approval</p>
+                                    <p class="text-sm font-semibold text-gray-900 dark:text-white">{{ __('file.pending_returns') }}</p>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{{ __('file.awaiting_approval') }}</p>
                                 </div>
                                 <span
                                     class="w-9 h-9 rounded-xl bg-white dark:bg-surface-tonal-a10 border border-gray-200 dark:border-surface-tonal-a30 flex items-center justify-center text-sm font-bold text-orange-600 dark:text-orange-400 tabular-nums shrink-0">
@@ -503,8 +496,8 @@
                                     </svg>
                                 </div>
                                 <div class="flex-1 min-w-0">
-                                    <p class="text-sm font-semibold text-gray-900 dark:text-white">Courier Dispatch</p>
-                                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Awaiting shipment</p>
+                                    <p class="text-sm font-semibold text-gray-900 dark:text-white">{{ __('file.courier_dispatch') }}</p>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{{ __('file.awaiting_shipment') }}</p>
                                 </div>
                                 <span
                                     class="w-9 h-9 rounded-xl bg-white dark:bg-surface-tonal-a10 border border-gray-200 dark:border-surface-tonal-a30 flex items-center justify-center text-sm font-bold text-blue-600 dark:text-blue-400 tabular-nums shrink-0">
@@ -523,8 +516,8 @@
                                     </svg>
                                 </div>
                                 <div class="flex-1 min-w-0">
-                                    <p class="text-sm font-semibold text-gray-900 dark:text-white">Reviews to Moderate</p>
-                                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Pending moderation</p>
+                                    <p class="text-sm font-semibold text-gray-900 dark:text-white">{{ __('file.reviews_to_moderate') }}</p>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{{ __('file.pending_moderation') }}</p>
                                 </div>
                                 <span
                                     class="w-9 h-9 rounded-xl bg-white dark:bg-surface-tonal-a10 border border-gray-200 dark:border-surface-tonal-a30 flex items-center justify-center text-sm font-bold text-violet-600 dark:text-violet-400 tabular-nums shrink-0">
