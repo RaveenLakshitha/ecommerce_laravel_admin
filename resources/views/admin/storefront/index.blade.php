@@ -110,7 +110,7 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Announcement Text <span class="text-xs text-gray-400 font-normal ml-2">(Repeats in marquee)</span></label>
-                                <input type="text" name="storefront_offer_text" value="{{ old('storefront_offer_text', $setting->storefront_offer_text ?? '') }}" maxlength="50" placeholder="e.g., FREE SHIPPING ON ORDERS OVER RS. 5,000" class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-transparent dark:text-primary-a0 transition-shadow">
+                                <input type="text" name="storefront_offer_text" value="{{ old('storefront_offer_text', $setting->storefront_offer_text ?? '') }}" maxlength="50" placeholder="e.g., FREE SHIPPING ON ORDERS OVER {{ $currency_symbol }} {{ number_format($free_shipping_threshold) }}" class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-transparent dark:text-primary-a0 transition-shadow">
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Announcement Link (Optional)</label>
@@ -251,7 +251,7 @@
                         <div id="trust-container" class="space-y-4">
                             @php
                                 $trusts = is_array($setting->storefront_trust_items) ? $setting->storefront_trust_items : [
-                                    ['title' => 'Free Delivery', 'subtitle' => 'On orders over Rs. 5,000', 'svg' => '<rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>'],
+                                    ['title' => 'Free Delivery', 'subtitle' => 'On orders over ' . $currency_symbol . ' ' . number_format($free_shipping_threshold), 'svg' => '<rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>'],
                                     ['title' => 'Secure Payments', 'subtitle' => 'MintPay & Stripe Integration', 'svg' => '<rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>'],
                                     ['title' => 'Easy Returns', 'subtitle' => '14-day exchange policy', 'svg' => '<polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/>'],
                                     ['title' => 'Premium Quality', 'subtitle' => 'Hand-picked fabrics only', 'svg' => '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>']

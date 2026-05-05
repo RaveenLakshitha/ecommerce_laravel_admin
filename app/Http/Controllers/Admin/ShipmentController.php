@@ -11,6 +11,14 @@ use Illuminate\Http\Request;
 
 class ShipmentController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:shipments.index', ['only' => ['index', 'datatable', 'show']]);
+        $this->middleware('permission:shipments.create', ['only' => ['store']]);
+        $this->middleware('permission:shipments.edit', ['only' => ['update', 'addTracking']]);
+        $this->middleware('permission:shipments.delete', ['only' => ['destroy', 'bulkDelete']]);
+    }
+
     public function index()
     {
         $couriers = Courier::all();

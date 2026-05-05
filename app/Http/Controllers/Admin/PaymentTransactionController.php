@@ -10,7 +10,15 @@ use App\Models\Setting;
 
 class PaymentTransactionController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:invoices.index', ['only' => ['index', 'datatable', 'show']]);
+        $this->middleware('permission:invoices.edit', ['only' => ['markAsPaid']]);
+        $this->middleware('permission:invoices.delete', ['only' => ['destroy', 'bulkDelete']]);
+    }
+
     /**
+
      * Display a listing of the transactions.
      */
     public function index()

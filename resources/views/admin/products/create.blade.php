@@ -112,27 +112,16 @@
                                     {{ __('file.pricing_and_brand') }}</h2>
                             </div>
                             <div class="p-4">
-                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                                     <div>
                                         <label
-                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.base_price') }}</label>
+                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.price') }}</label>
                                         <div class="relative">
                                             <input type="number" step="0.01" name="base_price"
                                                 value="{{ old('base_price', '0.00') }}"
                                                 class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/50 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5 pr-7">
                                             <span
-                                                class="absolute inset-y-0 right-3 flex items-center text-gray-400 font-black text-xs pointer-events-none">$</span>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <label
-                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.sale_price') }}</label>
-                                        <div class="relative">
-                                            <input type="number" step="0.01" name="sale_price"
-                                                value="{{ old('sale_price') }}"
-                                                class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/50 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5 pr-7">
-                                            <span
-                                                class="absolute inset-y-0 right-3 flex items-center text-gray-400 font-black text-xs pointer-events-none">$</span>
+                                                class="absolute inset-y-0 right-3 flex items-center text-gray-400 font-black text-xs pointer-events-none">{{ $currency_symbol }}</span>
                                         </div>
                                     </div>
                                     <div>

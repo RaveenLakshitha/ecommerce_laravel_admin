@@ -794,10 +794,10 @@
         <div class="product-grid">
             @php
             $newArrivals = [
-                ['name'=>'Utility Cargo Pant','cat'=>'Bottoms','price'=>'Rs. 7,400','orig'=>null,'badge'=>'New','badge_cls'=>'','colors'=>['#1a1612','#3d3d3a','#c8ff00'],'img'=>'https://images.unsplash.com/photo-1594938298603-c8148c4b4e3d?w=600&q=80'],
-                ['name'=>'Sheer Panel Dress','cat'=>'Women','price'=>'Rs. 5,900','orig'=>'Rs. 8,200','badge'=>'Sale','badge_cls'=>'sale','colors'=>['#080808','#e8e8e8'],'img'=>'https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=600&q=80'],
-                ['name'=>'Boxy Cord Jacket','cat'=>'Outerwear','price'=>'Rs. 11,500','orig'=>null,'badge'=>'New','badge_cls'=>'','colors'=>['#3d3d3a','#8b7355','#1a1612'],'img'=>'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&q=80'],
-                ['name'=>'Structured Tote','cat'=>'Accessories','price'=>'Rs. 9,800','orig'=>null,'badge'=>null,'badge_cls'=>'','colors'=>['#1a1612','#c4602a'],'img'=>'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=600&q=80'],
+                ['name'=>'Utility Cargo Pant','cat'=>'Bottoms','price'=>'{{ $currency_symbol }} 7,400','orig'=>null,'badge'=>'New','badge_cls'=>'','colors'=>['#1a1612','#3d3d3a','#c8ff00'],'img'=>'https://images.unsplash.com/photo-1594938298603-c8148c4b4e3d?w=600&q=80'],
+                ['name'=>'Sheer Panel Dress','cat'=>'Women','price'=>'{{ $currency_symbol }} 5,900','orig'=>'{{ $currency_symbol }} 8,200','badge'=>'Sale','badge_cls'=>'sale','colors'=>['#080808','#e8e8e8'],'img'=>'https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=600&q=80'],
+                ['name'=>'Boxy Cord Jacket','cat'=>'Outerwear','price'=>'{{ $currency_symbol }} 11,500','orig'=>null,'badge'=>'New','badge_cls'=>'','colors'=>['#3d3d3a','#8b7355','#1a1612'],'img'=>'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&q=80'],
+                ['name'=>'Structured Tote','cat'=>'Accessories','price'=>'{{ $currency_symbol }} 9,800','orig'=>null,'badge'=>null,'badge_cls'=>'','colors'=>['#1a1612','#c4602a'],'img'=>'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=600&q=80'],
             ];
             @endphp
 
@@ -941,7 +941,7 @@
             {{-- Trust cells --}}
             <div class="trust-panel">
                 @php $trusts = [
-                    ['icon'=>'<path d="M5 12h14M12 5l7 7-7 7"/>','title'=>'Free Shipping','desc'=>'Island-wide on orders over Rs. 5,000.'],
+                    ['icon'=>'<path d="M5 12h14M12 5l7 7-7 7"/>','title'=>'Free Shipping','desc'=>'Island-wide on orders over {{ $currency_symbol }} {{ number_format($free_shipping_threshold) }}.'],
                     ['icon'=>'<polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>','title'=>'Easy Returns','desc'=>'14-day returns, no questions asked.'],
                     ['icon'=>'<rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/>','title'=>'Secure Payment','desc'=>'256-bit SSL on every checkout.'],
                     ['icon'=>'<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.41 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.52 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.16 6.16l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>','title'=>'24/7 Support','desc'=>'Always here when you need us.'],

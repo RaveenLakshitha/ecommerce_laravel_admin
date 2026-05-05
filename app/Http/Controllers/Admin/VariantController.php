@@ -11,6 +11,13 @@ use Illuminate\Validation\Rule;
 
 class VariantController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:variants.create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:variants.edit', ['only' => ['edit', 'update', 'deleteImage']]);
+        $this->middleware('permission:variants.delete', ['only' => ['destroy']]);
+    }
+
     public function create(Product $product)
     {
         $attributes = Attribute::with('values')->orderBy('sort_order')->get();

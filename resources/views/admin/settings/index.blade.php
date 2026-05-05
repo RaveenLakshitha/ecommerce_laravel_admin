@@ -263,7 +263,6 @@
                 $tabs = [
                     'general' => 'General',
                     'store' => 'Store Info',
-                    'appearance' => 'Appearance',
                     'currency' => 'Currency',
                     'seo' => 'SEO & Meta',
                     'shipping' => 'Shipping',
@@ -496,75 +495,7 @@
                             </div>
                         </div>
 
-                        {{-- ══════════════ APPEARANCE ══════════════ --}}
-                        <div class="tab-panel" id="panel-appearance">
-                            <div
-                                class="bg-white dark:bg-surface-tonal-a20 rounded-lg border border-gray-200 dark:border-surface-tonal-a30 shadow-sm overflow-hidden">
-                                <div
-                                    class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
-                                    <h2 class="text-sm font-semibold text-gray-900 dark:text-white">Appearance Settings</h2>
-                                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Colors, theme and layout
-                                        preferences.</p>
-                                </div>
-                                <div class="p-4 space-y-6">
-                                    <div>
-                                        <p
-                                            class="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-4">
-                                            Brand Colors</p>
-                                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
-                                            @foreach([['primary_color', 'Primary', '#e8c547'], ['secondary_color', 'Secondary', '#ffffff'], ['accent_color', 'Accent', '#000000']] as [$cn, $cl, $cd])
-                                                <div>
-                                                    <label
-                                                        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ $cl }}</label>
-                                                    <div class="flex items-center gap-2">
-                                                        <input type="color" id="{{ $cn }}_picker"
-                                                            value="{{ old($cn, $setting->{$cn} ?? $cd) }}"
-                                                            class="h-10 w-12 rounded-lg border border-gray-200 dark:border-surface-tonal-a30 p-0.5 bg-white dark:bg-surface-tonal-a20 cursor-pointer"
-                                                            oninput="document.getElementById('{{ $cn }}').value=this.value">
-                                                        <input type="text" name="{{ $cn }}" id="{{ $cn }}"
-                                                            value="{{ old($cn, $setting->{$cn} ?? $cd) }}" placeholder="#HEX"
-                                                            class="fi font-mono"
-                                                            oninput="document.getElementById('{{ $cn }}_picker').value=this.value">
-                                                    </div>
-                                                </div>
-                                            @endforeach
-                                        </div>
-                                    </div>
-                                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
-                                        <div>
-                                            <label for="theme_mode"
-                                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Theme
-                                                Mode</label>
-                                            <select name="theme_mode" id="theme_mode" class="fi">
-                                                <option value="light" @selected(old('theme_mode', $setting->theme_mode) == 'light')>Light</option>
-                                                <option value="dark" @selected(old('theme_mode', $setting->theme_mode) == 'dark')>Dark</option>
-                                                <option value="auto" @selected(old('theme_mode', $setting->theme_mode) == 'auto')>System Auto</option>
-                                            </select>
-                                        </div>
-                                        <div>
-                                            <label for="header_style"
-                                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Header
-                                                Style</label>
-                                            <select name="header_style" id="header_style" class="fi">
-                                                <option value="minimal" @selected(old('header_style', $setting->header_style) == 'minimal')>Minimalist</option>
-                                                <option value="centered" @selected(old('header_style', $setting->header_style) == 'centered')>Centered Logo</option>
-                                                <option value="expanded" @selected(old('header_style', $setting->header_style) == 'expanded')>Expanded</option>
-                                            </select>
-                                        </div>
-                                        <div>
-                                            <label for="footer_style"
-                                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Footer
-                                                Style</label>
-                                            <select name="footer_style" id="footer_style" class="fi">
-                                                <option value="simple" @selected(old('footer_style', $setting->footer_style) == 'simple')>Simple Links</option>
-                                                <option value="multi-column" @selected(old('footer_style', $setting->footer_style) == 'multi-column')>Multi-column</option>
-                                                <option value="noir" @selected(old('footer_style', $setting->footer_style) == 'noir')>Noir</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+
 
                         {{-- ══════════════ CURRENCY ══════════════ --}}
                         <div class="tab-panel" id="panel-currency">
@@ -585,8 +516,8 @@
                                             <select name="currency" id="currency" class="fi">
                                                 <option value="USD" @selected(old('currency', $setting->currency) == 'USD')>
                                                     USD – US Dollar</option>
-                                                <option value="LKR" @selected(old('currency', $setting->currency) == 'LKR')>
-                                                    LKR – Sri Lankan Rupee</option>
+                                                <option value="MXN" @selected(old('currency', $setting->currency) == 'MXN')>
+                                                    MXN – Mexican Peso</option>
                                                 <option value="EUR" @selected(old('currency', $setting->currency) == 'EUR')>
                                                     EUR – Euro</option>
                                                 <option value="GBP" @selected(old('currency', $setting->currency) == 'GBP')>

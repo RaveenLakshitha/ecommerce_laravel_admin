@@ -94,10 +94,7 @@ class ProductController extends Controller
 
         if ($request->has('max_price') && $request->max_price != '') {
             $maxPrice = (float) $request->max_price;
-            $query->where(function($q) use ($maxPrice) {
-                $q->where('base_price', '<=', $maxPrice)
-                  ->orWhere('sale_price', '<=', $maxPrice);
-            });
+            $query->where('base_price', '<=', $maxPrice);
         }
         
         // Sorting
@@ -110,10 +107,10 @@ class ProductController extends Controller
                     $query->orderBy('name', 'desc');
                     break;
                 case 'lh':
-                    $query->orderByRaw('COALESCE(sale_price, base_price) ASC');
+                    $query->orderBy('base_price', 'asc');
                     break;
                 case 'hl':
-                    $query->orderByRaw('COALESCE(sale_price, base_price) DESC');
+                    $query->orderBy('base_price', 'desc');
                     break;
                 case 'new':
                 default:

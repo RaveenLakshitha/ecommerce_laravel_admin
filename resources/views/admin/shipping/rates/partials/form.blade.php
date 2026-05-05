@@ -48,7 +48,7 @@
 
         <div>
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
-                {{ __('file.Rate Amount') }} (Rs.) <span class="text-red-500">*</span>
+                {{ __('file.Rate Amount') }} ({{ $currency_symbol }}) <span class="text-red-500">*</span>
             </label>
             <input type="number" step="0.01" name="rate_amount" value="{{ old('rate_amount', $rate ? $rate->rate_amount : '') }}" required
                 class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/50 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5">
@@ -73,19 +73,19 @@
             
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.Min Price') }} (Rs.)</label>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.Min Price') }} ({{ $currency_symbol }})</label>
                     <input type="number" step="0.01" name="min_price" value="{{ old('min_price', $rate ? $rate->min_price : '') }}"
                         class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/50 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.Max Price') }} (Rs.)</label>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.Max Price') }} ({{ $currency_symbol }})</label>
                     <input type="number" step="0.01" name="max_price" value="{{ old('max_price', $rate ? $rate->max_price : '') }}"
                         class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/50 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5">
                 </div>
             </div>
 
             <div class="pt-2">
-                <label class="block text-sm font-medium text-emerald-600 dark:text-emerald-400 mb-1.5">{{ __('file.Free Shipping Threshold') }} (Rs.)</label>
+                <label class="block text-sm font-medium text-emerald-600 dark:text-emerald-400 mb-1.5">{{ __('file.Free Shipping Threshold') }} ({{ $currency_symbol }})</label>
                 <input type="number" step="0.01" name="free_shipping_threshold" value="{{ old('free_shipping_threshold', $rate ? $rate->free_shipping_threshold : '') }}"
                     placeholder="{{ __('file.value_for_free_shipping') ?? 'Value for free shipping' }}"
                     class="block w-full rounded-xl border border-emerald-200 dark:border-emerald-500/30 bg-emerald-50/30 dark:bg-emerald-500/5 px-4 py-2.5 text-sm font-normal shadow-sm placeholder:text-emerald-300 dark:placeholder:text-emerald-500/50 text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-emerald-500/50 focus:ring-4 focus:ring-emerald-500/10">

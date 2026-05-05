@@ -8,6 +8,14 @@ use Illuminate\Http\Request;
 
 class PickupLocationController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:couriers.index', ['only' => ['index', 'datatable']]);
+        $this->middleware('permission:couriers.create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:couriers.edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:couriers.delete', ['only' => ['destroy', 'bulkDelete']]);
+    }
+
     public function index()
     {
         return view('admin.shipping.pickups.index');

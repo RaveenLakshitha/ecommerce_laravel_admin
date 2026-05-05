@@ -9,6 +9,14 @@ use Illuminate\Http\Request;
 
 class AttributeController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:attributes.index', ['only' => ['index', 'datatable']]);
+        $this->middleware('permission:attributes.create', ['only' => ['create', 'store', 'storeValue']]);
+        $this->middleware('permission:attributes.edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:attributes.delete', ['only' => ['destroy', 'bulkDelete', 'destroyValue']]);
+    }
+
     public function index()
     {
         return view('admin.attributes.index');

@@ -838,7 +838,7 @@
     <!-- ── TOP TICKER ──────────────────────────────────────────── -->
     <div class="top-ticker" aria-hidden="true">
         <div class="ticker-track">
-            @php $tItems = ['Free Shipping Over Rs. 5,000', 'New Drop: Summer Edit', 'Code FIRST10 — 10% Off', 'Island-Wide Delivery', '14-Day Returns', 'Free Shipping Over Rs. 5,000', 'New Drop: Summer Edit', 'Code FIRST10 — 10% Off', 'Island-Wide Delivery', '14-Day Returns', 'Free Shipping Over Rs. 5,000', 'New Drop: Summer Edit', 'Code FIRST10 — 10% Off', 'Island-Wide Delivery', '14-Day Returns']; @endphp
+            @php $tItems = ['Free Shipping Over ' . $currency_symbol . ' ' . number_format($free_shipping_threshold), 'New Drop: Summer Edit', 'Code FIRST10 — 10% Off', 'Island-Wide Delivery', '14-Day Returns', 'Free Shipping Over ' . $currency_symbol . ' ' . number_format($free_shipping_threshold), 'New Drop: Summer Edit', 'Code FIRST10 — 10% Off', 'Island-Wide Delivery', '14-Day Returns', 'Free Shipping Over ' . $currency_symbol . ' ' . number_format($free_shipping_threshold), 'New Drop: Summer Edit', 'Code FIRST10 — 10% Off', 'Island-Wide Delivery', '14-Day Returns']; @endphp
             @foreach($tItems as $item)
                 <span class="ticker-item">{{ $item }} <span class="ticker-sep"></span></span>
             @endforeach

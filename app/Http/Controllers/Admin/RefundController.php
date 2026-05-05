@@ -9,7 +9,14 @@ use App\Models\Setting;
 
 class RefundController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:orders.refund', ['only' => ['index', 'datatable', 'show', 'approve', 'reject']]);
+        $this->middleware('permission:orders.delete', ['only' => ['destroy', 'bulkDelete']]);
+    }
+
     /**
+
      * Display a listing of refunds.
      */
     public function index()

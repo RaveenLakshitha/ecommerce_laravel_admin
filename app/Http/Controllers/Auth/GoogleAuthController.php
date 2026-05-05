@@ -18,7 +18,8 @@ class GoogleAuthController extends Controller
     public function redirect(): RedirectResponse
     {
         return Socialite::driver('google')
-            ->with(['prompt' => 'select_account'])   // always show account picker
+            ->redirectUrl(config('services.google.redirect'))
+            ->with(['prompt' => 'select_account'])
             ->redirect();
     }
 
@@ -33,7 +34,9 @@ class GoogleAuthController extends Controller
     public function callback(): RedirectResponse
     {
         try {
-            $googleUser = Socialite::driver('google')->user();
+            $googleUser = Socialite::driver('google')
+                ->redirectUrl(config('services.google.redirect'))
+                ->user();
         } catch (Throwable $e) {
             return redirect()->route('login')
                 ->withErrors(['email' => 'Google authentication failed. Please try again.']);
@@ -81,6 +84,7 @@ class GoogleAuthController extends Controller
         // Log in and regenerate session (prevents session fixation attacks)
         Auth::login($user, remember: true);
         request()->session()->regenerate();
+        \App\Http\Controllers\Frontend\CartController::mergeAfterLogin();
 
         return redirect()->intended(route('home'));
     }

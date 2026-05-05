@@ -6,16 +6,21 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 class Admin extends Authenticatable
 {
-    use Notifiable, HasRoles;
+    use Notifiable, HasRoles, SoftDeletes;
 
-    protected $guard = 'admin';
+    protected $guard_name = 'admin';
 
     protected $fillable = [
         'name',
         'email',
+        'phone',
         'password',
+        'is_active',
+        'is_deleted',
     ];
 
     protected $hidden = [

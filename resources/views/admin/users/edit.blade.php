@@ -47,13 +47,13 @@
                             <div
                                 class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
                                 <h2 class="text-sm font-bold text-gray-900 dark:text-white">
-                                    {{ __('file.personnel_identity') }}</h2>
+                                    {{ __('file.user_details') ?? 'User Details' }}</h2>
                             </div>
                             <div class="p-4 space-y-4">
                                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                                     <div>
                                         <label for="name"
-                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.full_legal_name') }}
+                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.name') }}
                                             <span class="text-red-500">*</span></label>
                                         <input type="text" name="name" id="name" value="{{ old('name', $user->name) }}"
                                             required
@@ -63,7 +63,7 @@
                                     </div>
                                     <div>
                                         <label for="email"
-                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.corporate_email') }}
+                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.email') }}
                                             <span class="text-red-500">*</span></label>
                                         <input type="email" name="email" id="email" value="{{ old('email', $user->email) }}"
                                             required
@@ -74,7 +74,7 @@
                                 </div>
                                 <div>
                                     <label for="phone"
-                                        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.contact_number') }}
+                                        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.phone') }}
                                         <span class="text-red-500">*</span></label>
                                     <input type="tel" name="phone" id="phone" value="{{ old('phone', $user->phone) }}"
                                         required
@@ -90,7 +90,7 @@
                             <div
                                 class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
                                 <h2 class="text-sm font-bold text-gray-900 dark:text-white">
-                                    {{ __('file.credential_rotation') }}</h2>
+                                    {{ __('file.password') ?? 'Password' }}</h2>
                             </div>
                             <div class="p-4 space-y-4">
                                 <p class="text-xs text-gray-400 font-medium italic">
@@ -98,7 +98,7 @@
                                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                                     <div class="relative">
                                         <label for="password"
-                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.new_password') }}</label>
+                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.password') }}</label>
                                         <div class="relative">
                                             <input type="password" name="password" id="password" minlength="8"
                                                 class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/50 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5 pr-10">
@@ -118,7 +118,7 @@
                                     </div>
                                     <div class="relative">
                                         <label for="password_confirmation"
-                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.confirm_rotation') }}</label>
+                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.confirm_password') }}</label>
                                         <div class="relative">
                                             <input type="password" name="password_confirmation" id="password_confirmation"
                                                 class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/50 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5 pr-10">
@@ -145,7 +145,7 @@
                             <div
                                 class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
                                 <h2 class="text-sm font-bold text-gray-900 dark:text-white">
-                                    {{ __('file.inherited_authority') }}</h2>
+                                    {{ __('file.assign_role') ?? 'Assign Role' }}</h2>
                             </div>
                             <div class="p-4">
                                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
@@ -179,7 +179,7 @@
                             <div
                                 class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
                                 <h2 class="text-sm font-bold text-gray-900 dark:text-white">
-                                    {{ __('file.account_disposition') }}</h2>
+                                    {{ __('file.status') }}</h2>
                             </div>
                             <div class="p-4 space-y-6">
 
@@ -192,7 +192,7 @@
                                     <div class="ml-3">
                                         <h3
                                             class="text-sm font-semibold text-gray-900 dark:text-white leading-none">
-                                            {{ __('file.account_enabled') }}</h3>
+                                            {{ __('file.active') }}</h3>
                                         <p
                                             class="text-xs text-gray-500 dark:text-gray-400 font-medium mt-1">
                                             {{ __('file.permit_login_activities') }}</p>

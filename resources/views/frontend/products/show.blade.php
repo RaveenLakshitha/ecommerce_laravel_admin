@@ -1152,14 +1152,7 @@
 
                 {{-- Price --}}
                 <div class="pd-price-wrap" id="pdPriceWrap">
-                    @if($product->sale_price && $product->sale_price < $product->base_price)
-                        <span class="pd-price-orig">@price($product->base_price)</span>
-                        <span class="pd-price-sale" id="pdSalePrice">@price($product->sale_price)</span>
-                        @php $discount = round((($product->base_price - $product->sale_price) / $product->base_price) * 100); @endphp
-                        <span class="pd-price-badge" id="pdPriceBadge">−{{ $discount }}%</span>
-                    @else
-                        <span class="pd-price" id="pdBasePrice">@price($product->base_price)</span>
-                    @endif
+                    <span class="pd-price" id="pdBasePrice">@price($product->base_price)</span>
                 </div>
 
                 {{-- Stock status --}}
@@ -1866,19 +1859,9 @@
 
             // Update Price
             const basePriceFmt = new Intl.NumberFormat('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(exactMatch.price);
-            if (exactMatch.sale_price && exactMatch.sale_price < exactMatch.price) {
-                const salePriceFmt = new Intl.NumberFormat('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(exactMatch.sale_price);
-                const discount = Math.round(((exactMatch.price - exactMatch.sale_price) / exactMatch.price) * 100);
-                document.getElementById('pdPriceWrap').innerHTML = `
-                    <span class="pd-price-orig">{{ $currency_symbol }} ${basePriceFmt}</span>
-                    <span class="pd-price-sale" id="pdSalePrice">{{ $currency_symbol }} ${salePriceFmt}</span>
-                    <span class="pd-price-badge" id="pdPriceBadge">−${discount}%</span>
-                `;
-            } else {
-                document.getElementById('pdPriceWrap').innerHTML = `
-                    <span class="pd-price" id="pdBasePrice">{{ $currency_symbol }} ${basePriceFmt}</span>
-                `;
-            }
+            document.getElementById('pdPriceWrap').innerHTML = `
+                <span class="pd-price" id="pdBasePrice">{{ $currency_symbol }} ${basePriceFmt}</span>
+            `;
 
             // Update Stock
             const stockClass = exactMatch.stock > 10 ? 'in-stock' : (exactMatch.stock > 0 ? 'low-stock' : 'out-stock');

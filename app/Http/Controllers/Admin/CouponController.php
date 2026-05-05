@@ -9,6 +9,14 @@ use Illuminate\Http\Request;
 
 class CouponController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:promotions.index', ['only' => ['index', 'datatable']]);
+        $this->middleware('permission:promotions.create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:promotions.edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:promotions.delete', ['only' => ['destroy', 'bulkDelete']]);
+    }
+
     public function index()
     {
         return view('admin.promotions.coupons.index');

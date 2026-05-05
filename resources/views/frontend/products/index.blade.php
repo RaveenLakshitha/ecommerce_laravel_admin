@@ -1560,10 +1560,7 @@
                                 <p class="p-brand">{{ $p->brand->name ?? 'Karbnzol' }}</p>
                                 <p class="p-name">{{ $p->name }}</p>
                                 <div class="p-price-row">
-                                    <span class="p-price">@price($p->sale_price ? $p->sale_price : $p->base_price)</span>
-                                    @if($p->sale_price && $p->sale_price < $p->base_price)
-                                        <span class="p-was">@price($p->base_price)</span>
-                                    @endif
+                                    <span class="p-price">@price($p->base_price)</span>
                                 </div>
                                 <div class="p-swatches">
                                     @php

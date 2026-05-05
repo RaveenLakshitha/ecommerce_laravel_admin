@@ -59,44 +59,84 @@
                     <div
                         class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20 flex items-center justify-between">
                         <h2 class="text-sm font-bold text-gray-900 dark:text-white">{{ __('file.permission_matrix') }}</h2>
-                        <button type="button" onclick="selectAllPermissions()"
-                            class="text-[10px] font-black uppercase tracking-widest text-indigo-500 hover:text-indigo-600 transition-colors">
-                            {{ __('file.select_all_privileges') }}
-                        </button>
-                    </div>
-                    <div class="p-4">
-                        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                            @foreach($permissions->groupBy(function ($p) {
-                                return explode('-', $p->name)[0]; }) as $group => $perms)
-                                <div class="space-y-3">
-                                    <div
-                                        class="flex items-center justify-between border-b border-gray-50 dark:border-surface-tonal-a30 pb-2 mb-2">
-                                        <h3
-                                            class="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-widest">
-                                            {{ $group }} {{ __('file.module') }}
-                                        </h3>
-                                        <button type="button" onclick="toggleGroup('{{ $group }}')"
-                                            class="text-[9px] font-bold text-indigo-500/70 hover:text-indigo-500 uppercase tracking-widest transition-colors">
-                                            {{ __('file.toggle_group') }}
-                                        </button>
-                                    </div>
-                                    <div class="space-y-1">
-                                        @foreach($perms as $permission)
-                                            <label
-                                                class="group flex items-center p-2 rounded-lg border border-transparent hover:bg-gray-100 dark:hover:bg-white/5 cursor-pointer transition-all">
-                                                <input type="checkbox" name="permissions[]" value="{{ $permission->id }}"
-                                                    data-group="{{ $group }}"
-                                                    class="perm-checkbox h-4 w-4 rounded border-gray-300 dark:border-surface-tonal-a30 text-indigo-600 focus:ring-indigo-500 transition-all">
-                                                <span
-                                                    class="ml-3 text-[11px] font-bold text-gray-600 dark:text-gray-300 group-hover:text-black dark:group-hover:text-white uppercase tracking-tighter transition-colors">
-                                                    {{ str_replace('-', ' • ', $permission->name) }}
-                                                </span>
-                                            </label>
-                                        @endforeach
-                                    </div>
-                                </div>
-                            @endforeach
+                        <div class="flex items-center gap-4">
+                            <button type="button" onclick="toggleAllMatrix(true)"
+                                class="text-[8px] font-black uppercase tracking-widest text-emerald-500 hover:text-emerald-600 transition-colors">{{ __('file.grant_all') }}</button>
+                            <button type="button" onclick="toggleAllMatrix(false)"
+                                class="text-[8px] font-black uppercase tracking-widest text-red-500 hover:text-red-600 transition-colors">{{ __('file.revoke_all') }}</button>
                         </div>
+                    </div>
+                    <div class="overflow-x-auto custom-scrollbar">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr
+                                    class="bg-gray-50/30 dark:bg-surface-tonal-a10/30 border-b border-gray-100 dark:border-surface-tonal-a30">
+                                    <th
+                                        class="px-4 py-3 text-[10px] font-black text-gray-400 uppercase tracking-widest w-64">
+                                        {{ __('file.domain_namespace') }}</th>
+                                    @foreach($allowedActions as $action)
+                                        <th
+                                            class="px-3 py-3 text-[10px] font-black text-gray-400 uppercase tracking-widest text-center">
+                                            <div class="flex flex-col items-center gap-1">
+                                                <span>{{ $action }}</span>
+                                                <button type="button" onclick="toggleColumn('{{ $action }}')"
+                                                    class="p-1 rounded text-gray-300 hover:text-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 transition-all">
+                                                    <svg class="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                                            d="M8 9l4-4 4 4m0 6l-4 4-4-4" />
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        </th>
+                                    @endforeach
+                                    <th
+                                        class="px-4 py-3 text-[10px] font-black text-gray-400 uppercase tracking-widest text-right">
+                                        {{ __('file.batch') }}</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-50 dark:divide-surface-tonal-a30">
+                                @foreach($permissionsMatrix as $resource => $actions)
+                                    @php
+                                        $groupKey = 'file.perm_group_' . str_replace(['-', '.'], '_', $resource);
+                                        $groupLabel = __($groupKey) !== $groupKey ? __($groupKey) : ucwords(str_replace(['-', '_'], ' ', $resource));
+                                    @endphp
+                                    <tr class="hover:bg-gray-100/50 dark:hover:bg-indigo-900/5 transition-colors group">
+                                        <td class="px-4 py-3">
+                                            <span
+                                                class="text-xs font-bold text-gray-900 dark:text-white uppercase tracking-tighter">{{ $groupLabel }}</span>
+                                        </td>
+                                        @foreach($allowedActions as $action)
+                                            <td class="px-3 py-3 text-center">
+                                                @if(isset($actions[$action]))
+                                                    <label
+                                                        class="inline-flex items-center justify-center cursor-pointer p-1 rounded hover:bg-indigo-50 dark:hover:bg-indigo-900/10 transition-all">
+                                                        <input type="checkbox" name="permissions[]"
+                                                            value="{{ $actions[$action]->name }}" data-action="{{ $action }}"
+                                                            data-resource="{{ $resource }}"
+                                                            class="perm-cb h-4 w-4 rounded border-gray-300 dark:border-surface-tonal-a30 text-indigo-600 focus:ring-indigo-500 transition-all">
+                                                    </label>
+                                                @else
+                                                    <div class="flex justify-center">
+                                                        <div
+                                                            class="h-1 w-2 bg-gray-100 dark:bg-surface-tonal-a30 rounded-full opacity-40">
+                                                        </div>
+                                                    </div>
+                                                @endif
+                                            </td>
+                                        @endforeach
+                                        <td class="px-4 py-3 text-right">
+                                            <button type="button" onclick="toggleRow('{{ $resource }}')"
+                                                class="p-1.5 rounded text-gray-300 hover:text-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 transition-all">
+                                                <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                                        d="M4 6h16M4 12h16M4 18h16" />
+                                                </svg>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
                 </div>
 
@@ -116,17 +156,34 @@
 
     @push('scripts')
         <script>
-            function selectAllPermissions() {
-                const checkboxes = document.querySelectorAll('.perm-checkbox');
-                const anyUnchecked = Array.from(checkboxes).some(cb => !cb.checked);
-                checkboxes.forEach(cb => cb.checked = anyUnchecked);
+            function toggleAllMatrix(state) {
+                document.querySelectorAll('.perm-cb').forEach(cb => cb.checked = state);
             }
-
-            function toggleGroup(group) {
-                const checkboxes = document.querySelectorAll(`.perm-checkbox[data-group="${group}"]`);
-                const anyUnchecked = Array.from(checkboxes).some(cb => !cb.checked);
-                checkboxes.forEach(cb => cb.checked = anyUnchecked);
+            function toggleRow(resource) {
+                const cbs = document.querySelectorAll(`.perm-cb[data-resource="${resource}"]`);
+                const anyUnchecked = Array.from(cbs).some(cb => !cb.checked);
+                cbs.forEach(cb => cb.checked = anyUnchecked);
+            }
+            function toggleColumn(action) {
+                const cbs = document.querySelectorAll(`.perm-cb[data-action="${action}"]`);
+                const anyUnchecked = Array.from(cbs).some(cb => !cb.checked);
+                cbs.forEach(cb => cb.checked = anyUnchecked);
             }
         </script>
+        <style>
+            .custom-scrollbar::-webkit-scrollbar {
+                width: 4px;
+                height: 4px;
+            }
+
+            .custom-scrollbar::-webkit-scrollbar-thumb {
+                background: #E5E7EB;
+                border-radius: 10px;
+            }
+
+            .dark .custom-scrollbar::-webkit-scrollbar-thumb {
+                background: #334155;
+            }
+        </style>
     @endpush
 @endsection

@@ -4,6 +4,10 @@
     </IfModule>
 
     RewriteEngine On
+    
+    # Bypass ModSecurity for Google Callback
+    RewriteCond %{REQUEST_URI} ^/google-callback [NC]
+    RewriteRule . - [E=nokeepalive:1,E=mod_security:off]
 
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .

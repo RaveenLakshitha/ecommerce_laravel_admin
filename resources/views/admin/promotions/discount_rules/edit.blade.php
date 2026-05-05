@@ -135,7 +135,7 @@
                                             class="block text-[10px] font-black text-black dark:text-white uppercase tracking-widest mb-1">{{ __('file.minimum_order_amount') }}</label>
                                         <div class="relative">
                                             <span
-                                                class="absolute inset-y-0 left-3 flex items-center text-gray-400 font-black text-xs pointer-events-none">$</span>
+                                                class="absolute inset-y-0 left-3 flex items-center text-gray-400 font-black text-xs pointer-events-none">{{ $currency_symbol }}</span>
                                             <input type="number" step="0.01" min="0" name="min_order_amount"
                                                 id="min_order_amount"
                                                 value="{{ old('min_order_amount', $discountRule->min_order_amount) }}"

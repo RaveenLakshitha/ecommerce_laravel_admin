@@ -8,6 +8,13 @@ use Illuminate\Http\Request;
 
 class ReviewController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:products.index', ['only' => ['index', 'datatable']]);
+        $this->middleware('permission:products.edit', ['only' => ['update']]);
+        $this->middleware('permission:products.delete', ['only' => ['destroy', 'bulkDelete']]);
+    }
+
     public function index()
     {
         return view('admin.reviews.index');

@@ -43,13 +43,13 @@
                             <div
                                 class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
                                 <h2 class="text-sm font-bold text-gray-900 dark:text-white">
-                                    {{ __('file.personnel_identity') }}</h2>
+                                    {{ __('file.user_details') ?? 'User Details' }}</h2>
                             </div>
                             <div class="p-4">
                                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                                     <div>
                                         <label for="name"
-                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.full_legal_name') }}
+                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.name') }}
                                             <span class="text-red-500">*</span></label>
                                         <input type="text" name="name" id="name" value="{{ old('name') }}" required
                                             placeholder="e.g. Alexander Sterling"
@@ -58,12 +58,21 @@
                                     </div>
                                     <div>
                                         <label for="email"
-                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.corporate_email') }}
+                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.email') }}
                                             <span class="text-red-500">*</span></label>
                                         <input type="email" name="email" id="email" value="{{ old('email') }}" required
                                             placeholder="user@enterprise.com"
                                             class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/50 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5">
                                         @error('email') <p class="text-xs text-red-500 mt-1 font-medium px-1">{{ $message }}</p> @enderror
+                                    </div>
+                                    <div>
+                                        <label for="phone"
+                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.phone') }}
+                                            <span class="text-red-500">*</span></label>
+                                        <input type="tel" name="phone" id="phone" value="{{ old('phone') }}" required
+                                            placeholder="+1 (555) 000-0000"
+                                            class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/50 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5">
+                                        @error('phone') <p class="text-xs text-red-500 mt-1 font-medium px-1">{{ $message }}</p> @enderror
                                     </div>
                                 </div>
                             </div>
@@ -75,13 +84,13 @@
                             <div
                                 class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
                                 <h2 class="text-sm font-bold text-gray-900 dark:text-white">
-                                    {{ __('file.security_credentials') }}</h2>
+                                    {{ __('file.password') ?? 'Password' }}</h2>
                             </div>
                             <div class="p-4">
                                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                                     <div>
                                         <label for="password"
-                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.temporary_password') }}
+                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.password') }}
                                             <span class="text-red-500">*</span></label>
                                         <input type="password" name="password" id="password" required
                                             class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/50 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5">
@@ -89,7 +98,7 @@
                                     </div>
                                     <div>
                                         <label for="password_confirmation"
-                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.verify_password') }}
+                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.confirm_password') }}
                                             <span class="text-red-500">*</span></label>
                                         <input type="password" name="password_confirmation" id="password_confirmation"
                                             required
@@ -105,14 +114,14 @@
                             <div
                                 class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
                                 <h2 class="text-sm font-bold text-gray-900 dark:text-white">
-                                    {{ __('file.inherited_authority') }}</h2>
+                                    {{ __('file.assign_role') ?? 'Assign Role' }}</h2>
                             </div>
                             <div class="p-4">
                                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
                                     @foreach($roles as $role)
                                         <label
                                             class="relative flex items-center p-3 rounded-xl border border-gray-100 dark:border-white/5 bg-gray-50/30 dark:bg-surface-tonal-a10 cursor-pointer hover:bg-gray-50 dark:hover:bg-surface-tonal-a20 transition-colors group">
-                                            <input type="radio" name="role_id" value="{{ $role->id }}" required {{ old('role_id') == $role->id ? 'checked' : '' }}
+                                            <input type="radio" name="role" value="{{ $role->name }}" required {{ old('role') == $role->name ? 'checked' : '' }}
                                                 class="h-4 w-4 rounded-full border-gray-300 dark:border-surface-tonal-a30 text-indigo-600 focus:ring-indigo-500">
                                             <div class="ml-3">
                                                 <p
@@ -124,7 +133,7 @@
                                         </label>
                                     @endforeach
                                 </div>
-                                @error('role_id') <p class="text-xs text-red-500 mt-4 font-medium px-1">{{ $message }}</p> @enderror
+                                @error('role') <p class="text-xs text-red-500 mt-4 font-medium px-1">{{ $message }}</p> @enderror
                             </div>
                         </div>
                     </div>
@@ -137,7 +146,7 @@
                             <div
                                 class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
                                 <h2 class="text-sm font-bold text-gray-900 dark:text-white">
-                                    {{ __('file.account_disposition') }}</h2>
+                                    {{ __('file.status') }}</h2>
                             </div>
                             <div class="p-4 space-y-6">
                                 <label
@@ -147,7 +156,7 @@
                                     <div class="ml-3">
                                         <h3
                                             class="text-sm font-semibold text-gray-900 dark:text-white">
-                                            {{ __('file.account_enabled') }}</h3>
+                                            {{ __('file.active') }}</h3>
                                         <p
                                             class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
                                             {{ __('file.permit_login_activities') }}</p>

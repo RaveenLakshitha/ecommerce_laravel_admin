@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Models\Admin;
 use Spatie\Permission\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -18,6 +18,7 @@ class UserController extends Controller
         $this->middleware('permission:users.edit', ['only' => ['edit', 'update']]);
         $this->middleware('permission:users.delete', ['only' => ['destroy', 'bulkDelete']]);
     }
+
     public function index(Request $request)
     {
         return view('admin.users.index');
@@ -37,7 +38,7 @@ class UserController extends Controller
         $from   = $request->from;
         $to     = $request->to;
 
-        $query = User::query()
+        $query = Admin::query()
             ->with('roles')
             ->when($search !== '', fn($q) => $q
                 ->where('name', 'like', "%{$search}%")
@@ -52,7 +53,7 @@ class UserController extends Controller
             ]))
             ->where('is_deleted', false);
 
-        $totalRecords = User::where('is_deleted', false)->count();
+        $totalRecords = Admin::where('is_deleted', false)->count();
         $filteredRecords = (clone $query)->count();
 
         $orderColumn = match ((int)$orderColumnIndex) {
@@ -79,6 +80,7 @@ class UserController extends Controller
                 'phone'        => $user->phone ?? '-',
                 'roles'        => $user->roles->pluck('name')->map(fn($r) => ucfirst($r))->toArray(),
                 'status_html'  => $statusHtml,
+                'is_active'    => $user->is_active,
                 'created_at'   => $user->created_at->format('M d, Y'),
                 'edit_url'     => \Auth::user()->can('users.edit') ? route('users.edit', $user) : null,
                 'delete_url'   => \Auth::user()->can('users.delete') ? route('users.destroy', $user) : null,
@@ -95,7 +97,7 @@ class UserController extends Controller
 
     public function create()
     {
-        $roles = Role::all();
+        $roles = Role::where('guard_name', 'admin')->get();
         return view('admin.users.create', compact('roles'));
     }
 
@@ -104,15 +106,15 @@ class UserController extends Controller
         $validated = $request->validate([
             'name'          => 'required|string|max:255',
             'email'         => [
-                'nullable',
-                Rule::unique('users', 'email')->where(function ($q) {
-                    return $q->where('is_deleted', false)->where('is_active', true);
+                'required',
+                Rule::unique('admins', 'email')->where(function ($q) {
+                    return $q->where('is_deleted', false);
                 }),
             ],
             'phone'         => [
                 'nullable',
-                Rule::unique('users', 'phone')->where(function ($q) {
-                    return $q->where('is_deleted', false)->where('is_active', true);
+                Rule::unique('admins', 'phone')->where(function ($q) {
+                    return $q->where('is_deleted', false);
                 }),
             ],
             'password'      => 'required|min:8|confirmed',
@@ -120,26 +122,25 @@ class UserController extends Controller
             'is_active'     => 'sometimes|boolean',
         ]);
 
-        $user = User::withTrashed()->where(function($q) use ($request) {
+        $admin = Admin::withTrashed()->where(function($q) use ($request) {
             $q->where('email', $request->email)
               ->orWhere('phone', $request->phone);
         })->first();
 
-        if ($user) {
-            if ($user->trashed()) {
-                $user->restore();
+        if ($admin) {
+            if ($admin->trashed()) {
+                $admin->restore();
             }
-            $user->update([
+            $admin->update([
                 'name'       => $request->name,
                 'email'      => $request->email,
                 'phone'      => $request->phone,
                 'password'   => Hash::make($request->password),
                 'is_active'  => $request->boolean('is_active', true),
                 'is_deleted' => false,
-                'deleted_at' => null,
             ]);
         } else {
-            $user = User::create([
+            $admin = Admin::create([
                 'name'       => $request->name,
                 'email'      => $request->email,
                 'phone'      => $request->phone,
@@ -149,34 +150,34 @@ class UserController extends Controller
             ]);
         }
 
-        $user->syncRoles([$request->role]);
+        $admin->syncRoles([$request->role]);
 
         return redirect()->route('users.index')
             ->with('success', __('file.record_created'));
     }
 
-    public function edit(User $user)
+    public function edit(Admin $user)
     {
-        $roles = Role::all();
+        $roles = Role::where('guard_name', 'admin')->get();
         $currentRole = $user->roles->first()?->name ?? null;
 
         return view('admin.users.edit', compact('user', 'roles', 'currentRole'));
     }
 
-    public function update(Request $request, User $user)
+    public function update(Request $request, Admin $user)
     {
         $request->validate([
             'name'      => 'required|string|max:255',
             'email'     => [
-                'nullable',
-                Rule::unique('users', 'email')->ignore($user->id)->where(function ($q) {
-                    return $q->where('is_deleted', false)->where('is_active', true);
+                'required',
+                Rule::unique('admins', 'email')->ignore($user->id)->where(function ($q) {
+                    return $q->where('is_deleted', false);
                 }),
             ],
             'phone'     => [
                 'nullable',
-                Rule::unique('users', 'phone')->ignore($user->id)->where(function ($q) {
-                    return $q->where('is_deleted', false)->where('is_active', true);
+                Rule::unique('admins', 'phone')->ignore($user->id)->where(function ($q) {
+                    return $q->where('is_deleted', false);
                 }),
             ],
             'password'  => 'nullable|min:8|confirmed',
@@ -198,7 +199,7 @@ class UserController extends Controller
             ->with('success', __('file.record_updated'));
     }
 
-    public function destroy(User $user)
+    public function destroy(Admin $user)
     {
         if ($user->id === auth()->id()) {
             if (request()->ajax()) {
@@ -217,8 +218,8 @@ class UserController extends Controller
         $user->update([
             'is_deleted' => true,
             'is_active'  => false,
-            'deleted_at' => now(),
         ]);
+        $user->delete(); // Soft delete
 
         if (request()->ajax()) {
             return response()->json(['success' => true, 'message' => __('file.record_deleted')]);
@@ -232,7 +233,7 @@ class UserController extends Controller
     {
         $validated = $request->validate([
             'ids'   => 'required|array',
-            'ids.*' => 'required|integer|exists:users,id',
+            'ids.*' => 'required|integer|exists:admins,id',
         ]);
 
         $ids = $validated['ids'];
@@ -250,27 +251,18 @@ class UserController extends Controller
             }
         }
 
-        $deletedCount = User::whereIn('id', $ids)
-            ->where('id', '!=', $currentUserId)
-            ->where('is_deleted', false)
-            ->update([
+        $admins = Admin::whereIn('id', $ids)->get();
+        foreach ($admins as $admin) {
+            $admin->update([
                 'is_deleted' => true,
                 'is_active'  => false,
-                'deleted_at' => now(),
             ]);
-
-        if ($deletedCount === 0) {
-            return response()->json([
-                'success' => false,
-                'message' => __('file.no_valid_records_deleted'),
-            ], 422);
+            $admin->delete();
         }
 
         return response()->json([
             'success'       => true,
-            'message'       => __('file.bulk_deleted', ['count' => $deletedCount]),
-            'deleted_count' => $deletedCount,
-            'deleted_ids'   => $ids,
+            'message'       => __('file.bulk_deleted', ['count' => count($ids)]),
         ]);
     }
 }

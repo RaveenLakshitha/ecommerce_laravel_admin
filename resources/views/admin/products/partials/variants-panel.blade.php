@@ -397,7 +397,7 @@ $basePrice - float: default price for new rows
                             <input type="number" step="0.01" name="variants[${rowIndex}][price]"
                                 value="${price}" min="0"
                                 class="w-32 rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-surface-tonal-a30 px-3 py-2 text-sm font-normal text-gray-900 dark:text-white outline-none focus:border-primary/50 focus:ring-4 focus:ring-primary/5 transition-all pr-6">
-                            <span class="absolute inset-y-0 right-2 flex items-center text-gray-400 text-xs pointer-events-none font-medium">$</span>
+                            <span class="absolute inset-y-0 right-2 flex items-center text-gray-400 text-xs pointer-events-none font-medium">{{ $currency_symbol }}</span>
                         </div>
                     </td>
                     <td class="px-3 py-2.5">

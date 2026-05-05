@@ -10,7 +10,16 @@ use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:orders.index', ['only' => ['index', 'show', 'manager', 'datatable', 'printInvoice']]);
+        $this->middleware('permission:orders.edit', ['only' => ['updateStatus', 'addNote']]);
+        $this->middleware('permission:orders.refund', ['only' => ['processRefund']]);
+        $this->middleware('permission:orders.delete', ['only' => ['destroy', 'bulkDelete']]);
+    }
+
     /**
+
      * Display a listing of orders.
      */
     public function index(Request $request)

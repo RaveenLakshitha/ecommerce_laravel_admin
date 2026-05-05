@@ -13,6 +13,21 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 class Category extends Model implements HasMedia
 {
     use HasFactory, InteractsWithMedia;
+    
+    protected static function booted()
+    {
+        static::creating(function ($category) {
+            if (empty($category->slug)) {
+                $category->slug = \Illuminate\Support\Str::slug($category->name);
+            }
+        });
+
+        static::updating(function ($category) {
+            if (empty($category->slug)) {
+                $category->slug = \Illuminate\Support\Str::slug($category->name);
+            }
+        });
+    }
 
     protected $fillable = ['name', 'slug', 'parent_id', 'description', 'image', 'banner_images', 'meta_title', 'meta_description', 'is_active'];
 

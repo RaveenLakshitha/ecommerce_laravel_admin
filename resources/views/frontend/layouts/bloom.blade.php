@@ -749,7 +749,7 @@
 
     <!-- ── PROMO BAR ──────────────────────────────────────────── -->
     <div class="promo-bar" id="promoBar">
-        <span>🌿 Free shipping on orders over Rs. 5,000 &nbsp;·&nbsp; Use code <strong>BLOOM15</strong> for 15%
+        <span>🌿 Free shipping on orders over {{ $currency_symbol }} {{ number_format($free_shipping_threshold) }} &nbsp;·&nbsp; Use code <strong>BLOOM15</strong> for 15%
             off</span>
         <button class="promo-close" id="promoClose" aria-label="Close">×</button>
     </div>

@@ -10,7 +10,7 @@ class UpdateSettingsRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return auth()->check() && auth()->user()->hasRole('admin');
+        return auth('admin')->check() && auth('admin')->user()->hasRole('Admin');
     }
 
     public function rules(): array

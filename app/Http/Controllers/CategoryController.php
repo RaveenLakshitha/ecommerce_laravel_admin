@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -152,6 +153,12 @@ class CategoryController extends Controller
                 'max:255',
                 Rule::unique('categories', 'name')
             ],
+            'slug' => [
+                'nullable',
+                'string',
+                'max:255',
+                Rule::unique('categories', 'slug')
+            ],
             'description' => 'nullable|string',
             'parent_id' => 'nullable|exists:categories,id',
             'is_active' => 'sometimes|boolean',
@@ -166,6 +173,8 @@ class CategoryController extends Controller
             'banners.*.image.image' => __('file.banner_image_upload_limit_error'),
             'banners.*.image.mimes' => __('file.banner_image_mimes_error'),
         ]);
+        
+        $validated['slug'] = $validated['slug'] ?? Str::slug($validated['name']);
 
         $validated['is_active'] = $request->boolean('is_active', true);
 
@@ -250,11 +259,8 @@ class CategoryController extends Controller
                 ->with('error', __('file.categories_edit_denied'));
         }
 
-        $parents = Category::where('id', '!=', $category->id)
-            ->where(function ($q) use ($category) {
-                $q->whereNull('parent_id')
-                    ->orWhereNotIn('id', $this->getDescendantIds($category));
-            })
+        $parents = Category::whereNull('parent_id')
+            ->where('id', '!=', $category->id)
             ->orderBy('name')
             ->get();
 
@@ -275,6 +281,7 @@ class CategoryController extends Controller
 
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255', Rule::unique('categories')->ignore($category->id)],
+            'slug' => ['nullable', 'string', 'max:255', Rule::unique('categories')->ignore($category->id)],
             'description' => 'nullable|string',
             'parent_id' => [
                 'nullable',
@@ -298,6 +305,8 @@ class CategoryController extends Controller
             'banner_images.*.image' => __('file.banner_image_upload_limit_error'),
             'banner_images.*.mimes' => __('file.banner_image_mimes_error'),
         ]);
+
+        $validated['slug'] = $validated['slug'] ?? Str::slug($validated['name']);
 
         $validated['is_active'] = $request->boolean('is_active', $request->has('is_active') ? $request->is_active : $category->is_active);
 

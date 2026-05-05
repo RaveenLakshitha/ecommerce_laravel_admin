@@ -11,6 +11,13 @@ use Illuminate\Http\Request;
 
 class CustomerController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:customers.index', ['only' => ['index', 'show', 'datatable']]);
+        $this->middleware('permission:customers.edit', ['only' => ['addNote', 'syncTags']]);
+        $this->middleware('permission:customers.delete', ['only' => ['destroy', 'bulkDelete']]);
+    }
+
     public function index()
     {
         return view('admin.customers.index');

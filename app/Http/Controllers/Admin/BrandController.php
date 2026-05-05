@@ -11,6 +11,14 @@ use Illuminate\Validation\Rule;
 
 class BrandController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:brands.index', ['only' => ['index', 'datatable']]);
+        $this->middleware('permission:brands.create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:brands.edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:brands.delete', ['only' => ['destroy', 'bulkDelete']]);
+    }
+
     public function index()
     {
         return view('admin.brands.index');

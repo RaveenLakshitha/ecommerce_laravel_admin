@@ -12,7 +12,16 @@ use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:products.index', ['only' => ['index', 'show', 'datatable']]);
+        $this->middleware('permission:products.create', ['only' => ['create', 'store']]);
+        $this->middleware('permission:products.edit', ['only' => ['edit', 'update', 'deleteImage']]);
+        $this->middleware('permission:products.delete', ['only' => ['destroy', 'bulkDelete']]);
+    }
+
     /**
+
      * Display a listing of the resource.
      */
     public function index()
@@ -123,7 +132,6 @@ class ProductController extends Controller
             'name' => 'required|string|max:255',
             'slug' => 'required|string|max:255|unique:products,slug',
             'base_price' => 'required|numeric|min:0',
-            'sale_price' => 'nullable|numeric|min:0',
             'brand_id' => 'nullable|exists:brands,id',
             'category_id' => 'required|exists:categories,id',
             'description' => 'nullable|string',
@@ -149,7 +157,7 @@ class ProductController extends Controller
 
         $this->syncVariants($product, $request);
 
-        return redirect()->route('products.edit', $product->id)->with('success', __('file.product_created_successfully'));
+        return redirect()->route('products.index')->with('success', __('file.product_created_successfully'));
     }
 
     protected function handleImages(\App\Models\Product $product, $images)
@@ -202,7 +210,6 @@ class ProductController extends Controller
             'name' => 'required|string|max:255',
             'slug' => 'required|string|max:255|unique:products,slug,' . $product->id,
             'base_price' => 'required|numeric|min:0',
-            'sale_price' => 'nullable|numeric|min:0',
             'brand_id' => 'nullable|exists:brands,id',
             'category_id' => 'required|exists:categories,id',
             'description' => 'nullable|string',

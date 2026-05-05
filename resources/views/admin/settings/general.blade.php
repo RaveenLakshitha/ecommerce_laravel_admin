@@ -162,7 +162,7 @@
                                     { code: 'JPY', symbol: '¥', name: 'Japanese Yen' },
                                     { code: 'CNY', symbol: '¥', name: 'Chinese Yuan' },
                                     { code: 'INR', symbol: '₹', name: 'Indian Rupee' },
-                                    { code: 'LKR', symbol: 'Rs.', name: 'Sri Lankan Rupee' },
+
                                     { code: 'AUD', symbol: 'A$', name: 'Australian Dollar' },
                                     { code: 'CAD', symbol: 'C$', name: 'Canadian Dollar' },
                                     { code: 'CHF', symbol: 'CHF', name: 'Swiss Franc' },

@@ -141,31 +141,28 @@
 
                     <div>
                         <label
-                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Account
-                            Lifecycle</label>
+                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.status') }}</label>
                         <select id="filter-status"
                             class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/50 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5 cursor-pointer">
                             <option value="">Any Status</option>
-                            <option value="1">Operational</option>
-                            <option value="0">Suspended / Pending</option>
+                            <option value="1">Active</option>
+                            <option value="0">Inactive</option>
                         </select>
                     </div>
 
                     <div class="pt-6 border-t border-gray-100 dark:border-white/5">
                         <p class="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-4">
-                            Provisioning Window</p>
+                            {{ __('file.date_range') ?? 'Date Range' }}</p>
                         <div class="grid grid-cols-2 gap-4">
                             <div>
                                 <label
-                                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Archive
-                                    Start</label>
+                                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.from') ?? 'From' }}</label>
                                 <input type="date" id="filter-from"
                                     class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/50 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5">
                             </div>
                             <div>
                                 <label
-                                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Archive
-                                    Termination</label>
+                                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.to') ?? 'To' }}</label>
                                 <input type="date" id="filter-to"
                                     class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/50 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5">
                             </div>
@@ -248,7 +245,7 @@
                                                             </div>
                                                             <div class="flex flex-col">
                                                                 <span class="text-sm font-bold text-gray-900 dark:text-white leading-tight">${data}</span>
-                                                                <span class="text-xs text-gray-400 font-medium tracking-tight">System Identity</span>
+                                                                <span class="text-xs text-gray-400 font-medium tracking-tight">User</span>
                                                             </div>
                                                         </div>`;
                             }
@@ -265,7 +262,7 @@
                             data: 'is_active',
                             render: function (data) {
                                 const s = data ? 'bg-emerald-500/10 text-emerald-500 border-emerald-500/20' : 'bg-red-500/10 text-red-500 border-red-500/20';
-                                return `<span class="admin-badge ${s} text-[10px] font-bold uppercase tracking-wider">${data ? 'Operational' : 'Suspended'}</span>`;
+                                return `<span class="admin-badge ${s} text-[10px] font-bold uppercase tracking-wider">${data ? 'Active' : 'Inactive'}</span>`;
                             },
                             className: 'text-center'
                         },
@@ -375,7 +372,7 @@
 
                 $('#bulk-delete-form-el').on('submit', function (e) {
                     e.preventDefault();
-                    if (!confirm('Execute deauthorization of selected personnel records?')) return;
+                    if (!confirm('Delete selected users?')) return;
 
                     $.ajax({
                         url: this.action,
@@ -393,7 +390,7 @@
                 });
 
                 window.deleteUser = function (id, name) {
-                    if (!confirm(`Permanently obliterate administrative identity of ${name}?`)) return;
+                    if (!confirm(`Delete user ${name}?`)) return;
 
                     $.ajax({
                         url: `{{ route('users.index') }}/${id}`,

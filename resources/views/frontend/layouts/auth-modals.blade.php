@@ -238,7 +238,7 @@
             <input type="hidden" name="auth_modal_action" value="login">
             
             <div class="auth-form-group">
-                <label for="login_email">{{ __('messages.Email Address') ?? 'Email Address' }}</label>
+                <label for="login_email">{{ __('file.email_address') }}</label>
                 <input id="login_email" type="email" name="email" class="auth-input" value="{{ old('auth_modal_action') != 'register' ? old('email') : '' }}" required autofocus placeholder="customer@example.com">
                 @if(old('auth_modal_action') != 'register')
                     @error('email') <span class="auth-error">{{ $message }}</span> @enderror
@@ -247,8 +247,8 @@
             
             <div class="auth-form-group">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
-                    <label for="login_password" style="margin-bottom:0;">{{ __('messages.Password') ?? 'Password' }}</label>
-                    <a href="{{ Route::has('password.request') ? route('password.request') : '#' }}" style="font-size:0.75rem; color:var(--dim); text-decoration:none;">Forgot password?</a>
+                    <label for="login_password" style="margin-bottom:0;">{{ __('file.password') }}</label>
+                    <a href="{{ Route::has('password.request') ? route('password.request') : '#' }}" style="font-size:0.75rem; color:var(--dim); text-decoration:none;">{{ __('file.forgot_password') }}</a>
                 </div>
                 <input id="login_password" type="password" name="password" class="auth-input" required placeholder="********" autocomplete="current-password">
                 @if(old('auth_modal_action') != 'register')
@@ -258,13 +258,13 @@
 
             <div class="auth-form-group" style="display:flex; align-items:center; gap:0.5rem;">
                 <input type="checkbox" id="remember_me" name="remember" style="accent-color: var(--gold); width:16px; height:16px;">
-                <label for="remember_me" style="margin-bottom:0; font-size:0.75rem; font-weight:500; text-transform:none; letter-spacing:0.05em; color:var(--silver);">Remember me</label>
+                <label for="remember_me" style="margin-bottom:0; font-size:0.75rem; font-weight:500; text-transform:none; letter-spacing:0.05em; color:var(--silver);">{{ __('file.remember_me') }}</label>
             </div>
             
-            <button type="submit" class="auth-btn">{{ __('messages.Sign in to your account') ?? 'Sign In' }}</button>
+            <button type="submit" class="auth-btn">{{ __('file.sign_in_to_your_account') }}</button>
 
             {{-- OR divider --}}
-            <div class="auth-divider"><span>or</span></div>
+            <div class="auth-divider"><span>{{ __('file.or') }}</span></div>
 
             {{-- Google Sign-In --}}
             <a href="{{ route('auth.google') }}" class="auth-google-btn" id="btn-modal-google-login">
@@ -274,11 +274,11 @@
                     <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
                     <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
                 </svg>
-                {{ __('messages.Continue with Google') ?? 'Continue with Google' }}
+                {{ __('file.continue_with_google') }}
             </a>
 
             <div class="auth-switch">
-                Don't have an account? <a href="#" onclick="switchAuthModal('register'); return false;">Register Now</a>
+                {{ __('file.dont_have_account') }} <a href="#" onclick="switchAuthModal('register'); return false;">{{ __('file.register_now') }}</a>
             </div>
         </form>
     </div>
@@ -296,7 +296,7 @@
             <input type="hidden" name="auth_modal_action" value="register">
             
             <div class="auth-form-group">
-                <label for="reg_name">{{ __('messages.Full Name') ?? 'Full Name' }}</label>
+                <label for="reg_name">{{ __('file.full_name') }}</label>
                 <input id="reg_name" type="text" name="name" class="auth-input" value="{{ old('auth_modal_action') == 'register' ? old('name') : '' }}" required placeholder="John Doe">
                 @if(old('auth_modal_action') == 'register')
                     @error('name') <span class="auth-error">{{ $message }}</span> @enderror
@@ -304,7 +304,7 @@
             </div>
 
             <div class="auth-form-group">
-                <label for="reg_email">{{ __('messages.Email Address') ?? 'Email Address' }}</label>
+                <label for="reg_email">{{ __('file.email_address') }}</label>
                 <input id="reg_email" type="email" name="email" class="auth-input" value="{{ old('auth_modal_action') == 'register' ? old('email') : '' }}" required placeholder="customer@example.com">
                 @if(old('auth_modal_action') == 'register')
                     @error('email') <span class="auth-error">{{ $message }}</span> @enderror
@@ -312,7 +312,7 @@
             </div>
             
             <div class="auth-form-group">
-                <label for="reg_password">{{ __('messages.Password') ?? 'Password' }}</label>
+                <label for="reg_password">{{ __('file.password') }}</label>
                 <input id="reg_password" type="password" name="password" class="auth-input" required placeholder="********" minlength="8" autocomplete="new-password">
                 @if(old('auth_modal_action') == 'register')
                     @error('password') <span class="auth-error">{{ $message }}</span> @enderror
@@ -320,14 +320,14 @@
             </div>
 
             <div class="auth-form-group">
-                <label for="reg_password_confirmation">{{ __('messages.Confirm Password') ?? 'Confirm Password' }}</label>
+                <label for="reg_password_confirmation">{{ __('file.confirm_password') }}</label>
                 <input id="reg_password_confirmation" type="password" name="password_confirmation" class="auth-input" required placeholder="********" autocomplete="new-password">
             </div>
             
-            <button type="submit" class="auth-btn">{{ __('messages.Create Account') ?? 'Create Account' }}</button>
+            <button type="submit" class="auth-btn">{{ __('file.create_account') }}</button>
 
             {{-- OR divider --}}
-            <div class="auth-divider"><span>or</span></div>
+            <div class="auth-divider"><span>{{ __('file.or') }}</span></div>
 
             {{-- Google Sign-Up --}}
             <a href="{{ route('auth.google') }}" class="auth-google-btn" id="btn-modal-google-register">
@@ -337,11 +337,11 @@
                     <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
                     <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
                 </svg>
-                {{ __('messages.Sign up with Google') ?? 'Sign up with Google' }}
+                {{ __('file.sign_up_with_google') }}
             </a>
 
             <div class="auth-switch">
-                Already have an account? <a href="#" onclick="switchAuthModal('login'); return false;">Sign In</a>
+                {{ __('file.already_have_account') }} <a href="#" onclick="switchAuthModal('login'); return false;">{{ __('file.sign_in') }}</a>
             </div>
         </form>
     </div>

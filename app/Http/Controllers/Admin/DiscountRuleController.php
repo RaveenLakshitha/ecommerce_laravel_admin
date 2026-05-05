@@ -9,6 +9,14 @@ use Illuminate\Http\Request;
 
 class DiscountRuleController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:promotions.index', ['only' => ['index', 'datatable']]);
+        $this->middleware('permission:promotions.create', ['only' => ['create', 'store', 'duplicate']]);
+        $this->middleware('permission:promotions.edit', ['only' => ['edit', 'update']]);
+        $this->middleware('permission:promotions.delete', ['only' => ['destroy', 'bulkDelete']]);
+    }
+
     public function index()
     {
         return view('admin.promotions.discount_rules.index');

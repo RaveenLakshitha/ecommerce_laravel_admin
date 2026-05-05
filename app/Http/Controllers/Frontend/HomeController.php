@@ -52,9 +52,11 @@ class HomeController extends Controller
         // ── Categories for tab bar (root-level, with product count) ──────
         $featuredCategories = Category::whereNull('parent_id')
             ->where('is_active', true)
-            ->withCount(['products' => function ($q) {
-                $q->where('is_visible', true);
-            }])
+            ->withCount([
+                'products' => function ($q) {
+                    $q->where('is_visible', true);
+                }
+            ])
             ->orderBy('name')
             ->take(8)
             ->get();

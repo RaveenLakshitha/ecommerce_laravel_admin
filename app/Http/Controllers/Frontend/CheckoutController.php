@@ -33,12 +33,13 @@ class CheckoutController extends Controller
 
     public function index()
     {
-        $cartItems = Cart::getContent();
+        $cart      = $this->getCart();
+        $cartItems = $cart->getContent();
         if ($cartItems->isEmpty()) {
             return redirect()->route('cart.index')->with('error', 'Your cart is empty.');
         }
 
-        $subtotal = Cart::getSubTotal();
+        $subtotal = $cart->getSubTotal();
 
         // Coupon discount (from session)
         $appliedCoupon  = $this->discountService->getAppliedCoupon();
@@ -73,7 +74,8 @@ class CheckoutController extends Controller
 
     public function process(Request $request)
     {
-        $cartItems = Cart::getContent();
+        $cart      = $this->getCart();
+        $cartItems = $cart->getContent();
         if ($cartItems->isEmpty()) {
             return redirect()->route('cart.index')->with('error', 'Your cart is empty.');
         }
@@ -101,7 +103,7 @@ class CheckoutController extends Controller
             DB::beginTransaction();
 
             $shippingRate = ShippingRate::findOrFail($request->shipping_rate_id);
-            $subtotal     = Cart::getSubTotal();
+            $subtotal     = $cart->getSubTotal();
             $shippingCost = $shippingRate->rate_amount;
 
             // ── Discount Resolution ──────────────────────────────────────────
@@ -236,7 +238,7 @@ class CheckoutController extends Controller
                 );
             }
 
-            Cart::clear();
+            $cart->clear();
 
             return redirect()->route('checkout.success')->with('order_number', $order->order_number);
 
@@ -264,7 +266,8 @@ class CheckoutController extends Controller
      */
     protected function initiateStripePayment(Request $request)
     {
-        $subtotal       = Cart::getSubTotal();
+        $cart           = $this->getCart();
+        $subtotal       = $cart->getSubTotal();
         $shippingRate   = ShippingRate::findOrFail($request->shipping_rate_id);
         $shippingCost   = $shippingRate->rate_amount;
         $appliedCoupon  = $this->discountService->getAppliedCoupon();
@@ -353,7 +356,8 @@ class CheckoutController extends Controller
                 ->with('error', 'Session expired. Please try again.');
         }
 
-        $cartItems   = Cart::getContent();
+        $cart        = $this->getCart();
+        $cartItems   = $cart->getContent();
         $totalAmount = session('stripe_total');
         $currency    = session('stripe_currency');
         $paymentIntentId = $checkoutSession->payment_intent->id ?? $checkoutSession->payment_intent;
@@ -362,7 +366,7 @@ class CheckoutController extends Controller
             DB::beginTransaction();
 
             $shippingRate   = ShippingRate::findOrFail($stripeCheckout['shipping_rate_id']);
-            $subtotal       = Cart::getSubTotal();
+            $subtotal       = $cart->getSubTotal();
             $appliedCoupon  = $this->discountService->getAppliedCoupon();
             $couponDiscount = $this->discountService->getCouponDiscount();
             $autoDiscount   = $this->discountService->calculateAutomaticDiscount($subtotal);
@@ -465,7 +469,7 @@ class CheckoutController extends Controller
             }
 
             session()->forget(['stripe_checkout', 'stripe_total', 'stripe_currency']);
-            Cart::clear();
+            $cart->clear();
 
             return redirect()->route('checkout.success')->with('order_number', $order->order_number);
 
@@ -499,7 +503,8 @@ class CheckoutController extends Controller
                 ->with('error', 'Payment was not completed. Status: ' . $paymentIntent->status);
         }
 
-        $cartItems   = Cart::getContent();
+        $cart        = $this->getCart();
+        $cartItems   = $cart->getContent();
         $totalAmount = session('stripe_total');
         $currency    = session('stripe_currency');
 
@@ -507,7 +512,7 @@ class CheckoutController extends Controller
             DB::beginTransaction();
 
             $shippingRate = ShippingRate::findOrFail($stripeCheckout['shipping_rate_id']);
-            $subtotal     = Cart::getSubTotal();
+            $subtotal     = $cart->getSubTotal();
 
             $appliedCoupon  = $this->discountService->getAppliedCoupon();
             $couponDiscount = $this->discountService->getCouponDiscount();
@@ -631,7 +636,7 @@ class CheckoutController extends Controller
             }
 
             session()->forget(['stripe_checkout', 'stripe_total', 'stripe_currency']);
-            Cart::clear();
+            $cart->clear();
 
             return redirect()->route('checkout.success')->with('order_number', $order->order_number);
 
@@ -639,5 +644,13 @@ class CheckoutController extends Controller
             DB::rollBack();
             return redirect()->route('checkout.index')->with('error', 'Checkout failed: ' . $e->getMessage());
         }
+    }
+
+    /**
+     * Get the appropriate cart instance.
+     */
+    private function getCart()
+    {
+        return Auth::check() ? Cart::session(Auth::id()) : Cart::getFacadeRoot();
     }
 }

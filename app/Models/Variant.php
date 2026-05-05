@@ -81,7 +81,7 @@ class Variant extends Model
 
     public function getDisplayPriceAttribute()
     {
-        return $this->sale_price ?? $this->price;
+        return $this->price;
     }
 
     public function isInStock(): bool

@@ -21,8 +21,9 @@ class CartController extends Controller
 
     public function index()
     {
-        $cartItems = Cart::getContent();
-        $subtotal  = Cart::getSubTotal();
+        $cart      = $this->getCart();
+        $cartItems = $cart->getContent();
+        $subtotal  = $cart->getSubTotal();
 
         // Coupon discount from session
         $appliedCoupon   = $this->discountService->getAppliedCoupon();
@@ -60,7 +61,7 @@ class CartController extends Controller
             return back()->with('error', 'Not enough stock available.');
         }
 
-        $cart = Auth::check() ? Cart::session(Auth::id()) : Cart::getFacadeRoot();
+        $cart = $this->getCart();
 
         $cart->add([
             'id'       => $variant->id,
@@ -96,7 +97,7 @@ class CartController extends Controller
             'quantity' => 'required|integer|min:1',
         ]);
 
-        $cart = Auth::check() ? Cart::session(Auth::id()) : Cart::getFacadeRoot();
+        $cart = $this->getCart();
         $item = $cart->get($request->rowId);
 
         if (!$item) {
@@ -149,7 +150,7 @@ class CartController extends Controller
 
     public function remove(Request $request, $rowId)
     {
-        $cart = Auth::check() ? Cart::session(Auth::id()) : Cart::getFacadeRoot();
+        $cart = $this->getCart();
         $cart->remove($rowId);
 
         $newSubtotal    = $cart->getSubTotal();
@@ -181,7 +182,8 @@ class CartController extends Controller
     {
         $request->validate(['code' => 'required|string|max:100']);
 
-        $subtotal = Cart::getSubTotal();
+        $cart     = $this->getCart();
+        $subtotal = $cart->getSubTotal();
         $result   = $this->discountService->applyCoupon($request->code, $subtotal);
 
         if ($result['success']) {
@@ -206,7 +208,8 @@ class CartController extends Controller
     {
         $this->discountService->removeCoupon();
 
-        $subtotal     = Cart::getSubTotal();
+        $cart         = $this->getCart();
+        $subtotal     = $cart->getSubTotal();
         $autoDiscount = $this->discountService->calculateAutomaticDiscount($subtotal);
         $newTotal     = max(0, $subtotal - $autoDiscount);
 
@@ -239,5 +242,13 @@ class CartController extends Controller
 
             Cart::getFacadeRoot()->clear();
         }
+    }
+
+    /**
+     * Get the appropriate cart instance.
+     */
+    private function getCart()
+    {
+        return Auth::check() ? Cart::session(Auth::id()) : Cart::getFacadeRoot();
     }
 }

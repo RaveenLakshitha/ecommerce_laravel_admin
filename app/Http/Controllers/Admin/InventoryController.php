@@ -10,7 +10,15 @@ use Illuminate\Support\Facades\DB;
 
 class InventoryController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:variants.index', ['only' => ['index', 'datatable', 'history']]);
+        $this->middleware('permission:variants.edit', ['only' => ['adjust']]);
+        $this->middleware('permission:variants.delete', ['only' => ['destroy', 'bulkDelete']]);
+    }
+
     /**
+
      * Display the inventory overview.
      */
     public function index()

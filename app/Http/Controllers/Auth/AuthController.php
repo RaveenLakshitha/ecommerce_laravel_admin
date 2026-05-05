@@ -62,6 +62,7 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials, $remember)) {
             $request->session()->regenerate();
+            \App\Http\Controllers\Frontend\CartController::mergeAfterLogin();
             return redirect()->intended(route('home'));
         }
 
@@ -101,6 +102,7 @@ class AuthController extends Controller
         ]);
 
         Auth::login($user);
+        \App\Http\Controllers\Frontend\CartController::mergeAfterLogin();
 
         return redirect()->route('home');
     }

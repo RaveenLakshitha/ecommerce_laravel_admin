@@ -61,8 +61,8 @@ Route::domain('shop.karbnzol.com')->group(function () {
     Route::post('/register', [AuthController::class, 'register']);
 
     // Google OAuth (Socialite)
-    Route::get('/auth/google', [GoogleAuthController::class, 'redirect'])->name('auth.google');
-    Route::get('/auth/google/callback', [GoogleAuthController::class, 'callback'])->name('auth.google.callback');
+    Route::get('/google/login', [GoogleAuthController::class, 'redirect'])->name('auth.google');
+    Route::get('/social-verify', [GoogleAuthController::class, 'callback'])->name('auth.google.callback');
 
     Route::middleware('auth:web')->group(function () {
         Route::get('/account', [\App\Http\Controllers\Frontend\AccountController::class, 'index'])->name('account.dashboard');
@@ -105,7 +105,11 @@ Route::domain('admin.karbnzol.com')->group(function () {
     Route::middleware('auth:admin')->group(function () {
         Route::get('/dashboard', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('admin.dashboard');
 
-        // Roles & Permissions
+        // Staff & Roles
+        Route::get('users/datatable', [\App\Http\Controllers\Admin\UserController::class, 'datatable'])->name('users.datatable');
+        Route::post('users/bulk-delete', [\App\Http\Controllers\Admin\UserController::class, 'bulkDelete'])->name('users.bulkDelete');
+        Route::resource('users', \App\Http\Controllers\Admin\UserController::class);
+
         Route::get('roles/datatable', [\App\Http\Controllers\Admin\RoleController::class, 'datatable'])->name('roles.datatable');
         Route::post('roles/bulk-delete', [\App\Http\Controllers\Admin\RoleController::class, 'bulkDelete'])->name('roles.bulkDelete');
         Route::resource('roles', \App\Http\Controllers\Admin\RoleController::class);

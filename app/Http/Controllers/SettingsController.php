@@ -33,7 +33,6 @@ class SettingsController extends Controller
         $tabs = [
             'general'    => 'General Settings',
             'store'      => 'Store Information',
-            'appearance' => 'Appearance',
             'currency'   => 'Currency & Pricing',
             'seo'        => 'SEO & Meta',
             'shipping'   => 'Shipping & Delivery',
