@@ -45,7 +45,7 @@
                         <div
                             class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                             <div
-                                class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
+                                class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
                                 <h2 class="text-sm font-bold text-gray-900 dark:text-white">
                                     {{ __('file.user_details') ?? 'User Details' }}</h2>
                             </div>
@@ -57,7 +57,7 @@
                                             <span class="text-red-500">*</span></label>
                                         <input type="text" name="name" id="name" value="{{ old('name', $user->name) }}"
                                             required
-                                            class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/50 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5">
+                                            class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/100 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5">
                                         @error('name') <p class="text-[10px] text-red-500 mt-1 font-bold px-1">
                                         {{ $message }}</p> @enderror
                                     </div>
@@ -67,18 +67,16 @@
                                             <span class="text-red-500">*</span></label>
                                         <input type="email" name="email" id="email" value="{{ old('email', $user->email) }}"
                                             required
-                                            class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/50 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5">
+                                            class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/100 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5">
                                         @error('email') <p class="text-[10px] text-red-500 mt-1 font-bold px-1">
                                         {{ $message }}</p> @enderror
                                     </div>
                                 </div>
                                 <div>
                                     <label for="phone"
-                                        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.phone') }}
-                                        <span class="text-red-500">*</span></label>
+                                        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.phone') }}</label>
                                     <input type="tel" name="phone" id="phone" value="{{ old('phone', $user->phone) }}"
-                                        required
-                                        class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/50 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5">
+                                        class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/100 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5">
                                     @error('phone') <p class="text-xs text-red-500 mt-1 font-medium px-1">{{ $message }}</p> @enderror
                                 </div>
                             </div>
@@ -88,7 +86,7 @@
                         <div
                             class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                             <div
-                                class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
+                                class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
                                 <h2 class="text-sm font-bold text-gray-900 dark:text-white">
                                     {{ __('file.password') ?? 'Password' }}</h2>
                             </div>
@@ -101,7 +99,7 @@
                                             class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.password') }}</label>
                                         <div class="relative">
                                             <input type="password" name="password" id="password" minlength="8"
-                                                class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/50 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5 pr-10">
+                                                class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/100 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5 pr-10">
                                             <button type="button" onclick="togglePassword('password', 'eyePassword')"
                                                 class="absolute inset-y-0 right-3 flex items-center text-gray-400 hover:text-indigo-500 transition-colors">
                                                 <svg id="eyePassword" class="h-4 w-4" fill="none" stroke="currentColor"
@@ -121,7 +119,7 @@
                                             class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.confirm_password') }}</label>
                                         <div class="relative">
                                             <input type="password" name="password_confirmation" id="password_confirmation"
-                                                class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/50 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5 pr-10">
+                                                class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/100 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5 pr-10">
                                             <button type="button"
                                                 onclick="togglePassword('password_confirmation', 'eyeConfirm')"
                                                 class="absolute inset-y-0 right-3 flex items-center text-gray-400 hover:text-indigo-500 transition-colors">
@@ -143,7 +141,7 @@
                         <div
                             class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                             <div
-                                class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
+                                class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
                                 <h2 class="text-sm font-bold text-gray-900 dark:text-white">
                                     {{ __('file.assign_role') ?? 'Assign Role' }}</h2>
                             </div>
@@ -177,14 +175,14 @@
                         <div
                             class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden sticky top-24">
                             <div
-                                class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
+                                class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
                                 <h2 class="text-sm font-bold text-gray-900 dark:text-white">
                                     {{ __('file.status') }}</h2>
                             </div>
                             <div class="p-4 space-y-6">
 
                                 <label
-                                    class="flex items-start py-2.5 px-3 rounded-lg border border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20 hover:bg-gray-100 dark:hover:bg-surface-tonal-a30 transition cursor-pointer group">
+                                    class="flex items-start py-2.5 px-3 rounded-lg border border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10 hover:bg-gray-100 dark:hover:bg-surface-tonal-a30 transition cursor-pointer group">
                                     <div class="mt-0.5">
                                         <input type="checkbox" name="is_active" id="is_active" value="1" {{ old('is_active', $user->is_active) ? 'checked' : '' }}
                                             class="h-4 w-4 rounded border-gray-300 dark:border-surface-tonal-a30 text-emerald-500 focus:ring-emerald-500 transition-all cursor-pointer">

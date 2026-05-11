@@ -16,11 +16,13 @@
                 width: 50px;
                 height: 24px;
             }
+
             .toggle-switch input {
                 opacity: 0;
                 width: 0;
                 height: 0;
             }
+
             .toggle-slider {
                 position: absolute;
                 cursor: pointer;
@@ -32,6 +34,7 @@
                 transition: .4s;
                 border-radius: 24px;
             }
+
             .toggle-slider:before {
                 position: absolute;
                 content: "";
@@ -42,21 +45,26 @@
                 background-color: white;
                 transition: .4s;
                 border-radius: 50%;
-                box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
             }
-            input:checked + .toggle-slider {
+
+            input:checked+.toggle-slider {
                 background-color: #111827;
             }
-            input:checked + .toggle-slider:before {
+
+            input:checked+.toggle-slider:before {
                 transform: translateX(26px);
             }
+
             .dark .toggle-slider {
                 background-color: #374151;
             }
-            .dark input:checked + .toggle-slider {
+
+            .dark input:checked+.toggle-slider {
                 background-color: #f3f4f6;
             }
-            .dark input:checked + .toggle-slider:before {
+
+            .dark input:checked+.toggle-slider:before {
                 background-color: #111827;
             }
         </style>
@@ -67,24 +75,46 @@
             </div>
         @endif
 
-        <form action="{{ route('admin.storefront.update') }}" method="POST" enctype="multipart/form-data" class="space-y-12">
+        <form action="{{ route('admin.storefront.update') }}" method="POST" enctype="multipart/form-data"
+            class="space-y-12">
             @csrf
             @method('PUT')
 
-            <div class="bg-white dark:bg-transparent rounded-xl shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
+            <div
+                class="bg-white dark:bg-transparent rounded-xl shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                 <div class="p-6 space-y-12">
-                    
+
                     <!-- Branding Section -->
                     <div class="border-b border-gray-200 dark:border-surface-tonal-a30 pb-6">
-                        <h2 class="text-xl font-semibold text-gray-900 dark:text-primary-a0 mb-6">Site Branding (Header Logo)</h2>
+                        <div class="flex items-center justify-between mb-6">
+                            <h2 class="text-xl font-semibold text-gray-900 dark:text-primary-a0">Site Branding (Header Logo)</h2>
+                            <div class="flex items-center gap-3" id="logo-type-toggle">
+                                <span class="text-xs font-medium {{ !($setting->storefront_use_logo_text ?? false) ? 'text-gray-900 dark:text-primary-a0' : 'text-gray-500 dark:text-gray-400' }}">Use General Logo</span>
+                                <label class="toggle-switch">
+                                    <input type="hidden" name="storefront_use_logo_text" value="0">
+                                    <input type="checkbox" name="storefront_use_logo_text" value="1" {{ ($setting->storefront_use_logo_text ?? false) ? 'checked' : '' }}>
+                                    <span class="toggle-slider"></span>
+                                </label>
+                                <span class="text-xs font-medium {{ ($setting->storefront_use_logo_text ?? false) ? 'text-gray-900 dark:text-primary-a0' : 'text-gray-500 dark:text-gray-400' }}">Use Logo Text</span>
+                            </div>
+                        </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Logo Main Text <span class="text-xs text-gray-400 font-normal ml-2">(Default: KARBNZOL)</span></label>
-                                <input type="text" name="storefront_logo_text" value="{{ old('storefront_logo_text', $setting->storefront_logo_text ?? '') }}" maxlength="50" placeholder="e.g., KARBNZOL" class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-transparent dark:text-primary-a0 transition-shadow">
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Logo Main
+                                    Text <span class="text-xs text-gray-400 font-normal ml-2"></span></label>
+                                <input type="text" name="storefront_logo_text"
+                                    value="{{ old('storefront_logo_text', $setting->storefront_logo_text ?? '') }}"
+                                    maxlength="50" placeholder="e.g., KARBNZOL"
+                                    class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-transparent dark:text-primary-a0 transition-shadow">
                             </div>
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Logo Subtext <span class="text-xs text-gray-400 font-normal ml-2">(Displayed below logo)</span></label>
-                                <input type="text" name="storefront_logo_subtext" value="{{ old('storefront_logo_subtext', $setting->storefront_logo_subtext ?? '') }}" maxlength="100" placeholder="e.g., Premium Menswear" class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-transparent dark:text-primary-a0 transition-shadow">
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Logo Subtext
+                                    <span class="text-xs text-gray-400 font-normal ml-2">(Displayed below
+                                        logo)</span></label>
+                                <input type="text" name="storefront_logo_subtext"
+                                    value="{{ old('storefront_logo_subtext', $setting->storefront_logo_subtext ?? '') }}"
+                                    maxlength="100" placeholder="e.g., Premium Menswear"
+                                    class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-transparent dark:text-primary-a0 transition-shadow">
                             </div>
                         </div>
                     </div>
@@ -94,27 +124,42 @@
                         <h2 class="text-xl font-semibold text-gray-900 dark:text-primary-a0 mb-6">Contact Information</h2>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Support Phone Number</label>
-                                <input type="text" name="phone" value="{{ old('phone', $setting->phone) }}" maxlength="20" class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-transparent dark:text-primary-a0 transition-shadow">
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Support Phone
+                                    Number</label>
+                                <input type="text" name="phone" value="{{ old('phone', $setting->phone) }}" maxlength="20"
+                                    class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-transparent dark:text-primary-a0 transition-shadow">
                             </div>
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Support Email</label>
-                                <input type="email" name="email" value="{{ old('email', $setting->email) }}" maxlength="255" class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-transparent dark:text-primary-a0 transition-shadow">
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Support
+                                    Email</label>
+                                <input type="email" name="email" value="{{ old('email', $setting->email) }}" maxlength="255"
+                                    class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-transparent dark:text-primary-a0 transition-shadow">
                             </div>
                         </div>
                     </div>
 
                     <!-- Offers Section -->
                     <div class="border-b border-gray-200 dark:border-surface-tonal-a30 pb-6">
-                        <h2 class="text-xl font-semibold text-gray-900 dark:text-primary-a0 mb-6">Announcement Bar (Global Top Bar)</h2>
+                        <h2 class="text-xl font-semibold text-gray-900 dark:text-primary-a0 mb-6">Announcement Bar (Global
+                            Top Bar)</h2>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Announcement Text <span class="text-xs text-gray-400 font-normal ml-2">(Repeats in marquee)</span></label>
-                                <input type="text" name="storefront_offer_text" value="{{ old('storefront_offer_text', $setting->storefront_offer_text ?? '') }}" maxlength="50" placeholder="e.g., FREE SHIPPING ON ORDERS OVER {{ $currency_symbol }} {{ number_format($free_shipping_threshold) }}" class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-transparent dark:text-primary-a0 transition-shadow">
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Announcement
+                                    Text <span class="text-xs text-gray-400 font-normal ml-2">(Repeats in
+                                        marquee)</span></label>
+                                <input type="text" name="storefront_offer_text"
+                                    value="{{ old('storefront_offer_text', $setting->storefront_offer_text ?? '') }}"
+                                    maxlength="50"
+                                    placeholder="e.g., FREE SHIPPING ON ORDERS OVER {{ $currency_symbol }} {{ number_format($free_shipping_threshold) }}"
+                                    class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-transparent dark:text-primary-a0 transition-shadow">
                             </div>
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Announcement Link (Optional)</label>
-                                <input type="text" name="storefront_offer_link" value="{{ old('storefront_offer_link', $setting->storefront_offer_link ?? '') }}" maxlength="255" placeholder="e.g., /collections/sale" class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-transparent dark:text-primary-a0 transition-shadow">
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Announcement
+                                    Link (Optional)</label>
+                                <input type="text" name="storefront_offer_link"
+                                    value="{{ old('storefront_offer_link', $setting->storefront_offer_link ?? '') }}"
+                                    maxlength="255" placeholder="e.g., /collections/sale"
+                                    class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-transparent dark:text-primary-a0 transition-shadow">
                             </div>
                         </div>
                     </div>
@@ -124,27 +169,43 @@
                         <h2 class="text-xl font-semibold text-gray-900 dark:text-primary-a0 mb-6">Home Page Marquee Bar</h2>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Marquee Text <span class="text-xs text-gray-400 font-normal ml-2">(Use '|' to separate multiple messages)</span></label>
-                                <input type="text" name="storefront_marquee_text" value="{{ old('storefront_marquee_text', $setting->storefront_marquee_text ?? '') }}" maxlength="255" placeholder="e.g., Free Delivery | New Arrivals | MintPay Available" class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-transparent dark:text-primary-a0 transition-shadow">
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Marquee Text
+                                    <span class="text-xs text-gray-400 font-normal ml-2">(Use '|' to separate multiple
+                                        messages)</span></label>
+                                <input type="text" name="storefront_marquee_text"
+                                    value="{{ old('storefront_marquee_text', $setting->storefront_marquee_text ?? '') }}"
+                                    maxlength="255" placeholder="e.g., Free Delivery | New Arrivals | MintPay Available"
+                                    class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-transparent dark:text-primary-a0 transition-shadow">
                             </div>
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Marquee Link (Optional)</label>
-                                <input type="text" name="storefront_marquee_link" value="{{ old('storefront_marquee_link', $setting->storefront_marquee_link ?? '') }}" maxlength="255" placeholder="e.g., /collections/new-arrivals" class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-transparent dark:text-primary-a0 transition-shadow">
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Marquee Link
+                                    (Optional)</label>
+                                <input type="text" name="storefront_marquee_link"
+                                    value="{{ old('storefront_marquee_link', $setting->storefront_marquee_link ?? '') }}"
+                                    maxlength="255" placeholder="e.g., /collections/new-arrivals"
+                                    class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-transparent dark:text-primary-a0 transition-shadow">
                             </div>
                         </div>
                     </div>
 
                     <!-- About Us Section -->
                     <div class="border-b border-gray-200 dark:border-surface-tonal-a30 pb-6">
-                        <h2 class="text-xl font-semibold text-gray-900 dark:text-primary-a0 mb-6">About Us Section (Footer/General)</h2>
+                        <h2 class="text-xl font-semibold text-gray-900 dark:text-primary-a0 mb-6">About Us Section
+                            (Footer/General)</h2>
                         <div class="space-y-6">
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Short About Us Text <span class="text-xs text-gray-400 font-normal ml-2">(Displayed in footer)</span></label>
-                                <textarea name="storefront_about_us" rows="2" class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-transparent dark:text-primary-a0 transition-shadow">{{ old('storefront_about_us', $setting->storefront_about_us ?? '') }}</textarea>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Short About
+                                    Us Text <span class="text-xs text-gray-400 font-normal ml-2">(Displayed in
+                                        footer)</span></label>
+                                <textarea name="storefront_about_us" rows="2"
+                                    class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-transparent dark:text-primary-a0 transition-shadow">{{ old('storefront_about_us', $setting->storefront_about_us ?? '') }}</textarea>
                             </div>
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">About Us Page Content <span class="text-xs text-gray-400 font-normal ml-2">(Optional fallback for About page)</span></label>
-                                <textarea name="storefront_about_us_content" rows="4" class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-transparent dark:text-primary-a0 transition-shadow">{{ old('storefront_about_us_content', $setting->storefront_about_us_content ?? '') }}</textarea>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">About Us Page
+                                    Content <span class="text-xs text-gray-400 font-normal ml-2">(Optional fallback for
+                                        About page)</span></label>
+                                <textarea name="storefront_about_us_content" rows="4"
+                                    class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-transparent dark:text-primary-a0 transition-shadow">{{ old('storefront_about_us_content', $setting->storefront_about_us_content ?? '') }}</textarea>
                             </div>
                         </div>
                     </div>
@@ -166,25 +227,34 @@
                         <div class="space-y-6">
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Our Story Title</label>
-                                    <input type="text" name="storefront_our_story_title" value="{{ old('storefront_our_story_title', $setting->storefront_our_story_title ?? '') }}" maxlength="100" placeholder="e.g., Our Story" class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-transparent dark:text-primary-a0 transition-shadow">
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Our Story
+                                        Title</label>
+                                    <input type="text" name="storefront_our_story_title"
+                                        value="{{ old('storefront_our_story_title', $setting->storefront_our_story_title ?? '') }}"
+                                        maxlength="100" placeholder="e.g., Our Story"
+                                        class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-transparent dark:text-primary-a0 transition-shadow">
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Story Image</label>
+                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Story
+                                        Image</label>
                                     @if($setting->storefront_our_story_image)
                                         <div class="mb-2 flex items-center gap-2">
-                                            <img src="{{ asset('storage/' . $setting->storefront_our_story_image) }}" class="h-12 w-auto object-cover rounded">
+                                            <img src="{{ asset('storage/' . $setting->storefront_our_story_image) }}"
+                                                class="h-12 w-auto object-cover rounded">
                                             <label class="text-xs text-red-500 flex items-center gap-1 cursor-pointer">
                                                 <input type="checkbox" name="remove_our_story_image" value="1"> Remove
                                             </label>
                                         </div>
                                     @endif
-                                    <input type="file" name="storefront_our_story_image" accept="image/*" class="w-full text-sm text-gray-500">
+                                    <input type="file" name="storefront_our_story_image" accept="image/*"
+                                        class="w-full text-sm text-gray-500">
                                 </div>
                             </div>
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Our Story Content</label>
-                                <textarea name="storefront_our_story_content" rows="6" class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-transparent dark:text-primary-a0 transition-shadow">{{ old('storefront_our_story_content', $setting->storefront_our_story_content ?? '') }}</textarea>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Our Story
+                                    Content</label>
+                                <textarea name="storefront_our_story_content" rows="6"
+                                    class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-transparent dark:text-primary-a0 transition-shadow">{{ old('storefront_our_story_content', $setting->storefront_our_story_content ?? '') }}</textarea>
                             </div>
                         </div>
                     </div>
@@ -193,15 +263,18 @@
                     <div class="border-b border-gray-200 dark:border-surface-tonal-a30 pb-6">
                         <div class="flex items-center justify-between mb-6">
                             <div class="flex items-center gap-4">
-                                <h2 class="text-xl font-semibold text-gray-900 dark:text-primary-a0">Performance Stats (Home Page)</h2>
-                                <div class="flex items-center gap-2 bg-gray-50 dark:bg-surface-tonal-a10 px-3 py-1.5 rounded-xl border border-gray-100 dark:border-surface-tonal-a20">
+                                <h2 class="text-xl font-semibold text-gray-900 dark:text-primary-a0">Performance Stats (Home
+                                    Page)</h2>
+                                <div
+                                    class="flex items-center gap-2 bg-gray-50 dark:bg-surface-tonal-a10 px-3 py-1.5 rounded-xl border border-gray-100 dark:border-surface-tonal-a20">
                                     <span class="text-[10px] uppercase font-bold text-gray-400">Status:</span>
                                     <label class="toggle-switch" style="transform: scale(0.8); transform-origin: left;">
                                         <input type="hidden" name="storefront_stats_show" value="0">
                                         <input type="checkbox" name="storefront_stats_show" value="1" {{ ($setting->storefront_stats_show ?? true) ? 'checked' : '' }}>
                                         <span class="toggle-slider"></span>
                                     </label>
-                                    <span class="text-[10px] uppercase font-bold {{ ($setting->storefront_stats_show ?? true) ? 'text-green-600' : 'text-gray-400' }}">
+                                    <span
+                                        class="text-[10px] uppercase font-bold {{ ($setting->storefront_stats_show ?? true) ? 'text-green-600' : 'text-gray-400' }}">
                                         {{ ($setting->storefront_stats_show ?? true) ? 'Visible' : 'Hidden' }}
                                     </span>
                                 </div>
@@ -218,11 +291,17 @@
                                 ];
                             @endphp
                             @foreach($stats as $index => $stat)
-                                <div class="stat-item p-4 border border-gray-200 dark:border-gray-600 rounded-xl relative bg-gray-50 dark:bg-surface-tonal-a10">
-                                    <button type="button" onclick="this.parentElement.remove()" class="absolute top-1 right-2 text-red-500 hover:text-red-700 text-xs">×</button>
+                                <div
+                                    class="stat-item p-4 border border-gray-200 dark:border-gray-600 rounded-xl relative bg-gray-50 dark:bg-surface-tonal-a10">
+                                    <button type="button" onclick="this.parentElement.remove()"
+                                        class="absolute top-1 right-2 text-red-500 hover:text-red-700 text-xs">×</button>
                                     <div class="space-y-3">
-                                        <input type="text" name="storefront_stats[{{$index}}][number]" value="{{ $stat['number'] ?? '' }}" placeholder="Value (e.g. 12K+)" class="w-full px-2 py-1 text-xs border border-gray-300 dark:border-gray-600 rounded dark:bg-transparent dark:text-primary-a0">
-                                        <input type="text" name="storefront_stats[{{$index}}][label]" value="{{ $stat['label'] ?? '' }}" placeholder="Label" class="w-full px-2 py-1 text-xs border border-gray-300 dark:border-gray-600 rounded dark:bg-transparent dark:text-primary-a0">
+                                        <input type="text" name="storefront_stats[{{$index}}][number]"
+                                            value="{{ $stat['number'] ?? '' }}" placeholder="Value (e.g. 12K+)"
+                                            class="w-full px-2 py-1 text-xs border border-gray-300 dark:border-gray-600 rounded dark:bg-transparent dark:text-primary-a0">
+                                        <input type="text" name="storefront_stats[{{$index}}][label]"
+                                            value="{{ $stat['label'] ?? '' }}" placeholder="Label"
+                                            class="w-full px-2 py-1 text-xs border border-gray-300 dark:border-gray-600 rounded dark:bg-transparent dark:text-primary-a0">
                                     </div>
                                 </div>
                             @endforeach
@@ -233,15 +312,18 @@
                     <div class="border-b border-gray-200 dark:border-surface-tonal-a30 pb-6">
                         <div class="flex items-center justify-between mb-6">
                             <div class="flex items-center gap-4">
-                                <h2 class="text-xl font-semibold text-gray-900 dark:text-primary-a0">Trust Signals (Footer Bar)</h2>
-                                <div class="flex items-center gap-2 bg-gray-50 dark:bg-surface-tonal-a10 px-3 py-1.5 rounded-xl border border-gray-100 dark:border-surface-tonal-a20">
+                                <h2 class="text-xl font-semibold text-gray-900 dark:text-primary-a0">Trust Signals (Footer
+                                    Bar)</h2>
+                                <div
+                                    class="flex items-center gap-2 bg-gray-50 dark:bg-surface-tonal-a10 px-3 py-1.5 rounded-xl border border-gray-100 dark:border-surface-tonal-a20">
                                     <span class="text-[10px] uppercase font-bold text-gray-400">Status:</span>
                                     <label class="toggle-switch" style="transform: scale(0.8); transform-origin: left;">
                                         <input type="hidden" name="storefront_trust_show" value="0">
                                         <input type="checkbox" name="storefront_trust_show" value="1" {{ ($setting->storefront_trust_show ?? true) ? 'checked' : '' }}>
                                         <span class="toggle-slider"></span>
                                     </label>
-                                    <span class="text-[10px] uppercase font-bold {{ ($setting->storefront_trust_show ?? true) ? 'text-green-600' : 'text-gray-400' }}">
+                                    <span
+                                        class="text-[10px] uppercase font-bold {{ ($setting->storefront_trust_show ?? true) ? 'text-green-600' : 'text-gray-400' }}">
                                         {{ ($setting->storefront_trust_show ?? true) ? 'Visible' : 'Hidden' }}
                                     </span>
                                 </div>
@@ -258,19 +340,30 @@
                                 ];
                             @endphp
                             @foreach($trusts as $index => $trust)
-                                <div class="trust-item p-4 border border-gray-200 dark:border-gray-600 rounded-xl relative bg-gray-50 dark:bg-surface-tonal-a10">
-                                    <button type="button" onclick="this.parentElement.remove()" class="absolute top-1 right-2 text-red-500 hover:text-red-700 text-xs">×</button>
+                                <div
+                                    class="trust-item p-4 border border-gray-200 dark:border-gray-600 rounded-xl relative bg-gray-50 dark:bg-surface-tonal-a10">
+                                    <button type="button" onclick="this.parentElement.remove()"
+                                        class="absolute top-1 right-2 text-red-500 hover:text-red-700 text-xs">×</button>
                                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                                         <div class="md:col-span-1">
-                                            <label class="block text-[10px] uppercase font-bold text-gray-400 mb-1">Title</label>
-                                            <input type="text" name="storefront_trust_items[{{$index}}][title]" value="{{ $trust['title'] ?? '' }}" placeholder="Title" class="w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded dark:bg-transparent dark:text-primary-a0">
-                                            <label class="block text-[10px] uppercase font-bold text-gray-400 mt-2 mb-1">Subtitle</label>
-                                            <input type="text" name="storefront_trust_items[{{$index}}][subtitle]" value="{{ $trust['subtitle'] ?? '' }}" placeholder="Subtitle" class="w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded dark:bg-transparent dark:text-primary-a0">
+                                            <label
+                                                class="block text-[10px] uppercase font-bold text-gray-400 mb-1">Title</label>
+                                            <input type="text" name="storefront_trust_items[{{$index}}][title]"
+                                                value="{{ $trust['title'] ?? '' }}" placeholder="Title"
+                                                class="w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded dark:bg-transparent dark:text-primary-a0">
+                                            <label
+                                                class="block text-[10px] uppercase font-bold text-gray-400 mt-2 mb-1">Subtitle</label>
+                                            <input type="text" name="storefront_trust_items[{{$index}}][subtitle]"
+                                                value="{{ $trust['subtitle'] ?? '' }}" placeholder="Subtitle"
+                                                class="w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded dark:bg-transparent dark:text-primary-a0">
                                         </div>
                                         <div class="md:col-span-2">
-                                            <label class="block text-[10px] uppercase font-bold text-gray-400 mb-2">Select Icon</label>
-                                            <input type="hidden" name="storefront_trust_items[{{$index}}][svg]" value="{{ $trust['svg'] ?? '' }}">
-                                            <div class="flex flex-wrap gap-2 icon-grid" data-selected="{{ $trust['svg'] ?? '' }}"></div>
+                                            <label class="block text-[10px] uppercase font-bold text-gray-400 mb-2">Select
+                                                Icon</label>
+                                            <input type="hidden" name="storefront_trust_items[{{$index}}][svg]"
+                                                value="{{ $trust['svg'] ?? '' }}">
+                                            <div class="flex flex-wrap gap-2 icon-grid"
+                                                data-selected="{{ $trust['svg'] ?? '' }}"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -282,7 +375,8 @@
                     <div>
                         <div class="flex items-center justify-between mb-6">
                             <h2 class="text-xl font-semibold text-gray-900 dark:text-primary-a0">Hero Banners / Sliders</h2>
-                            <button type="button" id="add-banner-btn" class="inline-flex items-center justify-center px-4 py-2 bg-gray-100 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 text-xs font-semibold rounded-xl hover:bg-gray-200 dark:bg-transparent dark:hover:bg-gray-700 transition">
+                            <button type="button" id="add-banner-btn"
+                                class="inline-flex items-center justify-center px-4 py-2 bg-gray-100 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 text-xs font-semibold rounded-xl hover:bg-gray-200 dark:bg-transparent dark:hover:bg-gray-700 transition">
                                 + Add Banner
                             </button>
                         </div>
@@ -291,70 +385,113 @@
                             @php
                                 $banners = is_array($setting->storefront_banners) ? $setting->storefront_banners : [];
                             @endphp
-                            
+
                             @if(count($banners) === 0)
                                 <!-- Empty state fallback handled by JS on load if needed, but let's output one blank -->
-                                <div class="banner-item border border-gray-200 dark:border-gray-600 p-4 rounded-lg relative bg-gray-50 dark:bg-surface-tonal-a10">
-                                    <button type="button" class="absolute top-2 right-2 text-red-500 hover:text-red-700 text-sm remove-banner-btn">Remove</button>
+                                <div
+                                    class="banner-item border border-gray-200 dark:border-gray-600 p-4 rounded-lg relative bg-gray-50 dark:bg-surface-tonal-a10">
+                                    <button type="button"
+                                        class="absolute top-2 right-2 text-red-500 hover:text-red-700 text-sm remove-banner-btn">Remove</button>
                                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                                         <div>
-                                            <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Tag <span class="text-[10px] text-gray-400 font-normal ml-1">(Max 25 chars)</span></label>
-                                            <input type="text" name="banners[0][tag]" placeholder="e.g. SS 2025 — New Drop" maxlength="25" class="w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded dark:bg-transparent dark:text-primary-a0">
+                                            <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Tag
+                                                <span class="text-[10px] text-gray-400 font-normal ml-1">(Max 25
+                                                    chars)</span></label>
+                                            <input type="text" name="banners[0][tag]" placeholder="e.g. SS 2025 — New Drop"
+                                                maxlength="25"
+                                                class="w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded dark:bg-transparent dark:text-primary-a0">
                                         </div>
                                         <div>
-                                            <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Title <span class="text-[10px] text-gray-400 font-normal ml-1">(Max 25 chars)</span></label>
-                                            <input type="text" name="banners[0][title]" placeholder="Line 1" maxlength="25" class="w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded dark:bg-transparent dark:text-primary-a0">
+                                            <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Title
+                                                <span class="text-[10px] text-gray-400 font-normal ml-1">(Max 25
+                                                    chars)</span></label>
+                                            <input type="text" name="banners[0][title]" placeholder="Line 1" maxlength="25"
+                                                class="w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded dark:bg-transparent dark:text-primary-a0">
                                         </div>
                                         <div>
-                                            <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Subtitle <span class="text-[10px] text-gray-400 font-normal ml-1">(Max 120 chars)</span></label>
-                                            <input type="text" name="banners[0][subtitle]" placeholder="Description" maxlength="120" class="w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded dark:bg-transparent dark:text-primary-a0">
+                                            <label
+                                                class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Subtitle
+                                                <span class="text-[10px] text-gray-400 font-normal ml-1">(Max 120
+                                                    chars)</span></label>
+                                            <input type="text" name="banners[0][subtitle]" placeholder="Description"
+                                                maxlength="120"
+                                                class="w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded dark:bg-transparent dark:text-primary-a0">
                                         </div>
                                         <div>
-                                            <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Link URL</label>
-                                            <input type="text" name="banners[0][link]" placeholder="/products" maxlength="255" class="w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded dark:bg-transparent dark:text-primary-a0">
+                                            <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Link
+                                                URL</label>
+                                            <input type="text" name="banners[0][link]" placeholder="/products" maxlength="255"
+                                                class="w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded dark:bg-transparent dark:text-primary-a0">
                                         </div>
                                         <div>
-                                            <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Banner Image</label>
-                                            <input type="file" name="banners[0][image]" accept="image/*" class="w-full text-sm text-gray-500">
+                                            <label
+                                                class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Banner
+                                                Image</label>
+                                            <input type="file" name="banners[0][image]" accept="image/*"
+                                                class="w-full text-sm text-gray-500">
                                         </div>
                                     </div>
                                 </div>
                             @else
                                 @foreach($banners as $index => $banner)
-                                <div class="banner-item border border-gray-200 dark:border-gray-600 p-4 rounded-lg relative bg-gray-50 dark:bg-surface-tonal-a10">
-                                    <button type="button" class="absolute top-2 right-2 text-red-500 hover:text-red-700 text-sm remove-banner-btn">Remove</button>
-                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                                        <div>
-                                            <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Tag <span class="text-[10px] text-gray-400 font-normal ml-1">(Max 25 chars)</span></label>
-                                            <input type="text" name="banners[{{$index}}][tag]" value="{{ $banner['tag'] ?? '' }}" maxlength="25" class="w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded dark:bg-transparent dark:text-primary-a0">
-                                        </div>
-                                        <div>
-                                            <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Title <span class="text-[10px] text-gray-400 font-normal ml-1">(Max 25 chars)</span></label>
-                                            <input type="text" name="banners[{{$index}}][title]" value="{{ $banner['title'] ?? '' }}" maxlength="25" class="w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded dark:bg-transparent dark:text-primary-a0">
-                                        </div>
-                                        <div>
-                                            <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Subtitle <span class="text-[10px] text-gray-400 font-normal ml-1">(Max 120 chars)</span></label>
-                                            <input type="text" name="banners[{{$index}}][subtitle]" value="{{ $banner['subtitle'] ?? '' }}" maxlength="120" class="w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded dark:bg-transparent dark:text-primary-a0">
-                                        </div>
-                                        <div>
-                                            <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Link URL</label>
-                                            <input type="text" name="banners[{{$index}}][link]" value="{{ $banner['link'] ?? '' }}" maxlength="255" class="w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded dark:bg-transparent dark:text-primary-a0">
-                                        </div>
-                                        <div>
-                                            <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Banner Image</label>
-                                            @if(!empty($banner['image']))
-                                                <div class="mb-2 flex items-center gap-2">
-                                                    <img src="{{ asset('storage/' . $banner['image']) }}" class="h-10 w-auto object-cover rounded">
-                                                    <label class="text-xs text-red-500 flex items-center gap-1 cursor-pointer">
-                                                        <input type="checkbox" name="banners[{{$index}}][remove_image]" value="1"> Remove
-                                                    </label>
-                                                </div>
-                                            @endif
-                                            <input type="file" name="banners[{{$index}}][image]" accept="image/*" class="w-full text-sm text-gray-500">
-                                            <input type="hidden" name="banners[{{$index}}][existing_image]" value="{{ $banner['image'] ?? '' }}">
+                                    <div
+                                        class="banner-item border border-gray-200 dark:border-gray-600 p-4 rounded-lg relative bg-gray-50 dark:bg-surface-tonal-a10">
+                                        <button type="button"
+                                            class="absolute top-2 right-2 text-red-500 hover:text-red-700 text-sm remove-banner-btn">Remove</button>
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                                            <div>
+                                                <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Tag
+                                                    <span class="text-[10px] text-gray-400 font-normal ml-1">(Max 25
+                                                        chars)</span></label>
+                                                <input type="text" name="banners[{{$index}}][tag]"
+                                                    value="{{ $banner['tag'] ?? '' }}" maxlength="25"
+                                                    class="w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded dark:bg-transparent dark:text-primary-a0">
+                                            </div>
+                                            <div>
+                                                <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Title
+                                                    <span class="text-[10px] text-gray-400 font-normal ml-1">(Max 25
+                                                        chars)</span></label>
+                                                <input type="text" name="banners[{{$index}}][title]"
+                                                    value="{{ $banner['title'] ?? '' }}" maxlength="25"
+                                                    class="w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded dark:bg-transparent dark:text-primary-a0">
+                                            </div>
+                                            <div>
+                                                <label
+                                                    class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Subtitle
+                                                    <span class="text-[10px] text-gray-400 font-normal ml-1">(Max 120
+                                                        chars)</span></label>
+                                                <input type="text" name="banners[{{$index}}][subtitle]"
+                                                    value="{{ $banner['subtitle'] ?? '' }}" maxlength="120"
+                                                    class="w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded dark:bg-transparent dark:text-primary-a0">
+                                            </div>
+                                            <div>
+                                                <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Link
+                                                    URL</label>
+                                                <input type="text" name="banners[{{$index}}][link]"
+                                                    value="{{ $banner['link'] ?? '' }}" maxlength="255"
+                                                    class="w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded dark:bg-transparent dark:text-primary-a0">
+                                            </div>
+                                            <div>
+                                                <label
+                                                    class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Banner
+                                                    Image</label>
+                                                @if(!empty($banner['image']))
+                                                    <div class="mb-2 flex items-center gap-2">
+                                                        <img src="{{ asset('storage/' . $banner['image']) }}"
+                                                            class="h-10 w-auto object-cover rounded">
+                                                        <label class="text-xs text-red-500 flex items-center gap-1 cursor-pointer">
+                                                            <input type="checkbox" name="banners[{{$index}}][remove_image]" value="1">
+                                                            Remove
+                                                        </label>
+                                                    </div>
+                                                @endif
+                                                <input type="file" name="banners[{{$index}}][image]" accept="image/*"
+                                                    class="w-full text-sm text-gray-500">
+                                                <input type="hidden" name="banners[{{$index}}][existing_image]"
+                                                    value="{{ $banner['image'] ?? '' }}">
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
                                 @endforeach
                             @endif
                         </div>
@@ -364,7 +501,8 @@
             </div>
 
             <div class="flex flex-col sm:flex-row gap-3 pt-2">
-                <button type="submit" class="inline-flex items-center justify-center px-6 py-3 bg-gray-900 border border-gray-300 dark:border-gray-600 dark:bg-white dark:text-gray-500 text-white text-sm font-semibold rounded-xl hover:bg-gray-800 dark:hover:bg-gray-700 transition-colors duration-200">
+                <button type="submit"
+                    class="inline-flex items-center justify-center px-6 py-3 bg-gray-900 border border-gray-300 dark:border-gray-600 dark:bg-white dark:text-gray-500 text-white text-sm font-semibold rounded-xl hover:bg-gray-800 dark:hover:bg-gray-700 transition-colors duration-200">
                     Save Changes
                 </button>
             </div>
@@ -373,62 +511,72 @@
 
     <!-- Banner Template for JS -->
     <template id="banner-template">
-        <div class="banner-item border border-gray-200 dark:border-gray-600 p-4 rounded-lg relative bg-gray-50 dark:bg-surface-tonal-a10">
-            <button type="button" class="absolute top-2 right-2 text-red-500 hover:text-red-700 text-sm remove-banner-btn">Remove</button>
+        <div
+            class="banner-item border border-gray-200 dark:border-gray-600 p-4 rounded-lg relative bg-gray-50 dark:bg-surface-tonal-a10">
+            <button type="button"
+                class="absolute top-2 right-2 text-red-500 hover:text-red-700 text-sm remove-banner-btn">Remove</button>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                 <div>
-                    <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Tag <span class="text-[10px] text-gray-400 font-normal ml-1">(Max 25 chars)</span></label>
-                    <input type="text" name="banners[__INDEX__][tag]" placeholder="e.g. SS 2025 — New Drop" maxlength="25" class="w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded dark:bg-transparent dark:text-primary-a0">
+                    <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Tag <span
+                            class="text-[10px] text-gray-400 font-normal ml-1">(Max 25 chars)</span></label>
+                    <input type="text" name="banners[__INDEX__][tag]" placeholder="e.g. SS 2025 — New Drop" maxlength="25"
+                        class="w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded dark:bg-transparent dark:text-primary-a0">
                 </div>
                 <div>
-                    <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Title <span class="text-[10px] text-gray-400 font-normal ml-1">(Max 25 chars)</span></label>
-                    <input type="text" name="banners[__INDEX__][title]" placeholder="Line 1" maxlength="25" class="w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded dark:bg-transparent dark:text-primary-a0">
+                    <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Title <span
+                            class="text-[10px] text-gray-400 font-normal ml-1">(Max 25 chars)</span></label>
+                    <input type="text" name="banners[__INDEX__][title]" placeholder="Line 1" maxlength="25"
+                        class="w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded dark:bg-transparent dark:text-primary-a0">
                 </div>
                 <div>
-                    <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Subtitle <span class="text-[10px] text-gray-400 font-normal ml-1">(Max 120 chars)</span></label>
-                    <input type="text" name="banners[__INDEX__][subtitle]" placeholder="Description" maxlength="120" class="w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded dark:bg-transparent dark:text-primary-a0">
+                    <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Subtitle <span
+                            class="text-[10px] text-gray-400 font-normal ml-1">(Max 120 chars)</span></label>
+                    <input type="text" name="banners[__INDEX__][subtitle]" placeholder="Description" maxlength="120"
+                        class="w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded dark:bg-transparent dark:text-primary-a0">
                 </div>
                 <div>
                     <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Link URL</label>
-                    <input type="text" name="banners[__INDEX__][link]" placeholder="/products" maxlength="255" class="w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded dark:bg-transparent dark:text-primary-a0">
+                    <input type="text" name="banners[__INDEX__][link]" placeholder="/products" maxlength="255"
+                        class="w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded dark:bg-transparent dark:text-primary-a0">
                 </div>
                 <div>
                     <label class="block text-xs font-medium text-gray-700 dark:text-gray-300 mb-1">Banner Image</label>
-                    <input type="file" name="banners[__INDEX__][image]" accept="image/*" class="w-full text-sm text-gray-500 p-1">
+                    <input type="file" name="banners[__INDEX__][image]" accept="image/*"
+                        class="w-full text-sm text-gray-500 p-1">
                 </div>
             </div>
         </div>
     </template>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const container = document.getElementById('banners-container');
             const addBtn = document.getElementById('add-banner-btn');
             const template = document.getElementById('banner-template');
-            
+
             // Generate a unique index for new items
             let bannerIndex = document.querySelectorAll('.banner-item').length;
 
-            addBtn.addEventListener('click', function() {
+            addBtn.addEventListener('click', function () {
                 const clone = template.content.cloneNode(true);
-                
+
                 // Replace __INDEX__ with actual index
                 const html = clone.querySelector('.banner-item').outerHTML.replace(/__INDEX__/g, bannerIndex);
-                
+
                 // Create a temporary div to convert string back to DOM element
                 const temp = document.createElement('div');
                 temp.innerHTML = html;
                 const newElem = temp.firstElementChild;
-                
+
                 container.appendChild(newElem);
                 bannerIndex++;
-                
+
                 attachRemoveEvent(newElem.querySelector('.remove-banner-btn'));
             });
 
             function attachRemoveEvent(btn) {
-                if(!btn) return;
-                btn.addEventListener('click', function() {
+                if (!btn) return;
+                btn.addEventListener('click', function () {
                     const item = this.closest('.banner-item');
                     if (item) item.remove();
                 });
@@ -489,8 +637,22 @@
 
         // Handle dynamic toggle label updates
         document.querySelectorAll('.toggle-switch input[type="checkbox"]').forEach(toggle => {
-            toggle.addEventListener('change', function() {
+            toggle.addEventListener('change', function () {
                 const container = this.closest('.flex');
+                
+                // Special handling for logo type toggle
+                if (container.id === 'logo-type-toggle') {
+                    const labels = container.querySelectorAll('span.text-xs');
+                    if (this.checked) {
+                        labels[0].className = 'text-xs font-medium text-gray-500 dark:text-gray-400';
+                        labels[1].className = 'text-xs font-medium text-gray-900 dark:text-primary-a0';
+                    } else {
+                        labels[0].className = 'text-xs font-medium text-gray-900 dark:text-primary-a0';
+                        labels[1].className = 'text-xs font-medium text-gray-500 dark:text-gray-400';
+                    }
+                    return;
+                }
+
                 const label = container.querySelector('span:last-child');
                 if (label && label.classList.contains('uppercase')) {
                     if (this.checked) {

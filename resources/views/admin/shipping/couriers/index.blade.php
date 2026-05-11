@@ -96,7 +96,7 @@
             <div id="courier-drawer-panel"
                 class="absolute inset-y-0 right-0 w-full md:max-w-lg bg-white dark:bg-surface-tonal-a20 shadow-2xl transform translate-x-full transition-transform duration-500 ease-in-out flex flex-col">
                 
-                <div class="flex items-center justify-between px-8 py-5 border-b border-gray-100 dark:border-white/5 bg-gray-50/50 dark:bg-white/5">
+                <div class="flex items-center justify-between px-8 py-5 border-b border-gray-100 dark:border-white/5 bg-gray-50/100 dark:bg-white/5">
                     <div>
                         <h3 id="courier-drawer-title" class="text-xl font-bold text-gray-900 dark:text-white tracking-tight">
                             {{ __('file.add_new_provider') ?? 'Add New Logistics Provider' }}

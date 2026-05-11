@@ -5,9 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    
+
     <!-- Primary Meta Tags -->
-    <title>@hasSection('title')@yield('title') | {{ $store_name ?? 'Karbnzol' }}@else{{ $meta_title ?? $store_name ?? 'Karbnzol' }}@endif</title>
+    <title>@hasSection('title')@yield('title') |
+    {{ $store_name ?? 'Karbnzol' }}@else{{ $meta_title ?? $store_name ?? 'Karbnzol' }}@endif
+    </title>
+    <link rel="icon" type="image/x-icon" href="{{ $store_favicon }}">
     <meta name="title" content="@yield('meta_title', $meta_title ?? '')">
     <meta name="description" content="@yield('meta_description', $meta_description ?? '')">
     <meta name="keywords" content="@yield('meta_keywords', $meta_keywords ?? '')">
@@ -58,7 +61,7 @@
             --red: #cc3333;
             --font-display: 'Oswald', 'Arial Narrow', sans-serif;
             --font-body: 'Barlow', sans-serif;
-            --nav-h: 64px;
+            --nav-h: 75px;
             --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 
             /* ── Font Sizes ──────────────────────────── */
@@ -115,6 +118,7 @@
         body.light-page {
             background: var(--bg-creamy) !important;
         }
+
         .light-page main {
             color: #1a1a1a;
         }
@@ -162,7 +166,7 @@
             background: var(--gold);
             color: var(--bg);
             text-align: center;
-            padding: 0.45rem 1rem;
+            padding: 0.6rem 1rem;
             font-family: var(--font-display);
             font-size: 0.7rem;
             font-weight: 500;
@@ -222,7 +226,10 @@
         .nav-logo {
             display: flex;
             flex-direction: column;
+            justify-content: center;
+            height: 100%;
             gap: 1px;
+            flex-shrink: 0;
         }
 
         .logo-main {
@@ -268,11 +275,11 @@
             align-items: center;
             gap: 0.3rem;
             height: var(--nav-h);
-            padding: 0 0.95rem;
+            padding: 0 0.5rem;
             font-family: var(--font-display);
-            font-size: var(--fs-nav);
+            font-size: 14px;
             font-weight: 500;
-            letter-spacing: 0.14em;
+            letter-spacing: 0.1em;
             text-transform: uppercase;
             color: var(--silver);
             position: relative;
@@ -363,18 +370,27 @@
             box-shadow: 0 24px 64px rgba(0, 0, 0, 0.55);
         }
 
-        /* Mega dropdowns: position fixed, always full viewport width */
+        /* Mega dropdowns: position absolute, static parent allows full width */
         .nav-dropdown.mega {
-            position: fixed;
+            position: absolute;
+            top: 100%;
             left: 0;
             right: 0;
             width: 100%;
-            transform: translateY(-4px);
+            transform: none;
             min-width: 0;
             max-height: 65vh;
             overflow-y: auto;
             scrollbar-width: thin;
             scrollbar-color: var(--gold) var(--bg-2);
+        }
+
+        .nav-item.has-mega {
+            position: static;
+        }
+
+        .nav-item.has-mega::after {
+            display: none;
         }
 
         /* Invisible hover bridge — fills any pixel gap between the
@@ -669,6 +685,7 @@
         .nav-right {
             display: flex;
             align-items: center;
+            flex-shrink: 0;
         }
 
         .nav-icon {
@@ -1226,7 +1243,7 @@
         /* ════════════════════════════════════════════
            RESPONSIVE
         ════════════════════════════════════════════ */
-        @media (max-width: 1200px) {
+        @media (max-width: 1400px) {
             .nav-links {
                 display: none;
             }
@@ -1281,6 +1298,7 @@
                 align-items: flex-start;
             }
         }
+
         /* ── Language Switcher ──────────────────── */
         .lang-switcher .lang-text {
             font-family: var(--font-display);
@@ -1322,6 +1340,7 @@
             justify-content: center;
             height: var(--nav-h);
         }
+
         .user-avatar-btn {
             display: flex;
             align-items: center;
@@ -1335,7 +1354,12 @@
             color: var(--silver);
             transition: color 0.2s, background 0.2s;
         }
-        .user-avatar-btn:hover { color: var(--white); background: var(--bg-3); }
+
+        .user-avatar-btn:hover {
+            color: var(--white);
+            background: var(--bg-3);
+        }
+
         .user-avatar-img {
             width: 32px;
             height: 32px;
@@ -1344,6 +1368,7 @@
             border: 2px solid var(--gold);
             flex-shrink: 0;
         }
+
         .user-avatar-initials {
             width: 32px;
             height: 32px;
@@ -1359,6 +1384,7 @@
             flex-shrink: 0;
             letter-spacing: 0.05em;
         }
+
         .user-name-label {
             font-family: var(--font-display);
             font-size: 0.75rem;
@@ -1371,6 +1397,7 @@
             white-space: nowrap;
             color: var(--white);
         }
+
         .user-dropdown {
             position: absolute;
             top: calc(var(--nav-h) - 1px);
@@ -1379,22 +1406,25 @@
             background: var(--bg-2);
             border: 1px solid var(--bg-4);
             border-top: 2px solid var(--gold);
-            box-shadow: 0 24px 64px rgba(0,0,0,0.55);
+            box-shadow: 0 24px 64px rgba(0, 0, 0, 0.55);
             opacity: 0;
             pointer-events: none;
             transform: translateY(-8px);
             transition: opacity 0.22s var(--ease-out), transform 0.22s var(--ease-out);
             z-index: 300;
         }
+
         .user-avatar-wrap.dd-open .user-dropdown {
             opacity: 1;
             pointer-events: auto;
             transform: translateY(0);
         }
+
         .user-dd-header {
             padding: 1rem 1.25rem 0.75rem;
             border-bottom: 1px solid var(--bg-4);
         }
+
         .user-dd-name {
             font-family: var(--font-display);
             font-size: 0.85rem;
@@ -1402,6 +1432,7 @@
             letter-spacing: 0.08em;
             color: var(--white);
         }
+
         .user-dd-email {
             font-size: 0.75rem;
             color: var(--dim);
@@ -1410,11 +1441,14 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
+
         .user-dd-list {
             list-style: none;
             padding: 0.5rem 0;
         }
-        .user-dd-list a, .user-dd-list button {
+
+        .user-dd-list a,
+        .user-dd-list button {
             display: flex;
             align-items: center;
             gap: 0.6rem;
@@ -1429,14 +1463,28 @@
             transition: color 0.15s, background 0.15s, padding-left 0.2s;
             letter-spacing: 0.02em;
         }
-        .user-dd-list a:hover, .user-dd-list button:hover {
+
+        .user-dd-list a:hover,
+        .user-dd-list button:hover {
             color: var(--off-white);
             background: var(--bg-3);
             padding-left: 1.5rem;
         }
-        .user-dd-divider { height: 1px; background: var(--bg-4); margin: 0.25rem 0; }
-        .user-dd-list .logout-btn { color: var(--red); }
-        .user-dd-list .logout-btn:hover { color: #ff6b6b; background: rgba(204,51,51,0.08); }
+
+        .user-dd-divider {
+            height: 1px;
+            background: var(--bg-4);
+            margin: 0.25rem 0;
+        }
+
+        .user-dd-list .logout-btn {
+            color: var(--red);
+        }
+
+        .user-dd-list .logout-btn:hover {
+            color: #ff6b6b;
+            background: rgba(204, 51, 51, 0.08);
+        }
 
         .mob-lang-row {
             padding: 1rem 1.5rem;
@@ -1464,6 +1512,7 @@
             border-color: var(--gold);
             color: var(--gold);
         }
+
         /* ── MOBILE ADJUSTMENTS ────────────────────── */
         @media (max-width: 768px) {
             :root {
@@ -1473,9 +1522,10 @@
                 --fs-cart-total: 18px;
             }
 
-            .nav-item > a {
+            .nav-item>a {
                 padding: 0 0.75rem;
-                height: 44px; /* Ensure 44px tap target */
+                height: 44px;
+                /* Ensure 44px tap target */
             }
 
             .auth-link {
@@ -1483,7 +1533,9 @@
                 padding: 0 0.85rem;
             }
 
-            button, a.btn, .nav-icon {
+            button,
+            a.btn,
+            .nav-icon {
                 min-height: 44px;
             }
         }
@@ -1511,18 +1563,28 @@
     <header class="site-header" id="siteHeader">
         <div class="nav-wrap"><!-- Logo -->
             <a href="{{ route('home') }}" class="nav-logo">
-                <span class="logo-main">
-                    @if($storefront_logo_text)
-                        {!! $storefront_logo_text !!}
+                @if($storefront_use_logo_text)
+                    <span class="logo-main">
+                        @if($storefront_logo_text)
+                            {!! $storefront_logo_text !!}
+                        @else
+                            KARBN<em>ZOL</em>
+                        @endif
+                    </span>
+                    <span class="logo-sub">{{ $storefront_logo_subtext ?? 'T-Shirts · Jeans · Chinos' }}</span>
+                @else
+                    @if($site_logo)
+                        <img src="{{ $site_logo }}" alt="{{ $store_name }}"
+                            style="max-height: 65px; width: auto; object-fit: contain;">
                     @else
-                        KARBN<em>ZOL</em>
+                        <span class="logo-main">KARBN<em>ZOL</em></span>
+                        <span class="logo-sub">T-Shirts · Jeans · Chinos</span>
                     @endif
-                </span>
-                <span class="logo-sub">{{ $storefront_logo_subtext ?? 'T-Shirts · Jeans · Chinos' }}</span>
+                @endif
             </a>
 
             <!-- Desktop Nav -->
-            <nav aria-label="Main navigation">
+            <nav aria-label="Main navigation" style="margin-left: 3rem; margin-right: auto;">
                 <ul class="nav-links">
 
                     <!-- Home (no dropdown) -->
@@ -1530,32 +1592,25 @@
                         <a href="{{ route('home') }}" class="active">{{ __('file.home') }}</a>
                     </li>
 
-                    <!-- New Arrivals — simple dropdown -->
-                    <li class="nav-item has-drop">
-                        <a href="#">
+                    <!-- New Arrivals — Link -->
+                    <li class="nav-item">
+                        <a href="{{ route('frontend.products.index', ['sort' => 'new']) }}">
                             {{ __('file.new_arrivals') }}
                             <span class="new-pill">{{ __('file.new') }}</span>
-                            <svg class="nav-chevron" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 1 5 5 9 1"/></svg>
                         </a>
-                        <div class="nav-dropdown simple" role="menu">
-                            <ul class="dd-simple-list">
-                                <li><a href="#" role="menuitem">{{ __('file.view_all_new_arrivals') }} <span class="dd-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></a></li>
-                                <div class="dd-simple-divider"></div>
-                                <li><a href="#" role="menuitem">{{ __('file.this_weeks_drop') }} <span class="dd-item-badge">{{ __('file.hot') }}</span> <span class="dd-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></a></li>
-                                <li><a href="#" role="menuitem">{{ __('file.new_mens_styles') }} <span class="dd-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></a></li>
-                                <li><a href="#" role="menuitem">{{ __('file.new_kids_styles') }} <span class="dd-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></a></li>
-                                <li><a href="#" role="menuitem">{{ __('file.new_activewear') }} <span class="dd-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></a></li>
-                            </ul>
-                        </div>
                     </li>
 
                     <!-- Dynamic Categories — MEGA dropdown -->
                     @foreach($globalCategories as $category)
-                        <li class="nav-item {{ $category->children->count() > 0 ? 'has-drop' : '' }}">
-                            <a href="{{ route('frontend.products.index', ['category' => $category->slug]) }}" class="{{ request('category') == $category->slug ? 'active' : '' }}">
+                        <li class="nav-item {{ $category->children->count() > 0 ? 'has-drop has-mega' : '' }}">
+                            <a href="{{ route('frontend.products.index', ['category' => $category->slug]) }}"
+                                class="{{ request('category') == $category->slug ? 'active' : '' }}">
                                 {{ $category->name }}
                                 @if($category->children->count() > 0)
-                                    <svg class="nav-chevron" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 1 5 5 9 1"/></svg>
+                                    <svg class="nav-chevron" viewBox="0 0 10 6" fill="none" stroke="currentColor"
+                                        stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="1 1 5 5 9 1" />
+                                    </svg>
                                 @endif
                             </a>
                             @if($category->children->count() > 0)
@@ -1563,12 +1618,19 @@
                                     <div class="dd-inner">
                                         <!-- Promo image column -->
                                         <div class="dd-promo">
-                                            <div class="dd-promo-img" style="background-image: url('{{ $category->image_url ?? ($category->banner_urls[0] ?? '') }}'); @if(!$category->image_url && empty($category->banner_urls)) background-image: url('@placeholder($category->id)'); @endif"></div>
+                                            <div class="dd-promo-img"
+                                                style="background-image: url('{{ $category->image_url ?? ($category->banner_urls[0] ?? '') }}'); @if(!$category->image_url && empty($category->banner_urls)) background-image: url('@placeholder($category->id)'); @endif">
+                                            </div>
                                             <p class="dd-promo-label">{{ $category->name }}</p>
                                             <p class="dd-promo-title">NEW<br>SEASON</p>
-                                            <a href="{{ route('frontend.products.index', ['category' => $category->slug]) }}" class="dd-promo-cta">
+                                            <a href="{{ route('frontend.products.index', ['category' => $category->slug]) }}"
+                                                class="dd-promo-cta">
                                                 Shop {{ $category->name }}
-                                                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                                                <svg width="10" height="10" viewBox="0 0 24 24" fill="none"
+                                                    stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                                                    stroke-linejoin="round">
+                                                    <path d="M5 12h14M12 5l7 7-7 7" />
+                                                </svg>
                                             </a>
                                         </div>
                                         <!-- Category columns -->
@@ -1580,12 +1642,20 @@
                                                 @foreach($grandchildChunks as $index => $chunk)
                                                     <div class="dd-col" style="min-width: 200px; flex: 0 0 auto; margin-bottom: 1rem;">
                                                         <p class="dd-col-head">
-                                                            <a href="{{ route('frontend.products.index', ['category' => $child->slug]) }}" style="text-decoration:none; color:inherit; {{ $index > 0 ? 'visibility:hidden;' : '' }}">{{ $child->name }}</a>
+                                                            <a href="{{ route('frontend.products.index', ['category' => $child->slug]) }}"
+                                                                style="text-decoration:none; color:inherit; {{ $index > 0 ? 'visibility:hidden;' : '' }}">{{ $child->name }}</a>
                                                         </p>
                                                         @if($chunk->isNotEmpty())
                                                             <ul>
                                                                 @foreach($chunk as $grandchild)
-                                                                    <li><a href="{{ route('frontend.products.index', ['category' => $grandchild->slug]) }}">{{ $grandchild->name }} <span class="dd-arrow"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></a></li>
+                                                                    <li><a
+                                                                            href="{{ route('frontend.products.index', ['category' => $grandchild->slug]) }}">{{ $grandchild->name }}
+                                                                            <span class="dd-arrow"><svg width="11" height="11"
+                                                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                                                    stroke-width="2.5" stroke-linecap="round"
+                                                                                    stroke-linejoin="round">
+                                                                                    <path d="M5 12h14M12 5l7 7-7 7" />
+                                                                                </svg></span></a></li>
                                                                 @endforeach
                                                             </ul>
                                                         @endif
@@ -1611,7 +1681,10 @@
                 <div class="nav-item has-drop lang-switcher">
                     <a href="#" class="nav-icon" aria-label="{{ __('file.switch_language') }}">
                         <span class="lang-text">{{ strtoupper(app()->getLocale()) }}</span>
-                        <svg class="nav-chevron" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 1 5 5 9 1"/></svg>
+                        <svg class="nav-chevron" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.6"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="1 1 5 5 9 1" />
+                        </svg>
                     </a>
                     <div class="nav-dropdown simple" role="menu" style="min-width: 120px;">
                         <ul class="dd-simple-list">
@@ -1619,14 +1692,16 @@
                                 <form action="{{ route('language.switch') }}" method="POST">
                                     @csrf
                                     <input type="hidden" name="locale" value="en">
-                                    <button type="submit" class="lang-btn {{ app()->getLocale() == 'en' ? 'active' : '' }}">English</button>
+                                    <button type="submit"
+                                        class="lang-btn {{ app()->getLocale() == 'en' ? 'active' : '' }}">English</button>
                                 </form>
                             </li>
                             <li>
                                 <form action="{{ route('language.switch') }}" method="POST">
                                     @csrf
                                     <input type="hidden" name="locale" value="es">
-                                    <button type="submit" class="lang-btn {{ app()->getLocale() == 'es' ? 'active' : '' }}">Español</button>
+                                    <button type="submit"
+                                        class="lang-btn {{ app()->getLocale() == 'es' ? 'active' : '' }}">Español</button>
                                 </form>
                             </li>
                         </ul>
@@ -1636,8 +1711,8 @@
                 @auth('web')
                     @php $authUser = auth('web')->user(); @endphp
                     <div class="user-avatar-wrap nav-item has-drop" id="userAvatarWrap">
-                        <button class="user-avatar-btn" id="userAvatarBtn"
-                            aria-label="Account menu" aria-haspopup="true" aria-expanded="false">
+                        <button class="user-avatar-btn" id="userAvatarBtn" aria-label="Account menu" aria-haspopup="true"
+                            aria-expanded="false">
                             @if($authUser->avatar)
                                 <img src="{{ $authUser->avatar }}" alt="{{ $authUser->name }}" class="user-avatar-img">
                             @else
@@ -1652,7 +1727,10 @@
                                     {{ $initials }}
                                 </span>
                             @endif
-                            <svg class="nav-chevron" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 1 5 5 9 1"/></svg>
+                            <svg class="nav-chevron" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.8"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="1 1 5 5 9 1" />
+                            </svg>
                         </button>
                         <div class="user-dropdown" role="menu">
                             <div class="user-dd-header">
@@ -1662,34 +1740,61 @@
                             <ul class="user-dd-list">
                                 <li>
                                     <a href="{{ route('account.dashboard', ['tab' => 'profile']) }}" role="menuitem">
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                                            <circle cx="12" cy="7" r="4" />
+                                        </svg>
                                         {{ __('file.profile_details') }}
                                     </a>
                                 </li>
                                 <li>
                                     <a href="{{ route('account.dashboard', ['tab' => 'orders']) }}" role="menuitem">
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+                                            <line x1="3" y1="6" x2="21" y2="6" />
+                                            <path d="M16 10a4 4 0 0 1-8 0" />
+                                        </svg>
                                         {{ __('file.my_orders') }}
                                     </a>
                                 </li>
                                 <li>
                                     <a href="{{ route('account.dashboard') }}" role="menuitem">
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="3" y1="9" x2="21" y2="9"/></svg>
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                                            <line x1="9" y1="3" x2="9" y2="21" />
+                                            <line x1="3" y1="9" x2="21" y2="9" />
+                                        </svg>
                                         {{ __('file.my_account') }}
                                     </a>
                                 </li>
                                 <li>
                                     <a href="{{ route('cart.index') }}" role="menuitem">
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+                                            <line x1="3" y1="6" x2="21" y2="6" />
+                                            <path d="M16 10a4 4 0 0 1-8 0" />
+                                        </svg>
                                         {{ __('file.my_bag') }}
                                     </a>
                                 </li>
-                                <li><div class="user-dd-divider"></div></li>
+                                <li>
+                                    <div class="user-dd-divider"></div>
+                                </li>
                                 <li>
                                     <form method="POST" action="{{ route('logout') }}" style="margin:0">
                                         @csrf
                                         <button type="submit" class="logout-btn" role="menuitem">
-                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                                stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                                                stroke-linejoin="round">
+                                                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                                                <polyline points="16 17 21 12 16 7" />
+                                                <line x1="21" y1="12" x2="9" y2="12" />
+                                            </svg>
                                             {{ __('file.sign_out') ?? 'Sign Out' }}
                                         </button>
                                     </form>
@@ -1699,16 +1804,28 @@
                     </div>
                 @else
                     <div class="nav-auth">
-                        <a href="#" onclick="openAuthModal('login'); return false;" class="auth-link">{{ __('file.sign_in') }}</a>
-                        <a href="#" onclick="openAuthModal('register'); return false;" class="auth-link primary">{{ __('file.register') }}</a>
+                        <a href="#" onclick="openAuthModal('login'); return false;"
+                            class="auth-link">{{ __('file.sign_in') }}</a>
+                        <a href="#" onclick="openAuthModal('register'); return false;"
+                            class="auth-link primary">{{ __('file.register') }}</a>
                     </div>
                 @endauth
                 <a href="#" class="nav-icon" aria-label="{{ __('file.search') }}">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="7" />
+                        <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                    </svg>
                 </a>
                 <a href="{{ route('cart.index') }}" class="nav-icon" aria-label="Shopping cart">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-                    <span class="cart-dot" id="navCartCount">{{ Auth::check() ? \Cart::session(Auth::id())->getTotalQuantity() : \Cart::getTotalQuantity() }}</span>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
+                        <line x1="3" y1="6" x2="21" y2="6" />
+                        <path d="M16 10a4 4 0 0 1-8 0" />
+                    </svg>
+                    <span class="cart-dot"
+                        id="navCartCount">{{ Auth::check() ? \Cart::session(Auth::id())->getTotalQuantity() : \Cart::getTotalQuantity() }}</span>
                 </a>
                 <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false">
                     <span></span><span></span><span></span>
@@ -1725,21 +1842,12 @@
         <!-- Plain link: Home -->
         <div class="mob-item mob-plain"><a href="{{ route('home') }}">{{ __('file.home') }}</a></div>
 
-        <!-- New Arrivals accordion -->
-        <div class="mob-item" id="mob-new">
-            <div class="mob-item-head" onclick="toggleMob('mob-new')">
-                <a href="#" onclick="return false;">{{ __('file.new_arrivals') }}</a>
-                <svg class="mob-chevron" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 1 5 5 9 1"/></svg>
-            </div>
-            <div class="mob-sub">
-                <div class="mob-sub-section">
-                    <a href="#">{{ __('file.view_all_new_arrivals') }}</a>
-                    <a href="#">This Week's Drop</a>
-                    <a href="#">New Men's Styles</a>
-                    <a href="#">New Kids' Styles</a>
-                    <a href="#">New Activewear</a>
-                </div>
-            </div>
+        <!-- New Arrivals link -->
+        <div class="mob-item mob-plain">
+            <a href="{{ route('frontend.products.index', ['sort' => 'new']) }}">
+                {{ __('file.new_arrivals') }}
+                <span style="display:inline-block; background:var(--red); color:var(--white); font-size:0.4rem; font-weight:700; padding:0.12rem 0.3rem; border-radius:2px; vertical-align:middle; margin-left:0.3rem;">{{ __('file.new') }}</span>
+            </a>
         </div>
 
         <!-- Dynamic Categories accordion -->
@@ -1747,33 +1855,46 @@
             @if($category->children->count() > 0)
                 <div class="mob-item" id="mob-cat-{{ $category->id }}">
                     <div class="mob-item-head" onclick="toggleMob('mob-cat-{{ $category->id }}')">
-                        <a href="{{ route('frontend.products.index', ['category' => $category->slug]) }}" onclick="return false;">{{ $category->name }}</a>
-                        <svg class="mob-chevron" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 1 5 5 9 1"/></svg>
+                        <a href="{{ route('frontend.products.index', ['category' => $category->slug]) }}"
+                            onclick="return false;">{{ $category->name }}</a>
+                        <svg class="mob-chevron" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.8"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="1 1 5 5 9 1" />
+                        </svg>
                     </div>
                     <div class="mob-sub">
                         <div class="mob-sub-section">
                             @foreach($category->children as $child)
-                                <p class="mob-sub-head" style="margin-top: {{ $loop->first ? '0' : '0.5rem' }};"><a href="{{ route('frontend.products.index', ['category' => $child->slug]) }}" style="text-decoration:none; color:inherit;">{{ $child->name }}</a></p>
+                                <p class="mob-sub-head" style="margin-top: {{ $loop->first ? '0' : '0.5rem' }};"><a
+                                        href="{{ route('frontend.products.index', ['category' => $child->slug]) }}"
+                                        style="text-decoration:none; color:inherit;">{{ $child->name }}</a></p>
                                 @foreach($child->children as $grandchild)
-                                    <a href="{{ route('frontend.products.index', ['category' => $grandchild->slug]) }}">{{ $grandchild->name }}</a>
+                                    <a
+                                        href="{{ route('frontend.products.index', ['category' => $grandchild->slug]) }}">{{ $grandchild->name }}</a>
                                 @endforeach
-                                @if(!$loop->last)<div class="mob-sub-divider"></div>@endif
+                                @if(!$loop->last)
+                                <div class="mob-sub-divider"></div>@endif
                             @endforeach
                             <div class="mob-sub-divider"></div>
-                            <a href="{{ route('frontend.products.index', ['category' => $category->slug]) }}" style="color:var(--gold);font-weight:600;">View All {{ $category->name }} →</a>
+                            <a href="{{ route('frontend.products.index', ['category' => $category->slug]) }}"
+                                style="color:var(--gold);font-weight:600;">View All {{ $category->name }} →</a>
                         </div>
                     </div>
                 </div>
             @else
-                <div class="mob-item mob-plain"><a href="{{ route('frontend.products.index', ['category' => $category->slug]) }}">{{ $category->name }}</a></div>
+                <div class="mob-item mob-plain"><a
+                        href="{{ route('frontend.products.index', ['category' => $category->slug]) }}">{{ $category->name }}</a>
+                </div>
             @endif
         @endforeach
 
         <!-- Plain links -->
         <div class="mob-item mob-plain"><a href="{{ route('frontend.about') }}">{{ __('file.about') }}</a></div>
-        <div class="mob-item mob-plain"><a href="{{ route('frontend.about') }}#contact-info">{{ __('file.contact') }}</a></div>
+        <div class="mob-item mob-plain"><a
+                href="{{ route('frontend.about') }}#contact-info">{{ __('file.contact') }}</a></div>
         <div class="mob-item mob-plain"><a href="#">{{ __('file.careers') }}</a></div>
-        <div class="mob-item mob-plain"><a href="{{ route('cart.index') }}">{{ __('file.my_bag') }} ({{ \Darryldecode\Cart\Facades\CartFacade::getTotalQuantity() }})</a></div>
+        <div class="mob-item mob-plain"><a href="{{ route('cart.index') }}">{{ __('file.my_bag') }}
+                ({{ \Darryldecode\Cart\Facades\CartFacade::getTotalQuantity() }})</a></div>
 
         <!-- Language row -->
         <div class="mob-lang-row">
@@ -1792,11 +1913,14 @@
         <!-- Auth buttons -->
         @auth('web')
             @php $authUser = auth('web')->user(); @endphp
-            <div class="mob-item mob-plain" style="display:flex;align-items:center;gap:0.75rem;padding:0.875rem 1.5rem;border-bottom:1px solid var(--bg-4);">
+            <div class="mob-item mob-plain"
+                style="display:flex;align-items:center;gap:0.75rem;padding:0.875rem 1.5rem;border-bottom:1px solid var(--bg-4);">
                 @if($authUser->avatar)
-                    <img src="{{ $authUser->avatar }}" style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:2px solid var(--gold);flex-shrink:0;">
+                    <img src="{{ $authUser->avatar }}"
+                        style="width:36px;height:36px;border-radius:50%;object-fit:cover;border:2px solid var(--gold);flex-shrink:0;">
                 @else
-                    <span style="width:36px;height:36px;border-radius:50%;background:var(--gold);color:var(--bg);font-family:var(--font-display);font-size:0.8rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                    <span
+                        style="width:36px;height:36px;border-radius:50%;background:var(--gold);color:var(--bg);font-family:var(--font-display);font-size:0.8rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
                         @php
                             $nameParts = explode(' ', trim($authUser->name));
                             $initials = strtoupper(substr($nameParts[0], 0, 1));
@@ -1808,23 +1932,30 @@
                     </span>
                 @endif
                 <div>
-                    <div style="font-family:var(--font-display);font-size:0.8rem;font-weight:600;color:var(--white);letter-spacing:0.06em;">{{ $authUser->name }}</div>
+                    <div
+                        style="font-family:var(--font-display);font-size:0.8rem;font-weight:600;color:var(--white);letter-spacing:0.06em;">
+                        {{ $authUser->name }}
+                    </div>
                     <div style="font-size:0.7rem;color:var(--dim);">{{ $authUser->email }}</div>
                 </div>
             </div>
-            <div class="mob-item mob-plain"><a href="{{ route('account.dashboard', ['tab' => 'profile']) }}">{{ __('file.profile_details') }}</a></div>
-            <div class="mob-item mob-plain"><a href="{{ route('account.dashboard', ['tab' => 'orders']) }}">{{ __('file.my_orders') }}</a></div>
+            <div class="mob-item mob-plain"><a
+                    href="{{ route('account.dashboard', ['tab' => 'profile']) }}">{{ __('file.profile_details') }}</a></div>
+            <div class="mob-item mob-plain"><a
+                    href="{{ route('account.dashboard', ['tab' => 'orders']) }}">{{ __('file.my_orders') }}</a></div>
             <div class="mob-item mob-plain"><a href="{{ route('account.dashboard') }}">{{ __('file.my_account') }}</a></div>
             <div class="mob-item mob-plain">
                 <form method="POST" action="{{ route('logout') }}" style="margin:0">
                     @csrf
-                    <button type="submit" style="display:block;width:100%;text-align:left;padding:0.875rem 1.5rem;background:none;border:none;font-family:var(--font-display);font-size:1rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--red);cursor:pointer;">{{ __('file.sign_out') ?? 'Sign Out' }}</button>
+                    <button type="submit"
+                        style="display:block;width:100%;text-align:left;padding:0.875rem 1.5rem;background:none;border:none;font-family:var(--font-display);font-size:1rem;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--red);cursor:pointer;">{{ __('file.sign_out') ?? 'Sign Out' }}</button>
                 </form>
             </div>
         @else
             <div class="mob-auth">
                 <a href="#" onclick="openAuthModal('login'); return false;" class="mob-signin">{{ __('file.sign_in') }}</a>
-                <a href="#" onclick="openAuthModal('register'); return false;" class="mob-register">{{ __('file.register') }}</a>
+                <a href="#" onclick="openAuthModal('register'); return false;"
+                    class="mob-register">{{ __('file.register') }}</a>
             </div>
         @endauth
     </nav>
@@ -1850,7 +1981,9 @@
                         @endif
                     </div>
                     <div class="ft-logo-tag">{{ $storefront_logo_subtext ?? 'T-Shirts · Jeans · Chinos' }}</div>
-                    <p class="ft-desc">{{ $storefront->storefront_about_us ?? "Sri Lanka's premier destination for men's and kids' fashion. Quality craftsmanship, contemporary style, unbeatable value." }}</p>
+                    <p class="ft-desc">
+                        {{ $storefront->storefront_about_us ?? "Sri Lanka's premier destination for men's and kids' fashion. Quality craftsmanship, contemporary style, unbeatable value." }}
+                    </p>
                     <div class="ft-socials">
                         <a class="ft-soc" href="#" aria-label="Instagram">IG</a>
                         <a class="ft-soc" href="#" aria-label="Facebook">FB</a>
@@ -1862,7 +1995,7 @@
                     <p class="ft-col-h">{{ __('file.shop') }}</p>
                     <ul class="ft-col-links">
                         <li><a href="{{ route('frontend.products.index') }}">{{ __('file.all_products') }}</a></li>
-                        <li><a href="#">{{ __('file.new_arrivals') }}</a></li>
+                        <li><a href="{{ route('frontend.products.index', ['sort' => 'new']) }}">{{ __('file.new_arrivals') }}</a></li>
                         <li><a href="{{ route('frontend.products.index') }}">{{ __('file.mens_clothing') }}</a></li>
                         <li><a href="#">{{ __('file.kids_clothing') }}</a></li>
                         <li><a href="#">{{ __('file.activewear') }}</a></li>
@@ -1884,8 +2017,18 @@
                 <div class="g-up">
                     <p class="ft-col-h">{{ __('file.contact') }}</p>
                     <div class="ft-contact">
-                        <a href="tel:{{ $storefront->phone ?? '+94112345678' }}">{{ $storefront->phone ?? '+94 11 234 5678' }}</a><br>
-                        <a href="mailto:{{ $storefront->email ?? 'hello@karbnzol.com' }}">{{ $storefront->email ?? 'hello@karbnzol.com' }}</a><br><br>
+                        <a
+                            href="tel:{{ $storefront->contact_phone ?? $storefront->phone ?? '+94112345678' }}">{{ $storefront->contact_phone ?? $storefront->phone ?? '+94 11 234 5678' }}</a><br>
+                        <a href="mailto:{{ $storefront->contact_email ?? $storefront->email ?? 'hello@loopcam.com.mx' }}">{{ $storefront->contact_email ?? $storefront->email ??
+                            'hello@loopcam.com.mx' }}</a><br>
+                        @if($storefront->address)
+                            <div style="margin-top: 10px; color: var(--dim); font-size: 0.85rem; line-height: 1.4;">
+                                {{ $storefront->address }}<br>
+                                {{ $storefront->city }}{{ $storefront->state ? ', ' . $storefront->state : '' }} {{ $storefront->postal_code }}<br>
+                                {{ $storefront->country }}
+                            </div>
+                        @endif
+                        <br>
                         Mon – Sat &nbsp; 9am – 6pm
                     </div>
                 </div>
@@ -1908,7 +2051,10 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p class="ft-copy">© {{ date('Y') }} <em>{{ $storefront_logo_text ? strip_tags($storefront_logo_text) : 'KARBNZOL' }}</em>. All Rights Reserved.</p>
+                <p class="ft-copy">© {{ date('Y') }}
+                    <em>{{ $storefront_logo_text ? strip_tags($storefront_logo_text) : 'KARBNZOL' }}</em>. All Rights
+                    Reserved.
+                </p>
                 <nav class="ft-legal" aria-label="Legal">
                     <a href="#">Privacy Policy</a>
                     <a href="#">Terms of Use</a>
@@ -1922,229 +2068,220 @@
          SCRIPTS
     ═══════════════════════════════════════════ -->
     <script>
-    window.addEventListener('pageshow', (event) => {
-        if (event.persisted) {
-            const wipe = document.getElementById('page-wipe');
-            if (wipe) {
-                wipe.style.display = 'none';
-            }
-        }
-    });
-
-    window.addEventListener('load', () => {
-
-        /* ── Sticky header ────────────────────────── */
-        const header = document.getElementById('siteHeader');
-        window.addEventListener('scroll', () => {
-            header.classList.toggle('scrolled', window.scrollY > 40);
-        }, { passive: true });
-
-        /* ── Mobile hamburger ─────────────────────── */
-        const burger = document.getElementById('hamburger');
-        const mNav   = document.getElementById('mobileNav');
-        function toggleNav(open) {
-            burger.classList.toggle('open', open);
-            mNav.classList.toggle('open', open);
-            burger.setAttribute('aria-expanded', open);
-            document.body.style.overflow = open ? 'hidden' : '';
-        }
-        burger.addEventListener('click', () => toggleNav(!mNav.classList.contains('open')));
-
-        /* ── Desktop dropdown: close on outside click ─ */
-        document.addEventListener('click', e => {
-            if (!e.target.closest('.nav-item.has-drop')) {
-                /* CSS handles visibility — no JS needed for hover;
-                   but if we ever add click-to-open we'd close here */
+        window.addEventListener('pageshow', (event) => {
+            if (event.persisted) {
+                const wipe = document.getElementById('page-wipe');
+                if (wipe) {
+                    wipe.style.display = 'none';
+                }
             }
         });
 
-        /* ── Set mega dropdown top = header bottom ──── */
-        function setMegaTop() {
-            const hdr = document.getElementById('siteHeader');
-            if (!hdr) return;
-            const bottom = hdr.getBoundingClientRect().bottom;
-            document.querySelectorAll('.nav-dropdown.mega').forEach(d => {
-                d.style.top = (bottom - 2) + 'px';
+        window.addEventListener('load', () => {
+
+            /* ── Sticky header ────────────────────────── */
+            const header = document.getElementById('siteHeader');
+            window.addEventListener('scroll', () => {
+                header.classList.toggle('scrolled', window.scrollY > 40);
+            }, { passive: true });
+
+            /* ── Mobile hamburger ─────────────────────── */
+            const burger = document.getElementById('hamburger');
+            const mNav = document.getElementById('mobileNav');
+            function toggleNav(open) {
+                burger.classList.toggle('open', open);
+                mNav.classList.toggle('open', open);
+                burger.setAttribute('aria-expanded', open);
+                document.body.style.overflow = open ? 'hidden' : '';
+            }
+            burger.addEventListener('click', () => toggleNav(!mNav.classList.contains('open')));
+
+            /* ── Desktop dropdown: close on outside click ─ */
+            document.addEventListener('click', e => {
+                if (!e.target.closest('.nav-item.has-drop')) {
+                    /* CSS handles visibility — no JS needed for hover;
+                       but if we ever add click-to-open we'd close here */
+                }
             });
-        }
-        setMegaTop();
-        window.addEventListener('scroll', setMegaTop, { passive: true });
-        window.addEventListener('resize', setMegaTop, { passive: true });
 
-        /* ── Delayed hover open/close for dropdowns ──
-           300ms close delay so the cursor can travel
-           from the nav link into the dropdown panel
-           without it snapping shut in between.        */
-        const CLOSE_DELAY = 280; /* ms before closing */
-        let closeTimer = null;
 
-        function openDropdown(item) {
-            /* Cancel any pending close */
-            if (closeTimer) { clearTimeout(closeTimer); closeTimer = null; }
-            /* Close any other open dropdown first */
-            document.querySelectorAll('.nav-item.has-drop.dd-open').forEach(el => {
-                if (el !== item) el.classList.remove('dd-open');
+
+            /* ── Delayed hover open/close for dropdowns ──
+               300ms close delay so the cursor can travel
+               from the nav link into the dropdown panel
+               without it snapping shut in between.        */
+            const CLOSE_DELAY = 280; /* ms before closing */
+            let closeTimer = null;
+
+            function openDropdown(item) {
+                /* Cancel any pending close */
+                if (closeTimer) { clearTimeout(closeTimer); closeTimer = null; }
+                /* Close any other open dropdown first */
+                document.querySelectorAll('.nav-item.has-drop.dd-open').forEach(el => {
+                    if (el !== item) el.classList.remove('dd-open');
+                });
+                item.classList.add('dd-open');
+            }
+
+            function closeDropdown(item) {
+                /* Delay closing so cursor can travel to panel */
+                if (closeTimer) { clearTimeout(closeTimer); }
+                closeTimer = setTimeout(() => {
+                    item.classList.remove('dd-open');
+                    closeTimer = null;
+                }, CLOSE_DELAY);
+            }
+
+            function cancelClose() {
+                if (closeTimer) { clearTimeout(closeTimer); closeTimer = null; }
+            }
+
+            document.querySelectorAll('.nav-item.has-drop').forEach(item => {
+                const dropdown = item.querySelector('.nav-dropdown');
+
+                /* Open on mouseenter of the nav item (trigger + dropdown area) */
+                item.addEventListener('mouseenter', () => openDropdown(item));
+
+                /* Start close timer when cursor leaves the whole nav item */
+                item.addEventListener('mouseleave', () => closeDropdown(item));
+
+                /* If cursor enters the dropdown panel, cancel any close timer */
+                if (dropdown) {
+                    dropdown.addEventListener('mouseenter', cancelClose);
+                    dropdown.addEventListener('mouseleave', () => closeDropdown(item));
+                }
             });
-            item.classList.add('dd-open');
-        }
 
-        function closeDropdown(item) {
-            /* Delay closing so cursor can travel to panel */
-            closeTimer = setTimeout(() => {
-                item.classList.remove('dd-open');
-                closeTimer = null;
-            }, CLOSE_DELAY);
-        }
-
-        function cancelClose() {
-            if (closeTimer) { clearTimeout(closeTimer); closeTimer = null; }
-        }
-
-        document.querySelectorAll('.nav-item.has-drop').forEach(item => {
-            const dropdown = item.querySelector('.nav-dropdown');
-
-            /* Open on mouseenter of the nav item (trigger + dropdown area) */
-            item.addEventListener('mouseenter', () => openDropdown(item));
-
-            /* Start close timer when cursor leaves the whole nav item */
-            item.addEventListener('mouseleave', () => closeDropdown(item));
-
-            /* If cursor enters the dropdown panel, cancel any close timer */
-            if (dropdown) {
-                dropdown.addEventListener('mouseenter', cancelClose);
-                dropdown.addEventListener('mouseleave', () => closeDropdown(item));
-            }
-        });
-
-        /* Close all dropdowns when clicking outside */
-        document.addEventListener('click', e => {
-            if (!e.target.closest('.nav-item.has-drop')) {
-                document.querySelectorAll('.nav-item.has-drop.dd-open')
-                    .forEach(el => el.classList.remove('dd-open'));
-            }
-        });
-
-        /* Close all dropdowns on Escape */
-        document.addEventListener('keydown', e => {
-            if (e.key === 'Escape') {
-                document.querySelectorAll('.nav-item.has-drop.dd-open')
-                    .forEach(el => el.classList.remove('dd-open'));
-            }
-        });
-
-        /* ── Keyboard accessibility for dropdowns ──── */
-        document.querySelectorAll('.nav-item.has-drop').forEach(item => {
-            const trigger = item.querySelector(':scope > a');
-            const dropdown = item.querySelector('.nav-dropdown');
-            if (!trigger || !dropdown) return;
-
-            trigger.addEventListener('keydown', e => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    const isOpen = item.classList.contains('dd-open');
+            /* Close all dropdowns when clicking outside */
+            document.addEventListener('click', e => {
+                if (!e.target.closest('.nav-item.has-drop')) {
                     document.querySelectorAll('.nav-item.has-drop.dd-open')
                         .forEach(el => el.classList.remove('dd-open'));
-                    if (!isOpen) {
-                        item.classList.add('dd-open');
-                        const firstLink = dropdown.querySelector('a');
-                        if (firstLink) firstLink.focus();
+                }
+            });
+
+            /* Close all dropdowns on Escape */
+            document.addEventListener('keydown', e => {
+                if (e.key === 'Escape') {
+                    document.querySelectorAll('.nav-item.has-drop.dd-open')
+                        .forEach(el => el.classList.remove('dd-open'));
+                }
+            });
+
+            /* ── Keyboard accessibility for dropdowns ──── */
+            document.querySelectorAll('.nav-item.has-drop').forEach(item => {
+                const trigger = item.querySelector(':scope > a');
+                const dropdown = item.querySelector('.nav-dropdown');
+                if (!trigger || !dropdown) return;
+
+                trigger.addEventListener('keydown', e => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        const isOpen = item.classList.contains('dd-open');
+                        document.querySelectorAll('.nav-item.has-drop.dd-open')
+                            .forEach(el => el.classList.remove('dd-open'));
+                        if (!isOpen) {
+                            item.classList.add('dd-open');
+                            const firstLink = dropdown.querySelector('a');
+                            if (firstLink) firstLink.focus();
+                        }
                     }
-                }
-                if (e.key === 'Escape') {
-                    item.classList.remove('dd-open');
-                    trigger.focus();
-                }
-            });
+                    if (e.key === 'Escape') {
+                        item.classList.remove('dd-open');
+                        trigger.focus();
+                    }
+                });
 
-            dropdown.addEventListener('keydown', e => {
-                if (e.key === 'Escape') {
-                    item.classList.remove('dd-open');
-                    trigger.focus();
-                }
-            });
-        });
-
-        /* ── GSAP ─────────────────────────────────── */
-        if (typeof gsap === 'undefined') return;
-        gsap.registerPlugin(ScrollTrigger);
-
-        gsap.to('#page-wipe', {
-            scaleX: 0, duration: 0.85, ease: 'power4.inOut',
-            transformOrigin: 'left', clearProps: 'all',
-            onComplete: () => document.getElementById('page-wipe').style.display = 'none'
-        });
-
-        gsap.from('#siteHeader', { y: -70, opacity: 0, duration: 0.6, ease: 'power3.out', delay: 0.6 });
-
-        document.querySelectorAll('.g-up').forEach((el, i) => {
-            gsap.to(el, {
-                opacity: 1, y: 0, duration: 0.7, ease: 'power3.out',
-                delay: i * 0.1,
-                scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none none' }
-            });
-        });
-
-        /* Page leave wipe */
-        document.querySelectorAll('a[href]').forEach(link => {
-            const href = link.getAttribute('href');
-            if (!href || href.startsWith('#') || href.startsWith('mailto') || href.startsWith('tel') || link.target === '_blank') return;
-            link.addEventListener('click', e => {
-                e.preventDefault();
-                const dest = href;
-                const wipe = document.getElementById('page-wipe');
-                wipe.style.display = 'block';
-                wipe.style.transform = 'scaleX(0)';
-                wipe.style.transformOrigin = 'right';
-                gsap.to(wipe, {
-                    scaleX: 1, duration: 0.5, ease: 'power4.inOut',
-                    onComplete: () => window.location.href = dest
+                dropdown.addEventListener('keydown', e => {
+                    if (e.key === 'Escape') {
+                        item.classList.remove('dd-open');
+                        trigger.focus();
+                    }
                 });
             });
-        });
 
-        /* ── Open modal from session flash ────────── */
-        @if(session('open_modal'))
-            setTimeout(() => {
-                if (typeof openAuthModal === 'function') {
-                    openAuthModal('{{ session('open_modal') }}');
-                }
-            }, 800);
-        @endif
+            /* ── GSAP ─────────────────────────────────── */
+            if (typeof gsap === 'undefined') return;
+            gsap.registerPlugin(ScrollTrigger);
+
+            gsap.to('#page-wipe', {
+                scaleX: 0, duration: 0.85, ease: 'power4.inOut',
+                transformOrigin: 'left', clearProps: 'all',
+                onComplete: () => document.getElementById('page-wipe').style.display = 'none'
+            });
+
+            gsap.from('#siteHeader', { y: -70, opacity: 0, duration: 0.6, ease: 'power3.out', delay: 0.6 });
+
+            document.querySelectorAll('.g-up').forEach((el, i) => {
+                gsap.to(el, {
+                    opacity: 1, y: 0, duration: 0.7, ease: 'power3.out',
+                    delay: i * 0.1,
+                    scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none none' }
+                });
+            });
+
+            /* Page leave wipe */
+            document.querySelectorAll('a[href]').forEach(link => {
+                const href = link.getAttribute('href');
+                if (!href || href.startsWith('#') || href.startsWith('mailto') || href.startsWith('tel') || link.target === '_blank') return;
+                link.addEventListener('click', e => {
+                    e.preventDefault();
+                    const dest = href;
+                    const wipe = document.getElementById('page-wipe');
+                    wipe.style.display = 'block';
+                    wipe.style.transform = 'scaleX(0)';
+                    wipe.style.transformOrigin = 'right';
+                    gsap.to(wipe, {
+                        scaleX: 1, duration: 0.5, ease: 'power4.inOut',
+                        onComplete: () => window.location.href = dest
+                    });
+                });
+            });
+
+            /* ── Open modal from session flash ────────── */
+            @if(session('open_modal'))
+                setTimeout(() => {
+                    if (typeof openAuthModal === 'function') {
+                        openAuthModal('{{ session('open_modal') }}');
+                    }
+                }, 800);
+            @endif
 
         /* ── User Dropdown Toggle (Click) ─────────── */
         const userBtn = document.getElementById('userAvatarBtn');
-        const userWrap = document.getElementById('userAvatarWrap');
-        if (userBtn && userWrap) {
-            userBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                const isOpen = userWrap.classList.contains('dd-open');
-                // Close other nav items
-                document.querySelectorAll('.nav-item.has-drop.dd-open').forEach(el => {
-                    if (el !== userWrap) el.classList.remove('dd-open');
+            const userWrap = document.getElementById('userAvatarWrap');
+            if (userBtn && userWrap) {
+                userBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const isOpen = userWrap.classList.contains('dd-open');
+                    // Close other nav items
+                    document.querySelectorAll('.nav-item.has-drop.dd-open').forEach(el => {
+                        if (el !== userWrap) el.classList.remove('dd-open');
+                    });
+                    userWrap.classList.toggle('dd-open', !isOpen);
+                    userBtn.setAttribute('aria-expanded', !isOpen);
                 });
-                userWrap.classList.toggle('dd-open', !isOpen);
-                userBtn.setAttribute('aria-expanded', !isOpen);
-            });
-        }
-    });
-
-    /* ── Mobile accordion toggle (global so onclick= works) ── */
-    function toggleMob(id) {
-        const item = document.getElementById(id);
-        if (!item) return;
-        const isOpen = item.classList.contains('open');
-        /* Close all open items first */
-        document.querySelectorAll('.mob-item.open').forEach(el => {
-            el.classList.remove('open');
+            }
         });
-        /* If it wasn't open, open it now */
-        if (!isOpen) {
-            item.classList.add('open');
+
+        /* ── Mobile accordion toggle (global so onclick= works) ── */
+        function toggleMob(id) {
+            const item = document.getElementById(id);
+            if (!item) return;
+            const isOpen = item.classList.contains('open');
+            /* Close all open items first */
+            document.querySelectorAll('.mob-item.open').forEach(el => {
+                el.classList.remove('open');
+            });
+            /* If it wasn't open, open it now */
+            if (!isOpen) {
+                item.classList.add('open');
+            }
         }
-    }
     </script>
-    
+
     @include('frontend.layouts.auth-modals')
 </body>
+
 </html>

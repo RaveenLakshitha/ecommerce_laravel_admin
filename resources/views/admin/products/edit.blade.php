@@ -3,80 +3,83 @@
 @section('title', __('file.edit_product'))
 
 @section('content')
-@php
-    // Build existing options & variants for the inline panel JS
-    $existingOptions      = [];
-    $existingVariantsForJs = [];
+    @php
+        // Build existing options & variants for the inline panel JS
+        $existingOptions = [];
+        $existingVariantsForJs = [];
 
-    $variantsWithAttrs = $product->variants()
-        ->with('attributeValues.attribute', 'images')
-        ->get();
+        $variantsWithAttrs = $product->variants()
+            ->with('attributeValues.attribute', 'images')
+            ->get();
 
-    // Step 1: collect unique options (attribute name → unique values)
-    foreach ($variantsWithAttrs as $variant) {
-        foreach ($variant->attributeValues as $av) {
-            $attrName = $av->attribute->name;
-            $optIdx   = array_search($attrName, array_column($existingOptions, 'name'));
-            if ($optIdx === false) {
-                $existingOptions[] = ['name' => $attrName, 'values' => []];
-                $optIdx = count($existingOptions) - 1;
-            }
-            if (!in_array($av->value, $existingOptions[$optIdx]['values'])) {
-                $existingOptions[$optIdx]['values'][] = $av->value;
-            }
-        }
-    }
-
-    // Step 2: build per-variant data for JS pre-population
-    foreach ($variantsWithAttrs as $variant) {
-        $opts = [];
-        foreach ($variant->attributeValues as $av) {
-            $attrName = $av->attribute->name;
-            $optIdx   = array_search($attrName, array_column($existingOptions, 'name'));
-            if ($optIdx !== false) {
-                $opts[$optIdx] = $av->value;
+        // Step 1: collect unique options (attribute name → unique values)
+        foreach ($variantsWithAttrs as $variant) {
+            foreach ($variant->attributeValues as $av) {
+                $attrName = $av->attribute->name;
+                $optIdx = array_search($attrName, array_column($existingOptions, 'name'));
+                if ($optIdx === false) {
+                    $existingOptions[] = ['name' => $attrName, 'values' => []];
+                    $optIdx = count($existingOptions) - 1;
+                }
+                if (!in_array($av->value, $existingOptions[$optIdx]['values'])) {
+                    $existingOptions[$optIdx]['values'][] = $av->value;
+                }
             }
         }
-        ksort($opts);
 
-        $primaryImage = $variant->images->first();
-        $existingVariantsForJs[] = [
-            'id'             => $variant->id,
-            'sku'            => $variant->sku,
-            'price'          => (float) $variant->price,
-            'barcode'        => $variant->barcode,
-            'stock_quantity' => (int) $variant->stock_quantity,
-            'opts'           => $opts,
-            'image_url'      => $primaryImage
-                ? \Illuminate\Support\Facades\Storage::url($primaryImage->file_path)
-                : null,
-        ];
-    }
+        // Step 2: build per-variant data for JS pre-population
+        foreach ($variantsWithAttrs as $variant) {
+            $opts = [];
+            foreach ($variant->attributeValues as $av) {
+                $attrName = $av->attribute->name;
+                $optIdx = array_search($attrName, array_column($existingOptions, 'name'));
+                if ($optIdx !== false) {
+                    $opts[$optIdx] = $av->value;
+                }
+            }
+            ksort($opts);
 
-    $existingOptionsJson  = json_encode($existingOptions);
-    $existingVariantsJson = json_encode($existingVariantsForJs);
-    $basePrice            = $product->base_price;
-    $allAttributesJson    = $allAttributes->map(function($attr) {
-        return [
-            'id' => $attr->id,
-            'name' => $attr->name,
-            'values' => $attr->values->pluck('value')->toArray()
-        ];
-    })->toJson();
-@endphp
+            $primaryImage = $variant->images->first();
+            $existingVariantsForJs[] = [
+                'id' => $variant->id,
+                'sku' => $variant->sku,
+                'price' => (float) $variant->price,
+                'barcode' => $variant->barcode,
+                'stock_quantity' => (int) $variant->stock_quantity,
+                'opts' => $opts,
+                'image_url' => $primaryImage
+                    ? \Illuminate\Support\Facades\Storage::url($primaryImage->file_path)
+                    : null,
+            ];
+        }
+
+        $existingOptionsJson = json_encode($existingOptions);
+        $existingVariantsJson = json_encode($existingVariantsForJs);
+        $basePrice = $product->base_price;
+        $allAttributesJson = $allAttributes->map(function ($attr) {
+            return [
+                'id' => $attr->id,
+                'name' => $attr->name,
+                'values' => $attr->values->pluck('value')->toArray()
+            ];
+        })->toJson();
+    @endphp
     <div class="admin-page animate-fade-in-up">
         <div class="admin-page-inner">
 
             <div class="mb-4 mt-10">
-                <a href="{{ route('products.index') }}" class="text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 transition-colors uppercase tracking-wider inline-block">
+                <a href="{{ route('products.index') }}"
+                    class="text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 transition-colors uppercase tracking-wider inline-block">
                     &larr; {{ __('file.back_to_products') }}
                 </a>
             </div>
 
             <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
                 <div>
-                    <h1 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{ __('file.edit_product') }}</h1>
-                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">{{ __('file.updating') }}: <span class="font-bold text-gray-900 dark:text-white">{{ $product->name }}</span></p>
+                    <h1 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                        {{ __('file.edit_product') }}</h1>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">{{ __('file.updating') }}: <span
+                            class="font-bold text-gray-900 dark:text-white">{{ $product->name }}</span></p>
                 </div>
                 <div class="flex items-center gap-3">
                     <button type="submit" form="edit-product-form"
@@ -86,7 +89,8 @@
                 </div>
             </div>
 
-            <form id="edit-product-form" action="{{ route('products.update', $product->id) }}" method="POST" enctype="multipart/form-data">
+            <form id="edit-product-form" action="{{ route('products.update', $product->id) }}" method="POST"
+                enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
 
@@ -96,122 +100,176 @@
                     <div class="lg:col-span-2 space-y-4">
 
                         {{-- Basic Information --}}
-                        <div class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
-                            <div class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
-                                <h2 class="text-sm font-bold text-gray-900 dark:text-white">{{ __('file.basic_information') }}</h2>
+                        <div
+                            class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
+                            <div
+                                class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
+                                <h2 class="text-sm font-bold text-gray-900 dark:text-white">
+                                    {{ __('file.basic_information') }}</h2>
                             </div>
                             <div class="p-4 space-y-4">
                                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                                     <div>
-                                        <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.product_name') }}</label>
-                                        <input type="text" name="name" id="name" value="{{ old('name', $product->name) }}" required class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/50 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5">
-                                         @error('name') <p class="text-xs text-red-500 mt-1 font-medium px-1">{{ $message }}</p> @enderror
+                                        <label for="name"
+                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.product_name') }}</label>
+                                        <input type="text" name="name" id="name" value="{{ old('name', $product->name) }}"
+                                            required
+                                            class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/100 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5">
+                                        @error('name') <p class="text-xs text-red-500 mt-1 font-medium px-1">{{ $message }}
+                                        </p> @enderror
                                     </div>
                                     <div>
-                                        <label for="slug" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.slug') }}</label>
-                                        <input type="text" name="slug" id="slug" value="{{ old('slug', $product->slug) }}" required class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/50 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5 font-mono">
-                                         @error('slug') <p class="text-xs text-red-500 mt-1 font-medium px-1">{{ $message }}</p> @enderror
+                                        <label for="slug"
+                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.slug') }}</label>
+                                        <input type="text" name="slug" id="slug" value="{{ old('slug', $product->slug) }}"
+                                            required
+                                            class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/100 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5 font-mono">
+                                        @error('slug') <p class="text-xs text-red-500 mt-1 font-medium px-1">{{ $message }}
+                                        </p> @enderror
                                     </div>
                                 </div>
 
                                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                                     <div>
-                                        <label for="base_price" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.price') }}</label>
+                                        <label for="base_price"
+                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.price') }}</label>
                                         <div class="relative">
-                                            <input type="number" step="0.01" name="base_price" id="base_price" value="{{ old('base_price', $product->base_price) }}" required class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/50 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5 pr-7">
-                                            <span class="absolute inset-y-0 right-3 flex items-center text-gray-400 font-black text-xs pointer-events-none">{{ $currency_symbol }}</span>
+                                            <input type="number" step="0.01" name="base_price" id="base_price"
+                                                value="{{ old('base_price', $product->base_price) }}" required
+                                                class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/100 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5 pr-7">
+                                            <span
+                                                class="absolute inset-y-0 right-3 flex items-center text-gray-400 font-black text-xs pointer-events-none">{{ $currency_symbol }}</span>
                                         </div>
-                                         @error('base_price') <p class="text-xs text-red-500 mt-1 font-medium px-1">{{ $message }}</p> @enderror
+                                        @error('base_price') <p class="text-xs text-red-500 mt-1 font-medium px-1">
+                                        {{ $message }}</p> @enderror
                                     </div>
                                     <div>
-                                        <label for="brand_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.brand') }}</label>
+                                        <label for="brand_id"
+                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.brand') }}</label>
                                         <div class="relative">
-                                            <select name="brand_id" id="brand_id" class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/50 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5">
+                                            <select name="brand_id" id="brand_id"
+                                                class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/100 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5">
                                                 <option value="">{{ __('file.no_brand') }}</option>
                                                 @foreach($brands as $brand)
-                                                    <option value="{{ $brand->id }}" {{ old('brand_id', $product->brand_id) == $brand->id ? 'selected' : '' }}>{{ $brand->name }}</option>
+                                                    <option value="{{ $brand->id }}" {{ old('brand_id', $product->brand_id) == $brand->id ? 'selected' : '' }}>{{ $brand->name }}
+                                                    </option>
                                                 @endforeach
                                             </select>
                                         </div>
-                                         @error('brand_id') <p class="text-xs text-red-500 mt-1 font-medium px-1">{{ $message }}</p> @enderror
+                                        @error('brand_id') <p class="text-xs text-red-500 mt-1 font-medium px-1">
+                                        {{ $message }}</p> @enderror
                                     </div>
                                 </div>
                             </div>
                         </div>
 
                         {{-- Content Details --}}
-                        <div class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
-                            <div class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
-                                <h2 class="text-sm font-bold text-gray-900 dark:text-white">{{ __('file.detailed_description') }}</h2>
+                        <div
+                            class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
+                            <div
+                                class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
+                                <h2 class="text-sm font-bold text-gray-900 dark:text-white">
+                                    {{ __('file.detailed_description') }}</h2>
                             </div>
                             <div class="p-4 space-y-4">
                                 <div>
-                                    <label for="short_description" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.short_description') }}</label>
+                                    <label for="short_description"
+                                        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.short_description') }}</label>
                                     <textarea name="short_description" id="short_description" rows="2"
-                                        placeholder="Brief summary for listings…" class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/50 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5">{{ old('short_description', $product->short_description) }}</textarea>
+                                        placeholder="Brief summary for listings…"
+                                        class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/100 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5">{{ old('short_description', $product->short_description) }}</textarea>
                                 </div>
                                 <div>
-                                    <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.full_story') }}</label>
+                                    <label for="description"
+                                        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.full_story') }}</label>
                                     <textarea name="description" id="description" rows="6"
-                                        placeholder="Detailed story, features, and specs…" class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/50 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5 h-24 resize-y">{{ old('description', $product->description) }}</textarea>
+                                        placeholder="Detailed story, features, and specs…"
+                                        class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/100 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5 h-24 resize-y">{{ old('description', $product->description) }}</textarea>
                                 </div>
                                 <div>
-                                    <label for="fabric_details" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.fabric_details') }}</label>
+                                    <label for="fabric_details"
+                                        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.fabric_details') }}</label>
                                     <textarea name="fabric_details" id="fabric_details" rows="2"
                                         placeholder="e.g. 100% Cotton, Machine washable..."
-                                        class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/50 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5 resize-y">{{ old('fabric_details', $product->fabric_details) }}</textarea>
+                                        class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/100 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5 resize-y">{{ old('fabric_details', $product->fabric_details) }}</textarea>
                                 </div>
                             </div>
                         </div>
 
                         {{-- Organization --}}
-                        <div class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
-                            <div class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
-                                <h2 class="text-sm font-bold text-gray-900 dark:text-white">{{ __('file.organization') }}</h2>
+                        <div
+                            class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
+                            <div
+                                class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
+                                <h2 class="text-sm font-bold text-gray-900 dark:text-white">{{ __('file.organization') }}
+                                </h2>
                             </div>
                             <div class="p-4 space-y-4">
                                 <div>
-                                    <label for="category_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.category') }}</label>
+                                    <label for="category_id"
+                                        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.category') }}</label>
                                     <div class="relative">
                                         <select name="category_id" id="category_id" required
-                                            class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/50 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5">
+                                            class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/100 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5">
                                             <option value="">{{ __('file.select_category') }}</option>
                                             @foreach($categories as $category)
-                                                <option value="{{ $category->id }}" {{ old('category_id', $product->category_id) == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
+                                                <option value="{{ $category->id }}" {{ old('category_id', $product->category_id) == $category->id ? 'selected' : '' }}>
+                                                    {{ $category->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
-                                     @error('category_id') <p class="text-xs text-red-500 mt-1 font-medium px-1">{{ $message }}</p> @enderror
+                                    @error('category_id') <p class="text-xs text-red-500 mt-1 font-medium px-1">
+                                    {{ $message }}</p> @enderror
                                 </div>
                             </div>
                         </div>
 
                         {{-- Media Gallery --}}
-                        <div class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
-                            <div class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20 flex items-center justify-between">
-                                <h2 class="text-sm font-bold text-gray-900 dark:text-white">{{ __('file.product_gallery') }}</h2>
-                                 <span class="text-xs font-semibold text-indigo-500">{{ __('file.manage_media') }}</span>
+                        <div
+                            class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
+                            <div
+                                class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10 flex items-center justify-between">
+                                <h2 class="text-sm font-bold text-gray-900 dark:text-white">{{ __('file.product_gallery') }}
+                                </h2>
+                                <span class="text-xs font-semibold text-indigo-500">{{ __('file.manage_media') }}</span>
                             </div>
                             <div class="p-4">
                                 <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 gap-4" id="media-grid">
                                     @foreach($product->images as $image)
-                                        <div class="aspect-square rounded-xl border border-gray-100 dark:border-surface-tonal-a30 overflow-hidden relative group bg-gray-50 dark:bg-surface-tonal-a30/20" id="image-container-{{ $image->id }}">
+                                        <div class="aspect-square rounded-xl border border-gray-100 dark:border-surface-tonal-a30 overflow-hidden relative group bg-gray-50 dark:bg-surface-tonal-a30/20"
+                                            id="image-container-{{ $image->id }}">
                                             <img src="{{ Storage::url($image->file_path) }}" class="w-full h-full object-cover">
                                             @if($image->is_primary)
-                                                 <div class="absolute top-2 left-2 px-2 py-0.5 bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-[10px] font-bold rounded uppercase tracking-widest">Primary</div>
+                                                <div
+                                                    class="absolute top-2 left-2 px-2 py-0.5 bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-[10px] font-bold rounded uppercase tracking-widest">
+                                                    Primary</div>
                                             @endif
-                                            <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center gap-2">
-                                                <button type="button" onclick="deleteImage({{ $product->id }}, {{ $image->id }})" class="w-8 h-8 rounded-full bg-red-500 text-white flex items-center justify-center hover:bg-red-600 shadow-lg">
-                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                                            <div
+                                                class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition flex items-center justify-center gap-2">
+                                                <button type="button"
+                                                    onclick="deleteImage({{ $product->id }}, {{ $image->id }})"
+                                                    class="w-8 h-8 rounded-full bg-red-500 text-white flex items-center justify-center hover:bg-red-600 shadow-lg">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                    </svg>
                                                 </button>
                                             </div>
                                         </div>
                                     @endforeach
 
-                                    <label class="aspect-square admin-upload-zone rounded-xl border-dashed border-2 border-gray-200 dark:border-white/5 bg-gray-100/50 dark:bg-surface-tonal-a10 flex flex-col items-center justify-center gap-1 cursor-pointer hover:border-indigo-400 transition-all group/upload">
-                                        <svg class="w-6 h-6 text-gray-400 group-hover/upload:text-indigo-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-                                         <p class="text-[10px] font-bold text-gray-400 group-hover/upload:text-indigo-500 uppercase tracking-widest transition-colors">{{ __('file.add_media') }}</p>
-                                        <input type="file" name="images[]" multiple accept="image/*" class="hidden" onchange="handleMediaSelect(this)">
+                                    <label
+                                        class="aspect-square admin-upload-zone rounded-xl border-dashed border-2 border-gray-200 dark:border-white/5 bg-gray-50 dark:bg-surface-tonal-a10 flex flex-col items-center justify-center gap-1 cursor-pointer hover:border-indigo-400 transition-all group/upload">
+                                        <svg class="w-6 h-6 text-gray-400 group-hover/upload:text-indigo-500 transition-colors"
+                                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M12 4v16m8-8H4" />
+                                        </svg>
+                                        <p
+                                            class="text-[10px] font-bold text-gray-400 group-hover/upload:text-indigo-500 uppercase tracking-widest transition-colors">
+                                            {{ __('file.add_media') }}</p>
+                                        <input type="file" name="images[]" multiple accept="image/*" class="hidden"
+                                            onchange="handleMediaSelect(this)">
                                     </label>
                                 </div>
                                 @error('images') <p class="text-xs text-red-500 mt-4 font-bold">{{ $message }}</p> @enderror
@@ -226,75 +284,95 @@
                     {{-- Right Column --}}
                     <div class="xl:col-span-1 space-y-4">
                         {{-- Search Engine Optimization --}}
-                        <div class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
-                            <div class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
-                                <h2 class="text-sm font-bold text-gray-900 dark:text-white">{{ __('file.seo_settings') }}</h2>
+                        <div
+                            class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
+                            <div
+                                class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
+                                <h2 class="text-sm font-bold text-gray-900 dark:text-white">{{ __('file.seo_settings') }}
+                                </h2>
                             </div>
                             <div class="p-4 space-y-4">
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.meta_title') }}</label>
-                                    <input type="text" name="meta_title" value="{{ old('meta_title', $product->meta_title) }}"
-                                        placeholder="SEO Title"
-                                        class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/50 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5">
+                                    <label
+                                        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.meta_title') }}</label>
+                                    <input type="text" name="meta_title"
+                                        value="{{ old('meta_title', $product->meta_title) }}" placeholder="SEO Title"
+                                        class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/100 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5">
                                 </div>
 
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.meta_description') }}</label>
+                                    <label
+                                        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.meta_description') }}</label>
                                     <textarea name="meta_description" rows="3"
                                         placeholder="Search engine description preview..."
-                                        class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/50 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5 resize-y">{{ old('meta_description', $product->meta_description) }}</textarea>
-                                </div>
-                                
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.meta_keywords') }}</label>
-                                    <input type="text" name="meta_keywords" value="{{ old('meta_keywords', $product->meta_keywords) }}"
-                                        placeholder="keyword1, keyword2..."
-                                        class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/50 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5">
+                                        class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/100 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5 resize-y">{{ old('meta_description', $product->meta_description) }}</textarea>
                                 </div>
 
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.canonical_url') }}</label>
-                                    <input type="url" name="canonical_url" value="{{ old('canonical_url', $product->canonical_url) }}"
+                                    <label
+                                        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.meta_keywords') }}</label>
+                                    <input type="text" name="meta_keywords"
+                                        value="{{ old('meta_keywords', $product->meta_keywords) }}"
+                                        placeholder="keyword1, keyword2..."
+                                        class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/100 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5">
+                                </div>
+
+                                <div>
+                                    <label
+                                        class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.canonical_url') }}</label>
+                                    <input type="url" name="canonical_url"
+                                        value="{{ old('canonical_url', $product->canonical_url) }}"
                                         placeholder="https://..."
-                                        class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/50 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5">
+                                        class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/100 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5">
                                 </div>
                             </div>
                         </div>
-                        
-                        <div class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden sticky top-6">
-                            <div class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
-                                <h2 class="text-sm font-bold text-gray-900 dark:text-white">{{ __('file.status_and_visibility') }}</h2>
+
+                        <div
+                            class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden sticky top-6">
+                            <div
+                                class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
+                                <h2 class="text-sm font-bold text-gray-900 dark:text-white">
+                                    {{ __('file.status_and_visibility') }}</h2>
                             </div>
                             <div class="p-4 space-y-4">
                                 <div class="space-y-2">
-                                    <label class="flex items-start py-2.5 px-3 rounded-lg border border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20 hover:bg-gray-100 dark:hover:bg-surface-tonal-a30 transition cursor-pointer group">
+                                    <label
+                                        class="flex items-start py-2.5 px-3 rounded-lg border border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10 hover:bg-gray-100 dark:hover:bg-surface-tonal-a30 transition cursor-pointer group">
                                         <div class="mt-0.5">
                                             <input type="checkbox" name="is_visible" id="is_visible" value="1" {{ old('is_visible', $product->is_visible) ? 'checked' : '' }}
                                                 class="h-4 w-4 rounded border-gray-300 dark:border-surface-tonal-a30 text-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-400 bg-white dark:bg-surface-tonal-a20 transition-all cursor-pointer">
                                         </div>
                                         <div class="ml-3">
-                                            <h3 class="text-xs font-bold text-gray-900 dark:text-white leading-none">{{ __('file.store_visibility') }}</h3>
-                                             <p class="text-xs text-gray-500 dark:text-gray-400 font-medium mt-1">{{ __('file.available_to_customers') }}</p>
+                                            <h3 class="text-xs font-bold text-gray-900 dark:text-white leading-none">
+                                                {{ __('file.store_visibility') }}</h3>
+                                            <p class="text-xs text-gray-500 dark:text-gray-400 font-medium mt-1">
+                                                {{ __('file.available_to_customers') }}</p>
                                         </div>
                                     </label>
 
-                                    <label class="flex items-start py-2.5 px-3 rounded-lg border border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20 hover:bg-gray-100 dark:hover:bg-surface-tonal-a30 transition cursor-pointer group">
+                                    <label
+                                        class="flex items-start py-2.5 px-3 rounded-lg border border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10 hover:bg-gray-100 dark:hover:bg-surface-tonal-a30 transition cursor-pointer group">
                                         <div class="mt-0.5">
                                             <input type="checkbox" name="is_featured" id="is_featured" value="1" {{ old('is_featured', $product->is_featured) ? 'checked' : '' }}
                                                 class="h-4 w-4 rounded border-gray-300 dark:border-surface-tonal-a30 text-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-400 bg-white dark:bg-surface-tonal-a20 transition-all cursor-pointer">
                                         </div>
                                         <div class="ml-3">
-                                            <h3 class="text-xs font-bold text-gray-900 dark:text-white leading-none">{{ __('file.featured_product') }}</h3>
-                                             <p class="text-xs text-gray-500 dark:text-gray-400 font-medium mt-1">{{ __('file.highlight_in_promotions') }}</p>
+                                            <h3 class="text-xs font-bold text-gray-900 dark:text-white leading-none">
+                                                {{ __('file.featured_product') }}</h3>
+                                            <p class="text-xs text-gray-500 dark:text-gray-400 font-medium mt-1">
+                                                {{ __('file.highlight_in_promotions') }}</p>
                                         </div>
                                     </label>
                                 </div>
 
                                 <div class="pt-2 flex flex-col gap-3">
-                                    <button type="submit" form="edit-product-form" class="px-6 py-3.5 bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-sm font-bold rounded-xl transition-all shadow-lg active:scale-[0.98]">
+                                    <button type="submit" form="edit-product-form"
+                                        class="px-6 py-3.5 bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-sm font-bold rounded-xl transition-all shadow-lg active:scale-[0.98]">
                                         {{ __('file.save_all_changes') }}
                                     </button>
-                                    <a href="{{ route('products.index') }}" class="px-6 py-3 border border-gray-200 dark:border-surface-tonal-a30 text-gray-500 text-sm font-bold rounded-xl text-center hover:bg-gray-50 dark:hover:bg-surface-tonal-a30 transition-all">
+                                    <a href="{{ route('products.index') }}"
+                                        class="px-6 py-3 border border-gray-200 dark:border-surface-tonal-a30 text-gray-500 text-sm font-bold rounded-xl text-center hover:bg-gray-50 dark:hover:bg-surface-tonal-a30 transition-all">
                                         {{ __('file.discard_changes') }}
                                     </a>
                                 </div>
@@ -324,19 +402,19 @@
                         'Content-Type': 'application/json'
                     }
                 })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        document.getElementById(`image-container-${imageId}`).classList.add('scale-90', 'opacity-0');
-                        setTimeout(() => document.getElementById(`image-container-${imageId}`).remove(), 200);
-                    } else {
-                        alert(data.message || "{{ __('file.error_deleting_image') }}");
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert("{{ __('file.error_occurred_while_deleting_image') }}");
-                });
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            document.getElementById(`image-container-${imageId}`).classList.add('scale-90', 'opacity-0');
+                            setTimeout(() => document.getElementById(`image-container-${imageId}`).remove(), 200);
+                        } else {
+                            alert(data.message || "{{ __('file.error_deleting_image') }}");
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert("{{ __('file.error_occurred_while_deleting_image') }}");
+                    });
             }
 
             function handleMediaSelect(input) {
@@ -346,15 +424,15 @@
 
                     Array.from(input.files).forEach(file => {
                         const reader = new FileReader();
-                        reader.onload = function(e) {
+                        reader.onload = function (e) {
                             const wrapper = document.createElement('div');
                             wrapper.className = 'aspect-square rounded-2xl border border-gray-100 dark:border-surface-tonal-a30 overflow-hidden relative group animate-fade-in-scale';
                             wrapper.innerHTML = `
-                                <img src="${e.target.result}" class="w-full h-full object-cover">
-                                <button type="button" onclick="this.closest('div').remove()" class="absolute top-2 right-2 w-6 h-6 bg-white dark:bg-surface-tonal-a30 text-red-500 rounded-full shadow-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
-                                </button>
-                            `;
+                                        <img src="${e.target.result}" class="w-full h-full object-cover">
+                                        <button type="button" onclick="this.closest('div').remove()" class="absolute top-2 right-2 w-6 h-6 bg-white dark:bg-surface-tonal-a30 text-red-500 rounded-full shadow-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                                        </button>
+                                    `;
                             grid.insertBefore(wrapper, uploadBtn);
                         };
                         reader.readAsDataURL(file);
@@ -362,7 +440,7 @@
                 }
             }
 
-            document.getElementById('name').addEventListener('input', function() {
+            document.getElementById('name').addEventListener('input', function () {
                 document.getElementById('slug').value = this.value.toLowerCase()
                     .replace(/[^\w\s-]/g, '')
                     .replace(/[\s_-]+/g, '-')

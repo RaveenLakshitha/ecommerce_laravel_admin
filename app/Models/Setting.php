@@ -132,6 +132,7 @@ class Setting extends Model
         'storefront_our_story_show',
         'storefront_stats_show',
         'storefront_trust_show',
+        'storefront_use_logo_text',
     ];
 
     protected $casts = [
@@ -173,6 +174,7 @@ class Setting extends Model
         'storefront_our_story_show' => 'boolean',
         'storefront_stats_show' => 'boolean',
         'storefront_trust_show' => 'boolean',
+        'storefront_use_logo_text' => 'boolean',
     ];
 
     /**

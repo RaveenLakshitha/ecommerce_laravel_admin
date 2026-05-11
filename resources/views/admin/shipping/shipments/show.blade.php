@@ -65,7 +65,7 @@
                 
                 {{-- Logistics Configuration --}}
                 <div class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
-                    <div class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
+                    <div class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
                         <h2 class="text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wider">{{ __('file.routing_configuration') }}</h2>
                     </div>
                     <div class="p-6">
@@ -121,7 +121,7 @@
 
                 {{-- Real-time Event Stream --}}
                 <div class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
-                    <div class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20 flex items-center justify-between">
+                    <div class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10 flex items-center justify-between">
                         <h2 class="text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wider">{{ __('file.real_time_event_stream') }}</h2>
                         <span class="text-xs font-bold text-emerald-500 uppercase tracking-wider italic">{{ __('file.chronological_sync') }}</span>
                     </div>
@@ -171,7 +171,7 @@
 
                         <div class="mt-10 pt-6 border-t border-gray-100 dark:border-surface-tonal-a30">
                             <h4 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">{{ __('file.append_operational_update') }}</h4>
-                            <form action="{{ route('shipping.shipments.tracking', $shipment) }}" method="POST" class="bg-gray-100/50 dark:bg-surface-tonal-a10/30 p-4 rounded-xl border border-gray-100 dark:border-surface-tonal-a30 space-y-4">
+                            <form action="{{ route('shipping.shipments.tracking', $shipment) }}" method="POST" class="bg-gray-50 dark:bg-surface-tonal-a10 p-4 rounded-xl border border-gray-100 dark:border-surface-tonal-a30 space-y-4">
                                 @csrf
                                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                     <div>
@@ -242,7 +242,7 @@
                             </div>
                         @else
                             @if($shipment->order->deliveryAddress)
-                                <div class="p-3 rounded-lg bg-gray-100/50 dark:bg-surface-tonal-a10/20 border border-gray-100 dark:border-surface-tonal-a30">
+                                <div class="p-3 rounded-lg bg-gray-50 dark:bg-surface-tonal-a10 border border-gray-100 dark:border-surface-tonal-a30">
                                     <div class="flex items-center gap-2 mb-3">
                                         <svg class="h-3.5 w-3.5 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
                                         <span class="text-[10px] font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">{{ __('file.protocol_direct_fulfillment') }}</span>

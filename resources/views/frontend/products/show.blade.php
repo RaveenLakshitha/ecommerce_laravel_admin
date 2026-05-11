@@ -1152,7 +1152,17 @@
 
                 {{-- Price --}}
                 <div class="pd-price-wrap" id="pdPriceWrap">
-                    <span class="pd-price" id="pdBasePrice">@price($product->base_price)</span>
+                    @php
+                        $defaultVariant = $product->variants->where('is_default', true)->first() ?? $product->variants->first();
+                        $displayPrice = $defaultVariant ? ($defaultVariant->sale_price ?? $defaultVariant->price) : $product->base_price;
+                        $originalPrice = ($defaultVariant && $defaultVariant->sale_price) ? $defaultVariant->price : null;
+                    @endphp
+                    @if($originalPrice)
+                        <span class="pd-price" id="pdBasePrice" style="color:var(--emerald);">@price($displayPrice)</span>
+                        <span class="pd-price" style="text-decoration:line-through; color:var(--dim); font-size:0.8em; margin-left:0.5rem;">@price($originalPrice)</span>
+                    @else
+                        <span class="pd-price" id="pdBasePrice">@price($displayPrice)</span>
+                    @endif
                 </div>
 
                 {{-- Stock status --}}
@@ -1529,7 +1539,12 @@
                     @foreach($relatedProducts->take(4) as $rp)
                         <a href="{{ route('frontend.products.show', $rp->slug ?? $rp->id) }}" class="pd-product-card">
                             <div class="pd-product-card-img">
-                                @if($rp->sale_price && $rp->sale_price < $rp->base_price)
+                                @php
+                                    $rpDefaultVariant = $rp->variants->where('is_default', true)->first() ?? $rp->variants->first();
+                                    $rpDisplayPrice = $rpDefaultVariant ? ($rpDefaultVariant->sale_price ?? $rpDefaultVariant->price) : $rp->base_price;
+                                    $rpOriginalPrice = ($rpDefaultVariant && $rpDefaultVariant->sale_price) ? $rpDefaultVariant->price : null;
+                                @endphp
+                                @if($rpOriginalPrice)
                                     <span class="pd-card-badge">Sale</span>
                                 @endif
                                 <button class="pd-card-wishlist" onclick="event.preventDefault(); toggleWishlist(this)" aria-label="Wishlist">
@@ -1547,11 +1562,11 @@
                             </div>
                             <div class="pd-card-name">{{ $rp->name }}</div>
                             <div class="pd-card-price">
-                                @if($rp->sale_price && $rp->sale_price < $rp->base_price)
-                                    <span class="pd-card-price-sale">@price($rp->sale_price)</span>
-                                    <span class="pd-card-price-orig">@price($rp->base_price)</span>
+                                @if($rpOriginalPrice)
+                                    <span class="pd-card-price-sale">@price($rpDisplayPrice)</span>
+                                    <span class="pd-card-price-orig">@price($rpOriginalPrice)</span>
                                 @else
-                                    <span>@price($rp->base_price)</span>
+                                    <span>@price($rpDisplayPrice)</span>
                                 @endif
                             </div>
                             <div class="pd-card-stars">
@@ -1859,9 +1874,15 @@
 
             // Update Price
             const basePriceFmt = new Intl.NumberFormat('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(exactMatch.price);
-            document.getElementById('pdPriceWrap').innerHTML = `
-                <span class="pd-price" id="pdBasePrice">{{ $currency_symbol }} ${basePriceFmt}</span>
-            `;
+            let priceHtml = `<span class="pd-price" id="pdBasePrice">{{ $currency_symbol }}${basePriceFmt}</span>`;
+            if (exactMatch.sale_price && exactMatch.sale_price < exactMatch.price) {
+                const salePriceFmt = new Intl.NumberFormat('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(exactMatch.sale_price);
+                priceHtml = `
+                    <span class="pd-price" id="pdBasePrice" style="color:var(--emerald);">{{ $currency_symbol }}${salePriceFmt}</span>
+                    <span class="pd-price" style="text-decoration:line-through; color:var(--dim); font-size:0.8em; margin-left:0.5rem;">{{ $currency_symbol }}${basePriceFmt}</span>
+                `;
+            }
+            document.getElementById('pdPriceWrap').innerHTML = priceHtml;
 
             // Update Stock
             const stockClass = exactMatch.stock > 10 ? 'in-stock' : (exactMatch.stock > 0 ? 'low-stock' : 'out-stock');

@@ -41,7 +41,7 @@
                         <div
                             class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                             <div
-                                class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
+                                class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
                                 <h2 class="text-sm font-bold text-gray-900 dark:text-white">
                                     {{ __('file.general_information') }}</h2>
                             </div>
@@ -91,7 +91,7 @@
                         <div
                             class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                             <div
-                                class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
+                                class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
                                 <h2 class="text-sm font-bold text-gray-900 dark:text-white">{{ __('file.products') }}</h2>
                             </div>
                             <div class="p-4">
@@ -179,7 +179,7 @@
                         <div
                             class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden sticky top-24">
                             <div
-                                class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
+                                class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
                                 <h2 class="text-sm font-bold text-gray-900 dark:text-white">
                                     {{ __('file.status_visibility') }}</h2>
                             </div>
@@ -216,7 +216,7 @@
                                 <div class="space-y-2">
                                     <label
                                         class="block text-[10px] font-black text-black dark:text-white uppercase tracking-widest mb-1">{{ __('file.banner_image') }}</label>
-                                    <div class="aspect-[16/9] admin-upload-zone rounded-xl border-dashed border-2 border-gray-200 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a30/20 flex flex-col items-center justify-center gap-1 cursor-pointer hover:border-indigo-400 transition-all overflow-hidden relative"
+                                    <div class="aspect-[16/9] admin-upload-zone rounded-xl border-dashed border-2 border-gray-200 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10 flex flex-col items-center justify-center gap-1 cursor-pointer hover:border-indigo-400 transition-all overflow-hidden relative"
                                         onclick="document.getElementById('banner-input').click()">
                                         <img id="banner-preview" src=""
                                             class="absolute inset-0 w-full h-full object-cover hidden z-10">

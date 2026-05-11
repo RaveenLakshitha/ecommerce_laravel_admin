@@ -94,11 +94,6 @@ class SettingsController extends Controller
                 }
             }
 
-            // Sync legacy fields if they match
-            if (isset($data['site_logo'])) $data['logo_path'] = $data['site_logo'];
-            if (isset($data['contact_email'])) $data['email'] = $data['contact_email'];
-            if (isset($data['contact_phone'])) $data['phone'] = $data['contact_phone'];
-
             $setting->update($data);
 
             $this->clearSettingsCache();

@@ -46,7 +46,7 @@
                         <div
                             class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                             <div
-                                class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
+                                class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
                                 <h2 class="text-sm font-bold text-gray-900 dark:text-white">{{ __('file.rule_settings') }}
                                 </h2>
                             </div>
@@ -124,7 +124,7 @@
                         <div
                             class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                             <div
-                                class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
+                                class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
                                 <h2 class="text-sm font-bold text-gray-900 dark:text-white">
                                     {{ __('file.requirements_and_scope') }}</h2>
                             </div>
@@ -392,7 +392,7 @@
                         <div
                             class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                             <div
-                                class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20 flex items-center justify-between">
+                                class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10 flex items-center justify-between">
                                 <h2 class="text-sm font-bold text-gray-900 dark:text-white">
                                     {{ __('file.promotional_banners') }}</h2>
                                 <button type="button" onclick="addBannerRow()"
@@ -430,7 +430,7 @@
                         <div
                             class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden sticky top-24">
                             <div
-                                class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
+                                class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
                                 <h2 class="text-sm font-bold text-gray-900 dark:text-white">
                                     {{ __('file.status_and_visibility') }}</h2>
                             </div>
@@ -438,7 +438,7 @@
 
                                 <div class="space-y-3">
                                     <label
-                                        class="flex items-start py-2.5 px-3 rounded-lg border border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20 hover:bg-gray-100 dark:hover:bg-surface-tonal-a30 transition cursor-pointer group">
+                                        class="flex items-start py-2.5 px-3 rounded-lg border border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10 hover:bg-gray-100 dark:hover:bg-surface-tonal-a30 transition cursor-pointer group">
                                         <div class="mt-0.5">
                                             <input type="checkbox" name="is_active" id="is_active" value="1" {{ old('is_active', $discountRule->is_active) ? 'checked' : '' }}
                                                 class="h-4 w-4 rounded border-gray-300 dark:border-surface-tonal-a30 text-green-500 focus:ring-green-500 transition-all cursor-pointer">
@@ -454,7 +454,7 @@
                                     </label>
 
                                     <label
-                                        class="flex items-start py-2.5 px-3 rounded-lg border border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20 hover:bg-gray-100 dark:hover:bg-surface-tonal-a30 transition cursor-pointer group">
+                                        class="flex items-start py-2.5 px-3 rounded-lg border border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10 hover:bg-gray-100 dark:hover:bg-surface-tonal-a30 transition cursor-pointer group">
                                         <div class="mt-0.5">
                                             <input type="checkbox" name="is_flash_sale" id="is_flash_sale" value="1" {{ old('is_flash_sale', $discountRule->is_flash_sale) ? 'checked' : '' }}
                                                 class="h-4 w-4 rounded border-gray-300 dark:border-surface-tonal-a30 text-purple-500 focus:ring-purple-500 transition-all cursor-pointer">

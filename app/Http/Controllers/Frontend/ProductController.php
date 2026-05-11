@@ -79,6 +79,18 @@ class ProductController extends Controller
         // Merge: Promotions first, then Category banners
         $banners = array_merge($promoBanners, $categoryBanners);
 
+        // Base query for filters (only category/collection)
+        $filterBaseQuery = Product::where('is_visible', true);
+        if ($currentCategory) {
+            $filterBaseQuery->where('category_id', $currentCategory->id);
+        }
+        if ($currentCollection) {
+            $filterBaseQuery->whereHas('collections', fn($q) => $q->where('collections.id', $currentCollection->id));
+        }
+
+        $maxPriceAvailable = $filterBaseQuery->max('base_price') ?? 15000;
+        $minPriceAvailable = $filterBaseQuery->min('base_price') ?? 0;
+
         // Apply Filters
         if ($request->has('colors') && is_array($request->colors)) {
             $query->whereHas('variants.attributeValues', function ($q) use ($request) {
@@ -92,9 +104,19 @@ class ProductController extends Controller
             });
         }
 
+        if ($request->has('attributes') && is_array($request->attributes)) {
+            foreach ($request->attributes as $attrSlug => $values) {
+                if (is_array($values) && count($values) > 0) {
+                    $query->whereHas('variants.attributeValues', function ($q) use ($values) {
+                        $q->whereIn('slug', $values);
+                    });
+                }
+            }
+        }
+
+        $currentMaxPrice = $request->has('max_price') ? (float) $request->max_price : $maxPriceAvailable;
         if ($request->has('max_price') && $request->max_price != '') {
-            $maxPrice = (float) $request->max_price;
-            $query->where('base_price', '<=', $maxPrice);
+            $query->where('base_price', '<=', $currentMaxPrice);
         }
         
         // Sorting
@@ -123,6 +145,12 @@ class ProductController extends Controller
 
         $products = $query->paginate(12)->withQueryString();
 
+        $categoryBaseQuery = Product::where('is_visible', true);
+        if ($currentCollection) {
+            $categoryBaseQuery->whereHas('collections', fn($q) => $q->where('collections.id', $currentCollection->id));
+        }
+        $categoryProductIds = (clone $categoryBaseQuery)->pluck('id');
+
         $categories = \App\Models\Category::where('is_active', true)
             ->where(function ($q) {
                 // Keep categories that are parent-less (top level) OR whose parent is active
@@ -131,23 +159,36 @@ class ProductController extends Controller
                       $parentQuery->where('is_active', true);
                   });
             })
+            ->whereHas('products', function ($q) use ($categoryProductIds) {
+                $q->whereIn('products.id', $categoryProductIds);
+            })
+            ->withCount(['products' => function ($q) use ($categoryProductIds) {
+                $q->whereIn('products.id', $categoryProductIds);
+            }])
             ->orderBy('name')
             ->get();
 
-        // Scope attributes to the filtered products
-        $productIds = (clone $query)->pluck('id');
+        // Scope attributes to the base filtered products
+        $baseProductIds = (clone $filterBaseQuery)->pluck('id');
 
-        $colorAttr = \App\Models\Attribute::where('slug', 'color')->first();
-        $colors = $colorAttr ? $colorAttr->values()->whereHas('variants', function($q) use ($productIds) {
-            $q->whereIn('product_id', $productIds);
-        })->get() : collect();
+        $dynamicAttributes = \App\Models\Attribute::whereHas('values.variants', function($q) use ($baseProductIds) {
+            $q->whereIn('product_id', $baseProductIds);
+        })->with(['values' => function($q) use ($baseProductIds) {
+            $q->whereHas('variants', function($q) use ($baseProductIds) {
+                $q->whereIn('product_id', $baseProductIds);
+            })->withCount(['variants' => function($q) use ($baseProductIds) {
+                $q->whereIn('product_id', $baseProductIds);
+            }]);
+        }])->get();
 
-        $sizeAttr = \App\Models\Attribute::where('slug', 'size')->first();
-        $sizes = $sizeAttr ? $sizeAttr->values()->whereHas('variants', function($q) use ($productIds) {
-            $q->whereIn('product_id', $productIds);
-        })->get() : collect();
+        $colors = $dynamicAttributes->where('slug', 'color')->first()?->values ?? collect();
+        $sizes = $dynamicAttributes->where('slug', 'size')->first()?->values ?? collect();
 
-        return view('frontend.products.index', compact('products', 'categories', 'colors', 'sizes', 'currentCategory', 'currentCollection', 'banners'));
+        $otherAttributes = $dynamicAttributes->reject(function($attr) {
+            return in_array($attr->slug, ['color', 'size']);
+        });
+
+        return view('frontend.products.index', compact('products', 'categories', 'colors', 'sizes', 'otherAttributes', 'currentCategory', 'currentCollection', 'banners', 'maxPriceAvailable', 'minPriceAvailable', 'currentMaxPrice'));
     }
 
     public function show($slug)

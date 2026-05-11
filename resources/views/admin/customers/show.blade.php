@@ -22,7 +22,8 @@
                             {{ $customer->first_name }} {{ $customer->last_name }}
                         </h1>
                         <div class="flex gap-2">
-                            <span class="px-3 py-1 rounded-lg text-xs font-medium {{ ($customer->status ?? 'active') === 'active' ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/20' : 'bg-gray-100 text-gray-600 dark:bg-surface-tonal-a30 dark:text-gray-400 border border-gray-200 dark:border-surface-tonal-a30' }}">
+                            <span
+                                class="px-3 py-1 rounded-lg text-xs font-medium {{ ($customer->status ?? 'active') === 'active' ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-500/20' : 'bg-gray-100 text-gray-600 dark:bg-surface-tonal-a30 dark:text-gray-400 border border-gray-200 dark:border-surface-tonal-a30' }}">
                                 {{ ucfirst($customer->status ?? __('file.active')) }}
                             </span>
                         </div>
@@ -37,31 +38,49 @@
                 <div class="lg:col-span-2 space-y-4">
 
                     {{-- Customer Overview --}}
-                    <div class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
-                        <div class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
-                            <h2 class="text-sm font-bold text-gray-900 dark:text-white">{{ __('file.customer_overview') }}</h2>
+                    <div
+                        class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
+                        <div
+                            class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
+                            <h2 class="text-sm font-bold text-gray-900 dark:text-white">{{ __('file.customer_overview') }}
+                            </h2>
                         </div>
                         <div class="p-4">
                             <div class="grid grid-cols-1 sm:grid-cols-3 gap-y-6 gap-x-8">
                                 <div class="space-y-1">
-                                    <p class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('file.email') }}</p>
-                                    <p class="text-sm font-bold text-gray-900 dark:text-white truncate">{{ $customer->email }}</p>
+                                    <p class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('file.email') }}
+                                    </p>
+                                    <p class="text-sm font-bold text-gray-900 dark:text-white truncate">
+                                        {{ $customer->email }}</p>
                                 </div>
                                 <div class="space-y-1">
-                                    <p class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('file.phone') }}</p>
-                                    <p class="text-sm font-bold {{ $customer->phone ? 'text-gray-900 dark:text-white' : 'text-gray-400 italic' }}">{{ $customer->phone ?? __('file.no_phone_provided') }}</p>
+                                    <p class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('file.phone') }}
+                                    </p>
+                                    <p
+                                        class="text-sm font-bold {{ $customer->phone ? 'text-gray-900 dark:text-white' : 'text-gray-400 italic' }}">
+                                        {{ $customer->phone ?? __('file.no_phone_provided') }}</p>
                                 </div>
                                 <div class="space-y-1">
-                                    <p class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('file.member_since') }}</p>
-                                    <p class="text-sm font-bold text-gray-700 dark:text-white">{{ $customer->created_at ? $customer->created_at->format('M d, Y') : __('file.unknown') }}</p>
+                                    <p class="text-sm font-medium text-gray-500 dark:text-gray-400">
+                                        {{ __('file.member_since') }}</p>
+                                    <p class="text-sm font-bold text-gray-700 dark:text-white">
+                                        {{ $customer->created_at ? $customer->created_at->format('M d, Y') : __('file.unknown') }}
+                                    </p>
                                 </div>
                                 <div class="space-y-1">
-                                    <p class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('file.date_of_birth') }}</p>
-                                    <p class="text-sm font-bold {{ $customer->date_of_birth ? 'text-gray-700 dark:text-white' : 'text-gray-400 italic' }}">{{ $customer->date_of_birth ? \Carbon\Carbon::parse($customer->date_of_birth)->format('M d, Y') : __('file.not_provided') }}</p>
+                                    <p class="text-sm font-medium text-gray-500 dark:text-gray-400">
+                                        {{ __('file.date_of_birth') }}</p>
+                                    <p
+                                        class="text-sm font-bold {{ $customer->date_of_birth ? 'text-gray-700 dark:text-white' : 'text-gray-400 italic' }}">
+                                        {{ $customer->date_of_birth ? \Carbon\Carbon::parse($customer->date_of_birth)->format('M d, Y') : __('file.not_provided') }}
+                                    </p>
                                 </div>
                                 <div class="space-y-1">
-                                    <p class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('file.gender') }}</p>
-                                    <p class="text-sm font-bold {{ $customer->gender ? 'text-gray-700 dark:text-white' : 'text-gray-400 italic' }}">{{ $customer->gender ? ucfirst($customer->gender) : __('file.not_provided') }}</p>
+                                    <p class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('file.gender') }}
+                                    </p>
+                                    <p
+                                        class="text-sm font-bold {{ $customer->gender ? 'text-gray-700 dark:text-white' : 'text-gray-400 italic' }}">
+                                        {{ $customer->gender ? ucfirst($customer->gender) : __('file.not_provided') }}</p>
                                 </div>
                             </div>
                         </div>
@@ -71,11 +90,11 @@
                     <div
                         class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                         <div
-                            class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20 flex items-center justify-between">
-                             <h2 class="text-sm font-bold text-gray-900 dark:text-white">
-                                {{ __('file.internal_correspondence') }}</h2>
-                             <span
-                                class="text-xs font-medium text-indigo-500">{{ $customer->notes()->count() }}
+                            class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10 flex items-center justify-between">
+                            <h2 class="text-sm font-bold text-gray-900 dark:text-white">
+                                {{ __('file.internal_correspondence') }}
+                            </h2>
+                            <span class="text-xs font-medium text-indigo-500">{{ $customer->notes()->count() }}
                                 {{ __('file.notes') }}</span>
                         </div>
 
@@ -85,11 +104,11 @@
                             <form action="{{ route('customers.notes.add', $customer->id) }}" method="POST"
                                 class="space-y-3">
                                 @csrf
-                                 <textarea name="content" rows="3" required
+                                <textarea name="content" rows="3" required
                                     placeholder="{{ __('file.add_private_note_placeholder') }}"
                                     class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-white dark:bg-surface-tonal-a20 px-4 py-3 text-sm font-normal text-gray-700 dark:text-gray-200 outline-none focus:ring-4 focus:ring-primary/5 transition-all resize-none shadow-sm"></textarea>
                                 <div class="flex justify-end">
-                                     <button type="submit"
+                                    <button type="submit"
                                         class="px-5 py-2.5 bg-indigo-600 text-white text-xs font-semibold rounded-lg hover:bg-indigo-700 shadow-lg shadow-indigo-600/20 active:scale-95 transition-all">
                                         {{ __('file.post_note') }}
                                     </button>
@@ -127,37 +146,49 @@
                     </div>
 
                     {{-- Recent Orders Table --}}
-                    <div class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
-                        <div class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20 flex items-center justify-between">
-                             <h2 class="text-sm font-bold text-gray-900 dark:text-white">{{ __('file.order_history') }}</h2>
-                             <span class="text-xs font-medium text-indigo-500">{{ $customer->orders->count() }} {{ __('file.orders') }}</span>
+                    <div
+                        class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
+                        <div
+                            class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10 flex items-center justify-between">
+                            <h2 class="text-sm font-bold text-gray-900 dark:text-white">{{ __('file.order_history') }}</h2>
+                            <span class="text-xs font-medium text-indigo-500">{{ $customer->orders->count() }}
+                                {{ __('file.orders') }}</span>
                         </div>
                         <div class="overflow-x-auto">
                             <table class="w-full text-left border-collapse">
                                 <thead>
-                                    <tr class="bg-gray-50 dark:bg-surface-tonal-a20 border-b border-gray-100 dark:border-surface-tonal-a30">
-                                         <th class="px-6 py-3 text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('file.order_hash') }}</th>
-                                        <th class="px-6 py-3 text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('file.date') }}</th>
-                                        <th class="px-6 py-3 text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('file.status') }}</th>
-                                        <th class="px-6 py-3 text-sm font-medium text-gray-500 dark:text-gray-400 text-right">{{ __('file.total') }}</th>
+                                    <tr
+                                        class="bg-gray-50 dark:bg-surface-tonal-a20 border-b border-gray-100 dark:border-surface-tonal-a30">
+                                        <th class="px-6 py-3 text-sm font-medium text-gray-500 dark:text-gray-400">
+                                            {{ __('file.order_hash') }}</th>
+                                        <th class="px-6 py-3 text-sm font-medium text-gray-500 dark:text-gray-400">
+                                            {{ __('file.date') }}</th>
+                                        <th class="px-6 py-3 text-sm font-medium text-gray-500 dark:text-gray-400">
+                                            {{ __('file.status') }}</th>
+                                        <th
+                                            class="px-6 py-3 text-sm font-medium text-gray-500 dark:text-gray-400 text-right">
+                                            {{ __('file.total') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-gray-50 dark:divide-surface-tonal-a30">
                                     @forelse($customer->orders as $order)
                                         <tr class="hover:bg-gray-50 dark:hover:bg-surface-tonal-a30 transition-colors">
                                             <td class="px-6 py-3.5">
-                                                <a href="{{ route('orders.show', $order->id) }}" class="text-sm font-bold text-indigo-600 dark:text-indigo-400 hover:underline">
+                                                <a href="{{ route('orders.show', $order->id) }}"
+                                                    class="text-sm font-bold text-indigo-600 dark:text-indigo-400 hover:underline">
                                                     {{ $order->order_number ?? $order->number }}
                                                 </a>
                                             </td>
                                             <td class="px-6 py-3.5">
                                                 <div class="flex flex-col">
-                                                    <span class="text-sm font-bold text-gray-700 dark:text-white">{{ $order->created_at->format('M d, Y') }}</span>
-                                                    <span class="text-[10px] text-gray-500">{{ $order->created_at->format('H:i') }}</span>
+                                                    <span
+                                                        class="text-sm font-bold text-gray-700 dark:text-white">{{ $order->created_at->format('M d, Y') }}</span>
+                                                    <span
+                                                        class="text-[10px] text-gray-500">{{ $order->created_at->format('H:i') }}</span>
                                                 </div>
                                             </td>
                                             <td class="px-6 py-3.5">
-                                                 @php
+                                                @php
                                                     $statusClasses = [
                                                         'pending' => 'bg-amber-50 text-amber-600 border-amber-200 dark:bg-amber-500/10 dark:text-amber-400 dark:border-amber-500/20',
                                                         'processing' => 'bg-blue-50 text-blue-600 border-blue-200 dark:bg-blue-500/10 dark:text-blue-400 dark:border-blue-500/20',
@@ -167,17 +198,20 @@
                                                     $orderStatus = strtolower($order->status);
                                                     $sClass = $statusClasses[$orderStatus] ?? 'bg-gray-100 text-gray-600 border-gray-200 dark:bg-surface-tonal-a30 dark:text-gray-400 dark:border-surface-tonal-a30';
                                                  @endphp
-                                                 <span class="px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wider border {{ $sClass }}">
-                                                     {{ __('file.' . $orderStatus) }}
-                                                 </span>
+                                                <span
+                                                    class="px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wider border {{ $sClass }}">
+                                                    {{ __('file.' . $orderStatus) }}
+                                                </span>
                                             </td>
                                             <td class="px-6 py-3.5 text-right">
-                                                <span class="text-sm font-bold text-gray-900 dark:text-white tabular-nums">@price($order->grand_total ?? $order->total_amount)</span>
+                                                <span
+                                                    class="text-sm font-bold text-gray-900 dark:text-white tabular-nums">@price($order->grand_total ?? $order->total_amount)</span>
                                             </td>
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="4" class="px-6 py-10 text-center text-xs font-medium text-gray-500 uppercase tracking-widest">
+                                            <td colspan="4"
+                                                class="px-6 py-10 text-center text-xs font-medium text-gray-500 uppercase tracking-widest">
                                                 {{ __('file.no_transaction_history') }}
                                             </td>
                                         </tr>
@@ -197,23 +231,26 @@
                         <div
                             class="absolute -right-4 -bottom-4 w-24 h-24 bg-white/10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700">
                         </div>
-                         <h3 class="text-xs font-bold uppercase tracking-wider opacity-60 mb-4">
-                            {{ __('file.financial_summary') }}</h3>
+                        <h3 class="text-xs font-bold uppercase tracking-wider opacity-60 mb-4">
+                            {{ __('file.financial_summary') }}
+                        </h3>
                         <div class="space-y-6 relative z-10">
                             <div class="flex items-end justify-between">
-                                 <span
+                                <span
                                     class="text-xs font-bold opacity-80 uppercase tracking-wider">{{ __('file.total_spent') }}</span>
                                 <span class="text-2xl font-black tabular-nums">@price($customer->total_spent)</span>
                             </div>
                             <div class="grid grid-cols-2 gap-4 pt-4 border-t border-white/10">
                                 <div>
                                     <p class="text-[10px] font-bold opacity-60 uppercase tracking-widest">
-                                        {{ __('file.orders') }}</p>
+                                        {{ __('file.orders') }}
+                                    </p>
                                     <p class="text-lg font-black">{{ $customer->total_orders }}</p>
                                 </div>
                                 <div>
                                     <p class="text-[10px] font-bold opacity-60 uppercase tracking-widest">
-                                        {{ __('file.ltv') }}</p>
+                                        {{ __('file.ltv') }}
+                                    </p>
                                     <p class="text-lg font-black tabular-nums">@price($customer->lifetime_value)</p>
                                 </div>
                             </div>
@@ -224,20 +261,22 @@
                     <div
                         class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                         <div
-                            class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
-                             <h2 class="text-sm font-bold text-gray-900 dark:text-white">
-                                {{ __('file.customer_tags') }}</h2>
+                            class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
+                            <h2 class="text-sm font-bold text-gray-900 dark:text-white">
+                                {{ __('file.customer_tags') }}
+                            </h2>
                         </div>
                         <div class="p-4">
                             <div class="flex flex-wrap gap-1.5 mb-6">
                                 @forelse($customer->tags as $tag)
-                                     <span
+                                    <span
                                         class="px-2 py-0.5 rounded-md bg-gray-100 dark:bg-surface-tonal-a30 text-gray-700 dark:text-gray-300 text-[10px] font-bold border border-gray-200 dark:border-surface-tonal-a30">
                                         {{ $tag->name }}
                                     </span>
                                 @empty
                                     <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest italic">
-                                        {{ __('file.no_tags_assigned') }}</p>
+                                        {{ __('file.no_tags_assigned') }}
+                                    </p>
                                 @endforelse
                             </div>
 
@@ -245,10 +284,10 @@
                                 class="space-y-4">
                                 @csrf
                                 <div>
-                                     <label
+                                    <label
                                         class="block text-xs font-medium text-gray-400 uppercase tracking-wider mb-1">{{ __('file.update_tags') }}</label>
                                     <select name="tags[]" multiple
-                                        class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/50 dark:bg-surface-tonal-a20 px-4 py-3 text-sm font-normal text-gray-700 dark:text-gray-300 outline-none focus:ring-4 focus:ring-primary/5 transition-all h-32 custom-scrollbar cursor-pointer">
+                                        class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/100 dark:bg-surface-tonal-a20 px-4 py-3 text-sm font-normal text-gray-700 dark:text-gray-300 outline-none focus:ring-4 focus:ring-primary/5 transition-all h-32 custom-scrollbar cursor-pointer">
                                         @foreach($allTags as $tag)
                                             <option value="{{ $tag->id }}" {{ $customer->tags->contains($tag->id) ? 'selected' : '' }}>
                                                 {{ $tag->name }}
@@ -256,7 +295,7 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                 <button type="submit"
+                                <button type="submit"
                                     class="w-full py-3 bg-gray-900 dark:bg-white text-xs font-bold text-white dark:text-gray-900 uppercase tracking-wider rounded-xl hover:bg-black dark:hover:bg-gray-100 transition-all shadow-lg active:scale-95">
                                     {{ __('file.sync_tags') }}
                                 </button>

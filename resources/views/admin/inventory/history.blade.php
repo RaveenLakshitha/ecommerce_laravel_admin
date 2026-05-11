@@ -26,7 +26,7 @@
                             {{ $variant->sku ? '(' . $variant->sku . ')' : '' }}</span></h1>
                     <div class="mt-4 flex items-center gap-3">
                         <div
-                            class="px-3 py-1 rounded-full bg-gray-100/50 dark:bg-surface-tonal-a30/50 border border-gray-100 dark:border-surface-tonal-a30 flex items-center gap-2">
+                            class="px-3 py-1 rounded-full bg-gray-50 dark:bg-surface-tonal-a10 border border-gray-100 dark:border-surface-tonal-a30 flex items-center gap-2">
                             <span class="w-2 h-2 rounded-full bg-indigo-500 shadow-[0_0_8px_rgba(99,102,241,0.6)]"></span>
                             <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Active Stock
                                 Reservoir: <span
@@ -53,7 +53,7 @@
                 <div class="overflow-x-auto custom-scrollbar">
                     <table class="w-full text-left border-collapse">
                         <thead
-                            class="bg-gray-100/50 dark:bg-surface-tonal-a10/50 border-b border-gray-100 dark:border-surface-tonal-a30">
+                            class="bg-gray-50 dark:bg-surface-tonal-a10 border-b border-gray-100 dark:border-surface-tonal-a30">
                             <tr>
                                 <th scope="col"
                                     class="px-8 py-5 text-[10px] font-black text-gray-400 uppercase tracking-widest">

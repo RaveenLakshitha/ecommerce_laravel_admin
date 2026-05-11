@@ -7,14 +7,10 @@ use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Admin\Auth\LoginController as AdminLoginController;
 
-// Redirect root domain (karbnzol.com) → shop subdomain
-Route::domain('karbnzol.com')->group(function () {
+// Redirect root domain (loopcam.com.mx) → shop subdomain
+Route::domain('loopcam.com.mx')->group(function () {
     Route::redirect('/', 'http://shop.karbnzol.com', 301);
     Route::redirect('/{any}', 'http://shop.karbnzol.com/{any}', 301)->where('any', '.*');
-});
-
-Route::domain('shop.karbnzol.com')->group(function () {
-    Route::get('/wheels', [App\Http\Controllers\Frontend\WheelsController::class, 'index'])->name('homewheels');
 });
 
 // Customer / Shop routes
@@ -221,6 +217,10 @@ Route::domain('admin.karbnzol.com')->group(function () {
         Route::resource('refunds', \App\Http\Controllers\Admin\RefundController::class)->only(['index', 'show', 'destroy']);
         Route::patch('refunds/{refund}/approve', [\App\Http\Controllers\Admin\RefundController::class, 'approve'])->name('refunds.approve');
         Route::patch('refunds/{refund}/reject', [\App\Http\Controllers\Admin\RefundController::class, 'reject'])->name('refunds.reject');
+
+        // Reports
+        Route::get('reports/financial', [\App\Http\Controllers\Admin\ReportController::class, 'financial'])->name('reports.financial');
+        Route::get('reports/inventory', [\App\Http\Controllers\Admin\ReportController::class, 'inventory'])->name('reports.inventory');
 
         // General Settings
         Route::get('settings/general', [\App\Http\Controllers\SettingsController::class, 'general'])->name('settings.general');

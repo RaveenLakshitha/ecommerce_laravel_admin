@@ -44,9 +44,10 @@
                         <div
                             class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                             <div
-                                class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
+                                class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
                                 <h2 class="text-sm font-bold text-gray-900 dark:text-white">
-                                    {{ __('file.general_information') }}</h2>
+                                    {{ __('file.general_information') }}
+                                </h2>
                             </div>
                             <div class="p-4 space-y-4">
                                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
@@ -56,18 +57,20 @@
                                             <span class="text-red-500">*</span></label>
                                         <input type="text" name="name" id="name" value="{{ old('name', $brand->name) }}"
                                             required
-                                            class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/50 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5">
+                                            class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/100 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5">
                                         @error('name') <p class="text-[10px] text-red-500 mt-1 font-bold px-1">
-                                        {{ $message }}</p> @enderror
+                                            {{ $message }}
+                                        </p> @enderror
                                     </div>
                                     <div>
                                         <label for="slug"
                                             class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.slug') }}</label>
                                         <input type="text" name="slug" id="slug" value="{{ old('slug', $brand->slug) }}"
                                             placeholder="{{ __('file.auto_generated') }}"
-                                            class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/50 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 font-mono">
+                                            class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/100 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 font-mono">
                                         @error('slug') <p class="text-[10px] text-red-500 mt-1 font-bold px-1">
-                                        {{ $message }}</p> @enderror
+                                            {{ $message }}
+                                        </p> @enderror
                                     </div>
                                 </div>
 
@@ -78,18 +81,20 @@
                                         <input type="url" name="website_url" id="website_url"
                                             value="{{ old('website_url', $brand->website_url) }}"
                                             placeholder="https://example.com"
-                                            class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/50 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm text-primary dark:text-primary outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30">
+                                            class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/100 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm text-primary dark:text-primary outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30">
                                         @error('website_url') <p class="text-[10px] text-red-500 mt-1 font-bold px-1">
-                                        {{ $message }}</p> @enderror
+                                            {{ $message }}
+                                        </p> @enderror
                                     </div>
                                     <div>
                                         <label for="sort_order"
                                             class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.sort_order') }}</label>
                                         <input type="number" name="sort_order" id="sort_order"
                                             value="{{ old('sort_order', $brand->sort_order) }}"
-                                            class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/50 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30">
+                                            class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/100 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30">
                                         @error('sort_order') <p class="text-[10px] text-red-500 mt-1 font-bold px-1">
-                                        {{ $message }}</p> @enderror
+                                            {{ $message }}
+                                        </p> @enderror
                                     </div>
                                 </div>
 
@@ -98,9 +103,10 @@
                                         class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.description') }}</label>
                                     <textarea name="description" id="description" rows="4"
                                         placeholder="{{ __('file.brief_brand_story') }}…"
-                                        class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/50 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5 resize-y">{{ old('description', $brand->description) }}</textarea>
+                                        class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/100 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5 resize-y">{{ old('description', $brand->description) }}</textarea>
                                     @error('description') <p class="text-[10px] text-red-500 mt-1 font-bold px-1">
-                                    {{ $message }}</p> @enderror
+                                        {{ $message }}
+                                    </p> @enderror
                                 </div>
                             </div>
                         </div>
@@ -109,7 +115,7 @@
                         <div
                             class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                             <div
-                                class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
+                                class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
                                 <h2 class="text-sm font-bold text-gray-900 dark:text-white">{{ __('file.seo_settings') }}
                                 </h2>
                             </div>
@@ -120,14 +126,14 @@
                                     <input type="text" name="meta_title" id="meta_title"
                                         value="{{ old('meta_title', $brand->meta_title) }}"
                                         placeholder="{{ __('file.seo_title_search') }}"
-                                        class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/50 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30">
+                                        class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/100 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30">
                                 </div>
                                 <div>
                                     <label for="meta_description"
                                         class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.meta_description') }}</label>
                                     <textarea name="meta_description" id="meta_description" rows="3"
                                         placeholder="{{ __('file.brief_summary_seo') }}…"
-                                        class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/50 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 resize-y">{{ old('meta_description', $brand->meta_description) }}</textarea>
+                                        class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/100 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 resize-y">{{ old('meta_description', $brand->meta_description) }}</textarea>
                                 </div>
                             </div>
                         </div>
@@ -138,31 +144,31 @@
                         <div
                             class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden sticky top-24">
                             <div
-                                class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
+                                class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
                                 <h2 class="text-sm font-bold text-gray-900 dark:text-white">{{ __('file.status_and_logo') }}
                                 </h2>
                             </div>
                             <div class="p-4 space-y-6">
                                 <label
-                                    class="flex items-start py-2.5 px-3 rounded-lg border border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20 hover:bg-gray-100 dark:hover:bg-surface-tonal-a30 transition cursor-pointer group">
+                                    class="flex items-start py-2.5 px-3 rounded-lg border border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10 hover:bg-gray-100 dark:hover:bg-surface-tonal-a30 transition cursor-pointer group">
                                     <div class="mt-0.5">
                                         <input type="checkbox" name="is_featured" id="is_featured" value="1" {{ old('is_featured', $brand->is_featured) ? 'checked' : '' }}
                                             class="h-4 w-4 rounded border-gray-300 dark:border-surface-tonal-a30 text-indigo-600 focus:ring-indigo-500 transition-all cursor-pointer">
                                     </div>
                                     <div class="ml-3">
-                                        <h3
-                                            class="text-sm font-medium text-gray-900 dark:text-white leading-none">
-                                            {{ __('file.featured_brand') }}</h3>
-                                        <p
-                                            class="text-xs text-gray-500 dark:text-gray-400 font-medium mt-1">
-                                            {{ __('file.highlight_on_storefront') }}</p>
+                                        <h3 class="text-sm font-medium text-gray-900 dark:text-white leading-none">
+                                            {{ __('file.featured_brand') }}
+                                        </h3>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400 font-medium mt-1">
+                                            {{ __('file.highlight_on_storefront') }}
+                                        </p>
                                     </div>
                                 </label>
 
                                 <div class="space-y-2">
                                     <label
                                         class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.brand_logo') }}</label>
-                                    <div class="aspect-square admin-upload-zone rounded-xl border-dashed border-2 border-gray-200 dark:border-white/5 bg-gray-100/50 dark:bg-surface-tonal-a10 flex flex-col items-center justify-center gap-1 cursor-pointer hover:border-indigo-400 transition-all relative overflow-hidden group"
+                                    <div class="aspect-square admin-upload-zone rounded-xl border-dashed border-2 border-gray-200 dark:border-white/5 bg-gray-50 dark:bg-surface-tonal-a10 flex flex-col items-center justify-center gap-1 cursor-pointer hover:border-indigo-400 transition-all relative overflow-hidden group"
                                         onclick="document.getElementById('logo-input').click()">
                                         <img id="logo-preview" src="{{ $brand->logo_url }}"
                                             class="absolute inset-0 w-full h-full object-contain p-4 {{ $brand->logo_url ? '' : 'hidden' }}">
@@ -174,7 +180,8 @@
                                                     d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                             </svg>
                                             <p class="text-sm font-medium text-gray-400">
-                                                {{ __('file.change_logo') }}</p>
+                                                {{ __('file.change_logo') }}
+                                            </p>
                                         </div>
                                         <input type="file" name="logo" id="logo-input" class="hidden" accept="image/*"
                                             onchange="previewLogo(this)">

@@ -129,7 +129,7 @@
                     x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95" class="absolute right-0 mt-2 w-48 origin-top-right bg-white dark:bg-surface-tonal-a20
                             rounded-md shadow-lg ring-1 ring-black ring-opacity-5 z-50 overflow-hidden">
 
-                    <form method="POST" action="{{ route('logout') }}" class="block">
+                    <form method="POST" action="{{ route('admin.logout') }}" class="block">
                         @csrf
                         <button type="submit" class="w-full text-left px-4 py-2.5 text-sm text-gray-700 dark:text-gray-300
                                        hover:bg-gray-100 dark:hover:bg-gray-700 transition">

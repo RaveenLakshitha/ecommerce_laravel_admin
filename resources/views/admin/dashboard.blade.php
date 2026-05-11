@@ -9,8 +9,9 @@
             {{-- ── PAGE HEADER ────────────────────────────────────────────────────── --}}
             <div class="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div>
-                    <h1 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">{{ __('file.dashboard') }}</h1>
-                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                    <p class="text-xs font-bold text-gray-400 dark:text-slate-500 uppercase tracking-widest mb-1">Overview</p>
+                    <h1 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-slate-100">{{ __('file.dashboard') }}</h1>
+                    <p class="mt-1 text-sm text-gray-500 dark:text-slate-400">
                         {{ __('file.dashboard_overview') }}
                     </p>
                 </div>
@@ -32,13 +33,13 @@
             </div>
 
             {{-- ── KPI CARDS ───────────────────────────────────────────────────────── --}}
-            <div class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-6 gap-5 mb-8">
+            <div class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-6 gap-4 mb-8">
 
                 {{-- Today's Sales --}}
                 <div
-                    class="bg-white dark:bg-surface-tonal-a20 rounded-2xl shadow-sm border border-gray-200 dark:border-surface-tonal-a30 p-5 flex flex-col gap-3 hover:shadow-md transition-shadow">
+                    class="bg-white dark:bg-[#1e2d40] rounded-xl shadow-sm border border-gray-100 dark:border-slate-700/60 p-5 flex flex-col gap-3 hover:shadow-md transition-all hover:border-gray-200 dark:hover:border-slate-600">
                     <div class="flex items-center justify-between">
-                        <span class="text-xs font-semibold text-gray-500 dark:text-gray-400">{{ __('file.todays_sales') }}</span>
+                        <span class="text-xs font-semibold text-gray-500 dark:text-slate-400">{{ __('file.todays_sales') }}</span>
                         <div
                             class="w-8 h-8 rounded-xl bg-blue-50 dark:bg-blue-500/10 flex items-center justify-center text-blue-600 dark:text-blue-400">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -47,14 +48,14 @@
                             </svg>
                         </div>
                     </div>
-                    <p class="text-2xl font-bold text-gray-900 dark:text-white tabular-nums">@price($todaysSales)
+                    <p class="text-2xl font-bold text-gray-900 dark:text-slate-100 tabular-nums">@price($todaysSales)
                     </p>
-                    <span class="text-xs text-gray-400 dark:text-gray-500">{{ __('file.revenue_today') }}</span>
+                    <span class="text-xs text-gray-400 dark:text-slate-500">{{ __('file.revenue_today') }}</span>
                 </div>
 
                 {{-- Orders Today --}}
                 <div
-                    class="bg-white dark:bg-surface-tonal-a20 rounded-2xl shadow-sm border border-gray-200 dark:border-surface-tonal-a30 p-5 flex flex-col gap-3 hover:shadow-md transition-shadow">
+                    class="bg-white dark:bg-[#1e2d40] rounded-xl shadow-sm border border-gray-100 dark:border-slate-700/60 p-5 flex flex-col gap-3 hover:shadow-md transition-all hover:border-gray-200 dark:hover:border-slate-600">
                     <div class="flex items-center justify-between">
                         <span class="text-xs font-semibold text-gray-500 dark:text-gray-400">{{ __('file.orders_today') }}</span>
                         <div
@@ -73,7 +74,7 @@
 
                 {{-- Pending Orders --}}
                 <div
-                    class="bg-white dark:bg-surface-tonal-a20 rounded-2xl shadow-sm border border-gray-200 dark:border-surface-tonal-a30 p-5 flex flex-col gap-3 hover:shadow-md transition-shadow">
+                    class="bg-white dark:bg-[#1e2d40] rounded-xl shadow-sm border border-gray-100 dark:border-slate-700/60 p-5 flex flex-col gap-3 hover:shadow-md transition-all hover:border-gray-200 dark:hover:border-slate-600">
                     <div class="flex items-center justify-between">
                         <span class="text-xs font-semibold text-gray-500 dark:text-gray-400">{{ __('file.pending_orders_card') }}</span>
                         <div
@@ -95,7 +96,7 @@
 
                 {{-- Low Stock --}}
                 <div
-                    class="bg-white dark:bg-surface-tonal-a20 rounded-2xl shadow-sm border border-gray-200 dark:border-surface-tonal-a30 p-5 flex flex-col gap-3 hover:shadow-md transition-shadow">
+                    class="bg-white dark:bg-[#1e2d40] rounded-xl shadow-sm border border-gray-100 dark:border-slate-700/60 p-5 flex flex-col gap-3 hover:shadow-md transition-all hover:border-gray-200 dark:hover:border-slate-600">
                     <div class="flex items-center justify-between">
                         <span class="text-xs font-semibold text-gray-500 dark:text-gray-400">{{ __('file.low_stock_items') }}</span>
                         <div
@@ -114,7 +115,7 @@
 
                 {{-- COD Pending --}}
                 <div
-                    class="bg-white dark:bg-surface-tonal-a20 rounded-2xl shadow-sm border border-gray-200 dark:border-surface-tonal-a30 p-5 flex flex-col gap-3 hover:shadow-md transition-shadow">
+                    class="bg-white dark:bg-[#1e2d40] rounded-xl shadow-sm border border-gray-100 dark:border-slate-700/60 p-5 flex flex-col gap-3 hover:shadow-md transition-all hover:border-gray-200 dark:hover:border-slate-600">
                     <div class="flex items-center justify-between">
                         <span class="text-xs font-semibold text-gray-500 dark:text-gray-400">{{ __('file.cod_pending') }}</span>
                         <div
@@ -133,7 +134,7 @@
 
                 {{-- Monthly Revenue --}}
                 <div
-                    class="bg-white dark:bg-surface-tonal-a20 rounded-2xl shadow-sm border border-gray-200 dark:border-surface-tonal-a30 p-5 flex flex-col gap-3 hover:shadow-md transition-shadow">
+                    class="bg-white dark:bg-[#1e2d40] rounded-xl shadow-sm border border-gray-100 dark:border-slate-700/60 p-5 flex flex-col gap-3 hover:shadow-md transition-all hover:border-gray-200 dark:hover:border-slate-600">
                     <div class="flex items-center justify-between">
                         <span class="text-xs font-semibold text-gray-500 dark:text-gray-400">{{ __('file.monthly_revenue') }}</span>
                         <div
@@ -158,12 +159,12 @@
 
                     {{-- Recent Orders Table --}}
                     <div
-                        class="bg-white dark:bg-surface-tonal-a20 rounded-2xl shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
+                        class="bg-white dark:bg-[#1e2d40] rounded-xl shadow-sm border border-gray-100 dark:border-slate-700/60 overflow-hidden">
                         <div
-                            class="px-6 py-4 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20 flex items-center justify-between">
+                            class="px-6 py-4 border-b border-gray-100 dark:border-slate-700/60 bg-gray-50/100 dark:bg-slate-800/40 flex items-center justify-between">
                             <div>
-                                <h2 class="font-semibold text-gray-900 dark:text-white">{{ __('file.recent_orders') }}</h2>
-                                <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{{ __('file.latest_orders_note') }}</p>
+                                <h2 class="font-semibold text-gray-900 dark:text-slate-100">{{ __('file.recent_orders') }}</h2>
+                                <p class="text-xs text-gray-500 dark:text-slate-400 mt-0.5">{{ __('file.latest_orders_note') }}</p>
                             </div>
                             <a href="{{ route('orders.index') }}"
                                 class="flex items-center gap-1.5 text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors">
@@ -178,7 +179,7 @@
                             <table class="w-full text-left">
                                 <thead>
                                     <tr
-                                        class="bg-gray-100/50 dark:bg-surface-tonal-a10/50 border-b border-gray-100 dark:border-surface-tonal-a30">
+                                        class=" dark:bg-surface-tonal-a10/50 border-b border-gray-100 dark:border-surface-tonal-a30">
                                         <th
                                             class="px-6 py-3 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                                             {{ __('file.order_num_alias') }}</th>
@@ -268,7 +269,7 @@
                         <div
                             class="bg-white dark:bg-surface-tonal-a20 rounded-2xl shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                             <div
-                                class="px-6 py-4 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20 flex items-center justify-between">
+                                class="px-6 py-4 border-b border-gray-100 dark:border-surface-tonal-a30  dark:bg-surface-tonal-a20 flex items-center justify-between">
                                 <div>
                                     <h2 class="font-semibold text-gray-900 dark:text-white">{{ __('file.low_stock_alerts') }}</h2>
                                     <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{{ __('file.products_needing_restock') }}</p>
@@ -333,7 +334,7 @@
                         <div
                             class="bg-white dark:bg-surface-tonal-a20 rounded-2xl shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                             <div
-                                class="px-6 py-4 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20 flex items-center justify-between">
+                                class="px-6 py-4 border-b border-gray-100 dark:border-surface-tonal-a30  dark:bg-surface-tonal-a20 flex items-center justify-between">
                                 <div>
                                     <h2 class="font-semibold text-gray-900 dark:text-white">{{ __('file.top_selling_products') }}</h2>
                                     <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{{ __('file.best_performers_period') }}
@@ -399,13 +400,13 @@
                     <div
                         class="bg-white dark:bg-surface-tonal-a20 rounded-2xl shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                         <div
-                            class="px-6 py-4 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
+                            class="px-6 py-4 border-b border-gray-100 dark:border-surface-tonal-a30  dark:bg-surface-tonal-a20">
                             <h2 class="font-semibold text-gray-900 dark:text-white">{{ __('file.quick_actions') }}</h2>
                             <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{{ __('file.common_tasks_glance') }}</p>
                         </div>
                         <div class="p-5 grid grid-cols-2 gap-3">
                             <a href="{{ route('products.create') }}"
-                                class="flex flex-col items-start gap-3 p-4 rounded-xl border border-gray-200 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a30/50 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 hover:border-indigo-200 dark:hover:border-indigo-500/30 transition-all group">
+                                class="flex flex-col items-start gap-3 p-4 rounded-xl border border-gray-200 dark:border-surface-tonal-a30  dark:bg-surface-tonal-a30/50 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 hover:border-indigo-200 dark:hover:border-indigo-500/30 transition-all group">
                                 <div
                                     class="w-9 h-9 rounded-xl bg-indigo-100 dark:bg-indigo-500/20 flex items-center justify-center text-indigo-600 dark:text-indigo-400 transition-transform group-hover:scale-110">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -417,7 +418,7 @@
                                     class="text-xs font-semibold text-gray-700 dark:text-gray-300 group-hover:text-indigo-700 dark:group-hover:text-indigo-300 transition-colors leading-tight">{{ __('file.add_product') }}</span>
                             </a>
                             <a href="{{ route('coupons.create') }}"
-                                class="flex flex-col items-start gap-3 p-4 rounded-xl border border-gray-200 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a30/50 hover:bg-amber-50 dark:hover:bg-amber-500/10 hover:border-amber-200 dark:hover:border-amber-500/30 transition-all group">
+                                class="flex flex-col items-start gap-3 p-4 rounded-xl border border-gray-200 dark:border-surface-tonal-a30  dark:bg-surface-tonal-a30/50 hover:bg-amber-50 dark:hover:bg-amber-500/10 hover:border-amber-200 dark:hover:border-amber-500/30 transition-all group">
                                 <div
                                     class="w-9 h-9 rounded-xl bg-amber-100 dark:bg-amber-500/20 flex items-center justify-center text-amber-600 dark:text-amber-400 transition-transform group-hover:scale-110">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -429,7 +430,7 @@
                                     class="text-xs font-semibold text-gray-700 dark:text-gray-300 group-hover:text-amber-700 dark:group-hover:text-amber-300 transition-colors leading-tight">{{ __('file.add_coupon') }}</span>
                             </a>
                             <a href="{{ route('shipping.shipments.datatable') }}"
-                                class="flex flex-col items-start gap-3 p-4 rounded-xl border border-gray-200 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a30/50 hover:bg-blue-50 dark:hover:bg-blue-500/10 hover:border-blue-200 dark:hover:border-blue-500/30 transition-all group">
+                                class="flex flex-col items-start gap-3 p-4 rounded-xl border border-gray-200 dark:border-surface-tonal-a30  dark:bg-surface-tonal-a30/50 hover:bg-blue-50 dark:hover:bg-blue-500/10 hover:border-blue-200 dark:hover:border-blue-500/30 transition-all group">
                                 <div
                                     class="w-9 h-9 rounded-xl bg-blue-100 dark:bg-blue-500/20 flex items-center justify-center text-blue-600 dark:text-blue-400 transition-transform group-hover:scale-110">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -441,7 +442,7 @@
                                     class="text-xs font-semibold text-gray-700 dark:text-gray-300 group-hover:text-blue-700 dark:group-hover:text-blue-300 transition-colors leading-tight">{{ __('file.manage_shipments') }}</span>
                             </a>
                             <a href="{{ route('customers.index') }}"
-                                class="flex flex-col items-start gap-3 p-4 rounded-xl border border-gray-200 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a30/50 hover:bg-violet-50 dark:hover:bg-violet-500/10 hover:border-violet-200 dark:hover:border-violet-500/30 transition-all group">
+                                class="flex flex-col items-start gap-3 p-4 rounded-xl border border-gray-200 dark:border-surface-tonal-a30  dark:bg-surface-tonal-a30/50 hover:bg-violet-50 dark:hover:bg-violet-500/10 hover:border-violet-200 dark:hover:border-violet-500/30 transition-all group">
                                 <div
                                     class="w-9 h-9 rounded-xl bg-violet-100 dark:bg-violet-500/20 flex items-center justify-center text-violet-600 dark:text-violet-400 transition-transform group-hover:scale-110">
                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -459,7 +460,7 @@
                     <div
                         class="bg-white dark:bg-surface-tonal-a20 rounded-2xl shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                         <div
-                            class="px-6 py-4 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
+                            class="px-6 py-4 border-b border-gray-100 dark:border-surface-tonal-a30  dark:bg-surface-tonal-a20">
                             <h2 class="font-semibold text-gray-900 dark:text-white">{{ __('file.pending_tasks') }}</h2>
                             <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{{ __('file.items_requiring_attention') }}</p>
                         </div>

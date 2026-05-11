@@ -95,8 +95,9 @@
                 onclick="closeZoneDrawer()"></div>
             <div id="zone-drawer-panel"
                 class="absolute inset-y-0 right-0 w-full md:max-w-lg bg-white dark:bg-surface-tonal-a20 shadow-2xl transform translate-x-full transition-transform duration-500 ease-in-out flex flex-col">
-                
-                <div class="flex items-center justify-between px-8 py-5 border-b border-gray-100 dark:border-white/5 bg-gray-50/50 dark:bg-white/5">
+
+                <div
+                    class="flex items-center justify-between px-8 py-5 border-b border-gray-100 dark:border-white/5 bg-gray-50/100 dark:bg-white/5">
                     <div>
                         <h3 id="zone-drawer-title" class="text-xl font-bold text-gray-900 dark:text-white tracking-tight">
                             {{ __('file.add_new_zone') }}
@@ -133,18 +134,18 @@
                 const isEdit = url && !url.includes('create');
                 const titleEl = document.getElementById('zone-drawer-title');
                 const subtitleEl = document.getElementById('zone-drawer-subtitle');
-                
+
                 titleEl.textContent = isEdit ? '{{ __("file.edit_shipping_zone") }}' : '{{ __("file.add_new_zone") }}';
                 subtitleEl.textContent = isEdit ? '{{ __("file.update_zone_details") }}' : '{{ __("file.create_new_zone_entry") }}';
 
                 zoneDrawer.classList.remove('hidden');
                 zoneContent.innerHTML = '<div class="flex items-center justify-center h-full"><div class="w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin"></div></div>';
-                
+
                 setTimeout(() => {
                     zoneOverlay.classList.replace('opacity-0', 'opacity-100');
                     zonePanel.classList.remove('translate-x-full');
                 }, 10);
-                
+
                 document.body.style.overflow = 'hidden';
 
                 const fetchUrl = url || '{{ route("shipping.zones.create") }}';
@@ -187,32 +188,32 @@
                         body: formData,
                         headers: { 'X-Requested-With': 'XMLHttpRequest' }
                     })
-                    .then(res => res.json())
-                    .then(res => {
-                        if (res.success) {
-                            closeZoneDrawer();
-                            if (window.zoneTable) window.zoneTable.draw(false);
-                            if (typeof showNotification === 'function') showNotification('{{ __("file.Success") }}', res.message, 'success');
-                        } else {
-                            if (typeof showNotification === 'function') showNotification('{{ __("file.Error") }}', res.message || 'Something went wrong', 'error');
-                        }
-                    })
-                    .catch(err => {
-                        console.error(err);
-                    })
-                    .finally(() => {
-                        submitBtn.disabled = false;
-                        loader.classList.add('hidden');
-                        loader.classList.remove('flex');
-                        saveText.classList.remove('invisible');
-                    });
+                        .then(res => res.json())
+                        .then(res => {
+                            if (res.success) {
+                                closeZoneDrawer();
+                                if (window.zoneTable) window.zoneTable.draw(false);
+                                if (typeof showNotification === 'function') showNotification('{{ __("file.Success") }}', res.message, 'success');
+                            } else {
+                                if (typeof showNotification === 'function') showNotification('{{ __("file.Error") }}', res.message || 'Something went wrong', 'error');
+                            }
+                        })
+                        .catch(err => {
+                            console.error(err);
+                        })
+                        .finally(() => {
+                            submitBtn.disabled = false;
+                            loader.classList.add('hidden');
+                            loader.classList.remove('flex');
+                            saveText.classList.remove('invisible');
+                        });
                 });
             }
 
             document.addEventListener('DOMContentLoaded', function () {
                 if (!window.jQuery) return;
                 const $ = window.jQuery;
-                
+
                 const table = $('#application-table').DataTable({
                     processing: true, serverSide: true,
                     ajax: { url: '{{ route('shipping.zones.datatable') }}' },
@@ -240,26 +241,26 @@
                             render: data => data
                         },
                         {
-                            data: null, 
+                            data: null,
                             className: 'text-right whitespace-nowrap !px-4',
                             render: function (data, type, row) {
                                 return `
-                                    <div class="flex items-center justify-end gap-2">
-                                        <button type="button" onclick="openZoneDrawer('${row.edit_url || '{{ route('shipping.zones.edit', ':id') }}'.replace(':id', row.id)}')" 
-                                            class="p-2 rounded-xl text-gray-400 hover:text-primary dark:hover:text-primary hover:bg-primary/10 transition-all group/btn" 
-                                            title="{{ __('file.edit') }}">
-                                            <svg class="w-5 h-5 group-hover/btn:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                                            </svg>
-                                        </button>
-                                        <button type="button" onclick="confirmDelete('${row.delete_url}')" 
-                                            class="p-2 rounded-xl text-gray-400 hover:text-error dark:hover:text-error hover:bg-error/10 transition-all group/btn" 
-                                            title="{{ __('file.delete') }}">
-                                            <svg class="w-5 h-5 group-hover/btn:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                                            </svg>
-                                        </button>
-                                    </div>`;
+                                            <div class="flex items-center justify-end gap-2">
+                                                <button type="button" onclick="openZoneDrawer('${row.edit_url || '{{ route('shipping.zones.edit', ':id') }}'.replace(':id', row.id)}')" 
+                                                    class="p-2 rounded-xl text-gray-400 hover:text-primary dark:hover:text-primary hover:bg-primary/10 transition-all group/btn" 
+                                                    title="{{ __('file.edit') }}">
+                                                    <svg class="w-5 h-5 group-hover/btn:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                                    </svg>
+                                                </button>
+                                                <button type="button" onclick="confirmDelete('${row.delete_url}')" 
+                                                    class="p-2 rounded-xl text-gray-400 hover:text-error dark:hover:text-error hover:bg-error/10 transition-all group/btn" 
+                                                    title="{{ __('file.delete') }}">
+                                                    <svg class="w-5 h-5 group-hover/btn:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                                    </svg>
+                                                </button>
+                                            </div>`;
                             }
                         }
                     ],

@@ -9,7 +9,7 @@ $basePrice - float: default price for new rows
 <div
     class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
     <div
-        class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
+        class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
         <h2 class="text-sm font-bold text-gray-900 dark:text-white">{{ __('file.options_and_variants') }}</h2>
         <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
             {{ __('file.define_options_to_auto_generate') }}</p>

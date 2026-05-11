@@ -56,7 +56,7 @@
                     <div
                         class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                         <div
-                            class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20 flex items-center justify-between">
+                            class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10 flex items-center justify-between">
                             <h2 class="text-sm font-bold text-gray-900 dark:text-white">{{ __('file.order_items') }}</h2>
                             <span
                                 class="text-[10px] font-bold text-indigo-500 uppercase tracking-widest">{{ $order->items->count() }}
@@ -120,7 +120,7 @@
 
                         {{-- Financial Summary Footer --}}
                         <div
-                            class="p-6 bg-gray-100/50 dark:bg-surface-tonal-a20/50 border-t border-gray-100 dark:border-surface-tonal-a30">
+                            class="p-6 bg-gray-50 dark:bg-surface-tonal-a10 border-t border-gray-100 dark:border-surface-tonal-a30">
                             <div class="flex justify-end">
                                 <div class="w-full sm:w-64 space-y-3">
                                     <div
@@ -247,7 +247,7 @@
                     <div
                         class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                         <div
-                            class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
+                            class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
                             <h2 class="text-sm font-bold text-gray-900 dark:text-white uppercase tracking-widest">
                                 {{ __('file.workflow_phase') }}</h2>
                         </div>

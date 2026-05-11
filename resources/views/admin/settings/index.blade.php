@@ -326,7 +326,7 @@
                             <div
                                 class="bg-white dark:bg-surface-tonal-a20 rounded-lg border border-gray-200 dark:border-surface-tonal-a30 shadow-sm overflow-hidden">
                                 <div
-                                    class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
+                                    class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
                                     <h2 class="text-sm font-semibold text-gray-900 dark:text-white">General Settings</h2>
                                     <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Basic site identity and brand
                                         assets.</p>
@@ -382,7 +382,7 @@
                                                     <div
                                                         class="w-full h-20 rounded-lg bg-white dark:bg-surface-tonal-a20 border border-gray-100 dark:border-surface-tonal-a30 flex items-center justify-center overflow-hidden">
                                                         <img id="logo_preview"
-                                                            src="{{ $setting->site_logo ? Storage::url($setting->site_logo) : asset('images/default-logo.png') }}"
+                                                            src="{{ $setting->site_logo ? asset('storage/' . $setting->site_logo) : asset('images/default-logo.png') }}"
                                                             class="max-h-14 w-auto object-contain" alt="Logo">
                                                     </div>
                                                     <input type="file" name="site_logo" id="site_logo" class="hidden"
@@ -404,7 +404,7 @@
                                                     <div
                                                         class="w-full h-20 rounded-lg bg-white dark:bg-surface-tonal-a20 border border-gray-100 dark:border-surface-tonal-a30 flex items-center justify-center overflow-hidden">
                                                         <img id="favicon_preview"
-                                                            src="{{ $setting->site_favicon ? Storage::url($setting->site_favicon) : asset('images/favicon.ico') }}"
+                                                            src="{{ $setting->site_favicon ? asset('storage/' . $setting->site_favicon) : asset('images/favicon.ico') }}"
                                                             class="h-10 w-10 object-contain" alt="Favicon">
                                                     </div>
                                                     <input type="file" name="site_favicon" id="site_favicon" class="hidden"
@@ -430,7 +430,7 @@
                             <div
                                 class="bg-white dark:bg-surface-tonal-a20 rounded-lg border border-gray-200 dark:border-surface-tonal-a30 shadow-sm overflow-hidden">
                                 <div
-                                    class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
+                                    class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
                                     <h2 class="text-sm font-semibold text-gray-900 dark:text-white">Store Information</h2>
                                     <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Contact details and physical
                                         address.</p>
@@ -502,7 +502,7 @@
                             <div
                                 class="bg-white dark:bg-surface-tonal-a20 rounded-lg border border-gray-200 dark:border-surface-tonal-a30 shadow-sm overflow-hidden">
                                 <div
-                                    class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
+                                    class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
                                     <h2 class="text-sm font-semibold text-gray-900 dark:text-white">Currency & Pricing</h2>
                                     <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Configure how prices are
                                         displayed across your store.</p>
@@ -581,7 +581,7 @@
                             <div
                                 class="bg-white dark:bg-surface-tonal-a20 rounded-lg border border-gray-200 dark:border-surface-tonal-a30 shadow-sm overflow-hidden">
                                 <div
-                                    class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
+                                    class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
                                     <h2 class="text-sm font-semibold text-gray-900 dark:text-white">SEO & Social Meta</h2>
                                     <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Search engine and social
                                         sharing metadata.</p>
@@ -620,7 +620,7 @@
                                             <div
                                                 class="w-full h-36 rounded-lg bg-white dark:bg-surface-tonal-a20 border border-gray-100 dark:border-surface-tonal-a30 overflow-hidden">
                                                 <img id="og_image_preview"
-                                                    src="{{ $setting->og_image ? Storage::url($setting->og_image) : asset('images/default-og-image.png') }}"
+                                                    src="{{ $setting->og_image ? asset('storage/' . $setting->og_image) : asset('images/default-og-image.png') }}"
                                                     class="h-full w-full object-cover" alt="OG">
                                             </div>
                                             <input type="file" name="og_image" id="og_image" class="hidden" accept="image/*"
@@ -640,14 +640,14 @@
                             <div
                                 class="bg-white dark:bg-surface-tonal-a20 rounded-lg border border-gray-200 dark:border-surface-tonal-a30 shadow-sm overflow-hidden">
                                 <div
-                                    class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
+                                    class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
                                     <h2 class="text-sm font-semibold text-gray-900 dark:text-white">Shipping & Delivery</h2>
                                     <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Configure shipping methods
                                         and rates.</p>
                                 </div>
                                 <div class="p-4 space-y-5">
                                     <div
-                                        class="flex items-center justify-between gap-4 p-4 rounded-xl border border-gray-200 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a10/30">
+                                        class="flex items-center justify-between gap-4 p-4 rounded-xl border border-gray-200 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
                                         <div>
                                             <p class="text-sm font-semibold text-gray-900 dark:text-white">Enable Global
                                                 Shipping</p>
@@ -727,14 +727,14 @@
                             <div
                                 class="bg-white dark:bg-surface-tonal-a20 rounded-lg border border-gray-200 dark:border-surface-tonal-a30 shadow-sm overflow-hidden">
                                 <div
-                                    class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
+                                    class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
                                     <h2 class="text-sm font-semibold text-gray-900 dark:text-white">Tax Configuration</h2>
                                     <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">VAT, GST and tax display
                                         rules.</p>
                                 </div>
                                 <div class="p-4 space-y-5">
                                     <div
-                                        class="flex items-center justify-between gap-4 p-4 rounded-xl border border-gray-200 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a10/30">
+                                        class="flex items-center justify-between gap-4 p-4 rounded-xl border border-gray-200 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
                                         <div>
                                             <p class="text-sm font-semibold text-gray-900 dark:text-white">Enable Tax
                                                 Calculations</p>
@@ -777,7 +777,7 @@
                             <div
                                 class="bg-white dark:bg-surface-tonal-a20 rounded-lg border border-gray-200 dark:border-surface-tonal-a30 shadow-sm overflow-hidden">
                                 <div
-                                    class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
+                                    class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
                                     <h2 class="text-sm font-semibold text-gray-900 dark:text-white">Payments & Checkout</h2>
                                     <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Payment methods and checkout
                                         preferences.</p>
@@ -850,7 +850,7 @@
                             <div
                                 class="bg-white dark:bg-surface-tonal-a20 rounded-lg border border-gray-200 dark:border-surface-tonal-a30 shadow-sm overflow-hidden">
                                 <div
-                                    class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
+                                    class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
                                     <h2 class="text-sm font-semibold text-gray-900 dark:text-white">Inventory & Order
                                         Management</h2>
                                 </div>
@@ -907,7 +907,7 @@
                             <div
                                 class="bg-white dark:bg-surface-tonal-a20 rounded-lg border border-gray-200 dark:border-surface-tonal-a30 shadow-sm overflow-hidden">
                                 <div
-                                    class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
+                                    class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
                                     <h2 class="text-sm font-semibold text-gray-900 dark:text-white">Customer Preferences
                                     </h2>
                                 </div>
@@ -940,7 +940,7 @@
                             <div
                                 class="bg-white dark:bg-surface-tonal-a20 rounded-lg border border-gray-200 dark:border-surface-tonal-a30 shadow-sm overflow-hidden">
                                 <div
-                                    class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
+                                    class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
                                     <h2 class="text-sm font-semibold text-gray-900 dark:text-white">Fashion & Store Features
                                     </h2>
                                 </div>
@@ -990,7 +990,7 @@
                             <div
                                 class="bg-white dark:bg-surface-tonal-a20 rounded-lg border border-gray-200 dark:border-surface-tonal-a30 shadow-sm overflow-hidden">
                                 <div
-                                    class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
+                                    class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
                                     <h2 class="text-sm font-semibold text-gray-900 dark:text-white">Marketing & Performance
                                     </h2>
                                 </div>
@@ -1018,7 +1018,7 @@
                             <div
                                 class="bg-white dark:bg-surface-tonal-a20 rounded-lg border border-gray-200 dark:border-surface-tonal-a30 shadow-sm overflow-hidden">
                                 <div
-                                    class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
+                                    class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
                                     <h2 class="text-sm font-semibold text-gray-900 dark:text-white">Social Connectivity</h2>
                                 </div>
                                 <div class="p-4 space-y-4">
@@ -1049,7 +1049,7 @@
                             <div
                                 class="bg-white dark:bg-surface-tonal-a20 rounded-lg border border-gray-200 dark:border-surface-tonal-a30 shadow-sm overflow-hidden">
                                 <div
-                                    class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
+                                    class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
                                     <h2 class="text-sm font-semibold text-gray-900 dark:text-white">Tracking & Intelligence
                                     </h2>
                                 </div>
@@ -1081,7 +1081,7 @@
                             <div
                                 class="bg-white dark:bg-surface-tonal-a20 rounded-lg border border-gray-200 dark:border-surface-tonal-a30 shadow-sm overflow-hidden">
                                 <div
-                                    class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
+                                    class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
                                     <h2 class="text-sm font-semibold text-gray-900 dark:text-white">Email Configuration</h2>
                                 </div>
                                 <div class="p-4 space-y-6">
@@ -1123,12 +1123,12 @@
                             <div
                                 class="bg-white dark:bg-surface-tonal-a20 rounded-lg border border-gray-200 dark:border-surface-tonal-a30 shadow-sm overflow-hidden">
                                 <div
-                                    class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
+                                    class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
                                     <h2 class="text-sm font-semibold text-gray-900 dark:text-white">System Governance</h2>
                                 </div>
                                 <div class="p-4 space-y-5">
                                     <div
-                                        class="flex items-center justify-between gap-4 p-4 rounded-xl border border-gray-200 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a10/30">
+                                        class="flex items-center justify-between gap-4 p-4 rounded-xl border border-gray-200 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
                                         <div>
                                             <p class="text-sm font-semibold text-gray-900 dark:text-white">Maintenance Mode
                                             </p>

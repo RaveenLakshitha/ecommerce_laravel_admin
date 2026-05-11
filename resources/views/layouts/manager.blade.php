@@ -9,7 +9,7 @@
 
     <title>@yield('title', 'Manager') | {{ $site_name ?? 'App' }}</title>
 
-    <link rel="icon" href="{{ $site_logo ?? asset('images/default-logo.png') }}" type="image/png">
+    <link rel="icon" href="{{ $store_favicon ?? asset('images/favicon.ico') }}" type="image/x-icon">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

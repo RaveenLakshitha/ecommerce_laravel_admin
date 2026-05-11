@@ -16,7 +16,8 @@
             <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
                 <div>
                     <h1 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                        {{ __('file.add_new_attribute') }}</h1>
+                        {{ __('file.add_new_attribute') }}
+                    </h1>
                     <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">{{ __('file.create_new_attribute_entry') }}</p>
                 </div>
                 <div class="flex items-center gap-3">
@@ -39,9 +40,10 @@
                         <div
                             class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                             <div
-                                class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
+                                class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
                                 <h2 class="text-sm font-bold text-gray-900 dark:text-white">
-                                    {{ __('file.attribute_details') }}</h2>
+                                    {{ __('file.attribute_details') }}
+                                </h2>
                             </div>
                             <div class="p-4 space-y-4">
                                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
@@ -50,7 +52,7 @@
                                             class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.attribute_name') }}</label>
                                         <input type="text" name="name" id="name" value="{{ old('name') }}" required
                                             placeholder="{{ __('file.eg_attributes') }}"
-                                            class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/50 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5">
+                                            class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/100 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5">
                                         @error('name')
                                             <p class="text-[10px] text-red-500 mt-1 font-bold px-1">{{ $message }}</p>
                                         @enderror
@@ -60,7 +62,7 @@
                                             class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.slug') }}</label>
                                         <input type="text" name="slug" id="slug" value="{{ old('slug') }}" required
                                             placeholder="{{ __('file.auto_generated') }}"
-                                            class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/50 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5 font-mono">
+                                            class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/100 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5 font-mono">
                                         @error('slug')
                                             <p class="text-[10px] text-red-500 mt-1 font-bold px-1">{{ $message }}</p>
                                         @enderror
@@ -90,7 +92,7 @@
                         <div
                             class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                             <div
-                                class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
+                                class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
                                 <h2 class="text-sm font-bold text-gray-900 dark:text-white">{{ __('file.configuration') }}
                                 </h2>
                             </div>
@@ -99,13 +101,17 @@
                                     <label
                                         class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.display_type') }}</label>
                                     <select name="type" id="type" required
-                                        class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/50 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5 cursor-pointer">
-                                        <option value="select" {{ old('type') == 'select' ? 'selected' : '' }}>{{ __('file.dropdown_selector') }}</option>
+                                        class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/100 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5 cursor-pointer">
+                                        <option value="select" {{ old('type') == 'select' ? 'selected' : '' }}>
+                                            {{ __('file.dropdown_selector') }}</option>
                                         <option value="color_swatch" {{ old('type') == 'color_swatch' ? 'selected' : '' }}>
-                                            {{ __('file.color_swatch') }}</option>
+                                            {{ __('file.color_swatch') }}
+                                        </option>
                                         <option value="image_swatch" {{ old('type') == 'image_swatch' ? 'selected' : '' }}>
-                                            {{ __('file.image_swatch') }}</option>
-                                        <option value="radio" {{ old('type') == 'radio' ? 'selected' : '' }}>{{ __('file.radio_buttons') }}
+                                            {{ __('file.image_swatch') }}
+                                        </option>
+                                        <option value="radio" {{ old('type') == 'radio' ? 'selected' : '' }}>
+                                            {{ __('file.radio_buttons') }}
                                         </option>
                                     </select>
                                     @error('type')
@@ -118,7 +124,7 @@
                                         class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.sort_order') }}</label>
                                     <input type="number" name="sort_order" id="sort_order"
                                         value="{{ old('sort_order', 0) }}" required min="0"
-                                        class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/50 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5">
+                                        class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/100 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5">
                                     @error('sort_order')
                                         <p class="text-[10px] text-red-500 mt-1 font-bold px-1">{{ $message }}</p>
                                     @enderror

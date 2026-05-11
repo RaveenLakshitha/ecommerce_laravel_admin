@@ -62,7 +62,9 @@
                     <div id="bulk-ids-container" class="hidden"></div>
                     <div class="flex items-center gap-4">
                         <div class="flex items-center gap-2">
-                            <span class="selection-count px-3 py-1 bg-red-100 dark:bg-red-500/20 text-red-700 dark:text-red-400 font-bold rounded-lg text-sm tabular-nums" id="selected-count">0</span>
+                            <span
+                                class="selection-count px-3 py-1 bg-red-100 dark:bg-red-500/20 text-red-700 dark:text-red-400 font-bold rounded-lg text-sm tabular-nums"
+                                id="selected-count">0</span>
                             <span
                                 class="text-sm font-medium text-red-900 dark:text-red-100 whitespace-nowrap">{{ __('file.users_selected') ?? 'Users Selected' }}</span>
                         </div>
@@ -110,7 +112,8 @@
             onclick="closeFilterDrawer()"></div>
         <div id="filter-panel"
             class="absolute inset-y-0 right-0 w-full md:max-w-lg bg-white dark:bg-surface-tonal-a20 shadow-2xl transform translate-x-full transition-transform duration-500 ease-in-out flex flex-col">
-            <div class="flex items-center justify-between px-8 py-5 border-b border-gray-100 dark:border-white/5 bg-gray-50/50 dark:bg-white/5">
+            <div
+                class="flex items-center justify-between px-8 py-5 border-b border-gray-100 dark:border-white/5 bg-gray-50/100 dark:bg-white/5">
                 <div>
                     <h3 class="text-xl font-bold text-gray-900 dark:text-white tracking-tight">Active Filters</h3>
                     <p class="text-sm font-medium text-primary-a0 mt-1">Refine
@@ -127,11 +130,10 @@
             <div class="flex-1 overflow-y-auto p-8 space-y-6 custom-scrollbar">
                 <div class="space-y-6">
                     <div>
-                        <label
-                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">System
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">System
                             Role</label>
                         <select id="filter-role"
-                            class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/50 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5 cursor-pointer">
+                            class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/100 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5 cursor-pointer">
                             <option value="">All Access Levels</option>
                             @foreach(\Spatie\Permission\Models\Role::all() as $role)
                                 <option value="{{ $role->name }}">{{ ucfirst($role->name) }}</option>
@@ -143,7 +145,7 @@
                         <label
                             class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.status') }}</label>
                         <select id="filter-status"
-                            class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/50 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5 cursor-pointer">
+                            class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/100 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5 cursor-pointer">
                             <option value="">Any Status</option>
                             <option value="1">Active</option>
                             <option value="0">Inactive</option>
@@ -152,19 +154,20 @@
 
                     <div class="pt-6 border-t border-gray-100 dark:border-white/5">
                         <p class="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-4">
-                            {{ __('file.date_range') ?? 'Date Range' }}</p>
+                            {{ __('file.date_range') ?? 'Date Range' }}
+                        </p>
                         <div class="grid grid-cols-2 gap-4">
                             <div>
                                 <label
                                     class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.from') ?? 'From' }}</label>
                                 <input type="date" id="filter-from"
-                                    class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/50 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5">
+                                    class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/100 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5">
                             </div>
                             <div>
                                 <label
                                     class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.to') ?? 'To' }}</label>
                                 <input type="date" id="filter-to"
-                                    class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/50 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5">
+                                    class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/100 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5">
                             </div>
                         </div>
                     </div>
@@ -172,7 +175,7 @@
             </div>
 
             <div
-                class="px-8 py-6 bg-gray-100/50 dark:bg-surface-tonal-a10 border-t border-gray-100 dark:border-white/5 flex gap-3">
+                class="px-8 py-6 bg-gray-50 dark:bg-surface-tonal-a10 border-t border-gray-100 dark:border-white/5 flex gap-3">
                 <button id="clear-filters"
                     class="flex-1 px-5 py-2.5 bg-white dark:bg-surface-tonal-a20 border border-gray-200 dark:border-white/10 rounded-xl text-sm font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-surface-tonal-a30 transition-all active:scale-[0.98]">
                     Reset
@@ -239,15 +242,15 @@
                             data: 'name',
                             render: function (data, type, row) {
                                 return `
-                                                        <div class="flex items-center gap-3 py-1">
-                                                            <div class="w-9 h-9 rounded-full bg-indigo-50 dark:bg-indigo-500/10 flex items-center justify-center text-indigo-600 dark:text-indigo-400 text-xs font-semibold border border-indigo-100 dark:border-indigo-500/20 flex-shrink-0">
-                                                                ${data.charAt(0)}
-                                                            </div>
-                                                            <div class="flex flex-col">
-                                                                <span class="text-sm font-bold text-gray-900 dark:text-white leading-tight">${data}</span>
-                                                                <span class="text-xs text-gray-400 font-medium tracking-tight">User</span>
-                                                            </div>
-                                                        </div>`;
+                                                                <div class="flex items-center gap-3 py-1">
+                                                                    <div class="w-9 h-9 rounded-full bg-indigo-50 dark:bg-indigo-500/10 flex items-center justify-center text-indigo-600 dark:text-indigo-400 text-xs font-semibold border border-indigo-100 dark:border-indigo-500/20 flex-shrink-0">
+                                                                        ${data.charAt(0)}
+                                                                    </div>
+                                                                    <div class="flex flex-col">
+                                                                        <span class="text-sm font-bold text-gray-900 dark:text-white leading-tight">${data}</span>
+                                                                        <span class="text-xs text-gray-400 font-medium tracking-tight">User</span>
+                                                                    </div>
+                                                                </div>`;
                             }
                         },
                         {
@@ -275,14 +278,14 @@
                             className: 'text-right whitespace-nowrap',
                             render: function (data, type, row) {
                                 return `
-                                                        <div class="flex items-center justify-end gap-1.5 px-3">
-                                                            <a href="${row.edit_url}" class="p-1.5 rounded-lg text-gray-400 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 transition-all" title="Edit">
-                                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
-                                                            </a>
-                                                            <button type="button" onclick="deleteUser(${row.id}, '${row.name.replace(/'/g, "\\'")}')" class="p-1.5 rounded-lg text-gray-400 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-all" title="Delete">
-                                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
-                                                            </button>
-                                                        </div>`;
+                                                                <div class="flex items-center justify-end gap-1.5 px-3">
+                                                                    <a href="${row.edit_url}" class="p-1.5 rounded-lg text-gray-400 hover:text-emerald-600 dark:hover:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 transition-all" title="Edit">
+                                                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                                                                    </a>
+                                                                    <button type="button" onclick="deleteUser(${row.id}, '${row.name.replace(/'/g, "\\'")}')" class="p-1.5 rounded-lg text-gray-400 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-all" title="Delete">
+                                                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                                                                    </button>
+                                                                </div>`;
                             }
                         }
                     ],

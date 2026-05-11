@@ -392,16 +392,21 @@
         ════════════════════════════════════════════════ */
         .collections-grid {
             display: grid;
-            grid-template-columns: 1.6fr 1fr 1fr;
-            grid-template-rows: 280px 220px;
             gap: 1px;
             background: var(--bg-4);
         }
+        .collections-grid.grid-count-1 { grid-template-columns: 1fr; grid-template-rows: 400px; }
+        .collections-grid.grid-count-2 { grid-template-columns: 1fr 1fr; grid-template-rows: 400px; }
+        .collections-grid.grid-count-3 { grid-template-columns: 1.6fr 1fr; grid-template-rows: 250px 250px; }
+        .collections-grid.grid-count-4 { grid-template-columns: 1fr 1fr; grid-template-rows: 280px 280px; }
+        .collections-grid.grid-count-5 { grid-template-columns: 1.6fr 1fr 1fr; grid-template-rows: 280px 220px; }
+
         .col-card {
             position: relative; overflow: hidden;
             background: var(--bg-3); cursor: pointer;
         }
-        .col-card:first-child { grid-row: 1 / 3; }
+        .grid-count-3 .col-card:first-child,
+        .grid-count-5 .col-card:first-child { grid-row: 1 / 3; }
         .col-bg {
             position: absolute; inset: 0;
             background-size: cover; background-position: center;
@@ -540,8 +545,13 @@
             .product-grid-4 { grid-template-columns: repeat(3, 1fr); }
             .product-grid-4 .p-card:nth-child(4n) { border-right: 1px solid var(--bg-4); }
             .product-grid-4 .p-card:nth-child(3n) { border-right: none; }
-            .collections-grid { grid-template-columns: 1fr 1fr; grid-template-rows: 300px 220px 220px; }
-            .col-card:first-child { grid-column: 1 / 3; grid-row: 1; }
+            .collections-grid.grid-count-1 { grid-template-columns: 1fr; grid-template-rows: 400px; }
+            .collections-grid.grid-count-2 { grid-template-columns: 1fr 1fr; grid-template-rows: 400px; }
+            .collections-grid.grid-count-3 { grid-template-columns: 1fr 1fr; grid-template-rows: 300px 250px; }
+            .collections-grid.grid-count-4 { grid-template-columns: 1fr 1fr; grid-template-rows: 250px 250px; }
+            .collections-grid.grid-count-5 { grid-template-columns: 1fr 1fr; grid-template-rows: 300px 220px 220px; }
+            .grid-count-3 .col-card:first-child,
+            .grid-count-5 .col-card:first-child { grid-column: 1 / 3; grid-row: 1; }
             .editorial-text { padding: 3.5rem 2.5rem; }
         }
         @media (max-width: 900px) {
@@ -562,8 +572,13 @@
             .product-grid-4 .p-card:nth-child(2n) { border-right: none; }
             .pg-sec, .pg-sec-alt { padding: 3.5rem 0; }
             .sec-wrap { padding: 0 1rem; }
-            .collections-grid { grid-template-columns: 1fr; grid-template-rows: 300px 220px 220px 220px; }
-            .col-card:first-child { grid-column: 1; grid-row: 1; }
+            .collections-grid { grid-template-columns: 1fr !important; }
+            .collections-grid.grid-count-1 { grid-template-rows: 300px; }
+            .collections-grid.grid-count-2 { grid-template-rows: 300px 300px; }
+            .collections-grid.grid-count-3 { grid-template-rows: 300px 250px 250px; }
+            .collections-grid.grid-count-4 { grid-template-rows: 300px 250px 250px 250px; }
+            .collections-grid.grid-count-5 { grid-template-rows: 300px 220px 220px 220px; }
+            .col-card:first-child { grid-column: 1 !important; grid-row: 1 !important; }
             .nl-inner { flex-direction: column; }
             .nl-form { max-width: 100%; width: 100%; }
         }
@@ -666,23 +681,7 @@
     </div>
     @endif
 
-    {{-- ═══════════════════════════════════════════════════
-         CATEGORY TABS
-    ═══════════════════════════════════════════════════ --}}
-    <div class="cat-bar">
-        <div class="cat-bar-inner">
-            <a class="cat-tab active" href="{{ route('frontend.products.index') }}">{{ __('file.all') }}
-                @php $totalProducts = $featuredCategories->sum('products_count'); @endphp
-                <span class="cat-count-chip">{{ $totalProducts }}</span>
-            </a>
-            @foreach($featuredCategories as $cat)
-                <a class="cat-tab" href="{{ route('frontend.products.index', ['category' => $cat->slug]) }}">
-                    {{ $cat->name }}
-                    <span class="cat-count-chip">{{ $cat->products_count }}</span>
-                </a>
-            @endforeach
-        </div>
-    </div>
+
 
     {{-- ═══════════════════════════════════════════════════
          NEW ARRIVALS
@@ -705,8 +704,8 @@
                     @php
                         $defaultVariant = $product->variants->where('is_default', true)->first()
                             ?? $product->variants->first();
-                        $displayPrice = $defaultVariant ? ($defaultVariant->sale_price ?? $defaultVariant->price) : $product->sale_price ?? $product->base_price;
-                        $originalPrice = ($defaultVariant && $defaultVariant->sale_price) ? $defaultVariant->price : ($product->sale_price ? $product->base_price : null);
+                        $displayPrice = $defaultVariant ? ($defaultVariant->sale_price ?? $defaultVariant->price) : $product->base_price;
+                        $originalPrice = ($defaultVariant && $defaultVariant->sale_price) ? $defaultVariant->price : null;
                         $imgUrl = $product->primaryImage
                             ? $product->primaryImage->url
                             : \Illuminate\Support\Facades\Blade::render("@placeholder($product->id)");
@@ -741,8 +740,13 @@
                                     <span class="p-price-was">@price($originalPrice)</span>
                                 @endif
                             </div>
-                            @if($displayPrice > 0)
-                                <p class="p-install">3 × <strong>@price($displayPrice / 3)</strong> &amp; up to <span class="cb">4% Cashback</span> with<span class="mintpay">MintPay</span></p>
+                            @php $discounts = $product->active_discount_rules; @endphp
+                            @if($discounts->isNotEmpty())
+                                <p class="p-install">
+                                    @foreach($discounts as $discount)
+                                        <span class="cb">{{ $discount->name }}</span>{!! !$loop->last ? ' &amp; ' : '' !!}
+                                    @endforeach
+                                </p>
                             @endif
                         </div>
                     </div>
@@ -801,7 +805,17 @@
             </div>
         </div>
         <div style="max-width:1600px;margin:0 auto;padding:0 2rem;">
-            <div class="collections-grid">
+            @php
+                $fallbackCols = [
+                    ['num' => 'Col. 01', 'name' => 'The Dark Edit', 'img' => 'https://images.unsplash.com/photo-1487222477894-8943e31ef7b2?w=900&q=80'],
+                    ['num' => 'Col. 02', 'name' => 'Street Ready', 'img' => 'https://images.unsplash.com/photo-1483985988355-763728e1935b?w=600&q=80'],
+                    ['num' => 'Col. 03', 'name' => 'Active Series', 'img' => 'https://images.unsplash.com/photo-1571945153237-4929e783af4a?w=600&q=80'],
+                    ['num' => 'Col. 04', 'name' => 'Classic Essentials', 'img' => 'https://images.unsplash.com/photo-1516826957135-700dedea698c?w=600&q=80'],
+                ];
+                $colCount = $featuredCollections->isNotEmpty() ? $featuredCollections->count() : count($fallbackCols);
+                $gridClass = $colCount >= 5 ? 'grid-count-5' : 'grid-count-' . $colCount;
+            @endphp
+            <div class="collections-grid {{ $gridClass }}">
                 @if($featuredCollections->isNotEmpty())
                     @foreach($featuredCollections as $i => $col)
                         @php
@@ -826,12 +840,6 @@
                     @endforeach
                 @else
                     {{-- Fallback static collections when none configured in admin --}}
-                    @php $fallbackCols = [
-                        ['num' => 'Col. 01', 'name' => 'The Dark Edit', 'img' => 'https://images.unsplash.com/photo-1487222477894-8943e31ef7b2?w=900&q=80'],
-                        ['num' => 'Col. 02', 'name' => 'Street Ready', 'img' => 'https://images.unsplash.com/photo-1483985988355-763728e1935b?w=600&q=80'],
-                        ['num' => 'Col. 03', 'name' => 'Active Series', 'img' => 'https://images.unsplash.com/photo-1571945153237-4929e783af4a?w=600&q=80'],
-                        ['num' => 'Col. 04', 'name' => 'Classic Essentials', 'img' => 'https://images.unsplash.com/photo-1516826957135-700dedea698c?w=600&q=80'],
-                    ]; @endphp
                     @foreach($fallbackCols as $c)
                         <div class="col-card reveal">
                             <div class="col-bg" style="background-image: url('{{ $c['img'] }}');"></div>
@@ -870,8 +878,8 @@
                     @php
                         $defaultVariant = $product->variants->where('is_default', true)->first()
                             ?? $product->variants->first();
-                        $displayPrice = $defaultVariant ? ($defaultVariant->sale_price ?? $defaultVariant->price) : $product->sale_price ?? $product->base_price;
-                        $originalPrice = ($defaultVariant && $defaultVariant->sale_price) ? $defaultVariant->price : ($product->sale_price ? $product->base_price : null);
+                        $displayPrice = $defaultVariant ? ($defaultVariant->sale_price ?? $defaultVariant->price) : $product->base_price;
+                        $originalPrice = ($defaultVariant && $defaultVariant->sale_price) ? $defaultVariant->price : null;
                         $imgUrl = $product->primaryImage
                             ? $product->primaryImage->url
                             : \Illuminate\Support\Facades\Blade::render("@placeholder($product->id)");
@@ -908,8 +916,13 @@
                                     <span class="p-price-was">@price($originalPrice)</span>
                                 @endif
                             </div>
-                            @if($displayPrice > 0)
-                                <p class="p-install">3 × <strong>@price($displayPrice / 3)</strong> &amp; up to <span class="cb">4% Cashback</span> with<span class="mintpay">MintPay</span></p>
+                            @php $discounts = $product->active_discount_rules; @endphp
+                            @if($discounts->isNotEmpty())
+                                <p class="p-install">
+                                    @foreach($discounts as $discount)
+                                        <span class="cb">{{ $discount->name }}</span>{!! !$loop->last ? ' &amp; ' : '' !!}
+                                    @endforeach
+                                </p>
                             @endif
                         </div>
                     </div>

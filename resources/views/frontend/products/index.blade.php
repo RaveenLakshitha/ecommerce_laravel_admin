@@ -16,7 +16,7 @@
             --font-display: 'Oswald', 'Arial Narrow', sans-serif;
             --font-body: 'Barlow', sans-serif;
             --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-            --sidebar-w: 230px;
+            --sidebar-w: 260px;
         }
 
         /* ════════════════════════════════════════════════
@@ -1065,16 +1065,29 @@
         /* ════════════════════════════════════════════════
            PAGINATION
         ════════════════════════════════════════════════ */
+        .custom-pagination-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            border-top: 1px solid var(--bg-4);
+        }
+
         .pagination {
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 0;
-            padding: 2rem;
-            border-top: 1px solid var(--bg-4);
+            list-style: none;
+            padding: 0;
+            margin: 0;
         }
 
-        .page-btn {
+        .page-item {
+            margin: 0;
+        }
+
+        .page-link, .page-item span.page-link {
             width: 40px;
             height: 40px;
             background: none;
@@ -1082,37 +1095,36 @@
             color: var(--dim);
             cursor: pointer;
             font-family: var(--font-display);
-            font-size: 0.65rem;
+            font-size: 0.8rem;
             font-weight: 600;
             letter-spacing: 0.1em;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: all 0.2s;
+            text-decoration: none;
         }
 
-        .page-btn+.page-btn {
+        .page-item:not(:first-child) .page-link, .page-item:not(:first-child) span.page-link {
             border-left: none;
         }
 
-        .page-btn:hover {
+        .page-link:hover, .page-item span.page-link:hover {
             background: var(--bg-3);
             color: var(--silver);
+            text-decoration: none;
         }
 
-        .page-btn.active {
+        .page-item.active .page-link, .page-item.active span.page-link {
             background: var(--gold);
             color: var(--bg);
             border-color: var(--gold);
         }
 
-        .page-btn.arrow {
-            color: var(--silver);
-        }
-
-        .page-btn.arrow:hover {
-            color: var(--gold);
-            border-color: var(--gold);
+        .page-item.disabled .page-link, .page-item.disabled span.page-link {
+            color: var(--bg-4);
+            cursor: not-allowed;
+            background: none;
         }
 
         /* ════════════════════════════════════════════════
@@ -1120,7 +1132,7 @@
         ════════════════════════════════════════════════ */
         @media (max-width: 1100px) {
             .shop-page {
-                grid-template-columns: 200px 1fr;
+                grid-template-columns: 240px 1fr;
             }
 
             .prod-grid {
@@ -1295,14 +1307,14 @@
                 @php
                     $filterCount = (request()->has('colors') ? count(request('colors')) : 0) +
                                    (request()->has('sizes') ? count(request('sizes')) : 0) +
-                                   (request('max_price') && request('max_price') != 15000 ? 1 : 0);
+                                   (request('max_price') && request('max_price') != $maxPriceAvailable ? 1 : 0);
                 @endphp
                 <span class="filter-active-count {{ $filterCount > 0 ? 'visible' : '' }}" id="activeCount">{{ $filterCount }}</span>
             </div>
 
             {{-- Availability --}}
             <div class="filter-grp">
-                <button class="filter-btn open" onclick="toggleFilter(this)">
+                <button type="button" class="filter-btn open" onclick="toggleFilter(this)">
                     Availability
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
                         stroke-linecap="round" stroke-linejoin="round">
@@ -1321,7 +1333,7 @@
 
             {{-- Price --}}
             <div class="filter-grp">
-                <button class="filter-btn open" onclick="toggleFilter(this)">
+                <button type="button" class="filter-btn open" onclick="toggleFilter(this)">
                     Price
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
                         stroke-linecap="round" stroke-linejoin="round">
@@ -1331,18 +1343,19 @@
                 <div class="filter-body open">
                     <div class="price-wrap">
                         <div class="price-vals">
-                            <span>{{ $currency_symbol }} 500</span>
-                            <span id="priceDisplay">{{ $currency_symbol }} {{ number_format(request('max_price', 15000)) }}</span>
+                            <span>{{ $currency_symbol }} {{ number_format($minPriceAvailable) }}</span>
+                            <span id="priceDisplay">{{ $currency_symbol }} {{ number_format(request('max_price', $maxPriceAvailable)) }}</span>
                         </div>
-                        <input class="price-range" type="range" name="max_price" min="500" max="15000" value="{{ request('max_price', 15000) }}" step="100"
+                        <input class="price-range" type="range" name="max_price" min="{{ floor($minPriceAvailable) }}" max="{{ ceil($maxPriceAvailable) }}" value="{{ request('max_price', $maxPriceAvailable) }}" step="1"
                             oninput="document.getElementById('priceDisplay').textContent='{{ $currency_symbol }} '+parseInt(this.value).toLocaleString()" onchange="this.form.submit()">
                     </div>
                 </div>
             </div>
 
             {{-- Color --}}
+            @if(isset($colors) && count($colors) > 0)
             <div class="filter-grp">
-                <button class="filter-btn open" onclick="toggleFilter(this)">
+                <button type="button" class="filter-btn open" onclick="toggleFilter(this)">
                     Color
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
                         stroke-linecap="round" stroke-linejoin="round">
@@ -1355,17 +1368,19 @@
                             @php
                                 $sc = $colorMap->value ?? '#000000';
                             @endphp
-                            <label class="cf-sw {{ in_array($colorMap->slug, request('colors', [])) ? 'on' : '' }}" style="background:{{ $sc }};" title="{{ $colorMap->name }}">
+                            <label class="cf-sw {{ in_array($colorMap->slug, request('colors', [])) ? 'on' : '' }}" style="background:{{ $sc }};" title="{{ $colorMap->value }}">
                                 <input type="checkbox" name="colors[]" value="{{ $colorMap->slug }}" class="d-none" onchange="this.form.submit()" {{ in_array($colorMap->slug, request('colors', [])) ? 'checked' : '' }} style="display:none;">
                             </label>
                         @endforeach
                     </div>
                 </div>
             </div>
+            @endif
 
             {{-- Size --}}
+            @if(isset($sizes) && count($sizes) > 0)
             <div class="filter-grp">
-                <button class="filter-btn open" onclick="toggleFilter(this)">
+                <button type="button" class="filter-btn open" onclick="toggleFilter(this)">
                     Size
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
                         stroke-linecap="round" stroke-linejoin="round">
@@ -1377,34 +1392,18 @@
                         @foreach($sizes as $sz)
                             <label class="sz-btn {{ in_array($sz->slug, request('sizes', [])) ? 'on' : '' }}" style="cursor: pointer;">
                                 <input type="checkbox" name="sizes[]" value="{{ $sz->slug }}" onchange="this.form.submit()" {{ in_array($sz->slug, request('sizes', [])) ? 'checked' : '' }} style="display:none;">
-                                {{ $sz->name }}
+                                {{ $sz->value }}
                             </label>
                         @endforeach
                     </div>
                 </div>
             </div>
-
-            {{-- Product Type --}}
-            <div class="filter-grp">
-                <button class="filter-btn" onclick="toggleFilter(this)">
-                    Product Type
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                        stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="6 9 12 15 18 9" />
-                    </svg>
-                </button>
-                <div class="filter-body">
-                    @foreach(['T-Shirts' => 18, 'Polo Shirts' => 8, 'Jeans' => 10, 'Chinos' => 7, 'Activewear' => 9, 'Shirts' => 6] as $type
-                        => $cnt)
-                        <label class="f-opt"><input class="f-cb" type="checkbox" onchange="updateFilters()"><span
-                                class="f-label">{{ $type }}</span><span class="f-ct">({{ $cnt }})</span></label>
-                    @endforeach
-                </div>
-            </div>
+            @endif
 
             {{-- Category --}}
+            @if(isset($categories) && count($categories) > 0)
             <div class="filter-grp">
-                <button class="filter-btn" onclick="toggleFilter(this)">
+                <button type="button" class="filter-btn" onclick="toggleFilter(this)">
                     Category
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
                         stroke-linecap="round" stroke-linejoin="round">
@@ -1416,38 +1415,44 @@
                         <label class="f-opt">
                             <input class="f-cb" type="checkbox" onchange="window.location.href='{{ route('frontend.products.index', ['category' => $catObj->slug]) }}'" {{ request('category') == $catObj->slug ? 'checked' : '' }}>
                             <span class="f-label">{{ $catObj->name }}</span>
-                            <span class="f-ct">({{ $catObj->products()->count() }})</span>
+                            <span class="f-ct">({{ $catObj->products_count }})</span>
                         </label>
                     @endforeach
                 </div>
             </div>
+            @endif
 
-            {{-- Clothing Features --}}
-            <div class="filter-grp">
-                <button class="filter-btn" onclick="toggleFilter(this)">
-                    Clothing Features
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                        stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="6 9 12 15 18 9" />
-                    </svg>
-                </button>
-                <div class="filter-body">
-                    @foreach([
-                            'Slim Fit',
-                            'Regular Fit',
-                            'Moisture Wicking',
-                            'Anti-Odour',
-                            'Stretch',
-                            '100% Cotton', 'UV
-                                        Protection'
-                        ] as $feat)
-                        <label class="f-opt"><input class="f-cb" type="checkbox" onchange="updateFilters()"><span
-                                class="f-label">{{ $feat }}</span></label>
-                    @endforeach
+            {{-- Other Dynamic Attributes --}}
+            @if(isset($otherAttributes) && count($otherAttributes) > 0)
+                @foreach($otherAttributes as $attr)
+                <div class="filter-grp">
+                    <button type="button" class="filter-btn" onclick="toggleFilter(this)">
+                        {{ $attr->name }}
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9" />
+                        </svg>
+                    </button>
+                    <div class="filter-body">
+                        @foreach($attr->values as $val)
+                            <label class="f-opt">
+                                @php
+                                    $isChecked = false;
+                                    if (request()->has('attributes') && isset(request('attributes')[$attr->slug])) {
+                                        $isChecked = in_array($val->slug, request('attributes')[$attr->slug]);
+                                    }
+                                @endphp
+                                <input class="f-cb" type="checkbox" name="attributes[{{ $attr->slug }}][]" value="{{ $val->slug }}" onchange="this.form.submit()" {{ $isChecked ? 'checked' : '' }}>
+                                <span class="f-label">{{ $val->value }}</span>
+                                <span class="f-ct">({{ $val->variants_count }})</span>
+                            </label>
+                        @endforeach
+                    </div>
                 </div>
-            </div>
+                @endforeach
+            @endif
 
-            <button class="sidebar-clear-all" onclick="clearAll()">✕ &nbsp;Clear All Filters</button>
+            <button type="button" class="sidebar-clear-all" onclick="clearAll()">✕ &nbsp;Clear All Filters</button>
         </aside>
 
         {{-- ════════ PRODUCTS MAIN ════════ --}}
@@ -1514,11 +1519,11 @@
 
             {{-- Active filter chips --}}
             @php
-                $hasActiveFilters = request()->hasAny(['colors', 'sizes', 'sort']) || request('max_price') != 15000;
+                $hasActiveFilters = request()->hasAny(['colors', 'sizes', 'sort']) || (request('max_price') && request('max_price') != $maxPriceAvailable);
             @endphp
             <div class="active-filters {{ $hasActiveFilters ? 'show' : '' }}" id="activeFilters">
                 <span class="af-label">Active:</span>
-                @if(request('max_price') && request('max_price') != 15000)
+                @if(request('max_price') && request('max_price') != $maxPriceAvailable)
                     <span class="af-chip">Max Price: {{ $currency_symbol }}{{ number_format(request('max_price')) }}</span>
                 @endif
                 @if(request('colors'))
@@ -1560,7 +1565,15 @@
                                 <p class="p-brand">{{ $p->brand->name ?? 'Karbnzol' }}</p>
                                 <p class="p-name">{{ $p->name }}</p>
                                 <div class="p-price-row">
-                                    <span class="p-price">@price($p->base_price)</span>
+                                    @php
+                                        $defaultVariant = $p->variants->where('is_default', true)->first() ?? $p->variants->first();
+                                        $displayPrice = $defaultVariant ? ($defaultVariant->sale_price ?? $defaultVariant->price) : $p->base_price;
+                                        $originalPrice = ($defaultVariant && $defaultVariant->sale_price) ? $defaultVariant->price : null;
+                                    @endphp
+                                    <span class="p-price">@price($displayPrice)</span>
+                                    @if($originalPrice)
+                                        <span class="p-was">@price($originalPrice)</span>
+                                    @endif
                                 </div>
                                 <div class="p-swatches">
                                     @php
@@ -1571,7 +1584,7 @@
                                         })->unique('id');
                                     @endphp
                                     @foreach($varColors as $c)
-                                        <span class="p-sw" style="background:{{ $c->value ?? '#ccc' }};" title="{{ $c->name }}"></span>
+                                        <span class="p-sw" style="background:{{ $c->value ?? '#ccc' }};" title="{{ $c->value }}"></span>
                                     @endforeach
                                 </div>
                                 <span class="list-cta">
@@ -1588,7 +1601,7 @@
             </div>
 
             {{-- Pagination --}}
-            <nav class="pagination" aria-label="Page navigation" style="display:block;">
+            <nav class="custom-pagination-wrapper" aria-label="Page navigation" style="display:block; text-align:center;">
                 {{ $products->links('pagination::bootstrap-4') }}
             </nav>
         </div>

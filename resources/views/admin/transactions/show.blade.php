@@ -93,7 +93,7 @@
                     <div
                         class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                         <div
-                            class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
+                            class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
                             <h3 class="text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wider">
                                 {{ __('file.financial_telemetry') }}</h3>
                         </div>
@@ -112,7 +112,7 @@
                                     <span
                                         class="text-xs font-semibold text-gray-400 uppercase tracking-wider block mb-1">{{ __('file.gateway_protocol') }}</span>
                                     <div
-                                        class="px-3 py-1.5 rounded-md bg-gray-100/50 dark:bg-surface-tonal-a30/50 border border-gray-100 dark:border-surface-tonal-a30 inline-flex items-center gap-2">
+                                        class="px-3 py-1.5 rounded-md bg-gray-50 dark:bg-surface-tonal-a10 border border-gray-100 dark:border-surface-tonal-a30 inline-flex items-center gap-2">
                                         <span
                                             class="text-[11px] font-black text-gray-900 dark:text-white uppercase tracking-tighter">{{ $transaction->gateway }}</span>
                                     </div>
@@ -121,7 +121,7 @@
                                     <span
                                         class="text-xs font-semibold text-gray-400 uppercase tracking-wider block mb-1">{{ __('file.instrument_class') }}</span>
                                     <div
-                                        class="px-3 py-1.5 rounded-md bg-gray-100/50 dark:bg-surface-tonal-a30/50 border border-gray-100 dark:border-surface-tonal-a30 inline-flex items-center gap-2 text-indigo-500">
+                                        class="px-3 py-1.5 rounded-md bg-gray-50 dark:bg-surface-tonal-a10 border border-gray-100 dark:border-surface-tonal-a30 inline-flex items-center gap-2 text-indigo-500">
                                         <span
                                             class="text-[11px] font-black uppercase tracking-tighter">{{ $transaction->payment_type }}</span>
                                     </div>
@@ -160,7 +160,7 @@
                     <div
                         class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                         <div
-                            class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
+                            class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
                             <h3 class="text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wider">
                                 {{ __('file.relational_integrity') }}</h3>
                         </div>

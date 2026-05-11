@@ -40,34 +40,39 @@ class AppServiceProvider extends ServiceProvider
             $setting = new Setting();
         }
 
+        // Set application name from settings
+        if ($setting->site_name) {
+            config(['app.name' => $setting->site_name]);
+        }
+
         // Share global view variables for the clothing store
         View::share([
             // Store branding
-            'store_name' => $setting->store_name ?? config('app.name', 'Your Clothing Store'),
+            'store_name' => $setting->site_name ?? config('app.name', 'Your Clothing Store'),
             'store_tagline' => $setting->tagline ?? 'Trendy Fashion for Everyone',
 
             // Site variables for admin layout
             'site_name' => $setting->site_name ?? config('app.name', 'Your Site Name'),
-            'site_logo' => !empty($setting->logo_path)
-                ? Storage::url($setting->logo_path)
-                : asset('images/default-logo.png'),
+            'site_logo' => !empty($setting->site_logo)
+                ? asset('storage/' . $setting->site_logo)
+                : null,
             'site_address' => $setting->address ?? 'No. 45, Main Street, Colombo 03, Sri Lanka',
-            'site_phone' => $setting->phone ?? '+94 11 234 5678',
-            'site_email' => $setting->email ?? 'support@yourstore.lk',
+            'site_phone' => $setting->contact_phone ?? $setting->phone ?? '+94 11 234 5678',
+            'site_email' => $setting->contact_email ?? $setting->email ?? 'support@yourstore.lk',
 
             // Contact information
-            'store_email' => $setting->email ?? 'support@yourstore.lk',
-            'store_phone' => $setting->phone ?? '+94 11 234 5678',
+            'store_email' => $setting->contact_email ?? $setting->email ?? 'support@yourstore.lk',
+            'store_phone' => $setting->contact_phone ?? $setting->phone ?? '+94 11 234 5678',
             'store_address' => $setting->address ?? 'No. 45, Main Street, Colombo 03, Sri Lanka',
             'store_whatsapp' => $setting->whatsapp ?? '+94 77 123 4567',
 
             // Branding assets
-            'store_logo' => !empty($setting->logo_path)
-                ? Storage::url($setting->logo_path)
+            'store_logo' => !empty($setting->site_logo)
+                ? asset('storage/' . $setting->site_logo)
                 : asset('images/default-logo.png'),
 
-            'store_favicon' => !empty($setting->favicon_path)
-                ? Storage::url($setting->favicon_path)
+            'store_favicon' => !empty($setting->site_favicon)
+                ? asset('storage/' . $setting->site_favicon)
                 : asset('images/favicon.ico'),
 
             // Visual styling
@@ -89,14 +94,19 @@ class AppServiceProvider extends ServiceProvider
             'storefront_trust_items' => $setting->storefront_trust_items,
             'storefront_logo_text'   => $setting->storefront_logo_text,
             'storefront_logo_subtext' => $setting->storefront_logo_subtext,
+            'storefront_use_logo_text' => $setting->storefront_use_logo_text,
 
             // SEO & Metadata
             'meta_title' => $setting->meta_title ?? $setting->site_title ?? $setting->site_name ?? config('app.name'),
             'meta_description' => $setting->meta_description ?? $setting->site_description ?? '',
             'meta_keywords' => $setting->meta_keywords ?? '',
-            'og_image' => !empty($setting->og_image) ? Storage::url($setting->og_image) : (!empty($setting->logo_path) ? Storage::url($setting->logo_path) : asset('images/default-logo.png')),
+            'og_image' => !empty($setting->og_image) ? asset('storage/' . $setting->og_image) : (!empty($setting->site_logo) ? asset('storage/' . $setting->site_logo) : asset('images/default-logo.png')),
 
             // Business info
+            'store_city' => $setting->city,
+            'store_state' => $setting->state,
+            'store_country' => $setting->country,
+            'store_postal_code' => $setting->postal_code,
             'free_shipping_threshold' => $setting->free_shipping_threshold ?? 5000,
             'shipping_cost_per_order' => $setting->shipping_cost_per_order ?? 0,
             'return_period_days' => $setting->return_period_days ?? 14,

@@ -45,6 +45,7 @@ class StorefrontController extends Controller
             'storefront_our_story_show' => 'nullable|boolean',
             'storefront_stats_show' => 'nullable|boolean',
             'storefront_trust_show' => 'nullable|boolean',
+            'storefront_use_logo_text' => 'nullable|boolean',
 
             'storefront_stats' => 'nullable|array',
             'storefront_stats.*.number' => 'nullable|string|max:20',
@@ -80,12 +81,14 @@ class StorefrontController extends Controller
             'storefront_trust_items',
             'storefront_our_story_show',
             'storefront_stats_show',
-            'storefront_trust_show'
+            'storefront_trust_show',
+            'storefront_use_logo_text'
         ]);
 
         $data['storefront_our_story_show'] = $request->boolean('storefront_our_story_show');
         $data['storefront_stats_show'] = $request->boolean('storefront_stats_show');
         $data['storefront_trust_show'] = $request->boolean('storefront_trust_show');
+        $data['storefront_use_logo_text'] = $request->boolean('storefront_use_logo_text');
 
         if ($request->hasFile('storefront_our_story_image')) {
             // Delete old image if exists

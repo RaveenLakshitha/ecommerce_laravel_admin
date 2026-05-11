@@ -49,7 +49,7 @@
                                     <span class="text-rose-500">*</span></label>
                                 <input type="text" name="site_name" value="{{ old('site_name', $setting->site_name) }}"
                                     required
-                                    class="block w-full px-5 py-4 bg-gray-100/50 dark:bg-surface-tonal-a30/50 border border-gray-100 dark:border-surface-tonal-a30 rounded-2xl text-sm font-black text-gray-900 dark:text-white uppercase tracking-tighter focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all shadow-inner">
+                                    class="block w-full px-5 py-4 bg-gray-50 dark:bg-surface-tonal-a10 border border-gray-100 dark:border-surface-tonal-a30 rounded-2xl text-sm font-black text-gray-900 dark:text-white uppercase tracking-tighter focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all shadow-inner">
                                 @error('site_name') <p
                                     class="text-[10px] font-black text-rose-500 uppercase tracking-widest mt-1">
                                 {{ $message }}</p> @enderror
@@ -59,7 +59,7 @@
                                     class="block text-[10px] font-black text-gray-400 uppercase tracking-widest">{{ __('file.site_id') }}
                                     <span class="text-rose-500">*</span></label>
                                 <input type="text" name="site_id" value="{{ old('site_id', $setting->site_id) }}" required
-                                    class="block w-full px-5 py-4 bg-gray-100/50 dark:bg-surface-tonal-a30/50 border border-gray-100 dark:border-surface-tonal-a30 rounded-2xl text-sm font-bold text-gray-500 dark:text-gray-400 focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all shadow-inner">
+                                    class="block w-full px-5 py-4 bg-gray-50 dark:bg-surface-tonal-a10 border border-gray-100 dark:border-surface-tonal-a30 rounded-2xl text-sm font-bold text-gray-500 dark:text-gray-400 focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all shadow-inner">
                             </div>
                         </div>
 
@@ -69,14 +69,14 @@
                                     class="block text-[10px] font-black text-gray-400 uppercase tracking-widest">{{ __('file.email_address') }}
                                     <span class="text-rose-500">*</span></label>
                                 <input type="email" name="email" value="{{ old('email', $setting->email) }}" required
-                                    class="block w-full px-5 py-4 bg-gray-100/50 dark:bg-surface-tonal-a30/50 border border-gray-100 dark:border-surface-tonal-a30 rounded-2xl text-sm font-bold text-gray-700 dark:text-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all shadow-inner">
+                                    class="block w-full px-5 py-4 bg-gray-50 dark:bg-surface-tonal-a10 border border-gray-100 dark:border-surface-tonal-a30 rounded-2xl text-sm font-bold text-gray-700 dark:text-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all shadow-inner">
                             </div>
                             <div class="space-y-3">
                                 <label
                                     class="block text-[10px] font-black text-gray-400 uppercase tracking-widest">{{ __('file.phone_number') }}
                                     <span class="text-rose-500">*</span></label>
                                 <input type="text" name="phone" value="{{ old('phone', $setting->phone) }}" required
-                                    class="block w-full px-5 py-4 bg-gray-100/50 dark:bg-surface-tonal-a30/50 border border-gray-100 dark:border-surface-tonal-a30 rounded-2xl text-sm font-black text-gray-900 dark:text-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all shadow-inner">
+                                    class="block w-full px-5 py-4 bg-gray-50 dark:bg-surface-tonal-a10 border border-gray-100 dark:border-surface-tonal-a30 rounded-2xl text-sm font-black text-gray-900 dark:text-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all shadow-inner">
                             </div>
                         </div>
 
@@ -85,7 +85,7 @@
                                 class="block text-[10px] font-black text-gray-400 uppercase tracking-widest">{{ __('file.address') }}
                                 <span class="text-rose-500">*</span></label>
                             <textarea name="address" rows="3" required
-                                class="block w-full px-5 py-4 bg-gray-100/50 dark:bg-surface-tonal-a30/50 border border-gray-100 dark:border-surface-tonal-a30 rounded-2xl text-sm font-medium text-gray-700 dark:text-gray-300 focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all shadow-inner resize-none">{{ old('address', $setting->address) }}</textarea>
+                                class="block w-full px-5 py-4 bg-gray-50 dark:bg-surface-tonal-a10 border border-gray-100 dark:border-surface-tonal-a30 rounded-2xl text-sm font-medium text-gray-700 dark:text-gray-300 focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all shadow-inner resize-none">{{ old('address', $setting->address) }}</textarea>
                         </div>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -93,13 +93,13 @@
                                 <label
                                     class="block text-[10px] font-black text-gray-400 uppercase tracking-widest">{{ __('file.website') }}</label>
                                 <input type="url" name="website" value="{{ old('website', $setting->website) }}"
-                                    class="block w-full px-5 py-4 bg-gray-100/50 dark:bg-surface-tonal-a30/50 border border-gray-100 dark:border-surface-tonal-a30 rounded-2xl text-sm font-bold text-indigo-600 dark:text-indigo-400 focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all shadow-inner">
+                                    class="block w-full px-5 py-4 bg-gray-50 dark:bg-surface-tonal-a10 border border-gray-100 dark:border-surface-tonal-a30 rounded-2xl text-sm font-bold text-indigo-600 dark:text-indigo-400 focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all shadow-inner">
                             </div>
                             <div class="space-y-3">
                                 <label
                                     class="block text-[10px] font-black text-gray-400 uppercase tracking-widest">{{ __('file.tax_id') }}</label>
                                 <input type="text" name="tax_id" value="{{ old('tax_id', $setting->tax_id) }}"
-                                    class="block w-full px-5 py-4 bg-gray-100/50 dark:bg-surface-tonal-a30/50 border border-gray-100 dark:border-surface-tonal-a30 rounded-2xl text-sm font-bold text-gray-500 dark:text-gray-400 focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all shadow-inner">
+                                    class="block w-full px-5 py-4 bg-gray-50 dark:bg-surface-tonal-a10 border border-gray-100 dark:border-surface-tonal-a30 rounded-2xl text-sm font-bold text-gray-500 dark:text-gray-400 focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all shadow-inner">
                             </div>
                         </div>
                     </div>
@@ -120,7 +120,7 @@
                                     class="block text-[10px] font-black text-gray-400 uppercase tracking-widest">{{ __('file.timezone') }}
                                     <span class="text-rose-500">*</span></label>
                                 <select name="timezone" required
-                                    class="block w-full px-5 py-4 bg-gray-100/50 dark:bg-surface-tonal-a30/50 border border-gray-100 dark:border-surface-tonal-a30 rounded-2xl text-[11px] font-black text-gray-900 dark:text-white uppercase tracking-widest focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all shadow-inner appearance-none cursor-pointer">
+                                    class="block w-full px-5 py-4 bg-gray-50 dark:bg-surface-tonal-a10 border border-gray-100 dark:border-surface-tonal-a30 rounded-2xl text-[11px] font-black text-gray-900 dark:text-white uppercase tracking-widest focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all shadow-inner appearance-none cursor-pointer">
                                     @foreach(\DateTimeZone::listIdentifiers() as $tz)
                                         <option value="{{ $tz }}" {{ $setting->timezone == $tz ? 'selected' : '' }}>{{ $tz }}
                                         </option>
@@ -131,7 +131,7 @@
                                 <label
                                     class="block text-[10px] font-black text-gray-400 uppercase tracking-widest">{{ __('file.date_format') }}</label>
                                 <select name="date_format" required
-                                    class="block w-full px-5 py-4 bg-gray-100/50 dark:bg-surface-tonal-a30/50 border border-gray-100 dark:border-surface-tonal-a30 rounded-2xl text-[11px] font-black text-gray-900 dark:text-white uppercase tracking-widest focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all shadow-inner appearance-none cursor-pointer">
+                                    class="block w-full px-5 py-4 bg-gray-50 dark:bg-surface-tonal-a10 border border-gray-100 dark:border-surface-tonal-a30 rounded-2xl text-[11px] font-black text-gray-900 dark:text-white uppercase tracking-widest focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all shadow-inner appearance-none cursor-pointer">
                                     <option value="MM/DD/YYYY" {{ $setting->date_format == 'MM/DD/YYYY' ? 'selected' : '' }}>
                                         MM / DD / YYYY</option>
                                     <option value="DD/MM/YYYY" {{ $setting->date_format == 'DD/MM/YYYY' ? 'selected' : '' }}>
@@ -144,7 +144,7 @@
                                 <label
                                     class="block text-[10px] font-black text-gray-400 uppercase tracking-widest">{{ __('file.time_format') }}</label>
                                 <select name="time_format" required
-                                    class="block w-full px-5 py-4 bg-gray-100/50 dark:bg-surface-tonal-a30/50 border border-gray-100 dark:border-surface-tonal-a30 rounded-2xl text-[11px] font-black text-gray-900 dark:text-white uppercase tracking-widest focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all shadow-inner appearance-none cursor-pointer">
+                                    class="block w-full px-5 py-4 bg-gray-50 dark:bg-surface-tonal-a10 border border-gray-100 dark:border-surface-tonal-a30 rounded-2xl text-[11px] font-black text-gray-900 dark:text-white uppercase tracking-widest focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all shadow-inner appearance-none cursor-pointer">
                                     <option value="12-hour" {{ $setting->time_format == '12-hour' ? 'selected' : '' }}>12 -
                                         HOUR (AM/PM)</option>
                                     <option value="24-hour" {{ $setting->time_format == '24-hour' ? 'selected' : '' }}>24 -
@@ -209,7 +209,7 @@
                                     class="block text-[10px] font-black text-gray-400 uppercase tracking-widest">{{ __('file.currency_code') }}
                                     <span class="text-rose-500">*</span></label>
                                 <select name="currency" required x-model="selected" @change="updateSymbol()"
-                                    class="block w-full px-5 py-4 bg-gray-100/50 dark:bg-surface-tonal-a30/50 border border-gray-100 dark:border-surface-tonal-a30 rounded-2xl text-sm font-bold text-gray-900 dark:text-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all shadow-inner appearance-none cursor-pointer">
+                                    class="block w-full px-5 py-4 bg-gray-50 dark:bg-surface-tonal-a10 border border-gray-100 dark:border-surface-tonal-a30 rounded-2xl text-sm font-bold text-gray-900 dark:text-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all shadow-inner appearance-none cursor-pointer">
                                     <template x-for="c in currencies" :key="c.code">
                                         <option :value="c.code" :selected="c.code === selected"
                                             x-text="c.code + ' (' + c.symbol + ') — ' + c.name"></option>
@@ -240,16 +240,16 @@
                                 <label
                                     class="block text-[10px] font-black text-gray-400 uppercase tracking-widest">{{ __('file.site_logo') }}</label>
                                 <div class="flex flex-col gap-6">
-                                    @if($setting->logo_path)
+                                    @if($setting->site_logo)
                                         <div
-                                            class="p-6 bg-gray-100/50 dark:bg-surface-tonal-a30/50 rounded-3xl border border-gray-100 dark:border-surface-tonal-a30 flex items-center justify-center shadow-inner group/logo">
-                                            <img src="{{ asset('storage/' . $setting->logo_path) }}"
+                                            class="p-6 bg-gray-50 dark:bg-surface-tonal-a10 rounded-3xl border border-gray-100 dark:border-surface-tonal-a30 flex items-center justify-center shadow-inner group/logo">
+                                            <img src="{{ asset('storage/' . $setting->site_logo) }}"
                                                 class="h-24 w-auto object-contain drop-shadow-md group-hover/logo:scale-105 transition-transform"
                                                 alt="Current Logo">
                                         </div>
                                     @endif
                                     <div class="relative group/upload">
-                                        <input type="file" name="logo" accept=".png,.jpg,.jpeg,.svg"
+                                        <input type="file" name="site_logo" accept=".png,.jpg,.jpeg,.svg"
                                             class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
                                         <div
                                             class="w-full px-6 py-4 bg-white dark:bg-surface-tonal-a10 border-2 border-dashed border-gray-200 dark:border-surface-tonal-a30 rounded-2xl flex items-center justify-center gap-3 group-hover/upload:border-indigo-500 dark:group-hover/upload:border-indigo-500 transition-all">
@@ -268,9 +268,39 @@
 
                             <div class="space-y-4">
                                 <label
+                                    class="block text-[10px] font-black text-gray-400 uppercase tracking-widest">{{ __('file.site_favicon') }}</label>
+                                <div class="flex flex-col gap-6">
+                                    @if($setting->site_favicon)
+                                        <div
+                                            class="p-6 bg-gray-50 dark:bg-surface-tonal-a10 rounded-3xl border border-gray-100 dark:border-surface-tonal-a30 flex items-center justify-center shadow-inner group/favicon">
+                                            <img src="{{ asset('storage/' . $setting->site_favicon) }}"
+                                                class="h-12 w-12 object-contain drop-shadow-md group-hover/favicon:scale-105 transition-transform"
+                                                alt="Current Favicon">
+                                        </div>
+                                    @endif
+                                    <div class="relative group/upload-favicon">
+                                        <input type="file" name="site_favicon" accept=".png,.jpg,.jpeg,.ico,.svg"
+                                            class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
+                                        <div
+                                            class="w-full px-6 py-4 bg-white dark:bg-surface-tonal-a10 border-2 border-dashed border-gray-200 dark:border-surface-tonal-a30 rounded-2xl flex items-center justify-center gap-3 group-hover/upload-favicon:border-indigo-500 dark:group-hover/upload-favicon:border-indigo-500 transition-all">
+                                            <svg class="w-5 h-5 text-gray-400 group-hover/upload-favicon:text-indigo-500 transition-colors"
+                                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
+                                            </svg>
+                                            <span
+                                                class="text-[10px] font-black text-gray-400 group-hover/upload-favicon:text-indigo-600 dark:group-hover/upload-favicon:text-indigo-400 uppercase tracking-widest transition-colors">Overwrite
+                                                Favicon</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="space-y-4">
+                                <label
                                     class="block text-[10px] font-black text-gray-400 uppercase tracking-widest">{{ __('file.primary_color') }}</label>
                                 <div
-                                    class="p-8 bg-gray-100/50 dark:bg-surface-tonal-a30/50 rounded-3xl border border-gray-100 dark:border-surface-tonal-a30 space-y-6 shadow-inner">
+                                    class="p-8 bg-gray-50 dark:bg-surface-tonal-a10 rounded-3xl border border-gray-100 dark:border-surface-tonal-a30 space-y-6 shadow-inner">
                                     <div class="flex items-center gap-6">
                                         <div class="relative group/color">
                                             <input type="color" name="primary_color"

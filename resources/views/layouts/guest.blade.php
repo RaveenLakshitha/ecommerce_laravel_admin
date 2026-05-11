@@ -7,7 +7,7 @@
 
     <title>{{ $site_name ?? __('messages.Medical Center') }}</title>
 
-    <link rel="icon" href="{{ $site_logo ?? asset('images/default-logo.png') }}" type="image/png">
+    <link rel="icon" href="{{ $store_favicon ?? asset('images/favicon.ico') }}" type="image/x-icon">
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">

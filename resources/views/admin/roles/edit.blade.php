@@ -75,7 +75,7 @@
                 <div
                     class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                     <div
-                        class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
+                        class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
                         <h2 class="text-sm font-bold text-gray-900 dark:text-white">{{ __('file.role_identity') }}</h2>
                     </div>
                     <div class="p-4">
@@ -85,7 +85,7 @@
                                 <span class="text-red-500">*</span></label>
                             @if($isSystemRole)
                                 <div
-                                    class="flex items-center justify-between px-3 py-2 bg-gray-100/50 dark:bg-surface-tonal-a10 border border-gray-100 dark:border-surface-tonal-a30 rounded-md opacity-80 cursor-not-allowed">
+                                    class="flex items-center justify-between px-3 py-2 bg-gray-50 dark:bg-surface-tonal-a10 border border-gray-100 dark:border-surface-tonal-a30 rounded-md opacity-80 cursor-not-allowed">
                                     <span
                                         class="text-xs font-black text-gray-900 dark:text-white uppercase tracking-tighter">{{ $roleLabel }}</span>
                                     <span
@@ -105,7 +105,7 @@
                 <div
                     class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                     <div
-                        class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20 flex items-center justify-between">
+                        class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10 flex items-center justify-between">
                         <h2 class="text-sm font-bold text-gray-900 dark:text-white">{{ __('file.privilege_entitlements') }}
                         </h2>
                         <div class="flex items-center gap-4">
@@ -149,7 +149,7 @@
                                         $groupKey = 'file.perm_group_' . str_replace(['-', '.'], '_', $resource);
                                         $groupLabel = __($groupKey) !== $groupKey ? __($groupKey) : ucwords(str_replace(['-', '_'], ' ', $resource));
                                     @endphp
-                                    <tr class="hover:bg-gray-100/50 dark:hover:bg-indigo-900/5 transition-colors group">
+                                    <tr class="hover:bg-gray-50 dark:bg-surface-tonal-a10 dark:hover:bg-indigo-900/5 transition-colors group">
                                         <td class="px-4 py-3">
                                             <span
                                                 class="text-xs font-bold text-gray-900 dark:text-white uppercase tracking-tighter">{{ $groupLabel }}</span>

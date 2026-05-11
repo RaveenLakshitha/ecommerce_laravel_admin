@@ -477,7 +477,7 @@
 
                                     <div
                                         class="bg-white  border border-gray-100  rounded-xl shadow-sm overflow-hidden mb-8">
-                                        <div class="px-6 py-5 border-b border-gray-100  bg-gray-100/50 /50">
+                                        <div class="px-6 py-5 border-b border-gray-100  bg-gray-50 dark:bg-surface-tonal-a10 /50">
                                             <h3 class="text-lg font-medium text-gray-900 ">{{ __('file.profile_details') }}
                                             </h3>
                                             <p class="mt-1 text-sm text-gray-500 ">{{ __('file.profile_details_note') }}</p>
@@ -548,7 +548,7 @@
 
 
                                     <div class="bg-white  border border-gray-100  rounded-xl shadow-sm overflow-hidden">
-                                        <div class="px-6 py-5 border-b border-gray-100  bg-gray-100/50 /50">
+                                        <div class="px-6 py-5 border-b border-gray-100  bg-gray-50 dark:bg-surface-tonal-a10 /50">
                                             <h3 class="text-lg font-medium text-gray-900 ">{{ __('file.update_password') }}
                                             </h3>
                                             <p class="mt-1 text-sm text-gray-500 ">{{ __('file.update_password_note') }}</p>

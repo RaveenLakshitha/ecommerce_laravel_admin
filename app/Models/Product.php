@@ -105,4 +105,32 @@ class Product extends Model implements HasMedia
              ->quality(80)
              ->nonQueued();
     }
+
+    public function getActiveDiscountRulesAttribute()
+    {
+        return \App\Models\DiscountRule::where('is_active', true)
+            ->where(function($q) {
+                $q->whereNull('starts_at')->orWhere('starts_at', '<=', now());
+            })
+            ->where(function($q) {
+                $q->whereNull('expires_at')->orWhere('expires_at', '>=', now());
+            })
+            ->where(function($q) {
+                $q->where('applies_to', 'all')
+                  ->orWhere(function($sub) {
+                      $sub->where('applies_to', 'products')
+                          ->whereHas('products', fn($p) => $p->where('products.id', $this->id));
+                  })
+                  ->orWhere(function($sub) {
+                      $sub->where('applies_to', 'categories')
+                          ->whereHas('categories', fn($c) => $c->where('categories.id', $this->category_id));
+                  })
+                  ->orWhere(function($sub) {
+                      $sub->where('applies_to', 'collections')
+                          ->whereHas('collections', fn($c) => $c->whereHas('products', fn($p) => $p->where('products.id', $this->id)));
+                  });
+            })
+            ->orderBy('priority', 'desc')
+            ->get();
+    }
 }

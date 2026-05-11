@@ -95,7 +95,7 @@
                     <x-sidebar-link href="{{ route('profile.edit') }}">
                         <x-icon name="user" /> Profile
                     </x-sidebar-link>
-                    <form method="POST" action="{{ route('logout') }}" class="block">
+                    <form method="POST" action="{{ route('admin.logout') }}" class="block">
                         @csrf
                         <button type="submit"
                             class="w-full flex items-center px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md">

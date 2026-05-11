@@ -361,7 +361,7 @@ table.dataTable>tbody>tr.child span.dtr-data {
     border-color: rgba(255, 255, 255, 0.08) !important;
 }
 
-/* Dark mode design tokens */
+/* Dark mode design tokens — semi black dark */
 .dark {
     --clr-primary-a0: #eef2ff;
     --clr-primary-a10: #e0e7ff;
@@ -370,10 +370,62 @@ table.dataTable>tbody>tr.child span.dtr-data {
     --clr-primary-a40: #6366f1;
     --clr-primary-a50: #4f46e5;
 
-    --clr-surface-tonal-a0: #121216;
-    --clr-surface-tonal-a10: #1c1c21;
-    --clr-surface-tonal-a20: #26262d;
-    --clr-surface-tonal-a30: #303039;
-    --clr-surface-tonal-a40: #3c3c47;
-    --clr-surface-tonal-a50: #4b4b58;
+    /* Surface palette — semi black dark */
+    --clr-surface-tonal-a0:  #0a0a0a;   /* page bg      — near-black  */
+    --clr-surface-tonal-a10: #121212;   /* sidebar/nav  — semi-black  */
+    --clr-surface-tonal-a20: #1a1a1a;   /* card bg      — dark gray   */
+    --clr-surface-tonal-a30: #2a2a2a;   /* card border  — gray        */
+    --clr-surface-tonal-a40: #404040;   /* dividers     — lighter gray*/
+    --clr-surface-tonal-a50: #737373;   /* muted text   — muted       */
+}
+
+/* ── Dark mode text readability overrides ─────────────────────────────────── */
+.dark body {
+    background-color: #121212;
+    color: #e5e5e5;
+}
+
+/* Ensure card backgrounds are clearly visible */
+.dark .admin-card,
+.dark [class*="dark:bg-surface-tonal-a20"] {
+    background-color: #1a1a1a !important;
+    border-color: rgba(255,255,255,0.08) !important;
+}
+
+/* Strong readable labels in dark mode */
+.dark .fi-label,
+.dark .admin-card-header h2 {
+    color: #fafafa !important;
+}
+
+/* Inputs in dark mode — clearly visible */
+.dark .fi {
+    background-color: #121212 !important;
+    border-color: rgba(255,255,255,0.15) !important;
+    color: #fafafa !important;
+}
+
+.dark .fi::placeholder {
+    color: #737373 !important;
+}
+
+/* Table cells dark mode */
+.dark #application-table tbody td {
+    color: #d4d4d4 !important;
+}
+
+.dark #application-table thead th {
+    color: #a3a3a3 !important;
+    background-color: #1a1a1a !important;
+}
+
+/* Sidebar dark mode — readable text */
+.dark #sidebar {
+    background-color: #121212 !important;
+    border-color: rgba(255,255,255,0.05) !important;
+}
+
+.dark #navbar {
+    background-color: rgba(18, 18, 18, 0.95) !important;
+    border-color: rgba(255,255,255,0.05) !important;
 }

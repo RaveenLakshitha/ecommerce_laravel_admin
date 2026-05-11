@@ -242,7 +242,7 @@ style="width: 16rem; max-height: 100vh;">
             $name = $user->name ?? 'User';
             $email = $user->email ?? '';
         @endphp
-        <div class="mt-auto border-t border-gray-200 dark:border-surface-tonal-a30 p-4 bg-gray-100/50 dark:bg-surface-tonal-a20 flex-shrink-0 w-full">
+        <div class="mt-auto border-t border-gray-200 dark:border-surface-tonal-a30 p-4 bg-gray-50 dark:bg-surface-tonal-a10 flex-shrink-0 w-full">
             <div class="flex items-center space-x-3 w-full">
                 <img class="h-10 w-10 min-w-[40px] rounded-lg object-cover ring-2 ring-gray-200 dark:ring-surface-tonal-a40" 
                         src="{{ $user->avatar ?? 'https://ui-avatars.com/api/?name=' . urlencode($name) . '&background=random' }}" 

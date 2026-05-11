@@ -36,7 +36,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 @foreach($settings as $gw => $setting)
                     <div class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border {{ $setting->is_active ? 'border-indigo-500/30' : 'border-gray-200 dark:border-surface-tonal-a30' }} overflow-hidden group/gw flex flex-col">
-                        <div class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20 flex items-center justify-between">
+                        <div class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10 flex items-center justify-between">
                             <div class="flex items-center gap-3">
                                 <div class="w-8 h-8 rounded-lg {{ $setting->is_active ? 'bg-indigo-600' : 'bg-gray-100 dark:bg-surface-tonal-a30' }} flex items-center justify-center text-white transition-transform group-hover/gw:scale-110">
                                     @if($gw === 'payhere')

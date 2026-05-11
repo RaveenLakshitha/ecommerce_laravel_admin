@@ -52,7 +52,7 @@
 
                     {{-- General Information --}}
                     <div class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
-                        <div class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
+                        <div class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
                             <h2 class="text-sm font-bold text-gray-900 dark:text-white">{{ __('file.product_overview') }}</h2>
                         </div>
                         <div class="p-4">
@@ -61,10 +61,7 @@
                                     <p class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('file.base_price') }}</p>
                                     <p class="text-xl font-bold text-gray-900 dark:text-white">@price($product->base_price)</p>
                                 </div>
-                                <div class="space-y-1">
-                                    <p class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('file.sale_price') }}</p>
-                                    <p class="text-xl font-bold {{ $product->sale_price ? 'text-emerald-500' : 'text-gray-900 dark:text-white' }}">{{ $product->sale_price ? '$' . number_format($product->sale_price, 2) : __('file.none') ?? 'None' }}</p>
-                                </div>
+
                                 <div class="space-y-1">
                                     <p class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('file.brand') }}</p>
                                     <p class="text-sm font-bold text-gray-700 dark:text-white">{{ $product->brand->name ?? __('file.none') ?? 'None' }}</p>
@@ -89,7 +86,7 @@
 
                     {{-- Content Details --}}
                     <div class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
-                        <div class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
+                        <div class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
                             <h2 class="text-sm font-bold text-gray-900 dark:text-white">{{ __('file.detailed_description') }}</h2>
                         </div>
                         <div class="p-4 space-y-6">
@@ -122,7 +119,7 @@
 
                     {{-- Variants Table --}}
                     <div class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
-                        <div class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20 flex items-center justify-between">
+                        <div class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10 flex items-center justify-between">
                             <h2 class="text-sm font-bold text-gray-900 dark:text-white">{{ __('file.product_variants') }}</h2>
                             <span class="text-xs font-medium text-indigo-500">{{ $product->variants->count() }} {{ __('file.product_variants') }}</span>
                         </div>
@@ -199,7 +196,7 @@
                     
                     {{-- Search Engine Optimization --}}
                     <div class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
-                        <div class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
+                        <div class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
                             <h2 class="text-sm font-bold text-gray-900 dark:text-white">{{ __('file.seo_settings') }}</h2>
                         </div>
                         <div class="p-4 space-y-4">
@@ -228,7 +225,7 @@
 
                     {{-- Product Images --}}
                     <div class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
-                        <div class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
+                        <div class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
                             <h2 class="text-sm font-bold text-gray-900 dark:text-white">{{ __('file.product_gallery') }}</h2>
                         </div>
                         <div class="p-4">
@@ -249,7 +246,7 @@
                                     @endforeach
                                 </div>
                             @else
-                                <div class="aspect-square rounded-xl border-2 border-dashed border-gray-100 dark:border-surface-tonal-a30 flex flex-col items-center justify-center gap-2 text-gray-400 p-8 text-center bg-gray-100/50 dark:bg-surface-tonal-a30/20">
+                                <div class="aspect-square rounded-xl border-2 border-dashed border-gray-100 dark:border-surface-tonal-a30 flex flex-col items-center justify-center gap-2 text-gray-400 p-8 text-center bg-gray-50 dark:bg-surface-tonal-a10">
                                     <svg class="h-8 w-8 opacity-40" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
                                     <p class="text-[10px] font-bold uppercase tracking-widest">No images available</p>
                                 </div>
@@ -277,7 +274,7 @@
                     </div>
                     {{-- Barcode & Label Management --}}
                     <div class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
-                        <div class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20 flex items-center justify-between">
+                        <div class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10 flex items-center justify-between">
                             <div class="flex items-center gap-3">
                                 <h2 class="text-base font-bold text-gray-900 dark:text-white">{{ __('file.barcodes_and_labels') }}</h2>
                                 <label class="flex items-center gap-2 cursor-pointer group">
@@ -293,7 +290,7 @@
                         </div>
                         <div class="p-4 space-y-3 max-h-[400px] overflow-y-auto custom-scrollbar">
                             @foreach($product->variants as $variant)
-                                <label class="block p-3 rounded-xl border border-gray-100 dark:border-white/5 bg-gray-100/50 dark:bg-surface-tonal-a10 hover:border-indigo-200 dark:hover:border-indigo-500/30 transition-all cursor-pointer group relative">
+                                <label class="block p-3 rounded-xl border border-gray-100 dark:border-white/5 bg-gray-50 dark:bg-surface-tonal-a10 hover:border-indigo-200 dark:hover:border-indigo-500/30 transition-all cursor-pointer group relative">
                                     <div class="flex items-center gap-3">
                                         <div class="flex-shrink-0">
                                             <input type="checkbox" name="selected_labels[]" value="{{ $variant->id }}" checked

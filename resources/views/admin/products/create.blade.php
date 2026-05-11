@@ -28,7 +28,8 @@
             <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
                 <div>
                     <h1 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                        {{ __('file.add_new_product') }}</h1>
+                        {{ __('file.add_new_product') }}
+                    </h1>
                     <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">{{ __('file.create_new_product_entry') }}</p>
                 </div>
                 <div class="flex items-center gap-3">
@@ -52,9 +53,10 @@
                         <div
                             class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                             <div
-                                class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
+                                class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
                                 <h2 class="text-sm font-bold text-gray-900 dark:text-white">
-                                    {{ __('file.general_information') }}</h2>
+                                    {{ __('file.general_information') }}
+                                </h2>
                             </div>
                             <div class="p-4 space-y-4">
                                 <div>
@@ -62,7 +64,7 @@
                                         class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.product_name') }}</label>
                                     <input type="text" name="name" id="name" x-model="formData.name" required
                                         placeholder="e.g. Puffer Jacket With Pocket Detail"
-                                        class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/50 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5">
+                                        class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/100 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5">
                                     @error('name')
                                         <p class="text-xs text-red-500 mt-1 font-medium px-1">{{ $message }}</p>
                                     @enderror
@@ -73,7 +75,7 @@
                                         class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.short_description') }}</label>
                                     <textarea name="short_description" id="short_description" rows="2"
                                         placeholder="Brief summary for listings..."
-                                        class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/50 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5 resize-y">{{ old('short_description') }}</textarea>
+                                        class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/100 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5 resize-y">{{ old('short_description') }}</textarea>
                                     @error('short_description')
                                         <p class="text-xs text-red-500 mt-1 font-medium px-1">{{ $message }}</p>
                                     @enderror
@@ -84,7 +86,7 @@
                                         class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.description') }}</label>
                                     <textarea name="description" id="description" rows="5"
                                         placeholder="Describe the fabric, fit, and unique features..."
-                                        class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/50 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5 h-28 resize-y">{{ old('description') }}</textarea>
+                                        class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/100 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5 h-28 resize-y">{{ old('description') }}</textarea>
                                     @error('description')
                                         <p class="text-xs text-red-500 mt-1 font-medium px-1">{{ $message }}</p>
                                     @enderror
@@ -95,7 +97,7 @@
                                         class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.fabric_details') }}</label>
                                     <textarea name="fabric_details" id="fabric_details" rows="2"
                                         placeholder="e.g. 100% Cotton, Machine washable..."
-                                        class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/50 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5 resize-y">{{ old('fabric_details') }}</textarea>
+                                        class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/100 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5 resize-y">{{ old('fabric_details') }}</textarea>
                                     @error('fabric_details')
                                         <p class="text-xs text-red-500 mt-1 font-medium px-1">{{ $message }}</p>
                                     @enderror
@@ -107,9 +109,10 @@
                         <div
                             class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                             <div
-                                class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
+                                class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
                                 <h2 class="text-sm font-bold text-gray-900 dark:text-white">
-                                    {{ __('file.pricing_and_brand') }}</h2>
+                                    {{ __('file.pricing_and_brand') }}
+                                </h2>
                             </div>
                             <div class="p-4">
                                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
@@ -119,7 +122,7 @@
                                         <div class="relative">
                                             <input type="number" step="0.01" name="base_price"
                                                 value="{{ old('base_price', '0.00') }}"
-                                                class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/50 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5 pr-7">
+                                                class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/100 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5 pr-7">
                                             <span
                                                 class="absolute inset-y-0 right-3 flex items-center text-gray-400 font-black text-xs pointer-events-none">{{ $currency_symbol }}</span>
                                         </div>
@@ -129,7 +132,7 @@
                                             class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.brand') }}</label>
                                         <div class="relative">
                                             <select name="brand_id" id="brand_id"
-                                                class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/50 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5">
+                                                class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/100 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5">
                                                 <option value="">{{ __('file.no_brand') }}</option>
                                                 @foreach($brands as $brand)
                                                     <option value="{{ $brand->id }}">{{ $brand->name }}</option>
@@ -145,7 +148,7 @@
                         <div
                             class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                             <div
-                                class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
+                                class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
                                 <h2 class="text-sm font-bold text-gray-900 dark:text-white">{{ __('file.organization') }}
                                 </h2>
                             </div>
@@ -155,7 +158,7 @@
                                         class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.category') }}</label>
                                     <div class="relative">
                                         <select name="category_id" required
-                                            class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/50 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5">
+                                            class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/100 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5">
                                             <option value="">{{ __('file.select_category') }}</option>
                                             @foreach($categories as $category)
                                                 <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
@@ -173,16 +176,15 @@
                         <div
                             class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                             <div
-                                class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20 flex items-center justify-between">
+                                class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10 flex items-center justify-between">
                                 <h2 class="text-sm font-bold text-gray-900 dark:text-white">{{ __('file.product_gallery') }}
                                 </h2>
-                                <span
-                                    class="text-xs font-semibold text-indigo-500">{{ __('file.manage_media') }}</span>
+                                <span class="text-xs font-semibold text-indigo-500">{{ __('file.manage_media') }}</span>
                             </div>
                             <div class="p-4">
                                 <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 gap-4" id="media-grid">
                                     <label
-                                        class="aspect-square admin-upload-zone rounded-xl border-dashed border-2 border-gray-200 dark:border-white/5 bg-gray-100/50 dark:bg-surface-tonal-a10 flex flex-col items-center justify-center gap-1 cursor-pointer hover:border-indigo-400 transition-all group/upload">
+                                        class="aspect-square admin-upload-zone rounded-xl border-dashed border-2 border-gray-200 dark:border-white/5 bg-gray-50 dark:bg-surface-tonal-a10 flex flex-col items-center justify-center gap-1 cursor-pointer hover:border-indigo-400 transition-all group/upload">
                                         <svg class="w-6 h-6 text-gray-400 group-hover/upload:text-indigo-500 transition-colors"
                                             fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -190,7 +192,8 @@
                                         </svg>
                                         <p
                                             class="text-[10px] font-bold text-gray-400 group-hover/upload:text-indigo-500 uppercase tracking-widest transition-colors">
-                                            {{ __('file.add_media') }}</p>
+                                            {{ __('file.add_media') }}
+                                        </p>
                                         <input type="file" id="image-upload-input" multiple accept="image/*" class="hidden"
                                             onchange="handleMediaSelect(this)">
                                     </label>
@@ -214,7 +217,7 @@
                         <div
                             class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                             <div
-                                class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
+                                class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
                                 <h2 class="text-sm font-bold text-gray-900 dark:text-white">{{ __('file.seo_settings') }}
                                 </h2>
                             </div>
@@ -224,7 +227,7 @@
                                         class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.meta_title') }}</label>
                                     <input type="text" name="meta_title" value="{{ old('meta_title') }}"
                                         placeholder="SEO Title"
-                                        class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/50 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5">
+                                        class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/100 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5">
                                 </div>
 
                                 <div>
@@ -232,7 +235,7 @@
                                         class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.meta_description') }}</label>
                                     <textarea name="meta_description" rows="3"
                                         placeholder="Search engine description preview..."
-                                        class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/50 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5 resize-y">{{ old('meta_description') }}</textarea>
+                                        class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/100 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5 resize-y">{{ old('meta_description') }}</textarea>
                                 </div>
 
                                 <div>
@@ -240,7 +243,7 @@
                                         class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.meta_keywords') }}</label>
                                     <input type="text" name="meta_keywords" value="{{ old('meta_keywords') }}"
                                         placeholder="keyword1, keyword2..."
-                                        class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/50 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5">
+                                        class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/100 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5">
                                 </div>
 
                                 <div>
@@ -248,7 +251,7 @@
                                         class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.canonical_url') }}</label>
                                     <input type="url" name="canonical_url" value="{{ old('canonical_url') }}"
                                         placeholder="https://..."
-                                        class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/50 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5">
+                                        class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/100 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5">
                                 </div>
                             </div>
                         </div>
@@ -301,12 +304,12 @@
                             wrapper.id = wrapperId;
                             wrapper.className = 'aspect-square rounded-2xl border border-gray-100 dark:border-surface-tonal-a30 overflow-hidden relative group animate-fade-in-scale';
                             wrapper.innerHTML = `
-                                        <img src="${e.target.result}" class="w-full h-full object-cover">
-                                        ${grid.querySelectorAll('[id^="img-"]').length === 0 ? '<div class="absolute top-2 left-2 px-2 py-0.5 bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-[10px] font-bold rounded uppercase tracking-widest pointer-events-none">Primary</div>' : ''}
-                                        <button type="button" onclick="removeSelectedImage('${wrapperId}', '${file.name}')" class="absolute top-2 right-2 w-6 h-6 bg-white dark:bg-surface-tonal-a30 text-red-500 rounded-full shadow-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
-                                        </button>
-                                    `;
+                                                <img src="${e.target.result}" class="w-full h-full object-cover">
+                                                ${grid.querySelectorAll('[id^="img-"]').length === 0 ? '<div class="absolute top-2 left-2 px-2 py-0.5 bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-[10px] font-bold rounded uppercase tracking-widest pointer-events-none">Primary</div>' : ''}
+                                                <button type="button" onclick="removeSelectedImage('${wrapperId}', '${file.name}')" class="absolute top-2 right-2 w-6 h-6 bg-white dark:bg-surface-tonal-a30 text-red-500 rounded-full shadow-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                                                </button>
+                                            `;
                             grid.insertBefore(wrapper, uploadBtn);
                         };
                         reader.readAsDataURL(file);

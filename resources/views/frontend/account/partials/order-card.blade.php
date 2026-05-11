@@ -1,5 +1,5 @@
 <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden mb-4">
-    <div class="px-6 py-4 border-b border-gray-100 bg-gray-100/50 flex flex-wrap justify-between items-center gap-4">
+    <div class="px-6 py-4 border-b border-gray-100 bg-gray-50 dark:bg-surface-tonal-a10 flex flex-wrap justify-between items-center gap-4">
         <div class="flex items-center gap-6">
             <div>
                 <span

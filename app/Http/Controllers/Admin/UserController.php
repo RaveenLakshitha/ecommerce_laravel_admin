@@ -33,30 +33,32 @@ class UserController extends Controller
         $orderDir = $request->input('order.0.dir', 'asc');
         $search = trim($request->input('search.value', ''));
 
-        $role   = $request->role;
+        $role = $request->role;
         $status = $request->status;
-        $from   = $request->from;
-        $to     = $request->to;
+        $from = $request->from;
+        $to = $request->to;
 
         $query = Admin::query()
             ->with('roles')
-            ->when($search !== '', fn($q) => $q
-                ->where('name', 'like', "%{$search}%")
-                ->orWhere('email', 'like', "%{$search}%")
-                ->orWhere('phone', 'like', "%{$search}%")
+            ->when(
+                $search !== '',
+                fn($q) => $q
+                    ->where('name', 'like', "%{$search}%")
+                    ->orWhere('email', 'like', "%{$search}%")
+                    ->orWhere('phone', 'like', "%{$search}%")
             )
             ->when($role, fn($q) => $q->role($role))
             ->when($status !== null && $status !== '', fn($q) => $q->where('is_active', $status))
             ->when($from || $to, fn($q) => $q->whereBetween('created_at', [
                 $from ? $from . ' 00:00:00' : '1900-01-01',
-                $to   ? $to   . ' 23:59:59' : now()
+                $to ? $to . ' 23:59:59' : now()
             ]))
             ->where('is_deleted', false);
 
         $totalRecords = Admin::where('is_deleted', false)->count();
         $filteredRecords = (clone $query)->count();
 
-        $orderColumn = match ((int)$orderColumnIndex) {
+        $orderColumn = match ((int) $orderColumnIndex) {
             1 => 'name',
             2 => 'email',
             3 => 'phone',
@@ -74,24 +76,24 @@ class UserController extends Controller
                 : '<span class="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400">' . __('file.inactive') . '</span>';
 
             return [
-                'id'           => $user->id,
-                'name'         => $user->name,
-                'email'        => $user->email,
-                'phone'        => $user->phone ?? '-',
-                'roles'        => $user->roles->pluck('name')->map(fn($r) => ucfirst($r))->toArray(),
-                'status_html'  => $statusHtml,
-                'is_active'    => $user->is_active,
-                'created_at'   => $user->created_at->format('M d, Y'),
-                'edit_url'     => \Auth::user()->can('users.edit') ? route('users.edit', $user) : null,
-                'delete_url'   => \Auth::user()->can('users.delete') ? route('users.destroy', $user) : null,
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'phone' => $user->phone ?? '-',
+                'roles' => $user->roles->pluck('name')->map(fn($r) => ucfirst($r))->toArray(),
+                'status_html' => $statusHtml,
+                'is_active' => $user->is_active,
+                'created_at' => $user->created_at->format('M d, Y'),
+                'edit_url' => \Auth::user()->can('users.edit') ? route('users.edit', $user) : null,
+                'delete_url' => \Auth::user()->can('users.delete') ? route('users.destroy', $user) : null,
             ];
         });
 
         return response()->json([
-            'draw'            => (int)$draw,
-            'recordsTotal'    => $totalRecords,
+            'draw' => (int) $draw,
+            'recordsTotal' => $totalRecords,
             'recordsFiltered' => $filteredRecords,
-            'data'            => $data->toArray(),
+            'data' => $data->toArray(),
         ]);
     }
 
@@ -104,27 +106,27 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name'          => 'required|string|max:255',
-            'email'         => [
+            'name' => 'required|string|max:255',
+            'email' => [
                 'required',
                 Rule::unique('admins', 'email')->where(function ($q) {
                     return $q->where('is_deleted', false);
                 }),
             ],
-            'phone'         => [
+            'phone' => [
                 'nullable',
                 Rule::unique('admins', 'phone')->where(function ($q) {
                     return $q->where('is_deleted', false);
                 }),
             ],
-            'password'      => 'required|min:8|confirmed',
-            'role'          => 'required|string|exists:roles,name',
-            'is_active'     => 'sometimes|boolean',
+            'password' => 'required|min:8|confirmed',
+            'role' => 'required|string|exists:roles,name',
+            'is_active' => 'sometimes|boolean',
         ]);
 
-        $admin = Admin::withTrashed()->where(function($q) use ($request) {
+        $admin = Admin::withTrashed()->where(function ($q) use ($request) {
             $q->where('email', $request->email)
-              ->orWhere('phone', $request->phone);
+                ->orWhere('phone', $request->phone);
         })->first();
 
         if ($admin) {
@@ -132,20 +134,20 @@ class UserController extends Controller
                 $admin->restore();
             }
             $admin->update([
-                'name'       => $request->name,
-                'email'      => $request->email,
-                'phone'      => $request->phone,
-                'password'   => Hash::make($request->password),
-                'is_active'  => $request->boolean('is_active', true),
+                'name' => $request->name,
+                'email' => $request->email,
+                'phone' => $request->phone,
+                'password' => Hash::make($request->password),
+                'is_active' => $request->boolean('is_active', true),
                 'is_deleted' => false,
             ]);
         } else {
             $admin = Admin::create([
-                'name'       => $request->name,
-                'email'      => $request->email,
-                'phone'      => $request->phone,
-                'password'   => Hash::make($request->password),
-                'is_active'  => $request->boolean('is_active', true),
+                'name' => $request->name,
+                'email' => $request->email,
+                'phone' => $request->phone,
+                'password' => Hash::make($request->password),
+                'is_active' => $request->boolean('is_active', true),
                 'is_deleted' => false,
             ]);
         }
@@ -167,29 +169,29 @@ class UserController extends Controller
     public function update(Request $request, Admin $user)
     {
         $request->validate([
-            'name'      => 'required|string|max:255',
-            'email'     => [
+            'name' => 'required|string|max:255',
+            'email' => [
                 'required',
                 Rule::unique('admins', 'email')->ignore($user->id)->where(function ($q) {
                     return $q->where('is_deleted', false);
                 }),
             ],
-            'phone'     => [
+            'phone' => [
                 'nullable',
                 Rule::unique('admins', 'phone')->ignore($user->id)->where(function ($q) {
                     return $q->where('is_deleted', false);
                 }),
             ],
-            'password'  => 'nullable|min:8|confirmed',
-            'role'      => 'required|string|exists:roles,name',
+            'password' => 'nullable|min:8|confirmed',
+            'role' => 'required|string|exists:roles,name',
             'is_active' => 'sometimes|boolean',
         ]);
 
         $user->update([
-            'name'      => $request->name,
-            'email'     => $request->email,
-            'phone'     => $request->phone,
-            'password'  => $request->filled('password') ? Hash::make($request->password) : $user->password,
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'password' => $request->filled('password') ? Hash::make($request->password) : $user->password,
             'is_active' => $request->boolean('is_active', $user->is_active),
         ]);
 
@@ -217,7 +219,7 @@ class UserController extends Controller
 
         $user->update([
             'is_deleted' => true,
-            'is_active'  => false,
+            'is_active' => false,
         ]);
         $user->delete(); // Soft delete
 
@@ -232,7 +234,7 @@ class UserController extends Controller
     public function bulkDelete(Request $request)
     {
         $validated = $request->validate([
-            'ids'   => 'required|array',
+            'ids' => 'required|array',
             'ids.*' => 'required|integer|exists:admins,id',
         ]);
 
@@ -255,14 +257,14 @@ class UserController extends Controller
         foreach ($admins as $admin) {
             $admin->update([
                 'is_deleted' => true,
-                'is_active'  => false,
+                'is_active' => false,
             ]);
             $admin->delete();
         }
 
         return response()->json([
-            'success'       => true,
-            'message'       => __('file.bulk_deleted', ['count' => count($ids)]),
+            'success' => true,
+            'message' => __('file.bulk_deleted', ['count' => count($ids)]),
         ]);
     }
 }

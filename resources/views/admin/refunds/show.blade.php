@@ -75,7 +75,7 @@
                     <div
                         class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                         <div
-                            class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
+                            class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
                             <h3 class="text-sm font-bold text-gray-900 dark:text-white uppercase tracking-widest">
                                 {{ __('file.financial_restitution') }}</h3>
                         </div>
@@ -111,7 +111,7 @@
                                 <span
                                     class="text-[10px] font-black text-gray-400 uppercase tracking-widest">{{ __('file.restitution_narrative') }}</span>
                                 <p
-                                    class="text-xs font-bold text-gray-700 dark:text-gray-300 italic leading-relaxed bg-gray-100/50 dark:bg-surface-tonal-a30/50 p-4 rounded-xl border border-gray-100 dark:border-surface-tonal-a30 shadow-sm">
+                                    class="text-xs font-bold text-gray-700 dark:text-gray-300 italic leading-relaxed bg-gray-50 dark:bg-surface-tonal-a10 p-4 rounded-xl border border-gray-100 dark:border-surface-tonal-a30 shadow-sm">
                                     {{ $refund->reason ?: __('file.no_justification_telemetry_recorded') }}
                                 </p>
                             </div>
@@ -124,7 +124,7 @@
                     <div
                         class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                         <div
-                            class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-100/50 dark:bg-surface-tonal-a20">
+                            class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
                             <h3 class="text-sm font-bold text-gray-900 dark:text-white uppercase tracking-widest">
                                 {{ __('file.structural_alignment') }}</h3>
                         </div>
@@ -155,7 +155,7 @@
                                 <span
                                     class="text-[10px] font-black text-gray-400 uppercase tracking-widest block">{{ __('file.authorization_nexus') }}</span>
                                 <div
-                                    class="p-3 rounded-xl bg-gray-100/50 dark:bg-surface-tonal-a30/50 border border-gray-100 dark:border-surface-tonal-a30 flex items-center gap-3">
+                                    class="p-3 rounded-xl bg-gray-50 dark:bg-surface-tonal-a10 border border-gray-100 dark:border-surface-tonal-a30 flex items-center gap-3">
                                     <div
                                         class="w-8 h-8 rounded-lg bg-white dark:bg-surface-tonal-a20 border border-gray-100 dark:border-surface-tonal-a30 flex items-center justify-center text-gray-400 font-black text-[10px] uppercase shadow-sm">
                                         {{ substr($refund->performedBy ? $refund->performedBy->name : 'SYS', 0, 2) }}

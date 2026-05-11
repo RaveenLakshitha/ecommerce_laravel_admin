@@ -125,7 +125,7 @@
                             </li>
                             @if(!$loop->last)
                                 <div
-                                    class="h-px bg-gray-100/50 dark:bg-surface-tonal-a30/30 my-8 -mx-10 shadow-sm shadow-gray-100/50">
+                                    class="h-px bg-gray-50 dark:bg-surface-tonal-a10 my-8 -mx-10 shadow-sm shadow-gray-100/50">
                                 </div>
                             @endif
                         @empty

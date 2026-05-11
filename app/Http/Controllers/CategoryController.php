@@ -161,6 +161,8 @@ class CategoryController extends Controller
             ],
             'description' => 'nullable|string',
             'parent_id' => 'nullable|exists:categories,id',
+            'meta_title' => 'nullable|string|max:255',
+            'meta_description' => 'nullable|string',
             'is_active' => 'sometimes|boolean',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:10240',
             'banners' => 'nullable|array',
@@ -292,6 +294,8 @@ class CategoryController extends Controller
                     }
                 },
             ],
+            'meta_title' => 'nullable|string|max:255',
+            'meta_description' => 'nullable|string',
             'is_active' => 'sometimes|boolean',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:10240',
             'banners' => 'nullable|array',
