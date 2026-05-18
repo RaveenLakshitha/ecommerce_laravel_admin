@@ -52,7 +52,7 @@
                         <div
                             class="flex-1 flex items-center gap-2 bg-white dark:bg-surface-tonal-a0 rounded-lg px-3 py-2 border border-gray-200 dark:border-surface-tonal-a20 shadow-sm focus-within:ring-2 focus-within:ring-accent/50 transition-shadow">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-                                class="text-gray-400 dark:text-gray-500 shrink-0" stroke="currentColor" stroke-width="2">
+                                class="text-gray-400 dark:text-gray-500 shrink-0" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <circle cx="11" cy="11" r="8" />
                                 <path d="m21 21-4.35-4.35" />
                             </svg>
@@ -114,9 +114,9 @@
                     <div
                         class="flex flex-col items-center justify-center h-full text-gray-400 dark:text-gray-600 py-16 md:py-0">
                         <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
-                            class="mb-4">
-                            <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
-                            <line x1="3" y1="6" x2="21" y2="6" />
+                            stroke-linecap="round" stroke-linejoin="round" class="mb-4 text-gray-300 dark:text-gray-700">
+                            <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
+                            <path d="M3 6h18" />
                             <path d="M16 10a4 4 0 0 1-8 0" />
                         </svg>
                         <p class="text-base font-medium text-gray-500 dark:text-gray-400">{{ __('file.select_order_to_view_details') }}
@@ -145,21 +145,20 @@
                                 <button @click="printInvoice()"
                                     class="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-surface-tonal-a0 border border-gray-200 dark:border-surface-tonal-a30 rounded-md shadow-sm hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-accent/50">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2">
-                                        <polyline points="6 9 6 2 18 2 18 9" />
-                                        <path
-                                            d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
-                                        <rect x="6" y="14" width="12" height="8" />
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M6 9V2h12v7" />
+                                        <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+                                        <rect width="12" height="8" x="6" y="14" />
                                     </svg>
                                     {{ __('file.print_invoice') }}
                                 </button>
                                 <a :href="'{{ route('orders.show', ['order' => ':id']) }}'.replace(':id', selectedOrder.id)"
                                     class="inline-flex items-center gap-1.5 px-3 py-2 text-sm font-medium text-gray-900 dark:text-gray-900 bg-gray-200 dark:bg-gray-200 border border-transparent rounded-md shadow-sm hover:bg-gray-300 dark:hover:bg-gray-300 transition-colors focus:outline-none focus:ring-2 focus:ring-accent/50">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2">
-                                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                                        <polyline points="15 3 21 3 21 9"></polyline>
-                                        <line x1="10" y1="14" x2="21" y2="3"></line>
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                                        <polyline points="15 3 21 3 21 9" />
+                                        <line x1="10" y1="14" x2="21" y2="3" />
                                     </svg>
                                     {{ __('file.full_view') }}
                                 </a>
@@ -192,34 +191,41 @@
                                             <!-- Placed icon -->
                                             <template x-if="step.id === 'pending'">
                                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-                                                    stroke="currentColor" stroke-width="2.5">
-                                                    <polyline points="20 6 9 17 4 12" />
+                                                    stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path d="M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20Z" />
+                                                    <path d="M12 6v6l4 2" />
                                                 </svg>
                                             </template>
                                             <!-- Processing icon -->
                                             <template x-if="step.id === 'processing'">
                                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-                                                    stroke="currentColor" stroke-width="2.5">
-                                                    <path
-                                                        d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+                                                    stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path d="M12 2v2" />
+                                                    <path d="M12 20v2" />
+                                                    <path d="m4.93 4.93 1.41 1.41" />
+                                                    <path d="m17.66 17.66 1.41 1.41" />
+                                                    <path d="M2 12h2" />
+                                                    <path d="M20 12h2" />
+                                                    <path d="m6.34 17.66-1.41 1.41" />
+                                                    <path d="m19.07 4.93-1.41 1.41" />
                                                 </svg>
                                             </template>
                                             <!-- Shipped icon -->
                                             <template x-if="step.id === 'shipped'">
                                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-                                                    stroke="currentColor" stroke-width="2.5">
-                                                    <rect x="1" y="3" width="15" height="13" />
-                                                    <path d="M16 8h4l3 3v5h-7V8z" />
-                                                    <circle cx="5.5" cy="18.5" r="2.5" />
-                                                    <circle cx="18.5" cy="18.5" r="2.5" />
+                                                    stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path d="M10 17h4V5H2v12h3" />
+                                                    <path d="M20 17h2v-3.34a4 4 0 0 0-1.17-2.83L19 9h-5" />
+                                                    <circle cx="7.5" cy="17.5" r="2.5" />
+                                                    <circle cx="17.5" cy="17.5" r="2.5" />
                                                 </svg>
                                             </template>
                                             <!-- Delivered icon -->
                                             <template x-if="step.id === 'delivered'">
                                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-                                                    stroke="currentColor" stroke-width="2.5">
-                                                    <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-                                                    <polyline points="9 22 9 12 15 12 15 22" />
+                                                    stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                                                    <polyline points="22 4 12 14.01 9 11.01" />
                                                 </svg>
                                             </template>
                                         </div>
@@ -236,8 +242,8 @@
                                     <button @click="updateOrderStatus('processing')"
                                         class="inline-flex items-center gap-2 px-3 sm:px-4 py-2 bg-accent text-gray-900 font-medium text-sm rounded-lg hover:bg-accent-dim transition shadow-sm focus:ring-2 focus:ring-accent/50 outline-none">
                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                            stroke-width="2.5">
-                                            <polyline points="20 6 9 17 4 12" />
+                                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M20 6 9 17l-5-5" />
                                         </svg>
                                         {{ __('file.accept_order') }}
                                     </button>
@@ -246,11 +252,11 @@
                                     <button @click="updateOrderStatus('shipped')"
                                         class="inline-flex items-center gap-2 px-3 sm:px-4 py-2 bg-blue-600 text-white font-medium text-sm rounded-lg hover:bg-blue-700 transition shadow-sm focus:ring-2 focus:ring-blue-500/50 outline-none">
                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                            stroke-width="2.5">
-                                            <rect x="1" y="3" width="15" height="13" />
-                                            <path d="M16 8h4l3 3v5h-7V8z" />
-                                            <circle cx="5.5" cy="18.5" r="2.5" />
-                                            <circle cx="18.5" cy="18.5" r="2.5" />
+                                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M10 17h4V5H2v12h3" />
+                                            <path d="M20 17h2v-3.34a4 4 0 0 0-1.17-2.83L19 9h-5" />
+                                            <circle cx="7.5" cy="17.5" r="2.5" />
+                                            <circle cx="17.5" cy="17.5" r="2.5" />
                                         </svg>
                                         {{ __('file.mark_shipped') }}
                                     </button>
@@ -259,9 +265,9 @@
                                     <button @click="updateOrderStatus('delivered')"
                                         class="inline-flex items-center gap-2 px-3 sm:px-4 py-2 bg-emerald-600 text-white font-medium text-sm rounded-lg hover:bg-emerald-700 transition shadow-sm focus:ring-2 focus:ring-emerald-500/50 outline-none">
                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                            stroke-width="2.5">
-                                            <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-                                            <polyline points="9 22 9 12 15 12 15 22" />
+                                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                                            <polyline points="22 4 12 14.01 9 11.01" />
                                         </svg>
                                         {{ __('file.mark_delivered') }}
                                     </button>
@@ -285,9 +291,9 @@
                                     <h3
                                         class="text-sm font-semibold text-gray-900 dark:text-primary-a0 flex items-center gap-2">
                                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                            stroke-width="2" class="text-gray-400 dark:text-gray-500 shrink-0">
-                                            <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
-                                            <line x1="3" y1="6" x2="21" y2="6" />
+                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-400 dark:text-gray-500 shrink-0">
+                                            <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
+                                            <path d="M3 6h18" />
                                             <path d="M16 10a4 4 0 0 1-8 0" />
                                         </svg>
                                         {{ __('file.order_items') }} (<span
@@ -307,7 +313,11 @@
                                                 </template>
                                                 <template
                                                     x-if="!(item.variant && item.variant.product && item.variant.product.primary_image)">
-                                                    <span class="text-gray-400 dark:text-gray-500">📦</span>
+                                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-400 dark:text-gray-500">
+                                                        <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z" />
+                                                        <path d="m3.3 7 8.7 5 8.7-5" />
+                                                        <path d="M12 22V12" />
+                                                    </svg>
                                                 </template>
                                             </div>
                                             <div class="flex-1 min-w-0">
@@ -379,7 +389,7 @@
                                     <h3
                                         class="text-sm font-semibold text-gray-900 dark:text-primary-a0 mb-4 flex items-center gap-2">
                                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                            stroke-width="2" class="text-gray-400 dark:text-gray-500 shrink-0">
+                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-400 dark:text-gray-500 shrink-0">
                                             <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
                                             <circle cx="12" cy="7" r="4" />
                                         </svg>
@@ -401,7 +411,7 @@
                                             <span
                                                 class="text-gray-500 dark:text-gray-400 block mb-1 uppercase tracking-wider text-[10px] font-semibold">{{ __('file.phone') }}</span>
                                             <span class="text-gray-900 dark:text-primary-a0 font-bold uppercase tracking-wider"
-                                                x-text="selectedOrder.customer_phone || 'N/A'"></span>
+                                                x-text="selectedOrder.customer_phone || translations['none']"></span>
                                         </div>
                                         <template x-if="selectedOrder.customer">
                                             <div
@@ -424,7 +434,7 @@
                                     <h3
                                         class="text-sm font-semibold text-gray-900 dark:text-primary-a0 mb-4 flex items-center gap-2">
                                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                            stroke-width="2" class="text-gray-400 dark:text-gray-500 shrink-0">
+                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-400 dark:text-gray-500 shrink-0">
                                             <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
                                             <circle cx="12" cy="10" r="3" />
                                         </svg>
@@ -469,12 +479,12 @@
                                         <h3
                                             class="text-xs font-semibold text-amber-800 dark:text-amber-500 mb-2 flex items-center gap-1.5 uppercase tracking-wider">
                                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-                                                stroke="currentColor" stroke-width="2" class="shrink-0">
-                                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="shrink-0">
+                                                <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
                                                 <polyline points="14 2 14 8 20 8" />
                                                 <line x1="16" y1="13" x2="8" y2="13" />
                                                 <line x1="16" y1="17" x2="8" y2="17" />
-                                                <polyline points="10 9 9 9 8 9" />
+                                                <line x1="10" y1="9" x2="8" y2="9" />
                                             </svg>
                                             {{ __('file.customer_notes') }}
                                         </h3>
@@ -524,9 +534,10 @@
                     'status_updated': '{{ __('file.status_updated') }}',
                     'failed_to_update': '{{ __('file.failed_to_update_status') }}',
                     'error_occurred': '{{ __('file.error_occurred_status_update') }}',
+                    'none': '{{ __('file.none') }}',
                 },
                 steps: [
-                    { id: 'pending', label: '{{ __('file.placed_on') }}' },
+                    { id: 'pending', label: '{{ __('file.pending') }}' },
                     { id: 'processing', label: '{{ __('file.processing') }}' },
                     { id: 'shipped', label: '{{ __('file.shipped') }}' },
                     { id: 'delivered', label: '{{ __('file.delivered') }}' }
@@ -604,8 +615,9 @@
                     return map[status] || 'bg-gray-50 dark:bg-surface-tonal-a20 text-gray-500 dark:text-gray-400 border-gray-200 dark:border-surface-tonal-a30';
                 },
 
-                formatMoney(amount, currency = '{{ $currency_symbol }}') {
-                    return (currency || '{{ $currency_symbol }}') + ' ' + parseFloat(amount || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+                formatMoney(amount) {
+                    // Use the store's default currency symbol for consistency across all orders
+                    return '{{ $currency_symbol }}' + ' ' + parseFloat(amount || 0).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
                 },
 
                 formatDate(dateString) {
@@ -629,7 +641,19 @@
                         try { attrs = JSON.parse(attrs); } catch (e) { return attrs; }
                     }
                     if (typeof attrs !== 'object') return '';
-                    return Object.values(attrs).join(' · ');
+                    
+                    return Object.entries(attrs)
+                        .filter(([key, val]) => {
+                            const k = key.toLowerCase();
+                            const v = String(val).toLowerCase();
+                            // Skip technical keys that shouldn't be displayed as attributes
+                            if (['image', 'thumbnail', 'slug', 'primary_image', 'url'].includes(k)) return false;
+                            // Skip values that look like file paths or images
+                            if (v.match(/\.(jpg|jpeg|png|webp|gif|svg)$/i) || v.includes('/') || v.includes('\\')) return false;
+                            return true;
+                        })
+                        .map(([key, val]) => val)
+                        .join(' · ');
                 },
 
                 isStepComplete(index) {

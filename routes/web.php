@@ -7,8 +7,8 @@ use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Admin\Auth\LoginController as AdminLoginController;
 
-// Redirect root domain (loopcam.com.mx) → shop subdomain
-Route::domain('loopcam.com.mx')->group(function () {
+// Redirect root domain (karbnzol.com) → shop subdomain
+Route::domain('karbnzol.com')->group(function () {
     Route::redirect('/', 'http://shop.karbnzol.com', 301);
     Route::redirect('/{any}', 'http://shop.karbnzol.com/{any}', 301)->where('any', '.*');
 });
@@ -58,13 +58,14 @@ Route::domain('shop.karbnzol.com')->group(function () {
 
     // Google OAuth (Socialite)
     Route::get('/google/login', [GoogleAuthController::class, 'redirect'])->name('auth.google');
-    Route::get('/social-verify', [GoogleAuthController::class, 'callback'])->name('auth.google.callback');
+    Route::get('/auth/google/callback', [GoogleAuthController::class, 'callback'])->name('auth.google.callback');
 
     Route::middleware('auth:web')->group(function () {
         Route::get('/account', [\App\Http\Controllers\Frontend\AccountController::class, 'index'])->name('account.dashboard');
 
         // Profile update
         Route::put('/account/profile', [\App\Http\Controllers\Frontend\AccountController::class, 'updateProfile'])->name('account.profile.update');
+        Route::post('/account/profile/avatar', [\App\Http\Controllers\Frontend\AccountController::class, 'updateAvatar'])->name('account.profile.avatar');
         Route::put('/account/password', [\App\Http\Controllers\Frontend\AccountController::class, 'updatePassword'])->name('account.password.update');
 
         // Orders
@@ -76,6 +77,14 @@ Route::domain('shop.karbnzol.com')->group(function () {
         Route::put('/account/addresses/{address}', [\App\Http\Controllers\Frontend\AccountController::class, 'updateAddress'])->name('account.addresses.update');
         Route::delete('/account/addresses/{address}', [\App\Http\Controllers\Frontend\AccountController::class, 'destroyAddress'])->name('account.addresses.destroy');
         Route::patch('/account/addresses/{address}/default', [\App\Http\Controllers\Frontend\AccountController::class, 'setDefaultAddress'])->name('account.addresses.set-default');
+
+        // Wishlist
+        Route::post('/wishlist/{product}/toggle', [\App\Http\Controllers\Frontend\WishlistController::class, 'toggle'])->name('wishlist.toggle');
+        Route::delete('/wishlist/{product}', [\App\Http\Controllers\Frontend\WishlistController::class, 'destroy'])->name('wishlist.destroy');
+
+        // Reviews
+        Route::post('/products/{product}/reviews', [\App\Http\Controllers\Frontend\ReviewController::class, 'store'])->name('reviews.store');
+        Route::post('/reviews/{review}/helpful', [\App\Http\Controllers\Frontend\ReviewController::class, 'helpful'])->name('reviews.helpful');
     });
 
 });

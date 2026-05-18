@@ -133,6 +133,10 @@ class Setting extends Model
         'storefront_stats_show',
         'storefront_trust_show',
         'storefront_use_logo_text',
+        'storefront_video_url',
+        'storefront_video_title',
+        'storefront_video_subtitle',
+        'storefront_video_show',
     ];
 
     protected $casts = [
@@ -175,6 +179,7 @@ class Setting extends Model
         'storefront_stats_show' => 'boolean',
         'storefront_trust_show' => 'boolean',
         'storefront_use_logo_text' => 'boolean',
+        'storefront_video_show' => 'boolean',
     ];
 
     /**

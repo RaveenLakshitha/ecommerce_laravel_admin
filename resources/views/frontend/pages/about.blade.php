@@ -37,24 +37,27 @@
         <div id="contact-info"
             style="margin-top: 40px; color: var(--silver); line-height: 1.8; font-size: 1.1rem; background: var(--bg-2); padding: 40px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
             <h2 style="color: var(--white); font-family: var(--font-display); font-size: 2rem; margin-bottom: 20px;">
-                {{ __('file.contact_us') ?? 'Get in Touch' }}</h2>
+                {{ __('file.contact_us') ?? 'Get in Touch' }}
+            </h2>
             <div style="margin-bottom: 20px;">
                 <p style="margin-bottom: 15px;"><strong style="color: var(--white);">Email:</strong> <br><a
-                        href="mailto:{{ $storefront->contact_email ?? $storefront->email ?? 'hello@loopcam.com.mx' }}"
-                        style="color: var(--gold); text-decoration: none; font-size: 1.25rem;">{{ $storefront->contact_email ?? $storefront->email ??
-                        'hello@loopcam.com.mx' }}</a></p>
+                        href="mailto:{{ $storefront->contact_email ?? $storefront->email ?? 'hello@karbnzol.com' }}"
+                        style="color: var(--gold); text-decoration: none; font-size: 1.25rem;">{{ $storefront->contact_email
+                        ?? $storefront->email ??
+                        'hello@karbnzol.com' }}</a></p>
                 <p style="margin-bottom: 15px;"><strong style="color: var(--white);">Phone:</strong> <br><a
                         href="tel:{{ $storefront->contact_phone ?? $storefront->phone ?? '+94112345678' }}"
                         style="color: var(--gold); text-decoration: none; font-size: 1.25rem;">{{ $storefront->contact_phone ?? $storefront->phone ?? '+94 11 234 5678' }}</a>
                 </p>
                 @if($storefront->address)
-                <p style="margin-bottom: 15px;"><strong style="color: var(--white);">Address:</strong> <br>
-                    <span style="font-size: 1.15rem; color: var(--silver);">
-                        {{ $storefront->address }}<br>
-                        {{ $storefront->city }}{{ $storefront->state ? ', ' . $storefront->state : '' }} {{ $storefront->postal_code }}<br>
-                        {{ $storefront->country }}
-                    </span>
-                </p>
+                    <p style="margin-bottom: 15px;"><strong style="color: var(--white);">Address:</strong> <br>
+                        <span style="font-size: 1.15rem; color: var(--silver);">
+                            {{ $storefront->address }}<br>
+                            {{ $storefront->city }}{{ $storefront->state ? ', ' . $storefront->state : '' }}
+                            {{ $storefront->postal_code }}<br>
+                            {{ $storefront->country }}
+                        </span>
+                    </p>
                 @endif
                 <p><strong style="color: var(--white);">Hours:</strong> <br>Mon – Sat, 9am – 6pm</p>
             </div>

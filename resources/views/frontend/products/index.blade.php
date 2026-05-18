@@ -16,7 +16,6 @@
             --font-display: 'Oswald', 'Arial Narrow', sans-serif;
             --font-body: 'Barlow', sans-serif;
             --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-            --sidebar-w: 260px;
         }
 
         /* ════════════════════════════════════════════════
@@ -59,318 +58,265 @@
         }
 
         /* ════════════════════════════════════════════════
-           SHOP LAYOUT: SIDEBAR + MAIN
+           SHOP LAYOUT
         ════════════════════════════════════════════════ */
         .shop-page {
             max-width: 1600px;
             margin: 0 auto;
-            display: grid;
-            grid-template-columns: var(--sidebar-w) 1fr;
             min-height: 80vh;
             border-left: 1px solid var(--bg-4);
             border-right: 1px solid var(--bg-4);
         }
 
-        /* ════════════════════════════════════════════════
-           SIDEBAR
-        ════════════════════════════════════════════════ */
-        .sidebar {
+        .shop-layout {
+            display: flex;
+            align-items: flex-start;
+        }
+
+        /* Filter Sidebar */
+        .shop-sidebar {
+            width: 280px;
+            min-width: 280px;
             background: var(--bg-2);
             border-right: 1px solid var(--bg-4);
+            padding: 1.5rem;
             position: sticky;
             top: 64px;
             height: calc(100vh - 64px);
             overflow-y: auto;
-            scrollbar-width: thin;
-            scrollbar-color: var(--bg-4) transparent;
         }
 
-        .sidebar::-webkit-scrollbar {
-            width: 3px;
-        }
-
-        .sidebar::-webkit-scrollbar-thumb {
-            background: var(--bg-4);
-        }
-
-        .sidebar::-webkit-scrollbar-thumb:hover {
-            background: var(--silver);
-        }
-
-        /* Filter group */
-        .filter-grp {
+        .filter-group {
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
             border-bottom: 1px solid var(--bg-4);
         }
 
-        .filter-btn {
-            width: 100%;
+        .filter-header {
             display: flex;
-            align-items: center;
             justify-content: space-between;
-            padding: 0.95rem 1.25rem;
-            background: none;
-            border: none;
+            align-items: center;
             cursor: pointer;
             font-family: var(--font-display);
-            font-size: var(--fs-sidebar-title);
-            font-weight: 600;
-            letter-spacing: 0.2em;
+            font-size: 0.85rem;
+            letter-spacing: 0.1em;
             text-transform: uppercase;
             color: var(--off-white);
-            transition: background 0.2s, color 0.2s;
-        }
-
-        .filter-btn:hover {
-            background: var(--bg-3);
-        }
-
-        .filter-btn svg {
-            flex-shrink: 0;
-            color: var(--dim);
-            transition: transform 0.25s;
-        }
-
-        .filter-btn.open svg {
-            transform: rotate(180deg);
-        }
-
-        .filter-body {
-            overflow: hidden;
-            max-height: 0;
-            transition: max-height 0.35s var(--ease-out), padding 0.3s;
-            padding: 0 1.25rem;
-        }
-
-        .filter-body.open {
-            max-height: 400px;
-            padding: 0 1.25rem 1rem;
-        }
-
-        /* Checkbox option */
-        .f-opt {
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-            padding: 0.35rem 0;
-            cursor: pointer;
+            margin-bottom: 1rem;
+            font-weight: 600;
             user-select: none;
         }
 
-        .f-opt:hover .f-label {
-            color: var(--off-white);
+        .filter-header .chevron {
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            border-right: 1.5px solid var(--dim);
+            border-bottom: 1.5px solid var(--dim);
+            transform: rotate(45deg);
+            transition: transform 0.2s ease;
         }
 
-        .f-cb {
-            width: 14px;
-            height: 14px;
-            flex-shrink: 0;
-            border: 1px solid var(--bg-4);
-            background: var(--bg-3);
-            appearance: none;
-            -webkit-appearance: none;
-            cursor: pointer;
+        .filter-header.collapsed .chevron {
+            transform: rotate(-45deg);
+        }
+
+        .filter-content {
+            transition: max-height 0.25s ease-out, opacity 0.25s ease-out;
+            overflow: hidden;
+            max-height: 500px;
+            opacity: 1;
+        }
+
+        .filter-header.collapsed + .filter-content {
+            max-height: 0;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Double Range Slider Styles */
+        .range-slider-container {
             position: relative;
-            transition: background 0.15s, border-color 0.15s;
+            width: 100%;
+            height: 5px;
+            background: var(--bg-4);
+            border-radius: 3px;
+            margin: 1.2rem 0 1.2rem 0;
         }
 
-        .f-cb:checked {
+        .range-slider-track {
+            position: absolute;
+            height: 100%;
             background: var(--gold);
+            border-radius: 3px;
+            left: 0%;
+            right: 0%;
+        }
+
+        .range-slider-container input[type="range"] {
+            position: absolute;
+            width: 100%;
+            height: 0;
+            background: none;
+            pointer-events: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            outline: none;
+            top: 50%;
+            transform: translateY(-50%);
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Webkit Thumb */
+        .range-slider-container input[type="range"]::-webkit-slider-thumb {
+            height: 14px;
+            width: 14px;
+            border-radius: 50%;
+            background: var(--gold);
+            border: 2px solid var(--bg-2);
+            cursor: pointer;
+            pointer-events: auto;
+            -webkit-appearance: none;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+            transition: transform 0.1s;
+        }
+
+        .range-slider-container input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+
+        /* Firefox Thumb */
+        .range-slider-container input[type="range"]::-moz-range-thumb {
+            height: 14px;
+            width: 14px;
+            border-radius: 50%;
+            background: var(--gold);
+            border: 2px solid var(--bg-2);
+            cursor: pointer;
+            pointer-events: auto;
+            -moz-appearance: none;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+            transition: transform 0.1s;
+        }
+
+        .range-slider-container input[type="range"]::-moz-range-thumb:hover {
+            transform: scale(1.2);
+        }
+
+        .price-inputs {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .price-inputs input {
+            width: 100%;
+            background: var(--bg-3);
+            border: 1px solid var(--bg-4);
+            color: var(--off-white);
+            padding: 0.5rem;
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .price-inputs input:focus {
             border-color: var(--gold);
         }
 
-        .f-cb:checked::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background-image: url("data:image/svg+xml,%3Csvg width='10' height='8' viewBox='0 0 10 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 4L3.5 6.5L9 1' stroke='%231a1a1a' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: center;
-            background-size: 10px;
-        }
-
-        .f-label {
-            font-size: var(--fs-sidebar-opt);
-            color: var(--silver);
-            flex: 1;
-        }
-
-        .f-ct {
-            font-family: var(--font-display);
-            font-size: 0.52rem;
-            letter-spacing: 0.08em;
+        .price-inputs span {
             color: var(--dim);
         }
 
-        /* Color swatches */
         .color-swatches {
             display: flex;
             flex-wrap: wrap;
-            gap: 5px;
-            padding: 0.25rem 0 0.5rem;
+            gap: 0.5rem;
         }
 
-        .cf-sw {
-            width: 22px;
-            height: 22px;
+        .color-swatch-wrapper {
+            padding: 2px;
+            border: 1px solid transparent;
             cursor: pointer;
-            border: 2px solid var(--bg-4);
-            transition: border-color 0.2s, transform 0.2s;
-            position: relative;
-        }
-
-        .cf-sw:hover {
-            border-color: var(--silver);
-            transform: scale(1.15);
-        }
-
-        .cf-sw.on {
-            border-color: var(--gold);
-        }
-
-        .cf-sw.on::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background-image: url("data:image/svg+xml,%3Csvg width='12' height='10' viewBox='0 0 12 10' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 5L4.5 8.5L11 1' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: center;
-            background-size: 10px;
-            filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.6));
-        }
-
-        /* Size buttons */
-        .size-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 4px;
-            padding: 0.25rem 0 0.5rem;
-        }
-
-        .sz-btn {
-            min-width: 36px;
-            padding: 0.28rem 0.5rem;
-            background: var(--bg-3);
-            border: 1px solid var(--bg-4);
-            font-family: var(--font-display);
-            font-size: 0.58rem;
-            font-weight: 600;
-            letter-spacing: 0.1em;
-            color: var(--silver);
-            cursor: pointer;
-            transition: all 0.15s;
-            text-align: center;
-        }
-
-        .sz-btn:hover {
-            border-color: var(--gold);
-            color: var(--gold);
-        }
-
-        .sz-btn.on {
-            background: var(--gold);
-            border-color: var(--gold);
-            color: var(--bg);
-        }
-
-        /* Price range */
-        .price-wrap {
-            padding: 0.25rem 0 0.75rem;
-        }
-
-        .price-vals {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 0.5rem;
-            font-family: var(--font-display);
-            font-size: 0.6rem;
-            letter-spacing: 0.1em;
-            color: var(--silver);
-        }
-
-        input.price-range {
-            width: 100%;
-            appearance: none;
-            -webkit-appearance: none;
-            height: 3px;
-            background: var(--bg-4);
-            outline: none;
-            cursor: pointer;
-        }
-
-        input.price-range::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 14px;
-            height: 14px;
-            background: var(--gold);
-            border: 2px solid var(--bg-2);
-            cursor: pointer;
-            border-radius: 0;
-        }
-
-        input.price-range::-moz-range-thumb {
-            width: 14px;
-            height: 14px;
-            background: var(--gold);
-            border: 2px solid var(--bg-2);
-            cursor: pointer;
-            border-radius: 0;
-            border: none;
-        }
-
-        /* Clear all */
-        .sidebar-clear-all {
-            width: 100%;
-            padding: 0.85rem 1.25rem;
-            background: none;
-            border: none;
-            border-top: 1px solid var(--bg-4);
-            font-family: var(--font-display);
-            font-size: 0.58rem;
-            font-weight: 600;
-            letter-spacing: 0.18em;
-            text-transform: uppercase;
-            color: var(--dim);
-            cursor: pointer;
-            text-align: left;
-            transition: color 0.2s, background 0.2s;
-        }
-
-        .sidebar-clear-all:hover {
-            color: var(--gold);
-            background: var(--gold-bg);
-        }
-
-        /* Active filter count badge */
-        .sidebar-head {
-            padding: 1rem 1.25rem;
-            border-bottom: 1px solid var(--bg-4);
+            transition: border-color 0.2s;
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            justify-content: center;
         }
 
-        .sidebar-head-title {
+        .color-swatch-wrapper.selected {
+            border-color: var(--gold);
+        }
+
+        .color-swatch {
+            width: 24px;
+            height: 24px;
+            display: block;
+            border: 1px solid var(--bg-4);
+        }
+
+        .btn-filter, .btn-reset {
+            width: 100%;
+            padding: 0.75rem;
             font-family: var(--font-display);
-            font-size: var(--fs-sidebar-title);
-            font-weight: 700;
-            letter-spacing: 0.22em;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
             text-transform: uppercase;
+            cursor: pointer;
+            border: none;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .btn-filter {
+            background: var(--gold);
+            color: var(--bg);
+            margin-bottom: 0.5rem;
+        }
+
+        .btn-filter:hover {
+            background: var(--white);
+        }
+
+        .btn-reset {
+            background: transparent;
+            color: var(--dim);
+            border: 1px solid var(--bg-4);
+        }
+
+        .btn-reset:hover {
+            color: var(--off-white);
+            background: var(--bg-3);
+        }
+
+        .filter-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .filter-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--dim);
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .filter-label:hover {
             color: var(--off-white);
         }
 
-        .filter-active-count {
-            background: var(--gold);
-            color: var(--bg);
-            font-family: var(--font-display);
-            font-size: 0.5rem;
-            font-weight: 700;
-            padding: 0.12rem 0.4rem;
-            border-radius: 2px;
-            display: none;
-        }
-
-        .filter-active-count.visible {
-            display: inline-block;
+        .filter-label input[type="checkbox"] {
+            accent-color: var(--gold);
+            cursor: pointer;
+            width: 16px;
+            height: 16px;
         }
 
         /* ════════════════════════════════════════════════
@@ -380,9 +326,11 @@
             background: var(--bg);
             display: flex;
             flex-direction: column;
+            flex: 1;
+            min-width: 0;
         }
 
-        /* Top toolbar — exactly like reference */
+        /* Top toolbar */
         .products-toolbar {
             background: var(--bg-2);
             border-bottom: 1px solid var(--bg-4);
@@ -401,27 +349,6 @@
             display: flex;
             align-items: center;
             gap: 1rem;
-        }
-
-        /* Mobile filter toggle */
-        .filter-mobile-btn {
-            display: none;
-            background: var(--bg-3);
-            border: 1px solid var(--bg-4);
-            color: var(--silver);
-            padding: 0.45rem 0.875rem;
-            font-family: var(--font-display);
-            font-size: 0.6rem;
-            font-weight: 600;
-            letter-spacing: 0.14em;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .filter-mobile-btn:hover {
-            border-color: var(--gold);
-            color: var(--gold);
         }
 
         .product-total {
@@ -494,76 +421,6 @@
         .sort-dd:focus {
             border-color: var(--gold);
             color: var(--off-white);
-        }
-
-        /* Active filters chips row */
-        .active-filters {
-            background: var(--bg);
-            border-bottom: 1px solid var(--bg-4);
-            padding: 0.6rem 1.5rem;
-            display: none;
-            align-items: center;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-        }
-
-        .active-filters.show {
-            display: flex;
-        }
-
-        .af-label {
-            font-family: var(--font-display);
-            font-size: 0.55rem;
-            letter-spacing: 0.14em;
-            text-transform: uppercase;
-            color: var(--dim);
-        }
-
-        .af-chip {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.35rem;
-            background: var(--bg-3);
-            border: 1px solid var(--bg-4);
-            padding: 0.2rem 0.6rem;
-            font-family: var(--font-display);
-            font-size: 0.56rem;
-            font-weight: 600;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            color: var(--silver);
-        }
-
-        .af-chip button {
-            background: none;
-            border: none;
-            color: var(--dim);
-            cursor: pointer;
-            font-size: 0.7rem;
-            line-height: 1;
-            transition: color 0.2s;
-        }
-
-        .af-chip button:hover {
-            color: var(--gold);
-        }
-
-        .af-clear-all {
-            margin-left: auto;
-            background: none;
-            border: none;
-            font-family: var(--font-display);
-            font-size: 0.55rem;
-            font-weight: 600;
-            letter-spacing: 0.14em;
-            text-transform: uppercase;
-            color: var(--dim);
-            cursor: pointer;
-            transition: color 0.2s;
-        }
-
-        .af-clear-all:hover {
-            color: var(--gold);
         }
 
         /* ════════════════════════════════════════════════
@@ -718,6 +575,15 @@
             color: var(--bg);
         }
 
+        .p-side-btn.active {
+            color: var(--gold);
+        }
+
+        .p-side-btn.active svg {
+            fill: var(--gold);
+            stroke: var(--gold);
+        }
+
         /* Quick add */
         .p-add {
             position: absolute;
@@ -805,37 +671,6 @@
             text-decoration: line-through;
         }
 
-        .p-install {
-            font-size: 0.68rem;
-            color: var(--dim);
-            margin-bottom: 0.5rem;
-            line-height: 1.4;
-        }
-
-        .p-install strong {
-            color: var(--silver);
-        }
-
-        .p-install .cb {
-            color: var(--gold);
-            font-weight: 600;
-        }
-
-        .mintpay {
-            display: inline-flex;
-            align-items: center;
-            background: #1a2e45;
-            color: #5aadff;
-            font-size: 0.46rem;
-            font-weight: 700;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            padding: 0.1rem 0.3rem;
-            border-radius: 2px;
-            vertical-align: middle;
-            margin-left: 0.2rem;
-        }
-
         .p-swatches {
             display: flex;
             gap: 4px;
@@ -890,177 +725,176 @@
         }
 
         /* ════════════════════════════════════════════════
-   SHOP BANNER SLIDER
-════════════════════════════════════════════════ */
-.shop-banner {
-    position: relative;
-    width: 100%;
-    overflow: hidden;
-    background: var(--bg-2);
-    border-bottom: 1px solid var(--bg-4);
-}
+           SHOP BANNER SLIDER
+        ════════════════════════════════════════════════ */
+        .shop-banner {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            background: var(--bg-2);
+            border-bottom: 1px solid var(--bg-4);
+        }
 
-.banner-track {
-    display: flex;
-    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-}
+        .banner-track {
+            display: flex;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
 
-.banner-slide {
-    min-width: 100%;
-    position: relative;
-    height: clamp(300px, 32vw, 520px);
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-}
+        .banner-slide {
+            min-width: 100%;
+            position: relative;
+            height: clamp(300px, 32vw, 520px);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+        }
 
-.banner-content-container {
-    width: 100%;
-    max-width: 1600px;
-    margin: 0 auto;
-    position: relative;
-    z-index: 2;
-    padding: 0 2rem;
-    pointer-events: none;
-}
+        .banner-content-container {
+            width: 100%;
+            max-width: 1600px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+            padding: 0 2rem;
+            pointer-events: none;
+        }
 
-.banner-slide .slide-bg {
-    position: absolute;
-    inset: 0;
-    background-size: cover;
-    background-position: center center;
-    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-}
+        .banner-slide .slide-bg {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center center;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
 
-.banner-slide .slide-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(90deg, rgba(26,26,26,.88) 38%, rgba(26,26,26,.1));
-}
+        .banner-slide .slide-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, rgba(26,26,26,.88) 38%, rgba(26,26,26,.1));
+        }
 
-.banner-slide .slide-content {
-    position: relative;
-    max-width: 600px;
-    pointer-events: auto;
-}
+        .banner-slide .slide-content {
+            position: relative;
+            max-width: 600px;
+            pointer-events: auto;
+        }
 
-.slide-eyebrow {
-    font-family: var(--font-display);
-    font-size: 0.55rem;
-    font-weight: 600;
-    letter-spacing: 0.28em;
-    text-transform: uppercase;
-    color: var(--gold);
-    margin-bottom: 0.6rem;
-}
+        .slide-eyebrow {
+            font-family: var(--font-display);
+            font-size: 0.55rem;
+            font-weight: 600;
+            letter-spacing: 0.28em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 0.6rem;
+        }
 
-.slide-title {
-    font-family: var(--font-display);
-    font-size: clamp(2rem, 4.5vw, 3.2rem);
-    font-weight: 700;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    color: var(--off-white);
-    line-height: 1.05;
-    margin-bottom: 0.75rem;
-    text-shadow: 0 2px 10px rgba(0,0,0,0.3);
-}
+        .slide-title {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 4.5vw, 3.2rem);
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: var(--off-white);
+            line-height: 1.05;
+            margin-bottom: 0.75rem;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
 
-.slide-sub {
-    font-family: var(--font-display);
-    font-size: 0.68rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--silver);
-    margin-bottom: 1.5rem;
-}
+        .slide-sub {
+            font-family: var(--font-display);
+            font-size: 0.68rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--silver);
+            margin-bottom: 1.5rem;
+        }
 
+        .slide-badge {
+            position: absolute;
+            top: 1.25rem;
+            right: 1.25rem;
+            z-index: 3;
+            background: rgba(26,26,26,.85);
+            backdrop-filter: blur(4px);
+            color: var(--off-white);
+            font-family: var(--font-display);
+            font-size: 0.48rem;
+            font-weight: 700;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            padding: 0.35rem 0.8rem;
+        }
 
-.slide-badge {
-    position: absolute;
-    top: 1.25rem;
-    right: 1.25rem;
-    z-index: 3;
-    background: rgba(26,26,26,.85);
-    backdrop-filter: blur(4px);
-    color: var(--off-white);
-    font-family: var(--font-display);
-    font-size: 0.48rem;
-    font-weight: 700;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    padding: 0.35rem 0.8rem;
-}
+        .slide-badge--red { background: var(--red); }
 
-.slide-badge--red { background: var(--red); }
+        /* Prev / Next arrows */
+        .banner-prev, .banner-next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 10;
+            background: rgba(26,26,26,.65);
+            border: 1px solid var(--bg-4);
+            color: var(--silver);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s, border-color 0.2s;
+        }
+        .banner-prev { left: 1.25rem; }
+        .banner-next { right: 1.25rem; }
+        .banner-prev:hover, .banner-next:hover {
+            background: var(--gold);
+            color: var(--bg);
+            border-color: var(--gold);
+        }
 
-/* Prev / Next arrows */
-.banner-prev, .banner-next {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 10;
-    background: rgba(26,26,26,.65);
-    border: 1px solid var(--bg-4);
-    color: var(--silver);
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: background 0.2s, color 0.2s, border-color 0.2s;
-}
-.banner-prev { left: 1.25rem; }
-.banner-next { right: 1.25rem; }
-.banner-prev:hover, .banner-next:hover {
-    background: var(--gold);
-    color: var(--bg);
-    border-color: var(--gold);
-}
+        /* Dot indicators */
+        .banner-dots {
+            position: absolute;
+            bottom: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 5px;
+            z-index: 10;
+        }
+        .b-dot {
+            width: 20px;
+            height: 3px;
+            background: rgba(255,255,255,.25);
+            cursor: pointer;
+            transition: background 0.25s, width 0.25s;
+        }
+        .b-dot.active { background: var(--gold); width: 34px; }
 
-/* Dot indicators */
-.banner-dots {
-    position: absolute;
-    bottom: 1rem;
-        left: 50%;
-        transform: translateX(-50%);
-        display: flex;
-        gap: 5px;
-        z-index: 10;
-    }
-    .b-dot {
-        width: 20px;
-        height: 3px;
-        background: rgba(255,255,255,.25);
-        cursor: pointer;
-        transition: background 0.25s, width 0.25s;
-    }
-    .b-dot.active { background: var(--gold); width: 34px; }
+        /* Auto-play progress bar */
+        .slide-timer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 2px;
+            background: var(--gold);
+            width: 0;
+            z-index: 10;
+        }
 
-    /* Auto-play progress bar */
-    .slide-timer {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        height: 2px;
-        background: var(--gold);
-        width: 0;
-        z-index: 10;
-    }
+        @media (max-width: 768px) {
+            .banner-slide { height: 260px; }
+            .slide-title { font-size: 1.6rem; }
+            .banner-slide .slide-content { padding: 0 1.5rem; }
+            .slide-overlay { background: linear-gradient(180deg, rgba(26,26,26,.5) 0%, rgba(26,26,26,.85) 100%); }
+        }
 
-    @media (max-width: 768px) {
-        .banner-slide { height: 260px; }
-        .slide-title { font-size: 1.6rem; }
-        .banner-slide .slide-content { padding: 0 1.5rem; }
-        .slide-overlay { background: linear-gradient(180deg, rgba(26,26,26,.5) 0%, rgba(26,26,26,.85) 100%); }
-    }
-
-    @media (max-width: 480px) {
-        .banner-slide { height: 220px; }
-        .slide-title { font-size: 1.3rem; }
-        .banner-prev, .banner-next { width: 32px; height: 32px; }
-    }
+        @media (max-width: 480px) {
+            .banner-slide { height: 220px; }
+            .slide-title { font-size: 1.3rem; }
+            .banner-prev, .banner-next { width: 32px; height: 32px; }
+        }
 
         /* ════════════════════════════════════════════════
            PAGINATION
@@ -1131,10 +965,6 @@
            RESPONSIVE
         ════════════════════════════════════════════════ */
         @media (max-width: 1100px) {
-            .shop-page {
-                grid-template-columns: 240px 1fr;
-            }
-
             .prod-grid {
                 grid-template-columns: repeat(3, 1fr);
             }
@@ -1149,45 +979,6 @@
         }
 
         @media (max-width: 900px) {
-            .shop-page {
-                grid-template-columns: 1fr;
-            }
-
-            .sidebar {
-                position: fixed;
-                top: 64px;
-                left: -100%;
-                height: calc(100vh - 64px);
-                width: 280px;
-                z-index: 300;
-                border-right: 1px solid var(--bg-4);
-                transition: left 0.4s var(--ease-out);
-                box-shadow: 4px 0 32px rgba(0, 0, 0, 0.4);
-            }
-
-            .sidebar.open {
-                left: 0;
-            }
-
-            .sidebar-overlay {
-                position: fixed;
-                inset: 0;
-                background: rgba(0, 0, 0, 0.5);
-                z-index: 299;
-                display: none;
-                backdrop-filter: blur(2px);
-            }
-
-            .sidebar-overlay.show {
-                display: block;
-            }
-
-            .filter-mobile-btn {
-                display: flex;
-                align-items: center;
-                gap: 0.4rem;
-            }
-
             .prod-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
@@ -1210,10 +1001,6 @@
                 padding: 0.75rem 1rem;
             }
 
-            .active-filters {
-                padding: 0.5rem 1rem;
-            }
-
             .prod-grid.list .p-img {
                 width: 130px;
                 min-width: 130px;
@@ -1221,9 +1008,6 @@
             }
         }
     </style>
-
-    {{-- Sidebar overlay (mobile) --}}
-    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
 
     {{-- ── BREADCRUMB ──────────────────────────────────────── --}}
     <div class="breadcrumb-bar">
@@ -1245,231 +1029,165 @@
     </div>
 
     {{-- ── SHOP BANNER SLIDER ────────────────────────────── --}}
-<div class="shop-banner" id="shopBanner">
-    <div class="banner-track" id="bannerTrack">
-        @php
-            $displayBanners = !empty($banners) ? $banners : [
-                [
-                    'image_url' => \Illuminate\Support\Facades\Blade::render("@placeholder(100)"),
-                    'title' => "Luxury Craft.<br>Modern Detail.",
-                    'description' => 'Elegance in every piece · Modern luxury',
-                    'eyebrow' => 'Premium Collection',
-                    'badge' => 'New'
-                ]
-            ];
-        @endphp
+    <div class="shop-banner" id="shopBanner">
+        <div class="banner-track" id="bannerTrack">
+            @php
+                $displayBanners = !empty($banners) ? $banners : [
+                    [
+                        'image_url' => \Illuminate\Support\Facades\Blade::render("@placeholder(100)"),
+                        'title' => "Luxury Craft.<br>Modern Detail.",
+                        'description' => 'Elegance in every piece · Modern luxury',
+                        'eyebrow' => 'Premium Collection',
+                        'badge' => 'New'
+                    ]
+                ];
+            @endphp
 
-        @foreach($displayBanners as $banner)
-            <div class="banner-slide">
-                <div class="slide-bg" style="background-image:url('{{ $banner['image_url'] }}');"></div>
-                <div class="slide-overlay"></div>
-                <div class="banner-content-container">
-                    <div class="slide-content">
-                        <p class="slide-eyebrow">{{ $banner['eyebrow'] ?? ($currentCategory->name ?? ($currentCollection->name ?? 'Karbnzol')) }}</p>
-                        <h2 class="slide-title">{!! $banner['title'] ?? ($currentCategory->name ?? ($currentCollection->name ?? '')) !!}</h2>
-                        <p class="slide-sub">{{ $banner['description'] ?? ($currentCollection->description ?? '') }}</p>
+            @foreach($displayBanners as $banner)
+                <div class="banner-slide">
+                    <div class="slide-bg" style="background-image:url('{{ $banner['image_url'] }}');"></div>
+                    <div class="slide-overlay"></div>
+                    <div class="banner-content-container">
+                        <div class="slide-content">
+                            <p class="slide-eyebrow">{{ $banner['eyebrow'] ?? ($currentCategory->name ?? ($currentCollection->name ?? 'Karbnzol')) }}</p>
+                            <h2 class="slide-title">{!! $banner['title'] ?? ($currentCategory->name ?? ($currentCollection->name ?? '')) !!}</h2>
+                            <p class="slide-sub">{{ $banner['description'] ?? ($currentCollection->description ?? '') }}</p>
+                        </div>
                     </div>
+                    @if(!empty($banner['badge']))
+                        <span class="slide-badge {{ $banner['badge_class'] ?? '' }}">{{ $banner['badge'] }}</span>
+                    @endif
                 </div>
-                @if(!empty($banner['badge']))
-                    <span class="slide-badge {{ $banner['badge_class'] ?? '' }}">{{ $banner['badge'] }}</span>
-                @endif
-            </div>
-        @endforeach
+            @endforeach
+        </div>
+
+        @if(count($displayBanners) > 1)
+            <button class="banner-prev" id="bPrev" aria-label="Previous slide">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+            <button class="banner-next" id="bNext" aria-label="Next slide">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+
+            <div class="banner-dots" id="bDots"></div>
+            <div class="slide-timer" id="slideTimer"></div>
+        @endif
     </div>
 
-    @if(count($displayBanners) > 1)
-        <button class="banner-prev" id="bPrev" aria-label="Previous slide">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-        </button>
-        <button class="banner-next" id="bNext" aria-label="Next slide">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-        </button>
-
-        <div class="banner-dots" id="bDots"></div>
-        <div class="slide-timer" id="slideTimer"></div>
-    @endif
-</div>
-
     {{-- ── SHOP PAGE ───────────────────────────────────────── --}}
-    <form id="filterForm" method="GET" action="{{ route('frontend.products.index') }}">
-        @if(request('category'))
-            <input type="hidden" name="category" value="{{ request('category') }}">
-        @endif
-        @if(request('collection'))
-            <input type="hidden" name="collection" value="{{ request('collection') }}">
-        @endif
     <div class="shop-page">
-
-        {{-- ════════ SIDEBAR ════════ --}}
-        <aside class="sidebar" id="filterSidebar" aria-label="Product filters">
-            <div class="sidebar-head">
-                <span class="sidebar-head-title">Filters</span>
-                @php
-                    $filterCount = (request()->has('colors') ? count(request('colors')) : 0) +
-                                   (request()->has('sizes') ? count(request('sizes')) : 0) +
-                                   (request('max_price') && request('max_price') != $maxPriceAvailable ? 1 : 0);
-                @endphp
-                <span class="filter-active-count {{ $filterCount > 0 ? 'visible' : '' }}" id="activeCount">{{ $filterCount }}</span>
-            </div>
-
-            {{-- Availability --}}
-            <div class="filter-grp">
-                <button type="button" class="filter-btn open" onclick="toggleFilter(this)">
-                    Availability
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                        stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="6 9 12 15 18 9" />
-                    </svg>
-                </button>
-                <div class="filter-body open">
-                    <label class="f-opt"><input class="f-cb" type="checkbox" onchange="updateFilters()" checked><span
-                            class="f-label">In Stock</span><span class="f-ct">(28)</span></label>
-                    <label class="f-opt"><input class="f-cb" type="checkbox" onchange="updateFilters()"><span
-                            class="f-label">Out of Stock</span><span class="f-ct">(6)</span></label>
-                    <label class="f-opt"><input class="f-cb" type="checkbox" onchange="updateFilters()"><span
-                            class="f-label">Pre-Order</span><span class="f-ct">(3)</span></label>
-                </div>
-            </div>
-
-            {{-- Price --}}
-            <div class="filter-grp">
-                <button type="button" class="filter-btn open" onclick="toggleFilter(this)">
-                    Price
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                        stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="6 9 12 15 18 9" />
-                    </svg>
-                </button>
-                <div class="filter-body open">
-                    <div class="price-wrap">
-                        <div class="price-vals">
-                            <span>{{ $currency_symbol }} {{ number_format($minPriceAvailable) }}</span>
-                            <span id="priceDisplay">{{ $currency_symbol }} {{ number_format(request('max_price', $maxPriceAvailable)) }}</span>
+        <div class="shop-layout">
+            
+            {{-- Filter Sidebar --}}
+            <aside class="shop-sidebar">
+                <form id="filterForm" onsubmit="event.preventDefault(); applyFilters();">
+                    <div class="filter-group">
+                        <h4 class="filter-header collapsed" onclick="toggleCollapse(this)">
+                            <span>Price Range</span>
+                            <span class="chevron"></span>
+                        </h4>
+                        <div class="filter-content">
+                            <div class="range-slider-container">
+                                <div class="range-slider-track"></div>
+                                <input type="range" id="min_price_range" min="0" max="{{ ceil($maxPrice) }}" value="{{ request('min_price', 0) }}" step="1" oninput="updatePriceSlider()" onchange="applyFilters()">
+                                <input type="range" id="max_price_range" min="0" max="{{ ceil($maxPrice) }}" value="{{ request('max_price', ceil($maxPrice)) }}" step="1" oninput="updatePriceSlider()" onchange="applyFilters()">
+                            </div>
+                            <div class="price-inputs">
+                                <input type="number" id="min_price" name="min_price" value="{{ request('min_price', 0) }}" placeholder="Min" min="0" max="{{ ceil($maxPrice) }}" oninput="updatePriceInputs()" onchange="applyFilters()">
+                                <span>-</span>
+                                <input type="number" id="max_price" name="max_price" value="{{ request('max_price', ceil($maxPrice)) }}" placeholder="Max" min="0" max="{{ ceil($maxPrice) }}" oninput="updatePriceInputs()" onchange="applyFilters()">
+                            </div>
                         </div>
-                        <input class="price-range" type="range" name="max_price" min="{{ floor($minPriceAvailable) }}" max="{{ ceil($maxPriceAvailable) }}" value="{{ request('max_price', $maxPriceAvailable) }}" step="1"
-                            oninput="document.getElementById('priceDisplay').textContent='{{ $currency_symbol }} '+parseInt(this.value).toLocaleString()" onchange="this.form.submit()">
                     </div>
-                </div>
-            </div>
 
-            {{-- Color --}}
-            @if(isset($colors) && count($colors) > 0)
-            <div class="filter-grp">
-                <button type="button" class="filter-btn open" onclick="toggleFilter(this)">
-                    Color
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                        stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="6 9 12 15 18 9" />
-                    </svg>
-                </button>
-                <div class="filter-body open">
-                    <div class="color-swatches">
-                        @foreach($colors as $colorMap)
-                            @php
-                                $sc = $colorMap->value ?? '#000000';
-                            @endphp
-                            <label class="cf-sw {{ in_array($colorMap->slug, request('colors', [])) ? 'on' : '' }}" style="background:{{ $sc }};" title="{{ $colorMap->value }}">
-                                <input type="checkbox" name="colors[]" value="{{ $colorMap->slug }}" class="d-none" onchange="this.form.submit()" {{ in_array($colorMap->slug, request('colors', [])) ? 'checked' : '' }} style="display:none;">
-                            </label>
+                    @if(isset($availableCategories) && $availableCategories->count() > 0 && !isset($currentCategory))
+                    <div class="filter-group">
+                        <h4 class="filter-header collapsed" onclick="toggleCollapse(this)">
+                            <span>Categories</span>
+                            <span class="chevron"></span>
+                        </h4>
+                        <div class="filter-content">
+                            <div class="filter-list">
+                                @php $selectedCats = request('filter_category_id') ? (is_array(request('filter_category_id')) ? request('filter_category_id') : explode(',', request('filter_category_id'))) : []; @endphp
+                                @foreach($availableCategories as $cat)
+                                    <label class="filter-label">
+                                        <input type="checkbox" name="filter_category_id[]" value="{{ $cat->id }}" onchange="handleCategoryChange(this)" {{ in_array($cat->id, $selectedCats) ? 'checked' : '' }}>
+                                        <span>{{ $cat->name }}</span>
+                                    </label>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                    @endif
+
+                    @if(isset($availableBrands) && $availableBrands->count() > 0)
+                    <div class="filter-group">
+                        <h4 class="filter-header collapsed" onclick="toggleCollapse(this)">
+                            <span>Brands</span>
+                            <span class="chevron"></span>
+                        </h4>
+                        <div class="filter-content">
+                            <div class="filter-list">
+                                @php $selectedBrands = request('brand_id') ? (is_array(request('brand_id')) ? request('brand_id') : explode(',', request('brand_id'))) : []; @endphp
+                                @foreach($availableBrands as $brand)
+                                    <label class="filter-label">
+                                        <input type="checkbox" name="brand_id[]" value="{{ $brand->id }}" onchange="applyFilters()" {{ in_array($brand->id, $selectedBrands) ? 'checked' : '' }}>
+                                        <span>{{ $brand->name }}</span>
+                                    </label>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                    @endif
+
+                    @if(isset($availableAttributes) && $availableAttributes->count() > 0)
+                        @foreach($availableAttributes as $attribute)
+                            <div class="filter-group">
+                                <h4 class="filter-header collapsed" onclick="toggleCollapse(this)">
+                                    <span>{{ $attribute->name }}</span>
+                                    <span class="chevron"></span>
+                                </h4>
+                                <div class="filter-content">
+                                    @if($attribute->slug === 'color')
+                                        <div class="color-swatches">
+                                            @php $selectedAttrValues = request('attributes.'.$attribute->slug) ? (is_array(request('attributes.'.$attribute->slug)) ? request('attributes.'.$attribute->slug) : explode(',', request('attributes.'.$attribute->slug))) : []; @endphp
+                                            @foreach($attribute->values as $val)
+                                                <div class="color-swatch-wrapper {{ in_array($val->value, $selectedAttrValues) ? 'selected' : '' }}" 
+                                                     data-val="{{ $val->value }}"
+                                                     data-slug="{{ $attribute->slug }}"
+                                                     onclick="toggleAttr(this)"
+                                                     title="{{ $val->value }}">
+                                                    <span class="color-swatch" style="background-color: {{ $val->value }}"></span>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                        <input type="hidden" name="attributes[{{ $attribute->slug }}]" class="attr-hidden-input" data-slug="{{ $attribute->slug }}" value="{{ request('attributes.'.$attribute->slug) ? (is_array(request('attributes.'.$attribute->slug)) ? implode(',', request('attributes.'.$attribute->slug)) : request('attributes.'.$attribute->slug)) : '' }}">
+                                    @else
+                                        <div class="filter-list">
+                                            @php $selectedAttrValues = request('attributes.'.$attribute->slug) ? (is_array(request('attributes.'.$attribute->slug)) ? request('attributes.'.$attribute->slug) : explode(',', request('attributes.'.$attribute->slug))) : []; @endphp
+                                            @foreach($attribute->values as $val)
+                                                <label class="filter-label">
+                                                    <input type="checkbox" name="attributes[{{ $attribute->slug }}][]" value="{{ $val->value }}" onchange="applyFilters()" {{ in_array($val->value, $selectedAttrValues) ? 'checked' : '' }}>
+                                                    <span>{{ $val->value }}</span>
+                                                </label>
+                                            @endforeach
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
                         @endforeach
-                    </div>
-                </div>
-            </div>
-            @endif
+                    @endif
 
-            {{-- Size --}}
-            @if(isset($sizes) && count($sizes) > 0)
-            <div class="filter-grp">
-                <button type="button" class="filter-btn open" onclick="toggleFilter(this)">
-                    Size
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                        stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="6 9 12 15 18 9" />
-                    </svg>
-                </button>
-                <div class="filter-body open">
-                    <div class="size-grid">
-                        @foreach($sizes as $sz)
-                            <label class="sz-btn {{ in_array($sz->slug, request('sizes', [])) ? 'on' : '' }}" style="cursor: pointer;">
-                                <input type="checkbox" name="sizes[]" value="{{ $sz->slug }}" onchange="this.form.submit()" {{ in_array($sz->slug, request('sizes', [])) ? 'checked' : '' }} style="display:none;">
-                                {{ $sz->value }}
-                            </label>
-                        @endforeach
-                    </div>
-                </div>
-            </div>
-            @endif
+                    <button type="button" class="btn-filter" onclick="applyFilters()">Apply Filters</button>
+                    <button type="button" class="btn-reset" onclick="resetFilters()">Reset</button>
+                </form>
+            </aside>
 
-            {{-- Category --}}
-            @if(isset($categories) && count($categories) > 0)
-            <div class="filter-grp">
-                <button type="button" class="filter-btn" onclick="toggleFilter(this)">
-                    Category
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                        stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="6 9 12 15 18 9" />
-                    </svg>
-                </button>
-                <div class="filter-body">
-                    @foreach($categories as $catObj)
-                        <label class="f-opt">
-                            <input class="f-cb" type="checkbox" onchange="window.location.href='{{ route('frontend.products.index', ['category' => $catObj->slug]) }}'" {{ request('category') == $catObj->slug ? 'checked' : '' }}>
-                            <span class="f-label">{{ $catObj->name }}</span>
-                            <span class="f-ct">({{ $catObj->products_count }})</span>
-                        </label>
-                    @endforeach
-                </div>
-            </div>
-            @endif
-
-            {{-- Other Dynamic Attributes --}}
-            @if(isset($otherAttributes) && count($otherAttributes) > 0)
-                @foreach($otherAttributes as $attr)
-                <div class="filter-grp">
-                    <button type="button" class="filter-btn" onclick="toggleFilter(this)">
-                        {{ $attr->name }}
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="6 9 12 15 18 9" />
-                        </svg>
-                    </button>
-                    <div class="filter-body">
-                        @foreach($attr->values as $val)
-                            <label class="f-opt">
-                                @php
-                                    $isChecked = false;
-                                    if (request()->has('attributes') && isset(request('attributes')[$attr->slug])) {
-                                        $isChecked = in_array($val->slug, request('attributes')[$attr->slug]);
-                                    }
-                                @endphp
-                                <input class="f-cb" type="checkbox" name="attributes[{{ $attr->slug }}][]" value="{{ $val->slug }}" onchange="this.form.submit()" {{ $isChecked ? 'checked' : '' }}>
-                                <span class="f-label">{{ $val->value }}</span>
-                                <span class="f-ct">({{ $val->variants_count }})</span>
-                            </label>
-                        @endforeach
-                    </div>
-                </div>
-                @endforeach
-            @endif
-
-            <button type="button" class="sidebar-clear-all" onclick="clearAll()">✕ &nbsp;Clear All Filters</button>
-        </aside>
-
-        {{-- ════════ PRODUCTS MAIN ════════ --}}
-        <div class="products-main">
+            <div class="products-main">
 
             {{-- Toolbar --}}
             <div class="products-toolbar">
                 <div class="toolbar-left">
-                    <button class="filter-mobile-btn" id="filterOpenBtn" onclick="openSidebar()">
-                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="4" y1="6" x2="20" y2="6" />
-                            <line x1="8" y1="12" x2="16" y2="12" />
-                            <line x1="10" y1="18" x2="14" y2="18" />
-                        </svg>
-                        Filters
-                    </button>
                     <p class="product-total"><strong id="prodCount">{{ $products->total() }}</strong> &nbsp;Products</p>
                     <div class="view-switcher" role="group" aria-label="View layout">
                         <button class="v-btn active" id="v4" onclick="setGrid(4,this)" aria-label="4-column grid"
@@ -1505,7 +1223,9 @@
                         </button>
                     </div>
                 </div>
-                <select class="sort-dd" name="sort" aria-label="Sort products" onchange="this.form.submit()">
+                
+                {{-- Sorting dropdown with elegant page-reload --}}
+                <select class="sort-dd" name="sort" aria-label="Sort products" onchange="const url = new URL(window.location.href); url.searchParams.set('sort', this.value); window.location.href = url.toString();">
                     <option value="">Sort By</option>
                     <option value="az" {{ request('sort') == 'az' ? 'selected' : '' }}>Name: A–Z</option>
                     <option value="za" {{ request('sort') == 'za' ? 'selected' : '' }}>Name: Z–A</option>
@@ -1517,158 +1237,67 @@
                 </select>
             </div>
 
-            {{-- Active filter chips --}}
-            @php
-                $hasActiveFilters = request()->hasAny(['colors', 'sizes', 'sort']) || (request('max_price') && request('max_price') != $maxPriceAvailable);
-            @endphp
-            <div class="active-filters {{ $hasActiveFilters ? 'show' : '' }}" id="activeFilters">
-                <span class="af-label">Active:</span>
-                @if(request('max_price') && request('max_price') != $maxPriceAvailable)
-                    <span class="af-chip">Max Price: {{ $currency_symbol }}{{ number_format(request('max_price')) }}</span>
-                @endif
-                @if(request('colors'))
-                    @foreach(request('colors') as $cSlug)
-                        <span class="af-chip">Color: {{ ucfirst($cSlug) }}</span>
-                    @endforeach
-                @endif
-                @if(request('sizes'))
-                    @foreach(request('sizes') as $sSlug)
-                        <span class="af-chip">Size: {{ strtoupper($sSlug) }}</span>
-                    @endforeach
-                @endif
-                @if(request('sort'))
-                    <span class="af-chip">Sorted</span>
-                @endif
-                <button type="button" class="af-clear-all" onclick="clearAll()">Clear All</button>
-            </div>
-
             {{-- Product Grid --}}
-            <div class="prod-grid" id="prodGrid">
-
-                @foreach($products as $i => $p)
-                    <div class="p-card" style="opacity:0;transform:translateY(20px);" data-index="{{ $i }}">
-                        <a href="{{ route('frontend.products.show', $p->slug) }}" style="text-decoration:none; color:inherit;">
-                            <div class="p-img">
-                                @if($p->is_featured)<span class="p-badge top">Top</span>@endif
-                                <div class="p-side">
-                                    <button class="p-side-btn" aria-label="Wishlist" onclick="event.preventDefault();">
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                            stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-                                        </svg>
-                                    </button>
-                                </div>
-                                <img src="{{ $p->primaryImage ? $p->primaryImage->url : null }}@if(!$p->primaryImage)@placeholder($p->id)@endif" alt="{{ $p->name }}" loading="{{ $i < 4 ? 'eager' : 'lazy' }}">
-                                <button class="p-add" onclick="event.preventDefault(); window.location='{{ route('frontend.products.show', $p->slug) }}'">+ Add to Bag</button>
-                            </div>
-                            <div class="p-info">
-                                <p class="p-brand">{{ $p->brand->name ?? 'Karbnzol' }}</p>
-                                <p class="p-name">{{ $p->name }}</p>
-                                <div class="p-price-row">
-                                    @php
-                                        $defaultVariant = $p->variants->where('is_default', true)->first() ?? $p->variants->first();
-                                        $displayPrice = $defaultVariant ? ($defaultVariant->sale_price ?? $defaultVariant->price) : $p->base_price;
-                                        $originalPrice = ($defaultVariant && $defaultVariant->sale_price) ? $defaultVariant->price : null;
-                                    @endphp
-                                    <span class="p-price">@price($displayPrice)</span>
-                                    @if($originalPrice)
-                                        <span class="p-was">@price($originalPrice)</span>
-                                    @endif
-                                </div>
-                                <div class="p-swatches">
-                                    @php
-                                        $varColors = $p->variants->flatMap(function($var) {
-                                            return $var->attributeValues->filter(function($av) {
-                                                return optional($av->attribute)->slug === 'color';
-                                            });
-                                        })->unique('id');
-                                    @endphp
-                                    @foreach($varColors as $c)
-                                        <span class="p-sw" style="background:{{ $c->value ?? '#ccc' }};" title="{{ $c->value }}"></span>
-                                    @endforeach
-                                </div>
-                                <span class="list-cta">
-                                    View Product
-                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M5 12h14M12 5l7 7-7 7" />
-                                    </svg>
-                                </span>
-                            </div>
-                        </a>
-                    </div>
-                @endforeach
+            <div id="gridWrapper">
+                @include('frontend.products.partials.grid')
             </div>
-
-            {{-- Pagination --}}
-            <nav class="custom-pagination-wrapper" aria-label="Page navigation" style="display:block; text-align:center;">
-                {{ $products->links('pagination::bootstrap-4') }}
-            </nav>
+        </div>
         </div>
     </div>
-    </form>
 
     <script>
-
         /* ── Banner Slider ────────────────────────────────── */
-(function () {
-    const track = document.getElementById('bannerTrack');
-    if (!track) return;
-    const slides = track.querySelectorAll('.banner-slide');
-    const dotsEl = document.getElementById('bDots');
-    const timerBar = document.getElementById('slideTimer');
-    let cur = 0, total = slides.length, autoTimer = null;
+        (function () {
+            const track = document.getElementById('bannerTrack');
+            if (!track) return;
+            const slides = track.querySelectorAll('.banner-slide');
+            const dotsEl = document.getElementById('bDots');
+            const timerBar = document.getElementById('slideTimer');
+            let cur = 0, total = slides.length, autoTimer = null;
 
-    slides.forEach((_, i) => {
-        if (!dotsEl) return;
-        const d = document.createElement('div');
-        d.className = 'b-dot' + (i === 0 ? ' active' : '');
-        d.onclick = () => goTo(i);
-        dotsEl.appendChild(d);
-    });
+            slides.forEach((_, i) => {
+                if (!dotsEl) return;
+                const d = document.createElement('div');
+                d.className = 'b-dot' + (i === 0 ? ' active' : '');
+                d.onclick = () => goTo(i);
+                dotsEl.appendChild(d);
+            });
 
-    function goTo(n) {
-        if (!track) return;
-        cur = (n + total) % total;
-        track.style.transform = `translateX(-${cur * 100}%)`;
-        if (dotsEl) {
-            dotsEl.querySelectorAll('.b-dot').forEach((d, i) => d.classList.toggle('active', i === cur));
-        }
-        resetTimer();
-    }
+            function goTo(n) {
+                if (!track) return;
+                cur = (n + total) % total;
+                track.style.transform = `translateX(-${cur * 100}%)`;
+                if (dotsEl) {
+                    dotsEl.querySelectorAll('.b-dot').forEach((d, i) => d.classList.toggle('active', i === cur));
+                }
+                resetTimer();
+            }
 
-    function resetTimer() {
-        if (!timerBar) return;
-        clearTimeout(autoTimer);
-        timerBar.style.transition = 'none';
-        timerBar.style.width = '0%';
-        void timerBar.offsetWidth;
-        timerBar.style.transition = 'width 5s linear';
-        timerBar.style.width = '100%';
-        autoTimer = setTimeout(() => goTo(cur + 1), 5000);
-    }
+            function resetTimer() {
+                if (!timerBar) return;
+                clearTimeout(autoTimer);
+                timerBar.style.transition = 'none';
+                timerBar.style.width = '0%';
+                void timerBar.offsetWidth;
+                timerBar.style.transition = 'width 5s linear';
+                timerBar.style.width = '100%';
+                autoTimer = setTimeout(() => goTo(cur + 1), 5000);
+            }
 
-    const btnPrev = document.getElementById('bPrev');
-    const btnNext = document.getElementById('bNext');
-    if (btnPrev) btnPrev.onclick = () => goTo(cur - 1);
-    if (btnNext) btnNext.onclick = () => goTo(cur + 1);
+            const btnPrev = document.getElementById('bPrev');
+            const btnNext = document.getElementById('bNext');
+            if (btnPrev) btnPrev.onclick = () => goTo(cur - 1);
+            if (btnNext) btnNext.onclick = () => goTo(cur + 1);
 
-    let touchStartX = 0;
-    track.addEventListener('touchstart', e => touchStartX = e.touches[0].clientX, { passive: true });
-    track.addEventListener('touchend', e => {
-        const dx = e.changedTouches[0].clientX - touchStartX;
-        if (Math.abs(dx) > 40) goTo(cur + (dx < 0 ? 1 : -1));
-    }, { passive: true });
+            let touchStartX = 0;
+            track.addEventListener('touchstart', e => touchStartX = e.touches[0].clientX, { passive: true });
+            track.addEventListener('touchend', e => {
+                const dx = e.changedTouches[0].clientX - touchStartX;
+                if (Math.abs(dx) > 40) goTo(cur + (dx < 0 ? 1 : -1));
+            }, { passive: true });
 
-    resetTimer();
-})();
-
-        /* ── Filter accordion ─────────────────────────── */
-        function toggleFilter(btn) {
-            btn.classList.toggle('open');
-            const body = btn.nextElementSibling;
-            body.classList.toggle('open');
-        }
+            resetTimer();
+        })();
 
         /* ── Grid view switcher ───────────────────────── */
         function setGrid(cols, btn) {
@@ -1681,91 +1310,277 @@
             btn.classList.add('active');
         }
 
-        /* ── Mobile sidebar ───────────────────────────── */
-        function openSidebar() {
-            document.getElementById('filterSidebar').classList.add('open');
-            document.getElementById('sidebarOverlay').classList.add('show');
-            document.body.style.overflow = 'hidden';
-        }
-        function closeSidebar() {
-            document.getElementById('filterSidebar').classList.remove('open');
-            document.getElementById('sidebarOverlay').classList.remove('show');
-            document.body.style.overflow = '';
-        }
-
-        /* ── Update filter state ──────────────────────── */
-        function updateFilters() {
-            const checked = document.querySelectorAll('.f-cb:checked').length;
-            const sizeOn = document.querySelectorAll('.sz-btn.on').length;
-            const colorOn = document.querySelectorAll('.cf-sw.on').length;
-            const total = checked + sizeOn + colorOn;
-            const badge = document.getElementById('activeCount');
-            if (badge) {
-                badge.textContent = total;
-                badge.classList.toggle('visible', total > 0);
-            }
-            const af = document.getElementById('activeFilters');
-            if (af) af.classList.toggle('show', total > 0);
-        }
-
-        /* ── Clear all ────────────────────────────────── */
-        function clearAll() {
-            let url = new URL("{{ route('frontend.products.index') }}");
-            @if(request('category'))
-                url.searchParams.set('category', '{{ request('category') }}');
-            @endif
-            @if(request('collection'))
-                url.searchParams.set('collection', '{{ request('collection') }}');
-            @endif
-            window.location.href = url.toString();
-        }
-
         /* ── Swatch active toggle ─────────────────────── */
-        document.querySelectorAll('.p-sw').forEach(sw => {
-            sw.addEventListener('click', function () {
-                this.closest('.p-swatches').querySelectorAll('.p-sw').forEach(s => s.classList.remove('active'));
-                this.classList.add('active');
+        function bindSwatchToggle() {
+            document.querySelectorAll('.p-sw').forEach(sw => {
+                sw.addEventListener('click', function () {
+                    this.closest('.p-swatches')?.querySelectorAll('.p-sw').forEach(s => s.classList.remove('active'));
+                    this.classList.add('active');
+                });
             });
-        });
-
-        /* ── Responsive: show filter btn on mobile ────── */
-        function checkMobile() {
-            const btn = document.getElementById('filterOpenBtn');
-            if (btn) btn.style.display = window.innerWidth <= 900 ? 'flex' : 'none';
         }
-        window.addEventListener('resize', checkMobile, { passive: true });
-        checkMobile();
 
-        /* ── Pagination ───────────────────────────────── */
-        document.querySelectorAll('.page-btn:not(.arrow):not([style*="cursor:default"])').forEach(btn => {
-            btn.addEventListener('click', function () {
-                document.querySelectorAll('.page-btn').forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-            });
+        /* ── Price Range Slider Helpers ── */
+        function updatePriceSlider() {
+            const minRange = document.getElementById('min_price_range');
+            const maxRange = document.getElementById('max_price_range');
+            const minInput = document.getElementById('min_price');
+            const maxInput = document.getElementById('max_price');
+            const track = document.querySelector('.range-slider-track');
+            if (!minRange || !maxRange || !minInput || !maxInput || !track) return;
+            const maxVal = parseFloat(minRange.max);
+            
+            if (parseFloat(minRange.value) > parseFloat(maxRange.value)) {
+                let temp = minRange.value;
+                minRange.value = maxRange.value;
+                maxRange.value = temp;
+            }
+            
+            minInput.value = minRange.value;
+            maxInput.value = maxRange.value;
+            
+            const leftPercent = (minRange.value / maxVal) * 100;
+            const rightPercent = 100 - (maxRange.value / maxVal) * 100;
+            track.style.left = leftPercent + '%';
+            track.style.right = rightPercent + '%';
+        }
+
+        function updatePriceInputs() {
+            const minRange = document.getElementById('min_price_range');
+            const maxRange = document.getElementById('max_price_range');
+            const minInput = document.getElementById('min_price');
+            const maxInput = document.getElementById('max_price');
+            const track = document.querySelector('.range-slider-track');
+            if (!minRange || !maxRange || !minInput || !maxInput || !track) return;
+            const maxVal = parseFloat(minRange.max);
+            
+            let minVal = parseFloat(minInput.value) || 0;
+            let maxValInput = parseFloat(maxInput.value) || maxVal;
+            
+            if (minVal > maxValInput) {
+                minVal = maxValInput;
+                minInput.value = minVal;
+            }
+            if (maxValInput > maxVal) {
+                maxValInput = maxVal;
+                maxInput.value = maxVal;
+            }
+            
+            minRange.value = minVal;
+            maxRange.value = maxValInput;
+            
+            const leftPercent = (minVal / maxVal) * 100;
+            const rightPercent = 100 - (maxValInput / maxVal) * 100;
+            track.style.left = leftPercent + '%';
+            track.style.right = rightPercent + '%';
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            bindSwatchToggle();
+            if (document.getElementById('min_price_range')) {
+                updatePriceSlider();
+            }
         });
 
-        /* ── GSAP ─────────────────────────────────────── */
+        /* ── Stagger Animation helper ── */
+        function initCardAnimations() {
+            if (typeof gsap === 'undefined') return;
+            const cards = document.querySelectorAll('.p-card');
+            gsap.fromTo(cards, 
+                { opacity: 0, y: 20 },
+                { opacity: 1, y: 0, duration: 0.65, ease: 'power3.out', stagger: 0.07 }
+            );
+        }
+
+        /* ── Collapsible Filters ── */
+        function toggleCollapse(header) {
+            header.classList.toggle('collapsed');
+        }
+
+        /* ── Reset other filters when category is loaded/selected ── */
+        function handleCategoryChange(cb) {
+            if (cb.checked) {
+                // Clear other filters
+                document.getElementById('min_price').value = '';
+                document.getElementById('max_price').value = '';
+                
+                // Clear brands
+                document.querySelectorAll('input[name="brand_id[]"]').forEach(el => el.checked = false);
+                
+                // Clear attributes checkboxes
+                document.querySelectorAll('input[name^="attributes["]').forEach(el => el.checked = false);
+                
+                // Clear color swatches
+                document.querySelectorAll('.color-swatch-wrapper').forEach(el => el.classList.remove('selected'));
+                document.querySelectorAll('.attr-hidden-input').forEach(el => el.value = '');
+            }
+            applyFilters();
+        }
+
+        /* ── AJAX Filtering ──────────────────────────────── */
+        function toggleAttr(el) {
+            el.classList.toggle('selected');
+            const slug = el.getAttribute('data-slug');
+            
+            // Find the hidden input for this slug
+            const hiddenInput = document.querySelector(`.attr-hidden-input[data-slug="${slug}"]`);
+            if (hiddenInput) {
+                const selected = Array.from(el.parentElement.querySelectorAll('.color-swatch-wrapper.selected'))
+                                      .map(e => e.getAttribute('data-val'));
+                hiddenInput.value = selected.join(',');
+            }
+            applyFilters();
+        }
+
+        function resetFilters() {
+            const minInput = document.getElementById('min_price');
+            const maxInput = document.getElementById('max_price');
+            const maxSlider = document.getElementById('max_price_range');
+            
+            if (minInput && maxInput && maxSlider) {
+                minInput.value = 0;
+                maxInput.value = maxSlider.max;
+                updatePriceInputs();
+            } else {
+                if (minInput) minInput.value = '';
+                if (maxInput) maxInput.value = '';
+            }
+            
+            // Reset swatches
+            document.querySelectorAll('.color-swatch-wrapper').forEach(el => el.classList.remove('selected'));
+            document.querySelectorAll('.attr-hidden-input').forEach(el => el.value = '');
+            
+            // Reset checkboxes
+            document.querySelectorAll('input[type="checkbox"]').forEach(el => el.checked = false);
+            
+            applyFilters();
+        }
+
+        function applyFilters(url = null) {
+            let fetchUrl = new URL(url || window.location.href);
+            
+            if (!url) {
+                // If url is not provided (meaning it's a form change, not a pagination click), 
+                // we build the search params from the form.
+                const minPrice = document.getElementById('min_price')?.value;
+                const maxPrice = document.getElementById('max_price')?.value;
+                const sort = document.querySelector('.sort-dd')?.value;
+                
+                // Read base parameters to preserve them
+                const category = fetchUrl.searchParams.get('category');
+                const collection = fetchUrl.searchParams.get('collection');
+                const search = fetchUrl.searchParams.get('search');
+                
+                // Clear existing params to rebuild
+                fetchUrl.search = '';
+                
+                // Restore base parameters
+                if (category) fetchUrl.searchParams.set('category', category);
+                if (collection) fetchUrl.searchParams.set('collection', collection);
+                if (search) fetchUrl.searchParams.set('search', search);
+                
+                const maxRange = document.getElementById('max_price_range');
+                const maxVal = maxRange ? parseFloat(maxRange.max) : null;
+                
+                if (minPrice && parseFloat(minPrice) > 0) {
+                    fetchUrl.searchParams.set('min_price', minPrice);
+                }
+                if (maxPrice && maxVal && parseFloat(maxPrice) < maxVal) {
+                    fetchUrl.searchParams.set('max_price', maxPrice);
+                } else if (maxPrice && !maxVal) {
+                    fetchUrl.searchParams.set('max_price', maxPrice);
+                }
+                
+                if (sort) fetchUrl.searchParams.set('sort', sort);
+                
+                // Categories
+                const cats = Array.from(document.querySelectorAll('input[name="filter_category_id[]"]:checked')).map(cb => cb.value);
+                if (cats.length) fetchUrl.searchParams.set('filter_category_id', cats.join(','));
+                
+                // Brands
+                const brands = Array.from(document.querySelectorAll('input[name="brand_id[]"]:checked')).map(cb => cb.value);
+                if (brands.length) fetchUrl.searchParams.set('brand_id', brands.join(','));
+                
+                // Attributes
+                // Hidden inputs (e.g. colors)
+                document.querySelectorAll('.attr-hidden-input').forEach(input => {
+                    if (input.value) {
+                        fetchUrl.searchParams.set(`attributes[${input.getAttribute('data-slug')}]`, input.value);
+                    }
+                });
+                // Checkboxes
+                const attrCheckboxes = document.querySelectorAll('input[name^="attributes["]:checked');
+                const attrMap = {};
+                attrCheckboxes.forEach(cb => {
+                    const name = cb.getAttribute('name'); // e.g. attributes[size][]
+                    const match = name.match(/attributes\[([^\]]+)\]/);
+                    if (match) {
+                        const slug = match[1];
+                        if (!attrMap[slug]) attrMap[slug] = [];
+                        attrMap[slug].push(cb.value);
+                    }
+                });
+                for (const slug in attrMap) {
+                    fetchUrl.searchParams.set(`attributes[${slug}]`, attrMap[slug].join(','));
+                }
+            }
+            
+            // Push state for history
+            window.history.pushState({}, '', fetchUrl);
+            
+            // Fetch via AJAX
+            fetch(fetchUrl, {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(res => res.text())
+            .then(html => {
+                document.getElementById('gridWrapper').innerHTML = html;
+                bindSwatchToggle();
+                initCardAnimations();
+                bindPaginationAjax();
+            })
+            .catch(err => console.error('Filter error:', err));
+        }
+
+        function updateProductCount() {
+            // Usually we'd parse the count from the response, but for now we can let it be or update it if we send it back.
+            // A simple way is to wrap the count in a span inside the partial, but it's okay for now.
+        }
+
+        function bindPaginationAjax() {
+            document.querySelectorAll('#gridWrapper .pagination a').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    applyFilters(this.href);
+                });
+            });
+        }
+
+        // Sort DD override
+        document.querySelector('.sort-dd').addEventListener('change', function() {
+            applyFilters();
+        });
+
+        /* ── GSAP Animations ─────────────────────────────────────── */
         window.addEventListener('load', () => {
             if (typeof gsap === 'undefined') return;
             gsap.registerPlugin(ScrollTrigger);
 
             /* Stagger cards in */
-            const cards = document.querySelectorAll('.p-card');
-            gsap.to(cards, {
-                opacity: 1, y: 0,
-                duration: 0.65, ease: 'power3.out', stagger: 0.07, delay: 0.4
-            });
-
-            /* Filter groups slide in from left */
-            gsap.from('.filter-grp', {
-                opacity: 0, x: -16,
-                duration: 0.5, ease: 'power3.out', stagger: 0.06, delay: 0.5
-            });
+            initCardAnimations();
 
             /* Toolbar entrance */
             gsap.from('.products-toolbar', {
                 opacity: 0, y: -10, duration: 0.5, ease: 'power3.out', delay: 0.3
             });
+            
+            gsap.from('.shop-sidebar', {
+                opacity: 0, x: -20, duration: 0.5, ease: 'power3.out', delay: 0.3
+            });
+            
+            bindPaginationAjax();
         });
     </script>
 

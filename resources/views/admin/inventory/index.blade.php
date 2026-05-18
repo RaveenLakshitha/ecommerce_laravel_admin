@@ -217,7 +217,7 @@
                             render: function (data, type, row) {
                                 return `
                                                 <div class="flex items-center justify-end gap-1.5 px-3">
-                                                    <button onclick="openAdjustModal(${row.id}, '${row.product.name.replace(/'/g, "\\'")}', '${row.sku_html}', ${row.stock_quantity})" class="p-1.5 rounded-lg text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 transition-all" title="Adjust Stock">
+                                                    <button onclick="openAdjustModal(${row.id}, '${(row.product ? row.product.name : 'Deleted Product').replace(/'/g, "\\'")}', '${row.sku_html}', ${row.stock_quantity})" class="p-1.5 rounded-lg text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 transition-all" title="Adjust Stock">
                                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
                                                     </button>
                                                     <button type="button" onclick="confirmDelete('${row.delete_url}')" class="p-1.5 rounded-lg text-gray-400 hover:text-red-600 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-all" title="Delete">

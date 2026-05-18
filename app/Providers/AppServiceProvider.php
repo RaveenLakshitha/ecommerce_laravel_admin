@@ -88,11 +88,11 @@ class AppServiceProvider extends ServiceProvider
             'storefront_offer_link' => $setting->storefront_offer_link,
             'storefront_marquee_text' => $setting->storefront_marquee_text,
             'storefront_marquee_link' => $setting->storefront_marquee_link,
-            'storefront_banners'    => $setting->storefront_banners,
-            'storefront_about_us'   => $setting->storefront_about_us,
-            'storefront_stats'      => $setting->storefront_stats,
+            'storefront_banners' => $setting->storefront_banners,
+            'storefront_about_us' => $setting->storefront_about_us,
+            'storefront_stats' => $setting->storefront_stats,
             'storefront_trust_items' => $setting->storefront_trust_items,
-            'storefront_logo_text'   => $setting->storefront_logo_text,
+            'storefront_logo_text' => $setting->storefront_logo_text,
             'storefront_logo_subtext' => $setting->storefront_logo_subtext,
             'storefront_use_logo_text' => $setting->storefront_use_logo_text,
 
@@ -115,12 +115,15 @@ class AppServiceProvider extends ServiceProvider
         View::composer(['frontend.layouts.app', 'frontend.layouts.layoutdark', 'frontend.layouts.noir'], function ($view) {
             $categories = \App\Models\Category::whereNull('parent_id')
                 ->where('is_active', true)
-                ->with(['children' => function($q) {
-                    $q->where('is_active', true)->orderBy('name');
-                }, 'children.children' => function($q) {
-                    $q->where('is_active', true)->orderBy('name');
-                }])
-                ->orderBy('name')
+                ->with([
+                    'children' => function ($q) {
+                        $q->where('is_active', true)->orderBy('order');
+                    },
+                    'children.children' => function ($q) {
+                        $q->where('is_active', true)->orderBy('order');
+                    }
+                ])
+                ->orderBy('order')
                 ->get();
             $view->with('globalCategories', $categories);
         });
@@ -132,7 +135,7 @@ class AppServiceProvider extends ServiceProvider
 
         \Illuminate\Support\Facades\Blade::directive('placeholder', function ($expression) {
             return "<?php 
-                \$placeholders = ['white.png', 'black.png', 'mink.png'];
+                \$placeholders = ['white.jpg', 'black.jpg', 'mink.jpg'];
                 // Use the expression as a seed for consistent placeholder picking if provided
                 \$seed = !empty($expression) ? (is_numeric($expression) ? (int)$expression : crc32((string)$expression)) : rand(0, 2000);
                 echo asset('images/placeholders/' . \$placeholders[abs(\$seed) % 3]);

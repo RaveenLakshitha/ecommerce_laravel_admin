@@ -796,18 +796,20 @@
             background: var(--gold);
         }
 
-        /* Mobile nav drawer */
+        /* Mobile nav drawer — top is set dynamically by JS
+           to account for the announcement bar height        */
         .mobile-nav {
             position: fixed;
-            top: var(--nav-h);
+            top: 0;
+            /* overridden by JS on open */
             left: 0;
             right: 0;
             background: var(--bg-panel);
             border-top: 2px solid var(--gold);
             z-index: 199;
-            transform: translateY(-110%);
+            transform: translateY(-150%);
             transition: transform 0.4s var(--ease-out);
-            max-height: calc(100vh - var(--nav-h));
+            max-height: calc(100vh - 60px);
             overflow-y: auto;
         }
 
@@ -1243,13 +1245,48 @@
         /* ════════════════════════════════════════════
            RESPONSIVE
         ════════════════════════════════════════════ */
-        @media (max-width: 1400px) {
+
+        /* ── Compact nav for medium-large screens ───
+           Between ~1100px and 1600px the desktop nav
+           is still shown but needs tighter spacing    */
+        @media (max-width: 1600px) {
+            .nav-item>a {
+                padding: 0 0.35rem;
+                font-size: 13px;
+                letter-spacing: 0.06em;
+            }
+
+            .nav-wrap {
+                padding: 0 1.25rem;
+                gap: 0.5rem;
+            }
+        }
+
+        /* ── Switch to hamburger at 1200px ──────────
+           This is the safe threshold where even with
+           many dynamic categories all items overflow  */
+        @media (max-width: 1200px) {
             .nav-links {
                 display: none;
             }
 
             .hamburger {
                 display: flex;
+            }
+
+            /* Hide desktop auth links — mobile nav has them */
+            .nav-auth {
+                display: none;
+            }
+
+            /* Right icons compact layout */
+            .nav-right {
+                gap: 0;
+                align-items: center;
+            }
+
+            .nav-icon {
+                width: 40px;
             }
 
             .footer-top {
@@ -1262,10 +1299,6 @@
         }
 
         @media (max-width: 768px) {
-            .nav-auth {
-                display: none;
-            }
-
             .footer-top {
                 grid-template-columns: 1fr 1fr;
                 gap: 2rem;
@@ -1277,6 +1310,39 @@
 
             .footer-inner {
                 padding: 0 1rem;
+            }
+
+            /* Mobile nav-right: ensure icons stay aligned */
+            .nav-right {
+                display: flex;
+                align-items: center;
+                gap: 0;
+                flex-shrink: 0;
+            }
+
+            .nav-icon {
+                width: 38px;
+                min-height: 44px;
+                height: var(--nav-h);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .hamburger {
+                width: 38px;
+                height: var(--nav-h);
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                margin-left: 2px;
+                padding: 0;
+            }
+
+            /* Keep lang switcher visible but compact */
+            .lang-switcher .lang-text {
+                font-size: 0.65rem;
             }
         }
 
@@ -1584,7 +1650,8 @@
             </a>
 
             <!-- Desktop Nav -->
-            <nav aria-label="Main navigation" style="margin-left: 3rem; margin-right: auto;">
+            <nav aria-label="Main navigation"
+                style="flex: 1; display: flex; justify-content: center; overflow: hidden; min-width: 0;">
                 <ul class="nav-links">
 
                     <!-- Home (no dropdown) -->
@@ -1759,17 +1826,7 @@
                                         {{ __('file.my_orders') }}
                                     </a>
                                 </li>
-                                <li>
-                                    <a href="{{ route('account.dashboard') }}" role="menuitem">
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                            stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
-                                            <line x1="9" y1="3" x2="9" y2="21" />
-                                            <line x1="3" y1="9" x2="21" y2="9" />
-                                        </svg>
-                                        {{ __('file.my_account') }}
-                                    </a>
-                                </li>
+
                                 <li>
                                     <a href="{{ route('cart.index') }}" role="menuitem">
                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -1810,13 +1867,7 @@
                             class="auth-link primary">{{ __('file.register') }}</a>
                     </div>
                 @endauth
-                <a href="#" class="nav-icon" aria-label="{{ __('file.search') }}">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
-                        stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="11" cy="11" r="7" />
-                        <line x1="21" y1="21" x2="16.65" y2="16.65" />
-                    </svg>
-                </a>
+
                 <a href="{{ route('cart.index') }}" class="nav-icon" aria-label="Shopping cart">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
                         stroke-linecap="round" stroke-linejoin="round">
@@ -1846,7 +1897,8 @@
         <div class="mob-item mob-plain">
             <a href="{{ route('frontend.products.index', ['sort' => 'new']) }}">
                 {{ __('file.new_arrivals') }}
-                <span style="display:inline-block; background:var(--red); color:var(--white); font-size:0.4rem; font-weight:700; padding:0.12rem 0.3rem; border-radius:2px; vertical-align:middle; margin-left:0.3rem;">{{ __('file.new') }}</span>
+                <span
+                    style="display:inline-block; background:var(--red); color:var(--white); font-size:0.4rem; font-weight:700; padding:0.12rem 0.3rem; border-radius:2px; vertical-align:middle; margin-left:0.3rem;">{{ __('file.new') }}</span>
             </a>
         </div>
 
@@ -1943,7 +1995,7 @@
                     href="{{ route('account.dashboard', ['tab' => 'profile']) }}">{{ __('file.profile_details') }}</a></div>
             <div class="mob-item mob-plain"><a
                     href="{{ route('account.dashboard', ['tab' => 'orders']) }}">{{ __('file.my_orders') }}</a></div>
-            <div class="mob-item mob-plain"><a href="{{ route('account.dashboard') }}">{{ __('file.my_account') }}</a></div>
+
             <div class="mob-item mob-plain">
                 <form method="POST" action="{{ route('logout') }}" style="margin:0">
                     @csrf
@@ -1995,7 +2047,9 @@
                     <p class="ft-col-h">{{ __('file.shop') }}</p>
                     <ul class="ft-col-links">
                         <li><a href="{{ route('frontend.products.index') }}">{{ __('file.all_products') }}</a></li>
-                        <li><a href="{{ route('frontend.products.index', ['sort' => 'new']) }}">{{ __('file.new_arrivals') }}</a></li>
+                        <li><a
+                                href="{{ route('frontend.products.index', ['sort' => 'new']) }}">{{ __('file.new_arrivals') }}</a>
+                        </li>
                         <li><a href="{{ route('frontend.products.index') }}">{{ __('file.mens_clothing') }}</a></li>
                         <li><a href="#">{{ __('file.kids_clothing') }}</a></li>
                         <li><a href="#">{{ __('file.activewear') }}</a></li>
@@ -2019,12 +2073,14 @@
                     <div class="ft-contact">
                         <a
                             href="tel:{{ $storefront->contact_phone ?? $storefront->phone ?? '+94112345678' }}">{{ $storefront->contact_phone ?? $storefront->phone ?? '+94 11 234 5678' }}</a><br>
-                        <a href="mailto:{{ $storefront->contact_email ?? $storefront->email ?? 'hello@loopcam.com.mx' }}">{{ $storefront->contact_email ?? $storefront->email ??
-                            'hello@loopcam.com.mx' }}</a><br>
+                        <a href="mailto:{{ $storefront->contact_email ?? $storefront->email ?? 'hello@karbnzol.com' }}">{{
+                            $storefront->contact_email ?? $storefront->email ??
+                            'hello@karbnzol.com' }}</a><br>
                         @if($storefront->address)
                             <div style="margin-top: 10px; color: var(--dim); font-size: 0.85rem; line-height: 1.4;">
                                 {{ $storefront->address }}<br>
-                                {{ $storefront->city }}{{ $storefront->state ? ', ' . $storefront->state : '' }} {{ $storefront->postal_code }}<br>
+                                {{ $storefront->city }}{{ $storefront->state ? ', ' . $storefront->state : '' }}
+                                {{ $storefront->postal_code }}<br>
                                 {{ $storefront->country }}
                             </div>
                         @endif
@@ -2088,13 +2144,29 @@
             /* ── Mobile hamburger ─────────────────────── */
             const burger = document.getElementById('hamburger');
             const mNav = document.getElementById('mobileNav');
+
+            /* Position the drawer directly below the header's
+               current bottom edge (accounts for announce bar)  */
+            function syncMobileNavTop() {
+                const rect = header.getBoundingClientRect();
+                mNav.style.top = Math.max(0, rect.bottom) + 'px';
+                mNav.style.maxHeight = (window.innerHeight - Math.max(0, rect.bottom)) + 'px';
+            }
+
             function toggleNav(open) {
+                if (open) syncMobileNavTop();    /* snap to correct pos before animating in */
                 burger.classList.toggle('open', open);
                 mNav.classList.toggle('open', open);
                 burger.setAttribute('aria-expanded', open);
                 document.body.style.overflow = open ? 'hidden' : '';
             }
             burger.addEventListener('click', () => toggleNav(!mNav.classList.contains('open')));
+
+            /* Re-sync on scroll so the drawer tracks the header as
+               the announcement bar scrolls out of view              */
+            window.addEventListener('scroll', () => {
+                if (mNav.classList.contains('open')) syncMobileNavTop();
+            }, { passive: true });
 
             /* ── Desktop dropdown: close on outside click ─ */
             document.addEventListener('click', e => {
@@ -2224,6 +2296,8 @@
             document.querySelectorAll('a[href]').forEach(link => {
                 const href = link.getAttribute('href');
                 if (!href || href.startsWith('#') || href.startsWith('mailto') || href.startsWith('tel') || link.target === '_blank') return;
+                // Skip links inside mobile accordion headers — they use onclick="return false" for accordion toggle
+                if (link.closest('.mob-item-head')) return;
                 link.addEventListener('click', e => {
                     e.preventDefault();
                     const dest = href;
@@ -2279,9 +2353,156 @@
                 item.classList.add('open');
             }
         }
+
+        /* ── Global Wishlist Toast Notification ── */
+        function showWishlistToast(message, isError = false) {
+            let toast = document.getElementById('wishlist-global-toast');
+            if (!toast) {
+                toast = document.createElement('div');
+                toast.id = 'wishlist-global-toast';
+                toast.style.cssText = `
+                    position: fixed;
+                    bottom: 2rem;
+                    right: 2rem;
+                    z-index: 9999;
+                    display: flex;
+                    align-items: center;
+                    gap: 0.75rem;
+                    background: var(--bg-2, #222);
+                    border: 1px solid var(--bg-4, #333);
+                    border-left: 3px solid var(--gold, #c8a96e);
+                    padding: 0.875rem 1.25rem;
+                    min-width: 260px;
+                    max-width: 340px;
+                    box-shadow: 0 16px 48px rgba(0,0,0,0.55);
+                    transform: translateY(120%);
+                    opacity: 0;
+                    transition: transform 0.4s cubic-bezier(0.16,1,0.3,1), opacity 0.35s;
+                    font-family: var(--font-display, 'Oswald', sans-serif);
+                    font-size: 0.72rem;
+                    font-weight: 500;
+                    letter-spacing: 0.12em;
+                    text-transform: uppercase;
+                    color: var(--off-white, #f0f0f0);
+                `;
+                
+                const iconSpan = document.createElement('span');
+                iconSpan.id = 'wishlist-toast-icon';
+                iconSpan.style.color = 'var(--gold, #c8a96e)';
+                iconSpan.style.flexShrink = '0';
+                iconSpan.style.display = 'flex';
+                iconSpan.style.alignItems = 'center';
+                iconSpan.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>`;
+                
+                const msgSpan = document.createElement('span');
+                msgSpan.id = 'wishlist-toast-msg';
+                msgSpan.style.flex = '1';
+                
+                const closeBtn = document.createElement('button');
+                closeBtn.innerHTML = '&times;';
+                closeBtn.style.cssText = `
+                    background: none; border: none; cursor: pointer;
+                    color: var(--dim, #a1a1aa); font-size: 1.1rem; line-height: 1;
+                    transition: color 0.2s; flex-shrink: 0;
+                `;
+                closeBtn.onclick = () => {
+                    toast.style.transform = 'translateY(120%)';
+                    toast.style.opacity = '0';
+                };
+                
+                toast.appendChild(iconSpan);
+                toast.appendChild(msgSpan);
+                toast.appendChild(closeBtn);
+                document.body.appendChild(toast);
+            }
+            
+            const msgSpan = document.getElementById('wishlist-toast-msg');
+            msgSpan.textContent = message;
+            
+            const iconSpan = document.getElementById('wishlist-toast-icon');
+            if (isError) {
+                toast.style.borderLeftColor = 'var(--red, #cc3333)';
+                iconSpan.style.color = 'var(--red, #cc3333)';
+            } else {
+                toast.style.borderLeftColor = 'var(--gold, #c8a96e)';
+                iconSpan.style.color = 'var(--gold, #c8a96e)';
+            }
+            
+            void toast.offsetWidth;
+            
+            toast.style.transform = 'translateY(0)';
+            toast.style.opacity = '1';
+            
+            if (window.wishlistToastTimeout) clearTimeout(window.wishlistToastTimeout);
+            window.wishlistToastTimeout = setTimeout(() => {
+                toast.style.transform = 'translateY(120%)';
+                toast.style.opacity = '0';
+            }, 3500);
+        }
+
+        /* ── Global Wishlist Toggle Function ── */
+        function toggleWishlist(btn, productId) {
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+            if (!csrfToken) {
+                console.error('CSRF token not found');
+                return;
+            }
+            
+            const isAuthenticated = @json(auth()->check());
+            if (!isAuthenticated) {
+                if (typeof openAuthModal === 'function') {
+                    openAuthModal('login');
+                } else {
+                    window.location.href = "{{ route('login') }}";
+                }
+                return;
+            }
+            
+            btn.style.pointerEvents = 'none';
+            
+            fetch(`/wishlist/${productId}/toggle`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                    'Accept': 'application/json'
+                }
+            })
+            .then(res => {
+                if (!res.ok) throw new Error('Network response was not ok');
+                return res.json();
+            })
+            .then(data => {
+                if (data.success || data.status) {
+                    const isAdded = data.action === 'added' || data.status === 'added';
+                    
+                    // Update all wishlist buttons for the same product ID across the page to keep them in sync
+                    const buttons = document.querySelectorAll(`button[onclick*="toggleWishlist"][onclick*="${productId}"]`);
+                    buttons.forEach(button => {
+                        if (isAdded) {
+                            button.classList.add('active');
+                        } else {
+                            button.classList.remove('active');
+                        }
+                    });
+                    
+                    showWishlistToast(isAdded ? '❤ Saved to wishlist' : 'Removed from wishlist');
+                } else {
+                    showWishlistToast('Error updating wishlist', true);
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                showWishlistToast('Error updating wishlist', true);
+            })
+            .finally(() => {
+                btn.style.pointerEvents = 'auto';
+            });
+        }
     </script>
 
     @include('frontend.layouts.auth-modals')
+    @include('cookie-consent::index')
 </body>
 
 </html>

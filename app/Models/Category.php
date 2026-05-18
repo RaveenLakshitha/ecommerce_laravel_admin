@@ -29,7 +29,7 @@ class Category extends Model implements HasMedia
         });
     }
 
-    protected $fillable = ['name', 'slug', 'parent_id', 'description', 'image', 'banner_images', 'meta_title', 'meta_description', 'is_active'];
+    protected $fillable = ['name', 'slug', 'parent_id', 'description', 'image', 'banner_images', 'meta_title', 'meta_description', 'is_active', 'order'];
 
     protected $casts = [
         'banner_images' => 'array',

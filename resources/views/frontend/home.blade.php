@@ -289,6 +289,8 @@
             cursor: pointer; transition: background 0.2s, color 0.2s;
         }
         .p-side-btn:hover { background: var(--gold); color: var(--bg); }
+        .p-side-btn.active { color: var(--gold); }
+        .p-side-btn.active svg { fill: var(--gold); stroke: var(--gold); }
 
         /* Quick add */
         .p-quick-add {
@@ -714,11 +716,11 @@
                         <a href="{{ route('frontend.products.show', $product->slug) }}" class="p-img-wrap" style="display:block;">
                             <span class="p-ribbon">{{ __('file.new_arrival') }}</span>
                             <div class="p-side-actions">
-                                <button class="p-side-btn" aria-label="Wishlist" onclick="event.preventDefault()">
+                                @php
+                                    $inWishlist = auth()->check() && auth()->user()->wishlists()->where('product_id', $product->id)->exists();
+                                @endphp
+                                <button class="p-side-btn {{ $inWishlist ? 'active' : '' }}" aria-label="Wishlist" onclick="event.preventDefault(); event.stopPropagation(); toggleWishlist(this, {{ $product->id }})">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-                                </button>
-                                <button class="p-side-btn" aria-label="Quick view" onclick="event.preventDefault()">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                                 </button>
                             </div>
                             <img src="{{ $imgUrl }}" alt="{{ $product->name }}" loading="lazy">
@@ -792,8 +794,106 @@
     </div>
 
     {{-- ═══════════════════════════════════════════════════
+         VIDEO SECTION
+    ═══════════════════════════════════════════════════ --}}
+    @php
+        $videoUrl      = $storefront->storefront_video_url ?? null;
+        $videoTitle    = $storefront->storefront_video_title ?? null;
+        $videoSubtitle = $storefront->storefront_video_subtitle ?? null;
+        $videoShow     = $storefront->storefront_video_show ?? true;
+    @endphp
+    @if($videoShow && !empty($videoUrl))
+    <section id="videoSection" style="position:relative;overflow:hidden;background:var(--bg);padding:0;">
+        <style>
+            /* ── Video Section ── */
+            #videoSection { background: var(--bg); }
+            .vs-ratio-wrap {
+                position: relative;
+                width: 100%;
+                height: 65vh;
+                min-height: 400px;
+                max-height: 800px;
+                overflow: hidden;
+            }
+            .vs-ratio-wrap video {
+                position: absolute;
+                top: 50%; left: 50%;
+                transform: translate(-50%, -50%);
+                width: 100%; height: 100%;
+                object-fit: cover;
+                border: 0;
+            }
+            .vs-overlay {
+                position: absolute;
+                inset: 0;
+                background: rgba(0, 0, 0, 0.45);
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+                padding: 2rem 1.5rem;
+                z-index: 2;
+            }
+            .vs-eyebrow {
+                font-family: var(--font-display);
+                font-size: 0.62rem; font-weight: 500;
+                letter-spacing: 0.28em; text-transform: uppercase;
+                color: var(--gold);
+                margin-bottom: 0.75rem;
+                display: flex; align-items: center; gap: 0.5rem;
+            }
+            .vs-eyebrow::before,
+            .vs-eyebrow::after { content: ''; flex: 1; max-width: 40px; height: 1.5px; background: var(--gold); }
+            .vs-title {
+                font-family: var(--font-display);
+                font-size: clamp(2rem, 5vw, 4.5rem);
+                font-weight: 700; letter-spacing: 0.05em;
+                text-transform: uppercase; color: var(--white);
+                line-height: 1.1; margin-bottom: 1rem;
+                max-width: 900px;
+                text-shadow: 0 4px 12px rgba(0,0,0,0.5);
+            }
+            .vs-subtitle {
+                font-size: clamp(0.9rem, 2vw, 1.1rem);
+                color: rgba(255,255,255,0.9);
+                font-weight: 400; max-width: 700px; line-height: 1.6;
+                text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+            }
+            .vs-play-hint {
+                position: absolute; bottom: 1.5rem; right: 2rem;
+                display: flex; align-items: center; gap: 0.5rem;
+                font-family: var(--font-display); font-size: 0.55rem;
+                letter-spacing: 0.22em; text-transform: uppercase;
+                color: rgba(240,240,240,0.4); z-index: 3;
+            }
+            @media (max-width: 768px) {
+                .vs-ratio-wrap { height: 50vh; min-height: 350px; }
+            }
+        </style>
+
+        <div class="vs-ratio-wrap">
+            <video
+                src="{{ asset('storage/' . $videoUrl) }}"
+                autoplay muted loop playsinline
+                class="w-full h-full object-cover">
+            </video>
+            <div class="vs-overlay">
+                @if($videoTitle)
+                    <h2 class="vs-title">{{ $videoTitle }}</h2>
+                @endif
+                @if($videoSubtitle)
+                    <p class="vs-subtitle">{{ $videoSubtitle }}</p>
+                @endif
+            </div>
+        </div>
+    </section>
+    @endif
+
+    {{-- ═══════════════════════════════════════════════════
          COLLECTIONS
     ═══════════════════════════════════════════════════ --}}
+
     <section class="pg-sec-alt">
         <div class="sec-wrap">
             <div class="sec-head reveal">
@@ -890,11 +990,11 @@
                         <a href="{{ route('frontend.products.show', $product->slug) }}" class="p-img-wrap" style="display:block;">
                             <span class="p-ribbon {{ $ribbon }}">{{ $ribbonLabel }}</span>
                             <div class="p-side-actions">
-                                <button class="p-side-btn" aria-label="Wishlist" onclick="event.preventDefault()">
+                                @php
+                                    $inWishlist = auth()->check() && auth()->user()->wishlists()->where('product_id', $product->id)->exists();
+                                @endphp
+                                <button class="p-side-btn {{ $inWishlist ? 'active' : '' }}" aria-label="Wishlist" onclick="event.preventDefault(); event.stopPropagation(); toggleWishlist(this, {{ $product->id }})">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-                                </button>
-                                <button class="p-side-btn" aria-label="Quick view" onclick="event.preventDefault()">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                                 </button>
                             </div>
                             <img src="{{ $imgUrl }}" alt="{{ $product->name }}" loading="lazy">

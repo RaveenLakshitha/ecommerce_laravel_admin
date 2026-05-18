@@ -22,7 +22,7 @@
                             #{{ $variant->id }}</span>
                     </nav>
                     <h1 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">Audit Log: <span
-                            class="decoration-indigo-500/30 underline underline-offset-8">{{ $variant->product->name }}
+                            class="decoration-indigo-500/30 underline underline-offset-8">{{ $variant->product->name ?? 'Deleted Product' }}
                             {{ $variant->sku ? '(' . $variant->sku . ')' : '' }}</span></h1>
                     <div class="mt-4 flex items-center gap-3">
                         <div

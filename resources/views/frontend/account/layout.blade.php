@@ -4,670 +4,1266 @@
 @section('body_class', 'light-page')
 
 @section('content')
-    <div style="background-color: var(--bg-creamy); color: #1a1a1a;" class="min-h-screen py-10"
-        x-data="accountTabs('{{ $activeTab ?? 'dashboard' }}')">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <script src="https://unpkg.com/feather-icons"></script>
 
-            <div class="lg:grid lg:grid-cols-12 lg:gap-8">
+    <style>
+        :root {
+            --gold: #c8a96e;
+            --gold-light: #dfcc9c;
+            --gold-muted: rgba(200, 169, 110, 0.12);
+            --bg-page: #f5f5f3;
+            --bg-white: #ffffff;
+            --bg-sidebar: #ffffff;
+            --text-primary: #111111;
+            --text-secondary: #6b7280;
+            --text-muted: #9ca3af;
+            --border: rgba(0, 0, 0, 0.07);
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --sidebar-w: 260px;
 
-                {{-- SIDEBAR --}}
-                <aside class="hidden lg:block lg:col-span-3">
-                    <nav class="space-y-1 bg-white  p-4 rounded-xl shadow-sm border border-gray-100 ">
+            /* ── Two main font sizes ── */
+            --fs-ui: 11px;
+            /* labels, badges, nav, meta — uppercase only */
+            --fs-body: 13px;
+            /* all readable body copy, table values, form fields */
+            --fs-stat: 22px;
+            /* stat numbers */
+            --fs-heading: 18px;
+            /* section headings */
 
-                        {{-- User Preview --}}
-                        <div class="flex items-center space-x-3 mb-6 pb-6 border-b border-gray-100 ">
-                            <div class="flex-shrink-0">
-                                <img class="h-12 w-12 rounded-full ring-2 ring-primary-100 dark:ring-primary-900 object-cover"
-                                    src="https://ui-avatars.com/api/?name={{ urlencode($user->name) }}&background=E0E7FF&color=4F46E5"
-                                    alt="">
+            --fw-regular: 400;
+            --fw-medium: 500;
+            --fw-bold: 700;
+
+            --font-sans: 'Barlow', system-ui, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        .account-wrap {
+            background: var(--bg-page);
+            min-height: calc(100vh - 80px);
+            font-family: var(--font-sans);
+            color: var(--text-primary);
+        }
+
+        /* ════════════════════════════════
+                           SIDEBAR
+                        ════════════════════════════════ */
+        .acc-sidebar {
+            width: var(--sidebar-w);
+            background: var(--bg-sidebar);
+            min-height: calc(100vh - 80px);
+            display: flex;
+            flex-direction: column;
+            padding: 28px 16px 24px;
+            flex-shrink: 0;
+            position: sticky;
+            top: 80px;
+            height: calc(100vh - 80px);
+            border-right: 1px solid var(--border);
+        }
+
+        .acc-sidebar__profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 0 8px 24px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 24px;
+        }
+
+        .acc-sidebar__avatar-wrap {
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .acc-sidebar__avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: var(--radius-sm);
+            object-fit: cover;
+            display: block;
+        }
+
+        .acc-sidebar__online {
+            position: absolute;
+            bottom: -2px;
+            right: -2px;
+            width: 10px;
+            height: 10px;
+            background: #22c55e;
+            border: 2px solid var(--bg-sidebar);
+            border-radius: 50%;
+        }
+
+        .acc-sidebar__name-block {
+            overflow: hidden;
+            flex: 1;
+        }
+
+        .acc-sidebar__greeting {
+            font-size: var(--fs-ui);
+            font-weight: var(--fw-bold);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            display: block;
+            margin-bottom: 3px;
+        }
+
+        .acc-sidebar__name {
+            font-size: var(--fs-body);
+            font-weight: var(--fw-bold);
+            color: var(--text-primary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .acc-sidebar__nav-label {
+            font-size: var(--fs-ui);
+            font-weight: var(--fw-bold);
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--text-muted);
+            padding: 0 8px;
+            margin-bottom: 6px;
+        }
+
+        .acc-nav-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: var(--radius-sm);
+            font-size: var(--fs-body);
+            font-weight: var(--fw-medium);
+            color: var(--text-secondary);
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.15s, color 0.15s;
+            margin-bottom: 2px;
+            letter-spacing: 0.01em;
+        }
+
+        .acc-nav-item:hover {
+            background: rgba(0, 0, 0, 0.03);
+            color: var(--text-primary);
+        }
+
+        .acc-nav-item.active {
+            background: var(--gold);
+            color: #ffffff;
+        }
+
+        .acc-nav-item.active .acc-nav-icon {
+            color: #ffffff;
+            opacity: 1;
+        }
+
+        .acc-nav-icon {
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+            opacity: 0.6;
+        }
+
+        .acc-nav-item.active .acc-nav-icon {
+            opacity: 1;
+        }
+
+        .acc-sidebar__logout {
+            margin-top: auto;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+        }
+
+        .acc-sidebar__logout .acc-nav-item:hover {
+            background: rgba(239, 68, 68, 0.12);
+            color: #f87171;
+        }
+
+        /* ════════════════════════════════
+                           MAIN CONTENT
+                        ════════════════════════════════ */
+        .acc-main {
+            flex: 1;
+            min-width: 0;
+            padding: 36px 40px;
+        }
+
+        @media (max-width: 1024px) {
+            .acc-main {
+                padding: 24px 16px;
+            }
+        }
+
+        .acc-page-title {
+            font-size: var(--fs-heading);
+            font-weight: var(--fw-bold);
+            color: var(--text-primary);
+            letter-spacing: -0.01em;
+            margin: 0 0 4px;
+        }
+
+        .acc-page-sub {
+            font-size: var(--fs-body);
+            color: var(--text-muted);
+            margin: 0 0 28px;
+        }
+
+        /* ── Cards ── */
+        .acc-card {
+            background: var(--bg-white);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+        }
+
+        .acc-card-header {
+            padding: 14px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .acc-card-header-title {
+            font-size: var(--fs-ui);
+            font-weight: var(--fw-bold);
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--text-primary);
+        }
+
+        .acc-card-link {
+            font-size: var(--fs-ui);
+            font-weight: var(--fw-bold);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--gold);
+            text-decoration: none;
+        }
+
+        .acc-card-link:hover {
+            text-decoration: underline;
+        }
+
+        /* ── Stat cards ── */
+        .acc-stat-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        @media (max-width: 640px) {
+            .acc-stat-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .acc-stat {
+            background: var(--bg-white);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border);
+            padding: 16px 18px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .acc-stat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .acc-stat-label {
+            font-size: var(--fs-ui);
+            font-weight: var(--fw-bold);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .acc-stat-num {
+            font-size: var(--fs-stat);
+            font-weight: var(--fw-bold);
+            color: var(--text-primary);
+            line-height: 1;
+        }
+
+        /* ── Order rows ── */
+        .acc-order-row {
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border);
+            transition: background 0.12s;
+        }
+
+        .acc-order-row:last-child {
+            border-bottom: none;
+        }
+
+        .acc-order-row:hover {
+            background: #fafafa;
+        }
+
+        .acc-order-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: var(--radius-sm);
+            background: #f3f4f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            flex-shrink: 0;
+            margin-right: 14px;
+        }
+
+        .acc-order-id {
+            font-size: var(--fs-body);
+            font-weight: var(--fw-bold);
+            color: var(--text-primary);
+            margin-bottom: 2px;
+        }
+
+        .acc-order-date {
+            font-size: var(--fs-ui);
+            font-weight: var(--fw-medium);
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .acc-order-total {
+            font-size: var(--fs-body);
+            font-weight: var(--fw-bold);
+            color: var(--text-primary);
+            text-align: right;
+            margin-bottom: 4px;
+        }
+
+        .acc-badge {
+            display: inline-block;
+            font-size: 9px;
+            font-weight: var(--fw-bold);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            padding: 2px 8px;
+            border-radius: 100px;
+        }
+
+        .acc-badge--green {
+            background: #f0fdf4;
+            color: #16a34a;
+        }
+
+        .acc-badge--red {
+            background: #fef2f2;
+            color: #dc2626;
+        }
+
+        .acc-badge--amber {
+            background: #fffbeb;
+            color: #d97706;
+        }
+
+        /* ── Tabs ── */
+        .acc-tabs {
+            display: flex;
+            gap: 0;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 20px;
+        }
+
+        .acc-tab {
+            padding: 10px 0;
+            margin-right: 28px;
+            font-size: var(--fs-ui);
+            font-weight: var(--fw-bold);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: color 0.15s, border-color 0.15s;
+        }
+
+        .acc-tab.active,
+        .acc-tab[aria-selected="true"] {
+            color: var(--text-primary);
+            border-bottom-color: var(--gold);
+        }
+
+        /* ── Form controls ── */
+        .acc-form-label {
+            display: block;
+            font-size: var(--fs-ui);
+            font-weight: var(--fw-bold);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+        }
+
+        .acc-input {
+            width: 100%;
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: var(--radius-sm);
+            padding: 9px 14px;
+            font-size: var(--fs-body);
+            font-family: var(--font-sans);
+            color: var(--text-primary);
+            transition: border-color 0.15s, box-shadow 0.15s;
+            outline: none;
+        }
+
+        .acc-input:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px var(--gold-muted);
+        }
+
+        .acc-select {
+            width: 100%;
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: var(--radius-sm);
+            padding: 9px 14px;
+            font-size: var(--fs-body);
+            font-family: var(--font-sans);
+            color: var(--text-primary);
+            outline: none;
+            cursor: pointer;
+        }
+
+        /* ── Buttons ── */
+        .acc-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 18px;
+            border-radius: var(--radius-sm);
+            font-size: var(--fs-ui);
+            font-weight: var(--fw-bold);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            border: none;
+            cursor: pointer;
+            transition: background 0.15s, color 0.15s;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        .acc-btn--dark {
+            background: var(--bg-sidebar);
+            color: #fff;
+        }
+
+        .acc-btn--dark:hover {
+            background: var(--gold);
+            color: #fff;
+        }
+
+        .acc-btn--gold {
+            background: var(--gold);
+            color: #fff;
+        }
+
+        .acc-btn--gold:hover {
+            background: var(--bg-sidebar);
+        }
+
+        .acc-btn--ghost {
+            background: transparent;
+            color: var(--text-muted);
+            padding: 8px 0;
+        }
+
+        .acc-btn--ghost:hover {
+            color: var(--text-primary);
+        }
+
+        /* ── Address cards ── */
+        .acc-address-card {
+            background: var(--bg-white);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: border-color 0.15s;
+        }
+
+        .acc-address-card--default {
+            border-color: var(--gold);
+        }
+
+        .acc-address-type {
+            display: inline-block;
+            font-size: var(--fs-ui);
+            font-weight: var(--fw-bold);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            background: #f3f4f6;
+            padding: 3px 8px;
+            border-radius: 4px;
+        }
+
+        .acc-address-name {
+            font-size: var(--fs-body);
+            font-weight: var(--fw-bold);
+            color: var(--text-primary);
+            margin: 10px 0 6px;
+        }
+
+        .acc-address-lines {
+            font-size: var(--fs-body);
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .acc-address-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 14px;
+            margin-top: 14px;
+            border-top: 1px solid var(--border);
+        }
+
+        .acc-address-action {
+            font-size: var(--fs-ui);
+            font-weight: var(--fw-bold);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.15s;
+            padding: 0;
+        }
+
+        .acc-address-action:hover {
+            color: var(--text-primary);
+        }
+
+        .acc-address-action--delete:hover {
+            color: #dc2626;
+        }
+
+        .acc-address-action--gold {
+            color: var(--gold);
+        }
+
+        .acc-address-action--gold:hover {
+            color: var(--bg-sidebar);
+        }
+
+        .acc-default-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: var(--fs-ui);
+            font-weight: var(--fw-bold);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--gold);
+        }
+
+        /* ── Profile layout ── */
+        .acc-profile-avatar-card {
+            background: var(--bg-white);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+            padding: 28px 20px;
+            text-align: center;
+        }
+
+        .acc-profile-avatar-wrap {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 16px;
+        }
+
+        .acc-profile-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: var(--radius-md);
+            object-fit: cover;
+            border: 3px solid var(--bg-white);
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+            display: block;
+        }
+
+        .acc-profile-camera {
+            position: absolute;
+            bottom: -6px;
+            right: -6px;
+            background: var(--bg-sidebar);
+            color: #fff;
+            width: 26px;
+            height: 26px;
+            border-radius: 6px;
+            border: 2px solid var(--bg-white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+
+        .acc-profile-camera:hover {
+            background: var(--gold);
+        }
+
+        .acc-profile-name {
+            font-size: var(--fs-heading);
+            font-weight: var(--fw-bold);
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .acc-profile-email {
+            font-size: var(--fs-body);
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+
+        .acc-profile-divider {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 0 0 16px;
+        }
+
+        .acc-profile-stats {
+            display: flex;
+            justify-content: center;
+            gap: 0;
+        }
+
+        .acc-profile-stat {
+            flex: 1;
+            text-align: center;
+            padding: 0 12px;
+            border-right: 1px solid var(--border);
+        }
+
+        .acc-profile-stat:last-child {
+            border-right: none;
+        }
+
+        .acc-profile-stat-label {
+            font-size: var(--fs-ui);
+            font-weight: var(--fw-bold);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .acc-profile-stat-num {
+            font-size: var(--fs-heading);
+            font-weight: var(--fw-bold);
+            color: var(--text-primary);
+        }
+
+        /* ── Empty states ── */
+        .acc-empty {
+            padding: 56px 20px;
+            text-align: center;
+        }
+
+        .acc-empty-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+        }
+
+        .acc-empty-title {
+            font-size: var(--fs-body);
+            font-weight: var(--fw-bold);
+            color: var(--text-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 6px;
+        }
+
+        .acc-empty-sub {
+            font-size: var(--fs-body);
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+
+        /* ── Mobile nav ── */
+        .acc-mobile-nav {
+            display: none;
+            margin-bottom: 24px;
+        }
+
+        @media (max-width: 1024px) {
+            .acc-mobile-nav {
+                display: block;
+            }
+
+            .acc-sidebar {
+                display: none;
+            }
+        }
+
+        [x-cloak] {
+            display: none !important;
+        }
+
+        @media (max-width: 640px) {
+            .acc-main {
+                padding: 20px 14px;
+            }
+        }
+    </style>
+
+    @php $activeTab = request()->get('tab', 'dashboard'); @endphp
+
+    <div class="account-wrap">
+        <div class="max-w-6xl mx-auto flex">
+
+            {{-- ══ SIDEBAR ══ --}}
+            <aside class="acc-sidebar">
+
+                {{-- Profile block --}}
+                <div class="acc-sidebar__profile">
+                    <div class="acc-sidebar__avatar-wrap">
+                        <img class="acc-sidebar__avatar"
+                            src="{{ $user->avatar ?? 'https://ui-avatars.com/api/?name=' . urlencode($user->name) . '&background=C8A96E&color=FFF' }}"
+                            alt="{{ $user->name }}">
+                        <div class="acc-sidebar__online"></div>
+                    </div>
+                    <div class="acc-sidebar__name-block">
+                        <span class="acc-sidebar__greeting">{{ __('file.welcome_back') }}</span>
+                        <span class="acc-sidebar__name">{{ $customer->first_name ?? explode(' ', $user->name)[0] }}</span>
+                    </div>
+                </div>
+
+                {{-- Nav group --}}
+                <p class="acc-sidebar__nav-label">Menu</p>
+
+                @php
+                    $navItems = [
+                        ['id' => 'dashboard', 'label' => __('file.dashboard'), 'icon' => 'grid'],
+                        ['id' => 'orders', 'label' => __('file.order_history'), 'icon' => 'shopping-bag'],
+                        ['id' => 'addresses', 'label' => __('file.addresses'), 'icon' => 'map-pin'],
+                        ['id' => 'profile', 'label' => __('file.account_info'), 'icon' => 'user'],
+                        ['id' => 'wishlist', 'label' => __('file.wishlist'), 'icon' => 'heart'],
+                        ['id' => 'returns', 'label' => __('file.returns'), 'icon' => 'refresh-cw'],
+                    ];
+                @endphp
+
+                <nav>
+                    @foreach($navItems as $item)
+                        <a href="{{ route('account.dashboard') }}?tab={{ $item['id'] }}"
+                            class="acc-nav-item {{ $activeTab === $item['id'] ? 'active' : '' }}">
+                            <i data-feather="{{ $item['icon'] }}" class="acc-nav-icon"></i>
+                            <span>{{ $item['label'] }}</span>
+                        </a>
+                    @endforeach
+                </nav>
+
+            </aside>
+
+            {{-- ══ MAIN ══ --}}
+            <main class="acc-main">
+
+                {{-- Mobile nav dropdown --}}
+                <div class="acc-mobile-nav" x-data="{ open: false }">
+                    <button @click="open = !open"
+                        class="w-full flex items-center justify-between bg-white px-4 py-3 rounded-xl border border-gray-100 shadow-sm">
+                        @php $currentNav = collect($navItems)->firstWhere('id', $activeTab) ?? $navItems[0]; @endphp
+                        <div class="flex items-center gap-3">
+                            <i data-feather="{{ $currentNav['icon'] }}" class="w-4 h-4" style="color: var(--gold)"></i>
+                            <span
+                                style="font-size:var(--fs-ui); font-weight:var(--fw-bold); text-transform:uppercase; letter-spacing:0.1em; color: var(--text-primary)">
+                                {{ $currentNav['label'] }}
+                            </span>
+                        </div>
+                        <i data-feather="chevron-down" class="w-3.5 h-3.5 transition-transform"
+                            :class="open ? 'rotate-180' : ''"></i>
+                    </button>
+                    <div x-show="open" @click.away="open = false" x-cloak x-transition
+                        class="absolute left-4 right-4 mt-2 bg-white rounded-xl shadow-xl border border-gray-100 z-50 overflow-hidden">
+                        @foreach($navItems as $item)
+                            <a href="{{ route('account.dashboard') }}?tab={{ $item['id'] }}"
+                                class="flex items-center gap-3 px-4 py-3 border-b border-gray-50 last:border-0 transition-colors
+                                                            {{ $activeTab === $item['id'] ? 'text-gray-900 bg-gray-50' : 'text-gray-500 hover:bg-gray-50' }}">
+                                <i data-feather="{{ $item['icon'] }}"
+                                    class="w-4 h-4 {{ $activeTab === $item['id'] ? 'text-gold' : 'text-gray-400' }}"></i>
+                                <span
+                                    style="font-size:var(--fs-ui); font-weight:var(--fw-bold); text-transform:uppercase; letter-spacing:0.1em">
+                                    {{ $item['label'] }}
+                                </span>
+                            </a>
+                        @endforeach
+                    </div>
+                </div>
+
+                {{-- ══ DASHBOARD ══ --}}
+                @if($activeTab === 'dashboard')
+                    <div>
+                        <h1 class="acc-page-title">{{ __('file.hello') }}, {{ $customer->first_name ?? $user->name }}</h1>
+                        <p class="acc-page-sub">{{ __('file.account_dashboard_note') }}</p>
+
+                        <div class="acc-stat-grid">
+                            <div class="acc-stat">
+                                <div class="acc-stat-icon" style="background:#eff6ff; color:#3b82f6">
+                                    <i data-feather="shopping-bag" class="w-5 h-5"></i>
+                                </div>
+                                <div>
+                                    <span class="acc-stat-label">{{ __('file.total_orders') }}</span>
+                                    <span class="acc-stat-num">{{ $totalOrders }}</span>
+                                </div>
                             </div>
-                            <div>
-                                <p class="text-sm font-medium text-gray-900 ">{{ __('file.welcome_back') }}</p>
-                                <p class="text-base font-bold text-gray-900  truncate">
-                                    {{ $customer->first_name ?? $user->name }}
-                                </p>
+                            <div class="acc-stat">
+                                <div class="acc-stat-icon" style="background:#fdf2f8; color:#ec4899">
+                                    <i data-feather="heart" class="w-5 h-5"></i>
+                                </div>
+                                <div>
+                                    <span class="acc-stat-label">{{ __('file.wishlist_items') }}</span>
+                                    <span class="acc-stat-num">{{ $wishlistItems }}</span>
+                                </div>
+                            </div>
+                            <div class="acc-stat">
+                                <div class="acc-stat-icon" style="background:#f5f3ff; color:#8b5cf6">
+                                    <i data-feather="map-pin" class="w-5 h-5"></i>
+                                </div>
+                                <div>
+                                    <span class="acc-stat-label">{{ __('file.addresses') }}</span>
+                                    <span class="acc-stat-num">{{ $user->addresses->count() }}</span>
+                                </div>
                             </div>
                         </div>
 
-                        {{-- Navigation Links --}}
-                        @php
-                            $navItems = [
-                                ['id' => 'dashboard', 'label' => __('file.dashboard'), 'icon' => 'home'],
-                                ['id' => 'orders', 'label' => __('file.order_history'), 'icon' => 'shopping-bag'],
-                                ['id' => 'addresses', 'label' => __('file.addresses'), 'icon' => 'map-pin'],
-                                ['id' => 'profile', 'label' => __('file.account_info'), 'icon' => 'user'],
-                                ['id' => 'wishlist', 'label' => __('file.wishlist'), 'icon' => 'heart'],
-                                ['id' => 'returns', 'label' => __('file.returns'), 'icon' => 'refresh-cw'],
-                            ];
-                        @endphp
+                        <div class="acc-card">
+                            <div class="acc-card-header">
+                                <span class="acc-card-header-title">{{ __('file.recent_orders') }}</span>
+                                <a href="{{ route('account.dashboard') }}?tab=orders"
+                                    class="acc-card-link">{{ __('file.view_all') }}</a>
+                            </div>
+                            <div>
+                                @forelse($allOrders->take(3) as $order)
+                                    <div class="acc-order-row">
+                                        <div class="flex items-center">
+                                            <div class="acc-order-icon">
+                                                <i data-feather="package" class="w-4 h-4"></i>
+                                            </div>
+                                            <div>
+                                                <div class="acc-order-id">#{{ $order->id }}</div>
+                                                <div class="acc-order-date">{{ $order->created_at->format('M d, Y') }}</div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="acc-order-total">@price($order->grand_total ?? 0)</div>
+                                            <span class="acc-badge
+                                                                                @if(strtolower($order->status) == 'delivered') acc-badge--green
+                                                                                @elseif(strtolower($order->status) == 'cancelled') acc-badge--red
+                                                                                @else acc-badge--amber @endif">
+                                                {{ $order->status }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                @empty
+                                    <div class="acc-empty">
+                                        <i data-feather="inbox" class="w-6 h-6 mx-auto mb-2" style="color:#d1d5db"></i>
+                                        <p class="acc-empty-title">{{ __('file.no_orders_found') }}</p>
+                                    </div>
+                                @endforelse
+                            </div>
+                        </div>
+                    </div>
+                @endif
 
-                        @foreach($navItems as $item)
-                            <button @click="switchTab('{{ $item['id'] }}')"
-                                :class="{ 'bg-primary-50 text-primary-700 dark:bg-primary-900/50 dark:text-primary-400': activeTab === '{{ $item['id'] }}', 'text-gray-600  hover:bg-gray-50  hover:text-gray-900 ': activeTab !== '{{ $item['id'] }}' }"
-                                class="w-full group flex items-center px-3 py-2.5 text-sm font-medium rounded-lg transition-colors mb-1">
-                                <i data-feather="{{ $item['icon'] }}" class="flex-shrink-0 -ml-1 mr-3 h-5 w-5"
-                                    :class="{ 'text-primary-500': activeTab === '{{ $item['id'] }}', 'text-gray-400 group-hover:text-gray-500': activeTab !== '{{ $item['id'] }}' }"></i>
-                                <span class="truncate">{{ $item['label'] }}</span>
-                            </button>
-                        @endforeach
+                {{-- ══ ORDERS ══ --}}
+                @if($activeTab === 'orders')
+                    <div>
+                        <h2 class="acc-page-title" style="margin-bottom: 20px">{{ __('file.order_history') }}</h2>
 
-                        {{-- Logout --}}
-                        <div class="pt-6 mt-6 border-t border-gray-100 ">
-                            <form method="POST" action="{{ route('logout') }}">
-                                @csrf
-                                <button type="submit"
-                                    class="w-full group flex items-center px-3 py-2.5 text-sm font-medium rounded-lg text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors">
-                                    <i data-feather="log-out"
-                                        class="flex-shrink-0 -ml-1 mr-3 h-5 w-5 text-red-500 dark:text-red-400"></i>
-                                    <span class="truncate">{{ __('file.sign_out') }}</span>
+                        <div x-data="{ orderTab: 'all' }">
+                            <div class="acc-tabs">
+                                <button @click="orderTab = 'all'" :class="{ 'active': orderTab === 'all' }" class="acc-tab">
+                                    {{ __('file.all_orders') }} ({{ $allOrders->count() }})
                                 </button>
+                                <button @click="orderTab = 'active'" :class="{ 'active': orderTab === 'active' }" class="acc-tab">
+                                    {{ __('file.active_orders') }} ({{ $activeOrders->count() }})
+                                </button>
+                            </div>
+
+                            <div x-show="orderTab === 'all'" class="space-y-3">
+                                @forelse($allOrders as $order)
+                                    @include('frontend.account.partials.order-card', ['order' => $order])
+                                @empty
+                                    <div class="acc-card">
+                                        <div class="acc-empty">
+                                            <p class="acc-empty-title">{{ __('file.no_orders_found') }}</p>
+                                        </div>
+                                    </div>
+                                @endforelse
+                            </div>
+
+                            <div x-show="orderTab === 'active'" class="space-y-3" x-cloak>
+                                @forelse($activeOrders as $order)
+                                    @include('frontend.account.partials.order-card', ['order' => $order])
+                                @empty
+                                    <div class="acc-card">
+                                        <div class="acc-empty">
+                                            <p class="acc-empty-title">{{ __('file.no_active_orders') }}</p>
+                                        </div>
+                                    </div>
+                                @endforelse
+                            </div>
+                        </div>
+                    </div>
+                @endif
+
+                {{-- ══ ADDRESSES ══ --}}
+                @if($activeTab === 'addresses')
+                    <div x-data="{ showAddForm: false }">
+                        <div class="flex items-center justify-between" style="margin-bottom: 20px">
+                            <h2 class="acc-page-title">{{ __('file.addresses') }}</h2>
+                            <button @click="showAddForm = !showAddForm" class="acc-btn acc-btn--dark">
+                                <i data-feather="plus" class="w-3.5 h-3.5"></i>
+                                {{ __('file.add_new') }}
+                            </button>
+                        </div>
+
+                        {{-- Add form --}}
+                        <div x-show="showAddForm" x-cloak x-transition:enter="transition ease-out duration-200"
+                            x-transition:enter-start="opacity-0 -translate-y-2"
+                            x-transition:enter-end="opacity-100 translate-y-0" style="margin-bottom: 24px">
+                            <form action="{{ route('account.addresses.store') }}" method="POST" class="acc-card">
+                                @csrf
+                                <div class="acc-card-header">
+                                    <span class="acc-card-header-title">{{ __('file.add_new_address') }}</span>
+                                </div>
+                                <div style="padding: 20px">
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                        <div>
+                                            <label class="acc-form-label">{{ __('file.address_type') }}</label>
+                                            <select name="type" required class="acc-select">
+                                                <option value="shipping">{{ __('file.shipping') }}</option>
+                                                <option value="billing">{{ __('file.billing') }}</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label class="acc-form-label">{{ __('file.first_name') }}</label>
+                                            <input type="text" name="first_name" required class="acc-input">
+                                        </div>
+                                        <div>
+                                            <label class="acc-form-label">{{ __('file.last_name') }}</label>
+                                            <input type="text" name="last_name" required class="acc-input">
+                                        </div>
+                                        <div>
+                                            <label class="acc-form-label">{{ __('file.phone_number') }}</label>
+                                            <input type="text" name="phone" required class="acc-input">
+                                        </div>
+                                        <div class="sm:col-span-2">
+                                            <label class="acc-form-label">{{ __('file.address_line_1') }}</label>
+                                            <input type="text" name="address_line1" required class="acc-input">
+                                        </div>
+                                        <div>
+                                            <label class="acc-form-label">{{ __('file.city') }}</label>
+                                            <input type="text" name="city" required class="acc-input">
+                                        </div>
+                                        <div>
+                                            <label class="acc-form-label">{{ __('file.postal_code') }}</label>
+                                            <input type="text" name="postal_code" required class="acc-input">
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center justify-between" style="margin-top: 20px">
+                                        <label class="flex items-center gap-2 cursor-pointer">
+                                            <input type="checkbox" name="is_default" value="1"
+                                                class="w-4 h-4 rounded border-gray-300" style="accent-color: var(--gold)">
+                                            <span
+                                                style="font-size:var(--fs-ui); font-weight:var(--fw-bold); text-transform:uppercase; letter-spacing:0.1em; color:var(--text-muted)">
+                                                {{ __('file.set_as_default') }}
+                                            </span>
+                                        </label>
+                                        <div class="flex gap-3 items-center">
+                                            <button type="button" @click="showAddForm = false" class="acc-btn acc-btn--ghost">
+                                                {{ __('file.cancel') }}
+                                            </button>
+                                            <button type="submit" class="acc-btn acc-btn--gold">
+                                                {{ __('file.save_address') }}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
                             </form>
                         </div>
 
-                    </nav>
-                </aside>
-
-                {{-- MAIN CONTENT AREA --}}
-                <main class="lg:col-span-9 mt-6 lg:mt-0">
-                    <div class="bg-white  shadow-sm rounded-xl border border-gray-100  min-h-[500px]">
-
-                        {{-- Mobile view tab selector --}}
-                        <div class="lg:hidden border-b border-gray-200  p-4">
-                            <label for="mobile-tabs" class="sr-only">Select a tab</label>
-                            <select id="mobile-tabs" x-model="activeTab"
-                                class="block w-full rounded-md border-gray-300 dark:border-gray-600  py-2 pl-3 pr-10 text-base focus:border-primary-500 focus:outline-none focus:ring-primary-500 sm:text-sm">
-                                @foreach($navItems as $item)
-                                    <option value="{{ $item['id'] }}">{{ $item['label'] }}</option>
-                                @endforeach
-                            </select>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            @forelse($user->addresses as $address)
+                                <div class="acc-address-card {{ $address->is_default ? 'acc-address-card--default' : '' }}">
+                                    <div>
+                                        <div class="flex items-center justify-between" style="margin-bottom: 10px">
+                                            <span class="acc-address-type">{{ $address->type }}</span>
+                                            @if($address->is_default)
+                                                <span class="acc-default-badge">
+                                                    <i data-feather="check-circle" class="w-3 h-3"></i>
+                                                    {{ __('file.default') }}
+                                                </span>
+                                            @endif
+                                        </div>
+                                        <p class="acc-address-name">{{ $address->first_name }} {{ $address->last_name }}</p>
+                                        <div class="acc-address-lines">
+                                            <p>{{ $address->address_line1 }}</p>
+                                            @if($address->address_line2)
+                                            <p>{{ $address->address_line2 }}</p>@endif
+                                            <p>{{ $address->city }}, {{ $address->province }} {{ $address->postal_code }}</p>
+                                            <p>{{ $address->country }}</p>
+                                        </div>
+                                    </div>
+                                    <div class="acc-address-footer">
+                                        <div class="flex gap-4">
+                                            <button class="acc-address-action">{{ __('file.edit') }}</button>
+                                            <form action="{{ route('account.addresses.destroy', $address->id) }}" method="POST"
+                                                onsubmit="return confirm('{{ __('file.confirm_delete') }}')">
+                                                @csrf @method('DELETE')
+                                                <button type="submit" class="acc-address-action acc-address-action--delete">
+                                                    {{ __('file.delete') }}
+                                                </button>
+                                            </form>
+                                        </div>
+                                        @if(!$address->is_default)
+                                            <form action="{{ route('account.addresses.set-default', $address->id) }}" method="POST">
+                                                @csrf @method('PATCH')
+                                                <button type="submit" class="acc-address-action acc-address-action--gold">
+                                                    {{ __('file.set_default') }}
+                                                </button>
+                                            </form>
+                                        @endif
+                                    </div>
+                                </div>
+                            @empty
+                                <div class="md:col-span-2 acc-card">
+                                    <div class="acc-empty">
+                                        <div class="acc-empty-icon" style="background:#f3f4f6; color:#9ca3af">
+                                            <i data-feather="map" class="w-5 h-5"></i>
+                                        </div>
+                                        <p class="acc-empty-title">{{ __('file.no_addresses_saved') }}</p>
+                                    </div>
+                                </div>
+                            @endforelse
                         </div>
+                    </div>
+                @endif
 
-                        {{-- Dynamic Tab Content Container --}}
-                        <div class="p-6 sm:p-8">
+                {{-- ══ PROFILE ══ --}}
+                @if($activeTab === 'profile')
+                    <div>
+                        <h2 class="acc-page-title" style="margin-bottom: 24px">{{ __('file.account_info') }}</h2>
 
-                            <div x-show="activeTab === 'dashboard'" x-cloak x-transition.opacity.duration.300ms>
-                                <div>
-                                    <h2 class="text-2xl font-bold text-gray-900  mb-2">{{ __('file.hello') }},
-                                        {{ $customer->first_name ?? $user->name }}!
-                                    </h2>
-                                    <p class="text-gray-600  mb-8">{{ __('file.account_dashboard_note') }}</p>
+                        <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
 
-                                    {{-- Quick Stats Grid --}}
-                                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
-
-                                        {{-- Total Orders --}}
-                                        <div
-                                            class="bg-gray-50 /50 rounded-xl p-6 border border-gray-100  flex items-center shadow-sm">
-                                            <div
-                                                class="p-3 rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 mr-4">
-                                                <i data-feather="shopping-bag" class="h-6 w-6"></i>
-                                            </div>
-                                            <div>
-                                                <p class="text-sm font-medium text-gray-500 ">{{ __('file.total_orders') }}
-                                                </p>
-                                                <p class="text-2xl font-bold text-gray-900 ">
-                                                    {{ $totalOrders }}
-                                                </p>
-                                            </div>
-                                        </div>
-
-                                        {{-- Wishlist Items --}}
-                                        <div
-                                            class="bg-gray-50 /50 rounded-xl p-6 border border-gray-100  flex items-center shadow-sm">
-                                            <div
-                                                class="p-3 rounded-full bg-pink-100 dark:bg-pink-900/40 text-pink-600 dark:text-pink-400 mr-4">
-                                                <i data-feather="heart" class="h-6 w-6"></i>
-                                            </div>
-                                            <div>
-                                                <p class="text-sm font-medium text-gray-500 ">
-                                                    {{ __('file.wishlist_items') }}</p>
-                                                <p class="text-2xl font-bold text-gray-900 ">
-                                                    {{ $wishlistItems }}
-                                                </p>
-                                            </div>
-                                        </div>
-
-                                        {{-- Addresses --}}
-                                        <div
-                                            class="bg-gray-50 /50 rounded-xl p-6 border border-gray-100  flex items-center shadow-sm">
-                                            <div
-                                                class="p-3 rounded-full bg-indigo-100 dark:bg-indigo-900/40 text-indigo-600 dark:text-indigo-400 mr-4">
-                                                <i data-feather="map-pin" class="h-6 w-6"></i>
-                                            </div>
-                                            <div>
-                                                <p class="text-sm font-medium text-gray-500 ">
-                                                    {{ __('file.saved_addresses') }}</p>
-                                                <p class="text-2xl font-bold text-gray-900 ">
-                                                    {{ $user->addresses->count() }}
-                                                </p>
-                                            </div>
-                                        </div>
-
-                                    </div>
-
-                                    {{-- Recent Orders Preview --}}
-                                    <h3 class="text-lg font-bold text-gray-900  mb-4">{{ __('file.recent_orders') }}</h3>
-
-                                    @if($allOrders->isEmpty())
-                                        <div
-                                            class="text-center py-10 bg-gray-50 /30 rounded-xl border border-dashed border-gray-200 ">
-                                            <i data-feather="shopping-cart" class="h-10 w-10 text-gray-400 mx-auto mb-3"></i>
-                                            <p class="text-gray-500 ">{{ __('file.no_orders_placed') }}</p>
-                                            <a href="{{ route('frontend.products.index') }}"
-                                                class="mt-4 inline-flex items-center text-primary-600 hover:text-primary-700 dark:text-primary-400 font-medium">
-                                                {{ __('file.start_shopping') }} <i data-feather="arrow-right"
-                                                    class="ml-1 w-4 h-4"></i>
-                                            </a>
-                                        </div>
-                                    @else
-                                        <div class="overflow-x-auto rounded-xl border border-gray-200 ">
-                                            <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                                                <thead class="bg-gray-50 ">
-                                                    <tr>
-                                                        <th scope="col"
-                                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500  uppercase tracking-wider">
-                                                            {{ __('file.order_num') }}
-                                                        </th>
-                                                        <th scope="col"
-                                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500  uppercase tracking-wider">
-                                                            {{ __('file.date') }}
-                                                        </th>
-                                                        <th scope="col"
-                                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500  uppercase tracking-wider">
-                                                            {{ __('file.status') }}
-                                                        </th>
-                                                        <th scope="col"
-                                                            class="px-6 py-3 text-left text-xs font-medium text-gray-500  uppercase tracking-wider">
-                                                            {{ __('file.total') }}
-                                                        </th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody class="bg-white  divide-y divide-gray-200 dark:divide-gray-700">
-                                                    @foreach($allOrders->take(3) as $order)
-                                                        <tr class="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
-                                                            <td
-                                                                class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 ">
-                                                                {{ $order->uuid ?? '#' . $order->id }}
-                                                            </td>
-                                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 ">
-                                                                {{ $order->created_at->format('M d, Y') }}
-                                                            </td>
-                                                            <td class="px-6 py-4 whitespace-nowrap">
-                                                                <span
-                                                                    class="px-2.5 py-1 inline-flex text-xs leading-5 font-semibold rounded-full 
-                                                                    @if(strtolower($order->status) == 'delivered') bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400
-                                                                    @elseif(strtolower($order->status) == 'cancelled') bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400
-                                                                    @else bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400 @endif">
-                                                                    {{ __('file.' . strtolower($order->status)) }}
-                                                                </span>
-                                                            </td>
-                                                            <td
-                                                                class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 ">
-                                                                @price($order->grand_total ?? 0)
-                                                            </td>
-                                                        </tr>
-                                                    @endforeach
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <div class="mt-4 text-right">
-                                            <button @click="switchTab('orders')"
-                                                class="text-sm font-medium text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300">
-                                                {{ __('file.view_all_orders') }} &rarr;
-                                            </button>
-                                        </div>
-                                    @endif
-
-                                </div>
-                            </div>
-
-                            <div x-show="activeTab === 'orders'" x-cloak x-transition.opacity.duration.300ms>
-                                <div>
-                                    <h2 class="text-2xl font-bold text-gray-900  mb-6">{{ __('file.order_history') }}</h2>
-
-                                    <!-- Sub-tabs for All vs Active Orders -->
-                                    <div x-data="{ orderTab: 'all' }" class="mb-8">
-                                        <div class="border-b border-gray-200  mb-6">
-                                            <nav class="-mb-px flex space-x-8" aria-label="Tabs">
-                                                <button @click="orderTab = 'all'"
-                                                    :class="{'border-primary-500 text-primary-600 dark:text-primary-400': orderTab === 'all', 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300  dark:hover:text-gray-300': orderTab !== 'all'}"
-                                                    class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
-                                                    {{ __('file.all_orders') }} ({{ $allOrders->count() }})
-                                                </button>
-                                                <button @click="orderTab = 'active'"
-                                                    :class="{'border-primary-500 text-primary-600 dark:text-primary-400': orderTab === 'active', 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300  dark:hover:text-gray-300': orderTab !== 'active'}"
-                                                    class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center">
-                                                    {{ __('file.active_orders') }}
-                                                    @if($activeOrders->count() > 0)
-                                                        <span
-                                                            class="ml-2 bg-primary-100 dark:bg-primary-900 text-primary-700 dark:text-primary-300 py-0.5 px-2.5 rounded-full text-xs shrink-0">{{ $activeOrders->count() }}</span>
-                                                    @endif
-                                                </button>
-                                            </nav>
-                                        </div>
-
-                                        <!-- All Orders -->
-                                        <div x-show="orderTab === 'all'" x-cloak>
-                                            @if($allOrders->isEmpty())
-                                                <div
-                                                    class="text-center py-12 bg-gray-50 /50 rounded-xl border border-dashed border-gray-200 ">
-                                                    <i data-feather="package" class="h-12 w-12 text-gray-400 mx-auto mb-4"></i>
-                                                    <h3 class="text-lg font-medium text-gray-900  mb-2">
-                                                        {{ __('file.no_orders_found') }}</h3>
-                                                    <p class="text-gray-500 ">{{ __('file.no_orders_placed') }}</p>
-                                                </div>
-                                            @else
-                                                <div class="space-y-4">
-                                                    @foreach($allOrders as $order)
-                                                        @include('frontend.account.partials.order-card', ['order' => $order])
-                                                    @endforeach
-                                                </div>
-                                            @endif
-                                        </div>
-
-                                        <!-- Active Orders -->
-                                        <div x-show="orderTab === 'active'" x-cloak>
-                                            @if($activeOrders->isEmpty())
-                                                <div
-                                                    class="text-center py-12 bg-gray-50 /50 rounded-xl border border-dashed border-gray-200 ">
-                                                    <i data-feather="truck" class="h-12 w-12 text-gray-400 mx-auto mb-4"></i>
-                                                    <h3 class="text-lg font-medium text-gray-900  mb-2">
-                                                        {{ __('file.no_active_orders') }}</h3>
-                                                    <p class="text-gray-500 ">{{ __('file.no_active_orders_note') }}</p>
-                                                </div>
-                                            @else
-                                                <div class="space-y-4">
-                                                    @foreach($activeOrders as $order)
-                                                        @include('frontend.account.partials.order-card', ['order' => $order])
-                                                    @endforeach
-                                                </div>
-                                            @endif
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div x-show="activeTab === 'addresses'" x-cloak x-transition.opacity.duration.300ms>
-                                <div x-data="{ showAddForm: false }">
-                                    <div class="flex items-center justify-between mb-6">
-                                        <h2 class="text-2xl font-bold text-gray-900 ">{{ __('file.shipping_addresses') }}
-                                        </h2>
-                                        <button @click="showAddForm = true"
-                                            class="inline-flex items-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors">
-                                            <i data-feather="plus" class="w-4 h-4 mr-2"></i>
-                                            {{ __('file.add_new_address') }}
+                            {{-- Avatar card --}}
+                            <div class="xl:col-span-1">
+                                <div class="acc-profile-avatar-card">
+                                    <div class="acc-profile-avatar-wrap">
+                                        <img class="acc-profile-avatar"
+                                            src="{{ $user->avatar ?? 'https://ui-avatars.com/api/?name=' . urlencode($user->name) . '&background=C8A96E&color=FFF' }}"
+                                            alt="{{ $user->name }}">
+                                        <button class="acc-profile-camera">
+                                            <i data-feather="camera" class="w-3 h-3"></i>
                                         </button>
                                     </div>
-
-                                    <!-- Add New Address Form Modal/Section -->
-                                    <div x-show="showAddForm" x-transition.opacity x-cloak
-                                        class="mb-8 bg-gray-50 /50 rounded-xl border border-gray-200  overflow-hidden">
-                                        <div
-                                            class="px-6 py-5 border-b border-gray-200  flex justify-between items-center bg-white ">
-                                            <h3 class="text-lg font-medium text-gray-900 ">{{ __('file.add_new_address') }}
-                                            </h3>
-                                            <button @click="showAddForm = false"
-                                                class="text-gray-400 hover:text-gray-500 dark:hover:text-gray-300">
-                                                <i data-feather="x" class="w-5 h-5"></i>
-                                            </button>
+                                    <p class="acc-profile-name">{{ $user->name }}</p>
+                                    <p class="acc-profile-email">{{ $user->email }}</p>
+                                    <hr class="acc-profile-divider">
+                                    <div class="acc-profile-stats">
+                                        <div class="acc-profile-stat">
+                                            <span class="acc-profile-stat-label">{{ __('file.orders') }}</span>
+                                            <span class="acc-profile-stat-num">{{ $totalOrders }}</span>
                                         </div>
-                                        <div class="p-6">
-                                            <form action="{{ route('account.addresses.store') }}" method="POST">
-                                                @csrf
-                                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
-                                                    <div>
-                                                        <label for="type"
-                                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('file.address_type') }}</label>
-                                                        <select id="type" name="type" required
-                                                            class="w-full rounded-lg border-gray-300 dark:border-gray-600  focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
-                                                            <option value="shipping">{{ __('file.shipping_address') }}
-                                                            </option>
-                                                            <option value="billing">{{ __('file.billing_address') }}
-                                                            </option>
-                                                        </select>
-                                                    </div>
-                                                    <div>
-                                                        <label for="address_line_1"
-                                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Address
-                                                            Line 1</label>
-                                                        <input type="text" name="address_line_1" id="address_line_1"
-                                                            required placeholder="Street address, P.O. box, etc."
-                                                            class="w-full rounded-lg border-gray-300 dark:border-gray-600  focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
-                                                    </div>
-                                                    <div>
-                                                        <label for="address_line_2"
-                                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Address
-                                                            Line 2 (Optional)</label>
-                                                        <input type="text" name="address_line_2" id="address_line_2"
-                                                            placeholder="Apartment, suite, unit, etc."
-                                                            class="w-full rounded-lg border-gray-300 dark:border-gray-600  focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
-                                                    </div>
-                                                    <div>
-                                                        <label for="city"
-                                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('file.city') }}</label>
-                                                        <input type="text" name="city" id="city" required
-                                                            class="w-full rounded-lg border-gray-300 dark:border-gray-600  focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
-                                                    </div>
-                                                    <div>
-                                                        <label for="state"
-                                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">State
-                                                            / Province</label>
-                                                        <input type="text" name="state" id="state" required
-                                                            class="w-full rounded-lg border-gray-300 dark:border-gray-600  focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
-                                                    </div>
-                                                    <div>
-                                                        <label for="postal_code"
-                                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Postal
-                                                            / Zip Code</label>
-                                                        <input type="text" name="postal_code" id="postal_code" required
-                                                            class="w-full rounded-lg border-gray-300 dark:border-gray-600  focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
-                                                    </div>
-                                                    <div>
-                                                        <label for="country"
-                                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('file.country') }}</label>
-                                                        <input type="text" name="country" id="country" required
-                                                            class="w-full rounded-lg border-gray-300 dark:border-gray-600  focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
-                                                    </div>
-
-                                                    <div class="sm:col-span-2 flex items-center mt-2">
-                                                        <input id="is_default" name="is_default" type="checkbox" value="1"
-                                                            class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded  dark:border-gray-600">
-                                                        <label for="is_default"
-                                                            class="ml-2 block text-sm text-gray-900 dark:text-gray-300">
-                                                            {{ __('file.set_as_my_default_address') }}
-                                                        </label>
-                                                    </div>
-                                                </div>
-
-                                                <div class="flex justify-end space-x-3">
-                                                    <button type="button" @click="showAddForm = false"
-                                                        class="bg-white  text-gray-700 dark:text-gray-300 px-5 py-2.5 border border-gray-300 dark:border-gray-600 rounded-lg text-sm font-medium hover:bg-gray-50 dark:hover:bg-gray-700 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-800 transition-colors">
-                                                        {{ __('file.cancel') }}
-                                                    </button>
-                                                    <button type="submit"
-                                                        class="bg-primary-600 text-white px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-primary-700 focus:ring-4 focus:ring-primary-500/30 transition-colors">
-                                                        {{ __('file.save_address') }}
-                                                    </button>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-
-                                    <!-- Address Grid -->
-                                    @if($user->addresses->isEmpty())
-                                        <div
-                                            class="text-center py-16 bg-gray-50 /50 rounded-xl border border-dashed border-gray-200 ">
-                                            <i data-feather="map" class="h-12 w-12 text-gray-400 mx-auto mb-4"></i>
-                                            <h3 class="text-lg font-medium text-gray-900  mb-2">
-                                                {{ __('file.no_addresses_saved') }}</h3>
-                                            <p class="text-gray-500 ">{{ __('file.no_addresses_saved_note') }}</p>
-                                        </div>
-                                    @else
-                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                            @foreach($user->addresses as $address)
-                                                <div
-                                                    class="relative bg-white  border {{ $address->is_default ? 'border-primary-500 ring-1 ring-primary-500' : 'border-gray-200 ' }} rounded-xl shadow-sm p-6">
-
-                                                    @if($address->is_default)
-                                                        <span
-                                                            class="absolute top-0 right-0 transform translate-x-2 -translate-y-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-800 dark:bg-primary-900 shadow-sm border border-primary-200 dark:border-primary-800">
-                                                            {{ __('file.default') }}
-                                                        </span>
-                                                    @endif
-
-                                                    <div class="flex items-start justify-between">
-                                                        <div>
-                                                            <span
-                                                                class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-800  dark:text-gray-300 mb-3 capitalize">
-                                                                {{ $address->type }}
-                                                            </span>
-                                                            <address
-                                                                class="not-italic text-sm text-gray-600  leading-relaxed shadow-sm">
-                                                                <span
-                                                                    class="block font-medium text-gray-900  mb-1">{{ $address->first_name }}
-                                                                    {{ $address->last_name }}</span>
-                                                                {{ $address->address_line1 }}<br>
-                                                                @if($address->address_line2) {{ $address->address_line2 }}<br>
-                                                                @endif
-                                                                {{ $address->city }}, {{ $address->province }}
-                                                                {{ $address->postal_code }}<br>
-                                                                {{ $address->country }}
-                                                            </address>
-                                                        </div>
-                                                    </div>
-
-                                                    <div
-                                                        class="mt-6 pt-6 border-t border-gray-100  flex items-center justify-between">
-                                                        <div class="flex space-x-3 text-sm">
-                                                            <button
-                                                                class="text-primary-600 dark:text-primary-400 font-medium hover:text-primary-500 transition-colors">{{ __('file.edit') }}</button>
-                                                            <span class="text-gray-300 dark:text-gray-600">|</span>
-                                                            <form action="{{ route('account.addresses.destroy', $address->id) }}"
-                                                                method="POST" class="inline">
-                                                                @csrf
-                                                                @method('DELETE')
-                                                                <button type="submit"
-                                                                    class="text-red-600 font-medium hover:text-red-500 transition-colors">{{ __('file.delete') }}</button>
-                                                            </form>
-                                                        </div>
-
-                                                        @if(!$address->is_default)
-                                                            <form action="{{ route('account.addresses.set-default', $address->id) }}"
-                                                                method="POST">
-                                                                @csrf
-                                                                @method('PATCH')
-                                                                <button type="submit"
-                                                                    class="text-sm text-gray-500 font-medium  hover:text-gray-700 dark:hover:text-gray-300 transition-colors">
-                                                                    {{ __('file.set_as_default') }}
-                                                                </button>
-                                                            </form>
-                                                        @endif
-                                                    </div>
-                                                </div>
-                                            @endforeach
-                                        </div>
-                                    @endif
-                                </div>
-                            </div>
-
-                            <div x-show="activeTab === 'profile'" x-cloak x-transition.opacity.duration.300ms>
-                                <div>
-                                    <h2 class="text-2xl font-bold text-gray-900  mb-6">{{ __('file.account_information') }}
-                                    </h2>
-
-                                    <div
-                                        class="bg-white  border border-gray-100  rounded-xl shadow-sm overflow-hidden mb-8">
-                                        <div class="px-6 py-5 border-b border-gray-100  bg-gray-50 dark:bg-surface-tonal-a10 /50">
-                                            <h3 class="text-lg font-medium text-gray-900 ">{{ __('file.profile_details') }}
-                                            </h3>
-                                            <p class="mt-1 text-sm text-gray-500 ">{{ __('file.profile_details_note') }}</p>
-                                        </div>
-
-                                        <div class="p-6">
-                                            <form action="{{ route('account.profile.update') }}" method="POST">
-                                                @csrf
-                                                @method('PUT')
-
-                                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                                                    <div>
-                                                        <label for="first_name"
-                                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('file.first_name') }}</label>
-                                                        <input type="text" name="first_name" id="first_name"
-                                                            value="{{ old('first_name', $customer->first_name) }}" required
-                                                            class="w-full rounded-lg border-gray-300 dark:border-gray-600  focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
-                                                    </div>
-                                                    <div>
-                                                        <label for="last_name"
-                                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('file.last_name') }}</label>
-                                                        <input type="text" name="last_name" id="last_name"
-                                                            value="{{ old('last_name', $customer->last_name) }}"
-                                                            class="w-full rounded-lg border-gray-300 dark:border-gray-600  focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
-                                                    </div>
-                                                    <div class="md:col-span-2">
-                                                        <label for="email"
-                                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('file.email_address') }}</label>
-                                                        <input type="email" name="email" id="email"
-                                                            value="{{ old('email', $user->email) }}" required
-                                                            class="w-full rounded-lg border-gray-300 dark:border-gray-600  focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
-                                                    </div>
-                                                    <div>
-                                                        <label for="phone"
-                                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('file.phone_number') }}</label>
-                                                        <input type="text" name="phone" id="phone"
-                                                            value="{{ old('phone', $customer->phone) }}"
-                                                            class="w-full rounded-lg border-gray-300 dark:border-gray-600  focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
-                                                    </div>
-                                                    <div>
-                                                        <label for="gender"
-                                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('file.gender') }}</label>
-                                                        <select id="gender" name="gender"
-                                                            class="w-full rounded-lg border-gray-300 dark:border-gray-600  focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
-                                                            <option value="">{{ __('file.prefer_not_to_say') }}</option>
-                                                            <option value="male" {{ (old('gender', $customer->gender) == 'male') ? 'selected' : '' }}>
-                                                                {{ __('file.male') }}
-                                                            </option>
-                                                            <option value="female" {{ (old('gender', $customer->gender) == 'female') ? 'selected' : '' }}>
-                                                                {{ __('file.female') }}
-                                                            </option>
-                                                            <option value="other" {{ (old('gender', $customer->gender) == 'other') ? 'selected' : '' }}>
-                                                                {{ __('file.other') }}
-                                                            </option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-
-                                                <div class="flex justify-end">
-                                                    <button type="submit"
-                                                        class="bg-primary-600 text-white px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-primary-700 focus:ring-4 focus:ring-primary-500/30 transition-colors">
-                                                        {{ __('file.save_changes') }}
-                                                    </button>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-
-
-                                    <div class="bg-white  border border-gray-100  rounded-xl shadow-sm overflow-hidden">
-                                        <div class="px-6 py-5 border-b border-gray-100  bg-gray-50 dark:bg-surface-tonal-a10 /50">
-                                            <h3 class="text-lg font-medium text-gray-900 ">{{ __('file.update_password') }}
-                                            </h3>
-                                            <p class="mt-1 text-sm text-gray-500 ">{{ __('file.update_password_note') }}</p>
-                                        </div>
-
-                                        <div class="p-6">
-                                            <form action="{{ route('account.password.update') }}" method="POST">
-                                                @csrf
-                                                @method('PUT')
-
-                                                <div class="space-y-6 mb-6">
-                                                    <div>
-                                                        <label for="current_password"
-                                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('file.current_password') }}</label>
-                                                        <input type="password" name="current_password" id="current_password"
-                                                            required autocomplete="current-password"
-                                                            class="w-full md:w-1/2 rounded-lg border-gray-300 dark:border-gray-600  focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
-                                                    </div>
-                                                    <div>
-                                                        <label for="password"
-                                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('file.new_password') }}</label>
-                                                        <input type="password" name="password" id="password" required
-                                                            autocomplete="new-password"
-                                                            class="w-full md:w-1/2 rounded-lg border-gray-300 dark:border-gray-600  focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
-                                                    </div>
-                                                    <div>
-                                                        <label for="password_confirmation"
-                                                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ __('file.confirm_password') }}</label>
-                                                        <input type="password" name="password_confirmation"
-                                                            id="password_confirmation" required autocomplete="new-password"
-                                                            class="w-full md:w-1/2 rounded-lg border-gray-300 dark:border-gray-600  focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
-                                                    </div>
-                                                </div>
-
-                                                <div class="flex justify-start">
-                                                    <button type="submit"
-                                                        class="bg-gray-900  text-white px-5 py-2.5 rounded-lg text-sm font-medium hover:bg-gray-800 dark:hover:bg-gray-600 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-800 transition-colors">
-                                                        {{ __('file.update_password') }}
-                                                    </button>
-                                                </div>
-                                            </form>
+                                        <div class="acc-profile-stat">
+                                            <span class="acc-profile-stat-label">{{ __('file.wishlist') }}</span>
+                                            <span class="acc-profile-stat-num">{{ $wishlistItems }}</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div x-show="activeTab === 'wishlist'" x-cloak x-transition.opacity.duration.300ms>
-                                <div>
-                                    <h2 class="text-2xl font-bold text-gray-900  mb-6">{{ __('file.my_wishlist') }}</h2>
-
-                                    {{-- Empty State (Assuming no wishlist items for now) --}}
-                                    <div
-                                        class="text-center py-16 bg-gray-50 /50 rounded-xl border border-dashed border-gray-200 ">
-                                        <div
-                                            class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-pink-100 dark:bg-pink-900/30 mb-4">
-                                            <i data-feather="heart" class="h-8 w-8 text-pink-600 dark:text-pink-400"></i>
-                                        </div>
-                                        <h3 class="text-xl font-bold text-gray-900  mb-2">
-                                            {{ __('file.your_wishlist_is_empty') }}</h3>
-                                        <p class="text-gray-500  max-w-sm mx-auto mb-6">
-                                            {{ __('file.wishlist_empty_note') }}
-                                        </p>
-                                        <a href="{{ route('frontend.products.index') }}"
-                                            class="inline-flex items-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors">
-                                            {{ __('file.browse_products') }}
-                                        </a>
+                            {{-- Forms --}}
+                            <div class="xl:col-span-2" style="display:flex; flex-direction:column; gap:20px">
+                                <form action="{{ route('account.profile.update') }}" method="POST" class="acc-card">
+                                    @csrf @method('PUT')
+                                    <div class="acc-card-header">
+                                        <span class="acc-card-header-title">{{ __('file.personal_details') }}</span>
                                     </div>
-                                </div>
-                            </div>
-
-                            <div x-show="activeTab === 'returns'" x-cloak x-transition.opacity.duration.300ms>
-                                <div>
-                                    <h2 class="text-2xl font-bold text-gray-900  mb-6">{{ __('file.returns_exchanges') }}
-                                    </h2>
-
-                                    <div
-                                        class="text-center py-16 bg-gray-50 /50 rounded-xl border border-dashed border-gray-200 ">
-                                        <div
-                                            class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/30 mb-4">
-                                            <i data-feather="refresh-cw"
-                                                class="h-8 w-8 text-blue-600 dark:text-blue-400"></i>
+                                    <div style="padding: 20px">
+                                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                            <div>
+                                                <label class="acc-form-label">{{ __('file.first_name') }}</label>
+                                                <input type="text" name="first_name"
+                                                    value="{{ old('first_name', $customer->first_name) }}" required
+                                                    class="acc-input">
+                                            </div>
+                                            <div>
+                                                <label class="acc-form-label">{{ __('file.last_name') }}</label>
+                                                <input type="text" name="last_name"
+                                                    value="{{ old('last_name', $customer->last_name) }}" class="acc-input">
+                                            </div>
+                                            <div class="sm:col-span-2">
+                                                <label class="acc-form-label">{{ __('file.email_address') }}</label>
+                                                <input type="email" name="email" value="{{ old('email', $user->email) }}"
+                                                    required class="acc-input">
+                                            </div>
                                         </div>
-                                        <h3 class="text-xl font-bold text-gray-900  mb-2">{{ __('file.coming_soon') }}</h3>
-                                        {{ __('file.returns_coming_soon_note') }}
-                                        </p>
-                                        <a href="#"
-                                            class="inline-flex items-center px-4 py-2 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-gray-900 hover:bg-gray-800  dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900 transition-colors">
-                                            {{ __('file.contact_support') }}
-                                        </a>
+                                        <div class="flex justify-end" style="margin-top:16px">
+                                            <button type="submit"
+                                                class="acc-btn acc-btn--dark">{{ __('file.save_changes') }}</button>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
+                                </form>
 
+                                <form action="{{ route('account.password.update') }}" method="POST" class="acc-card">
+                                    @csrf @method('PUT')
+                                    <div class="acc-card-header">
+                                        <span class="acc-card-header-title">{{ __('file.update_password') }}</span>
+                                    </div>
+                                    <div style="padding: 20px">
+                                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                            <div class="sm:col-span-2">
+                                                <label class="acc-form-label">{{ __('file.current_password') }}</label>
+                                                <input type="password" name="current_password" required class="acc-input">
+                                            </div>
+                                            <div>
+                                                <label class="acc-form-label">{{ __('file.new_password') }}</label>
+                                                <input type="password" name="password" required class="acc-input">
+                                            </div>
+                                            <div>
+                                                <label class="acc-form-label">{{ __('file.confirm_password') }}</label>
+                                                <input type="password" name="password_confirmation" required class="acc-input">
+                                            </div>
+                                        </div>
+                                        <div class="flex justify-end" style="margin-top:16px">
+                                            <button type="submit"
+                                                class="acc-btn acc-btn--dark">{{ __('file.update_password') }}</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
-
                     </div>
-                </main>
-            </div>
+                @endif
+
+                {{-- ══ WISHLIST ══ --}}
+                @if($activeTab === 'wishlist')
+                    <div>
+                        <h2 class="acc-page-title" style="margin-bottom: 24px">{{ __('file.my_wishlist') }}</h2>
+                        
+                        @if($user->wishlists->count() > 0)
+                            <div class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-4">
+                                @foreach($user->wishlists as $wishlist)
+                                    @php $product = $wishlist->product; @endphp
+                                    <div class="acc-card relative group flex flex-col justify-between" style="padding: 16px; transition: box-shadow 0.2s; overflow: hidden;">
+                                        <form action="{{ route('wishlist.destroy', $product->id) }}" method="POST" class="absolute top-2 right-2 z-10">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="w-8 h-8 flex items-center justify-center rounded-full bg-white border border-gray-100 text-gray-400 hover:text-red-500 hover:border-red-100 hover:bg-red-50 transition-all shadow-sm" title="Remove from wishlist">
+                                                <i data-feather="x" class="w-4 h-4"></i>
+                                            </button>
+                                        </form>
+                                        
+                                        <a href="{{ route('frontend.products.show', $product->slug) }}" class="block text-center mb-4 mt-2">
+                                            <img src="{{ $product->primaryImage ? $product->primaryImage->url : 'https://placehold.co/400?text=No+Image' }}" alt="{{ $product->name }}" class="w-full h-36 object-contain mb-3">
+                                            <h3 class="text-sm font-bold text-gray-900 line-clamp-2 leading-tight" style="font-family: var(--font-sans)">{{ $product->name }}</h3>
+                                        </a>
+                                        
+                                        <div class="mt-auto">
+                                            <div class="flex items-center justify-between mb-3">
+                                                @php
+                                                    $defaultVariant = $product->variants->where('is_default', true)->first() ?? $product->variants->first();
+                                                    $displayPrice = $defaultVariant ? ($defaultVariant->sale_price ?? $defaultVariant->price) : $product->base_price;
+                                                @endphp
+                                                <span class="font-bold text-gray-900" style="font-size: 15px">@price($displayPrice)</span>
+                                            </div>
+                                            <a href="{{ route('frontend.products.show', $product->slug) }}" class="acc-btn acc-btn--dark w-full justify-center" style="padding: 8px; font-size: 11px;">
+                                                <i data-feather="eye" class="w-3.5 h-3.5"></i>
+                                                {{ __('file.view_details') }}
+                                            </a>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        @else
+                            <div class="acc-card">
+                                <div class="acc-empty">
+                                    <div class="acc-empty-icon" style="background:#fdf2f8; color:#ec4899">
+                                        <i data-feather="heart" class="w-5 h-5"></i>
+                                    </div>
+                                    <p class="acc-empty-title">{{ __('file.your_wishlist_is_empty') }}</p>
+                                    <p class="acc-empty-sub">{{ __('file.wishlist_empty_note') }}</p>
+                                    <a href="{{ route('frontend.products.index') }}" class="acc-btn acc-btn--dark">
+                                        {{ __('file.start_shopping') }}
+                                    </a>
+                                </div>
+                            </div>
+                        @endif
+                    </div>
+                @endif
+
+                {{-- ══ RETURNS ══ --}}
+                @if($activeTab === 'returns')
+                    <div>
+                        <h2 class="acc-page-title" style="margin-bottom: 24px">{{ __('file.returns') }}</h2>
+                        <div class="acc-card">
+                            <div class="acc-empty">
+                                <div class="acc-empty-icon" style="background:#eff6ff; color:#3b82f6">
+                                    <i data-feather="refresh-cw" class="w-5 h-5"></i>
+                                </div>
+                                <p class="acc-empty-title">{{ __('file.coming_soon') }}</p>
+                                <p class="acc-empty-sub">{{ __('file.returns_coming_soon_note') }}</p>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+
+            </main>
         </div>
     </div>
 
     <script>
-        document.addEventListener('alpine:init', () => {
-            Alpine.data('accountTabs', (initialTab) => ({
-                activeTab: initialTab,
-
-                switchTab(tab) {
-                    this.activeTab = tab;
-                    // Optional: Update URL without reloading
-                    window.history.pushState({}, '', '?tab=' + tab);
-
-                    // Re-initialize feather icons within the unhidden content if necessary
-                    setTimeout(() => {
-                        if (typeof feather !== 'undefined') {
-                            feather.replace();
-                        }
-                    }, 50);
-                }
-            }));
+        document.addEventListener('DOMContentLoaded', function () {
+            if (window.feather) feather.replace();
+            else setTimeout(() => { if (window.feather) feather.replace(); }, 600);
         });
     </script>
 @endsection

@@ -23,7 +23,7 @@ class SetAdminSessionCookie
     public function handle(Request $request, Closure $next): Response
     {
         // Detect admin context — works both on production subdomains and locally.
-        $isAdmin = $request->is('admin*') || $request->getHost() === 'admin.karbnzol.com';
+        $isAdmin = $request->is('admin*') || $request->getHost() === 'admin.karbnzol.com' || $request->routeIs('admin.*') || $request->segment(1) === 'admin';
 
         if ($isAdmin) {
             // Override the cookie name Laravel will use for this request.

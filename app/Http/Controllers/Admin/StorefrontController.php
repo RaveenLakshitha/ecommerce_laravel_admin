@@ -19,7 +19,8 @@ class StorefrontController extends Controller
     public function index()
     {
         $setting = Setting::getAll();
-        return view('admin.storefront.index', compact('setting'));
+        $categories = \App\Models\Category::whereNull('parent_id')->orderBy('order')->get();
+        return view('admin.storefront.index', compact('setting', 'categories'));
     }
 
     public function update(Request $request)
@@ -46,6 +47,10 @@ class StorefrontController extends Controller
             'storefront_stats_show' => 'nullable|boolean',
             'storefront_trust_show' => 'nullable|boolean',
             'storefront_use_logo_text' => 'nullable|boolean',
+            'storefront_video_file' => 'nullable|file|mimes:mp4,webm,ogg|max:51200',
+            'storefront_video_title' => 'nullable|string|max:100',
+            'storefront_video_subtitle' => 'nullable|string|max:200',
+            'storefront_video_show' => 'nullable|boolean',
 
             'storefront_stats' => 'nullable|array',
             'storefront_stats.*.number' => 'nullable|string|max:20',
@@ -62,6 +67,9 @@ class StorefrontController extends Controller
             'banners.*.subtitle' => 'nullable|string|max:120',
             'banners.*.link' => 'nullable|string|max:255',
             'banners.*.image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:4096',
+
+            'category_order' => 'nullable|array',
+            'category_order.*' => 'integer',
         ]);
 
         $data = $request->only([
@@ -82,13 +90,19 @@ class StorefrontController extends Controller
             'storefront_our_story_show',
             'storefront_stats_show',
             'storefront_trust_show',
-            'storefront_use_logo_text'
+            'storefront_use_logo_text',
+            'storefront_video_title',
+            'storefront_video_subtitle',
         ]);
+
+        // Remove storefront_video_url from the data array — it is managed via file upload, not a text field
+        unset($data['storefront_video_url']);
 
         $data['storefront_our_story_show'] = $request->boolean('storefront_our_story_show');
         $data['storefront_stats_show'] = $request->boolean('storefront_stats_show');
         $data['storefront_trust_show'] = $request->boolean('storefront_trust_show');
         $data['storefront_use_logo_text'] = $request->boolean('storefront_use_logo_text');
+        $data['storefront_video_show'] = $request->boolean('storefront_video_show');
 
         if ($request->hasFile('storefront_our_story_image')) {
             // Delete old image if exists
@@ -101,6 +115,20 @@ class StorefrontController extends Controller
                 Storage::disk('public')->delete($setting->storefront_our_story_image);
             }
             $data['storefront_our_story_image'] = null;
+        }
+
+        // ── Video file upload ────────────────────────────────────────────
+        if ($request->hasFile('storefront_video_file')) {
+            // Delete old video if one exists
+            if ($setting->storefront_video_url) {
+                Storage::disk('public')->delete($setting->storefront_video_url);
+            }
+            $data['storefront_video_url'] = $request->file('storefront_video_file')->store('storefront/videos', 'public');
+        } elseif ($request->boolean('remove_storefront_video')) {
+            if ($setting->storefront_video_url) {
+                Storage::disk('public')->delete($setting->storefront_video_url);
+            }
+            $data['storefront_video_url'] = null;
         }
 
         $banners = is_array($setting->storefront_banners) ? $setting->storefront_banners : [];
@@ -141,6 +169,13 @@ class StorefrontController extends Controller
         $data['storefront_banners'] = $newBanners;
 
         $setting->update($data);
+
+        // Update Category Orders
+        if ($request->has('category_order')) {
+            foreach ($request->category_order as $id => $order) {
+                \App\Models\Category::where('id', $id)->update(['order' => (int)$order]);
+            }
+        }
 
         Cache::forget('settings');
 

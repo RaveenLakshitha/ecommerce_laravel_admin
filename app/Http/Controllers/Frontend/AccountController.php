@@ -18,13 +18,10 @@ class AccountController extends Controller
             return redirect()->route('login');
         }
 
-        // Load relations for the user (addresses and latest 10 orders)
-        $user->load(['addresses', 'orders' => function ($query) {
-            $query->latest()->take(10);
-        }]);
+        // Load relations for the user
+        $user->load(['addresses', 'orders.items.variant.product', 'wishlists.product']);
         $customer = $user->customer;
 
-        // If for some reason a user doesn't have a customer profile, create an empty one or handle it gracefully
         if (!$customer) {
             $customer = $user->customer()->create([
                 'first_name' => explode(' ', $user->name)[0] ?? 'User',
@@ -35,12 +32,17 @@ class AccountController extends Controller
 
         $activeTab = request()->query('tab', 'dashboard');
 
-        // Prepare stats for the summary
-        $totalOrders = $user->orders->count();
-        $wishlistItems = 0; // Placeholder if you implement Wishlist
-        $pendingReturns = 0; // Placeholder if you implement Returns
+        // Fetch real refund data through orders
+        $orderIds = $user->orders->pluck('id');
+        $refunds = \App\Models\OrderRefund::whereIn('order_id', $orderIds)
+            ->with('order')
+            ->latest()
+            ->get();
 
-        // Separate orders by status
+        $totalOrders = $user->orders->count();
+        $wishlistItems = $user->wishlists->count();
+        $pendingReturns = $refunds->where('status', 'pending')->count();
+
         $allOrders = $user->orders;
         $activeOrders = $allOrders->filter(function ($order) {
             return !in_array(strtolower($order->status), ['delivered', 'cancelled', 'returned']);
@@ -54,9 +56,11 @@ class AccountController extends Controller
             'wishlistItems',
             'pendingReturns',
             'allOrders',
-            'activeOrders'
+            'activeOrders',
+            'refunds'
         ));
     }
+
 
     public function updateProfile(Request $request)
     {
@@ -109,6 +113,36 @@ class AccountController extends Controller
 
         return redirect()->route('account.dashboard', ['tab' => 'profile'])->with('success', 'Password updated successfully.');
     }
+
+    public function updateAvatar(Request $request)
+    {
+        $request->validate([
+            'avatar' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        $user = Auth::user();
+
+        if ($request->hasFile('avatar')) {
+            $file = $request->file('avatar');
+            
+            // Delete old avatar if exists and not a default one
+            if ($user->avatar && \Illuminate\Support\Facades\Storage::disk('public')->exists($user->avatar)) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($user->avatar);
+            }
+
+            $path = $file->store('avatars', 'public');
+            $user->update(['avatar' => $path]);
+
+            return response()->json([
+                'success' => true,
+                'avatar_url' => \Illuminate\Support\Facades\Storage::url($path),
+                'message' => 'Avatar updated successfully.'
+            ]);
+        }
+
+        return response()->json(['success' => false, 'message' => 'No file uploaded.'], 400);
+    }
+
 
     public function storeAddress(Request $request)
     {

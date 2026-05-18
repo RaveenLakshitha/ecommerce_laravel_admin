@@ -371,7 +371,118 @@
                         </div>
                     </div>
 
-                    <!-- Banners Section -->
+                    <!-- Navbar Category Order Section -->
+                    <div class="border-b border-gray-200 dark:border-surface-tonal-a30 pb-6">
+                        <h2 class="text-xl font-semibold text-gray-900 dark:text-primary-a0 mb-6">Navbar Category Order</h2>
+                        <div class="bg-gray-50 dark:bg-surface-tonal-a10 rounded-xl p-4 border border-gray-100 dark:border-surface-tonal-a20">
+                            <p class="text-xs text-gray-500 dark:text-gray-400 mb-4">Set the display order for parent categories in the storefront navbar. Lower numbers appear first.</p>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                                @foreach($categories as $category)
+                                    <div class="flex items-center gap-3 p-3 bg-white dark:bg-surface-tonal-a20 rounded-lg border border-gray-200 dark:border-gray-600 shadow-sm">
+                                        <div class="flex-shrink-0 w-8 h-8 bg-gray-100 dark:bg-gray-700 rounded flex items-center justify-center">
+                                            <span class="text-xs font-bold text-gray-500">{{ $loop->iteration }}</span>
+                                        </div>
+                                        <div class="flex-grow min-w-0">
+                                            <p class="text-sm font-medium text-gray-900 dark:text-primary-a0 truncate">{{ $category->name }}</p>
+                                        </div>
+                                        <div class="flex-shrink-0 w-16">
+                                            <input type="number" name="category_order[{{ $category->id }}]" 
+                                                value="{{ $category->order ?? 0 }}" 
+                                                class="w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded focus:ring-1 focus:ring-gray-900 dark:focus:ring-gray-500 dark:bg-transparent dark:text-primary-a0"
+                                                min="0">
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- ── Video Section ──────────────────────────────────── --}}
+                    <div class="border-b border-gray-200 dark:border-surface-tonal-a30 pb-6">
+                        <div class="flex items-center justify-between mb-6">
+                            <div class="flex items-center gap-4">
+                                <h2 class="text-xl font-semibold text-gray-900 dark:text-primary-a0">Video Section
+                                    <span class="text-sm font-normal text-gray-500 dark:text-gray-400">(Home Page — before Featured Collections)</span>
+                                </h2>
+                                <div
+                                    class="flex items-center gap-2 bg-gray-50 dark:bg-surface-tonal-a10 px-3 py-1.5 rounded-xl border border-gray-100 dark:border-surface-tonal-a20">
+                                    <span class="text-[10px] uppercase font-bold text-gray-400">Status:</span>
+                                    <label class="toggle-switch" style="transform: scale(0.8); transform-origin: left;">
+                                        <input type="hidden" name="storefront_video_show" value="0">
+                                        <input type="checkbox" name="storefront_video_show" value="1" {{ ($setting->storefront_video_show ?? true) ? 'checked' : '' }}>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                    <span
+                                        class="text-[10px] uppercase font-bold {{ ($setting->storefront_video_show ?? true) ? 'text-green-600' : 'text-gray-400' }}">
+                                        {{ ($setting->storefront_video_show ?? true) ? 'Visible' : 'Hidden' }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-blue-50 dark:bg-surface-tonal-a10 rounded-xl p-4 border border-blue-100 dark:border-surface-tonal-a20 mb-4">
+                            <p class="text-xs text-blue-700 dark:text-gray-400">
+                                <strong>Upload a video file</strong> (MP4, WebM or OGG — max 50 MB). The video plays
+                                automatically, muted and looped in a full-width cinematic strip directly before the
+                                Featured Collections grid. Uploading a file avoids browser download prompts.
+                            </p>
+                        </div>
+
+                        {{-- Current video preview --}}
+                        @if($setting->storefront_video_url)
+                            <div class="mb-4 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-600 bg-black" style="max-height:220px;">
+                                <video src="{{ asset('storage/' . $setting->storefront_video_url) }}"
+                                    class="w-full" style="max-height:220px;object-fit:cover;"
+                                    muted playsinline controls>
+                                </video>
+                            </div>
+                            <label class="inline-flex items-center gap-2 text-xs text-red-500 cursor-pointer mb-4">
+                                <input type="checkbox" name="remove_storefront_video" value="1">
+                                Remove current video
+                            </label>
+                        @endif
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="md:col-span-2">
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                    Upload Video File
+                                    <span class="text-xs text-gray-400 font-normal ml-2">(MP4 / WebM / OGG — max 50 MB)</span>
+                                </label>
+                                <input type="file" name="storefront_video_file"
+                                    accept="video/mp4,video/webm,video/ogg"
+                                    class="w-full text-sm text-gray-500 dark:text-gray-400
+                                           file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0
+                                           file:text-xs file:font-semibold file:bg-gray-100 dark:file:bg-surface-tonal-a20
+                                           file:text-gray-700 dark:file:text-gray-300
+                                           hover:file:bg-gray-200 dark:hover:file:bg-surface-tonal-a30 cursor-pointer">
+                                <p class="text-[11px] text-gray-400 mt-1">Recommended: compress your video to under 10 MB for faster page loads. Use tools like <em>Handbrake</em> or <em>ffmpeg</em>.</p>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Section
+                                    Title
+                                    <span class="text-xs text-gray-400 font-normal ml-2">(Optional overlay text)</span>
+                                </label>
+                                <input type="text" name="storefront_video_title"
+                                    value="{{ old('storefront_video_title', $setting->storefront_video_title ?? '') }}"
+                                    maxlength="100"
+                                    placeholder="e.g., See Our Story"
+                                    class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-transparent dark:text-primary-a0 transition-shadow">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Section
+                                    Subtitle
+                                    <span class="text-xs text-gray-400 font-normal ml-2">(Optional)</span>
+                                </label>
+                                <input type="text" name="storefront_video_subtitle"
+                                    value="{{ old('storefront_video_subtitle', $setting->storefront_video_subtitle ?? '') }}"
+                                    maxlength="200"
+                                    placeholder="e.g., Craftsmanship, quality, and style — in motion."
+                                    class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-transparent dark:text-primary-a0 transition-shadow">
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- ── Hero Banners / Sliders ─────────────────────────── --}}
                     <div>
                         <div class="flex items-center justify-between mb-6">
                             <h2 class="text-xl font-semibold text-gray-900 dark:text-primary-a0">Hero Banners / Sliders</h2>

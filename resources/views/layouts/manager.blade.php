@@ -79,9 +79,8 @@
             <div class="flex items-center justify-between px-4 sm:px-6 py-2 h-12">
                 <div class="flex items-center gap-3 sm:gap-4">
                     <a href="{{ route('orders.index') }}" class="p-2 -ml-2 rounded-lg hover:bg-gray-100 dark:hover:bg-surface-tonal-a30 text-gray-500 dark:text-gray-400 transition-colors focus:ring-2 focus:ring-accent/50 outline-none" data-tooltip="Back to Orders">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M19 12H5"></path>
-                            <polyline points="12 19 5 12 12 5"></polyline>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="m15 18-6-6 6-6" />
                         </svg>
                     </a>
                     <h1 class="text-lg sm:text-xl font-bold text-gray-900 dark:text-primary-a0 tracking-tight">
@@ -133,28 +132,38 @@
                     <!-- Dark Mode Changer -->
                     <button id="theme-toggle-navbar"
                         class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-surface-tonal-a30 transition-colors text-gray-600 dark:text-gray-400 focus:outline-none focus:ring-2 focus:ring-accent/50 group">
-                        <svg id="sun-icon-navbar" class="w-5 h-5 hidden group-hover:text-amber-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                        <svg id="sun-icon-navbar" class="w-5 h-5 hidden group-hover:text-amber-500 transition-colors" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="4" />
+                            <path d="M12 2v2" />
+                            <path d="M12 20v2" />
+                            <path d="m4.93 4.93 1.41 1.41" />
+                            <path d="m17.66 17.66 1.41 1.41" />
+                            <path d="M2 12h2" />
+                            <path d="M20 12h2" />
+                            <path d="m6.34 17.66-1.41 1.41" />
+                            <path d="m19.07 4.93-1.41 1.41" />
                         </svg>
-                        <svg id="moon-icon-navbar" class="w-5 h-5 group-hover:text-blue-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                        <svg id="moon-icon-navbar" class="w-5 h-5 group-hover:text-blue-500 transition-colors" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
                         </svg>
                     </button>
 
                     <!-- Fullscreen Changer -->
                     <button id="fullscreen-toggle" aria-label="Toggle fullscreen"
                         class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-surface-tonal-a30 transition-colors text-gray-600 dark:text-gray-400 focus:outline-none focus:ring-2 focus:ring-accent/50">
-                        <svg id="enter-fullscreen-icon" class="w-5 h-5" fill="none" stroke="currentColor"
+                        <svg id="enter-fullscreen-icon" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                             viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M8 3H5a2 2 0 00-2 2v3M16 3h3a2 2 0 012 2v3M8 21H5a2 2 0 01-2-2v-3M16 21h3a2 2 0 002-2v-3" />
+                            <path d="M8 3H5a2 2 0 0 0-2 2v3" />
+                            <path d="M21 8V5a2 2 0 0 0-2-2h-3" />
+                            <path d="M3 16v3a2 2 0 0 0 2 2h3" />
+                            <path d="M16 21h3a2 2 0 0 0 2-2v-3" />
                         </svg>
-                        <svg id="exit-fullscreen-icon" class="w-5 h-5 hidden" fill="none" stroke="currentColor"
+                        <svg id="exit-fullscreen-icon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                             viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M9 9H5V5M15 9h4V5M9 15H5v4M15 15h4v4" />
+                            <path d="M4 14h6v6" />
+                            <path d="M20 10h-6V4" />
+                            <path d="M14 20v-6h6" />
+                            <path d="M4 10h6V4" />
                         </svg>
                     </button>
                     
@@ -266,9 +275,9 @@
             const notification = document.createElement('div');
 
             const icons = {
-                success: '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>',
-                error: '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>',
-                info: '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>'
+                success: '<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5" /></svg>',
+                error: '<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>',
+                info: '<svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><path d="M12 16v-4" /><path d="M12 8h.01" /></svg>'
             };
 
             const colors = {
@@ -288,7 +297,7 @@
                     ${message}
                 </div>
                 <button class="flex-shrink-0 hover:bg-white/20 p-1 rounded-lg transition-colors ml-2" onclick="this.parentElement.remove()">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>
                 </button>
                 <div class="absolute bottom-0 left-0 h-1 bg-white/30 rounded-full overflow-hidden" style="width: 100%">
                     <div class="h-full bg-white/50 animate-progress" style="animation-duration: var(--duration)"></div>

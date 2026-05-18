@@ -159,7 +159,7 @@
 
                     {{-- Recent Orders Table --}}
                     <div
-                        class="bg-white dark:bg-[#1e2d40] rounded-xl shadow-sm border border-gray-100 dark:border-slate-700/60 overflow-hidden">
+                        class="bg-white dark:bg-transparent rounded-xl shadow-sm border border-gray-100 dark:border-slate-700/60 overflow-hidden">
                         <div
                             class="px-6 py-4 border-b border-gray-100 dark:border-slate-700/60 bg-gray-50/100 dark:bg-slate-800/40 flex items-center justify-between">
                             <div>

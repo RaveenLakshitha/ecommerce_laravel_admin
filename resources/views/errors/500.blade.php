@@ -17,9 +17,12 @@
                 </p>
             </div>
             <div>
-                <a href="{{ auth()->check() ? route('admin.dashboard') : route('login') }}"
+                @php
+                    $isAdmin = request()->is('admin*') || request()->getHost() === 'admin.karbnzol.com' || request()->routeIs('admin.*') || request()->segment(1) === 'admin';
+                @endphp
+                <a href="{{ $isAdmin ? (auth('admin')->check() ? route('admin.dashboard') : route('admin.login')) : (auth('web')->check() ? route('account.dashboard') : route('login')) }}"
                    class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700">
-                    {{ auth()->check() ? __('file.go_to_dashboard') : __('file.go_to_login') }}
+                    {{ $isAdmin ? (auth('admin')->check() ? (__('file.go_to_dashboard') ?? 'Go to Dashboard') : (__('file.go_to_login') ?? 'Go to Login')) : (auth('web')->check() ? (__('file.go_to_dashboard') ?? 'Go to Dashboard') : (__('file.go_to_login') ?? 'Go to Login')) }}
                 </a>
             </div>
         </div>

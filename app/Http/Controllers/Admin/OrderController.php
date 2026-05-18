@@ -37,7 +37,9 @@ class OrderController extends Controller
             ->take(100)
             ->get();
 
-        return view('admin.orders.manager', compact('orders'));
+        $currency_symbol = Setting::getValue('currency_symbol', 'Rs.');
+
+        return view('admin.orders.manager', compact('orders', 'currency_symbol'));
     }
 
     public function datatable(Request $request)

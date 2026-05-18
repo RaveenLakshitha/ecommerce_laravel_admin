@@ -1,263 +1,336 @@
 @extends('frontend.layouts.app')
 
-@section('title', __('file.order_details') . ' - #' . $order->order_number)
+@section('title', __('file.order_details') . ' - #' . ($order->order_number ?? $order->id))
 @section('body_class', 'light-page')
 
 @section('content')
-<div style="background-color: var(--bg-creamy); color: #1a1a1a;" class="min-h-screen py-10">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        {{-- Breadcrumbs & Header --}}
-        <div class="mb-8">
-            <nav class="flex text-sm text-gray-500 mb-4" aria-label="Breadcrumb">
-                <ol class="inline-flex items-center space-x-1 md:space-x-3">
-                    <li class="inline-flex items-center">
-                        <a href="{{ route('account.dashboard') }}" class="hover:text-primary-600 transition-colors">{{ __('file.my_account') }}</a>
-                    </li>
-                    <li>
-                        <div class="flex items-center">
-                            <i data-feather="chevron-right" class="w-4 h-4 mx-1"></i>
-                            <a href="{{ route('account.dashboard', ['tab' => 'orders']) }}" class="hover:text-primary-600 transition-colors">{{ __('file.orders') }}</a>
-                        </div>
-                    </li>
-                    <li aria-current="page">
-                        <div class="flex items-center text-gray-900 font-medium">
-                            <i data-feather="chevron-right" class="w-4 h-4 mx-1 text-gray-500"></i>
-                            {{ __('file.order_num') }}{{ $order->order_number }}
-                        </div>
-                    </li>
-                </ol>
-            </nav>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700;800;900&family=Oswald:wght@200;300;400;500;600;700&display=swap');
 
-            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        :root {
+            --gold: #c8a96e;
+            --gold-light: #dfcc9c;
+            --bg-creamy: #fdfbf7;
+            --bg-dark: #1a1a1a;
+            --font-display: 'Oswald', sans-serif;
+            --font-body: 'Barlow', sans-serif;
+            --ease-out: cubic-bezier(0.33, 1, 0.68, 1);
+        }
+
+        .order-details-page {
+            font-family: var(--font-body);
+            background-color: var(--bg-creamy);
+            min-height: 100vh;
+            color: #1a1a1a;
+            padding-bottom: 5rem;
+        }
+
+        .premium-card {
+            background: #fff;
+            border-radius: 1.25rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.03);
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            overflow: hidden;
+        }
+
+        .font-display { font-family: var(--font-display); }
+
+        .status-badge {
+            font-family: var(--font-display);
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 0.35rem 0.75rem;
+            border-radius: 0.5rem;
+        }
+
+        .status-delivered { background: #dcfce7; color: #166534; }
+        .status-pending { background: #fef9c3; color: #854d0e; }
+        .status-cancelled { background: #fee2e2; color: #991b1b; }
+        .status-processing { background: #dbeafe; color: #1e40af; }
+
+        .btn-gold {
+            background: var(--bg-dark);
+            color: #fff;
+            font-family: var(--font-display);
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-gold:hover {
+            background: var(--gold);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(200, 169, 110, 0.2);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: #1a1a1a;
+            border: 1px solid #e5e7eb;
+            font-family: var(--font-display);
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-outline:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        .progress-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #e5e7eb;
+            position: relative;
+            z-index: 10;
+        }
+
+        .progress-dot.active { background: var(--gold); box-shadow: 0 0 0 4px rgba(200, 169, 110, 0.2); }
+        .progress-dot.completed { background: var(--bg-dark); }
+
+        .progress-line {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            height: 2px;
+            background: #e5e7eb;
+            width: 100%;
+            transform: translateY(-50%);
+            z-index: 0;
+        }
+
+        .progress-line-fill {
+            height: 100%;
+            background: var(--gold);
+            transition: width 1s ease-in-out;
+        }
+    </style>
+
+    <div class="order-details-page pt-10">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            {{-- Header & Breadcrumbs --}}
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
                 <div>
-                    <h1 class="text-3xl font-bold text-gray-900">{{ __('file.order_num') }}{{ $order->order_number }}</h1>
-                    <p class="text-gray-500 mt-1">{{ __('file.placed_on') }} {{ $order->placed_at ? $order->placed_at->format('F j, Y \a\t g:i A') : $order->created_at->format('F j, Y') }}</p>
+                    <nav class="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.15em] text-gray-400 mb-4">
+                        <a href="{{ route('account.dashboard') }}" class="hover:text-gold transition-colors">{{ __('file.my_account') }}</a>
+                        <i data-feather="chevron-right" class="w-3 h-3"></i>
+                        <a href="{{ route('account.dashboard', ['tab' => 'orders']) }}" class="hover:text-gold transition-colors">{{ __('file.orders') }}</a>
+                        <i data-feather="chevron-right" class="w-3 h-3"></i>
+                        <span class="text-gray-900">#{{ $order->order_number ?? $order->id }}</span>
+                    </nav>
+                    <h1 class="text-4xl font-black text-gray-900 font-display uppercase tracking-tight">{{ __('file.order_details') }}</h1>
+                    <p class="text-sm text-gray-500 mt-2">
+                        {{ __('file.placed_on') }} <span class="font-bold text-gray-700">{{ $order->placed_at ? $order->placed_at->format('F j, Y') : $order->created_at->format('F j, Y') }}</span>
+                    </p>
                 </div>
-                <div>
-                    <a href="#" onclick="window.print()" class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 transition-colors">
-                        <i data-feather="printer" class="w-4 h-4 mr-2"></i> {{ __('file.print_receipt') }}
-                    </a>
+                <div class="flex items-center gap-3">
+                    <button onclick="window.print()" class="btn-outline">
+                        <i data-feather="printer" class="w-4 h-4"></i> {{ __('file.print_receipt') }}
+                    </button>
+                    @if($order->canBeRefunded())
+                        <button class="btn-gold !bg-red-500 hover:!bg-red-600">
+                             {{ __('file.request_return') }}
+                        </button>
+                    @endif
                 </div>
             </div>
-        </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {{-- Left Column: Items and Tracking --}}
-            <div class="lg:col-span-2 space-y-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
                 
-                {{-- Status & Tracking --}}
-                <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
-                    <div class="p-6">
-                        <div class="flex items-center justify-between mb-6">
-                            <h2 class="text-lg font-bold text-gray-900">{{ __('file.order_status') }}</h2>
-                            <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full 
-                                @if(strtolower($order->status) == 'delivered') bg-green-100 text-green-800 
-                                @elseif(in_array(strtolower($order->status), ['cancelled', 'failed'])) bg-red-100 text-red-800 
-                                @elseif(strtolower($order->status) == 'processing') bg-blue-100 text-blue-800
-                                @else bg-yellow-100 text-yellow-800 @endif">
-                                {{ __('file.' . strtolower($order->status)) }}
+                {{-- LEFT COLUMN --}}
+                <div class="lg:col-span-8 space-y-8">
+                    
+                    {{-- Tracking Status Card --}}
+                    <div class="premium-card p-8">
+                        <div class="flex items-center justify-between mb-10">
+                            <h2 class="text-xs font-black text-gray-900 uppercase tracking-[0.2em] font-display">{{ __('file.shipment_status') }}</h2>
+                            <span class="status-badge status-{{ strtolower($order->status) }}">
+                                {{ $order->status }}
                             </span>
                         </div>
 
-                        {{-- Simple Progress Bar --}}
-                        <div class="relative">
-                            <div class="overflow-hidden h-2 mb-4 text-xs flex rounded-full bg-gray-100">
+                        <div class="relative px-4">
+                            <div class="progress-line">
                                 @php
-                                    $progress = 25; // Pending
-                                    if(strtolower($order->status) == 'processing') $progress = 50;
-                                    if(strtolower($order->status) == 'shipped') $progress = 75;
+                                    $progress = 10; // Placed
+                                    if(strtolower($order->status) == 'processing') $progress = 40;
+                                    if(strtolower($order->status) == 'shipped') $progress = 70;
                                     if(strtolower($order->status) == 'delivered') $progress = 100;
                                     if(in_array(strtolower($order->status), ['cancelled', 'failed'])) $progress = 0;
                                 @endphp
-                                <div style="width: {{ $progress }}%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center {{ $progress == 0 ? 'bg-red-500' : 'bg-primary-500' }}"></div>
+                                <div class="progress-line-fill" style="width: {{ $progress }}%"></div>
                             </div>
-                            <div class="flex justify-between text-xs text-gray-500 font-medium">
-                                <span>{{ __('file.order_placed') }}</span>
-                                <span>{{ __('file.processing') }}</span>
-                                <span>{{ __('file.shipped') }}</span>
-                                <span>{{ __('file.delivered') }}</span>
+                            <div class="flex justify-between items-center relative">
+                                <div class="flex flex-col items-center gap-3">
+                                    <div class="progress-dot {{ $progress >= 10 ? 'completed' : '' }}"></div>
+                                    <span class="text-[9px] font-bold text-gray-400 uppercase tracking-widest">{{ __('file.placed') }}</span>
+                                </div>
+                                <div class="flex flex-col items-center gap-3">
+                                    <div class="progress-dot {{ $progress >= 40 ? ($progress == 40 ? 'active' : 'completed') : '' }}"></div>
+                                    <span class="text-[9px] font-bold text-gray-400 uppercase tracking-widest">{{ __('file.processing') }}</span>
+                                </div>
+                                <div class="flex flex-col items-center gap-3">
+                                    <div class="progress-dot {{ $progress >= 70 ? ($progress == 70 ? 'active' : 'completed') : '' }}"></div>
+                                    <span class="text-[9px] font-bold text-gray-400 uppercase tracking-widest">{{ __('file.shipped') }}</span>
+                                </div>
+                                <div class="flex flex-col items-center gap-3">
+                                    <div class="progress-dot {{ $progress >= 100 ? 'completed' : '' }}"></div>
+                                    <span class="text-[9px] font-bold text-gray-400 uppercase tracking-widest">{{ __('file.delivered') }}</span>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                {{-- Order Items --}}
-                <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
-                    <div class="px-6 py-5 border-b border-gray-100">
-                        <h2 class="text-lg font-bold text-gray-900">{{ __('file.items_ordered') }}</h2>
-                    </div>
-                    <ul class="divide-y divide-gray-200">
-                        @foreach($order->items as $item)
-                        <li class="p-6 flex flex-col sm:flex-row gap-6">
-                            <div class="flex-shrink-0 w-24 h-24 bg-gray-50 rounded-lg border border-gray-200 overflow-hidden">
-                                @if($item->variant && $item->variant->product && $item->variant->product->primaryImage)
-                                    <img src="{{ $item->variant->product->primaryImage->url }}" alt="{{ $item->product_name_snapshot }}" class="w-full h-full object-cover" loading="lazy">
-                                @else
-                                    <div class="w-full h-full flex items-center justify-center text-gray-400 text-xs">{{ __('file.no_image') }}</div>
-                                @endif
-                            </div>
-                            
-                            <div class="flex-1 flex flex-col">
-                                <div class="flex justify-between">
-                                    <div>
-                                        <h4 class="text-base font-bold text-gray-900">
-                                            @if($item->variant && $item->variant->product)
-                                                <a href="{{ route('frontend.products.show', $item->variant->product->slug) }}" class="hover:text-primary-600 transition-colors">{{ $item->product_name_snapshot }}</a>
-                                            @else
-                                                {{ $item->product_name_snapshot }}
-                                            @endif
-                                        </h4>
-                                        <div class="mt-1 flex flex-wrap gap-2 text-sm text-gray-500">
-                                            @if(is_array($item->variant_attributes))
-                                                @foreach($item->variant_attributes as $key => $val)
-                                                    @if($key != 'image' && $key != 'slug')
-                                                        <span class="bg-gray-100 px-2 py-0.5 rounded">{{ ucfirst($key) }}: {{ $val }}</span>
+                    {{-- Items Card --}}
+                    <div class="premium-card">
+                        <div class="px-8 py-6 border-b border-gray-50 flex items-center justify-between">
+                            <h2 class="text-xs font-black text-gray-900 uppercase tracking-[0.2em] font-display">{{ __('file.items_ordered') }}</h2>
+                            <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{{ $order->items->count() }} {{ __('file.items') }}</span>
+                        </div>
+                        <div class="divide-y divide-gray-100">
+                            @foreach($order->items as $item)
+                                <div class="p-8 flex items-center gap-6 group">
+                                    <div class="h-24 w-24 rounded-2xl overflow-hidden bg-gray-50 border border-gray-100 flex-shrink-0 relative">
+                                        @php
+                                            $image = $item->variant->product->primary_image_url ?? $item->variant->product->image ?? 'https://via.placeholder.com/200';
+                                        @endphp
+                                        <img src="{{ $image }}" alt="{{ $item->product_name_snapshot }}" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110">
+                                    </div>
+                                    <div class="flex-1">
+                                        <div class="flex justify-between items-start mb-2">
+                                            <div>
+                                                <h4 class="text-base font-black text-gray-900 font-display uppercase tracking-tight leading-tight">
+                                                    @if($item->variant && $item->variant->product)
+                                                        <a href="{{ route('frontend.products.show', $item->variant->product->slug) }}" class="hover:text-gold transition-colors">{{ $item->product_name_snapshot }}</a>
+                                                    @else
+                                                        {{ $item->product_name_snapshot }}
                                                     @endif
-                                                @endforeach
-                                            @endif
+                                                </h4>
+                                                @if(is_array($item->variant_attributes))
+                                                    <div class="flex flex-wrap gap-2 mt-2">
+                                                        @foreach($item->variant_attributes as $key => $val)
+                                                            @if(!in_array($key, ['image', 'slug']))
+                                                                <span class="text-[10px] font-bold text-gray-400 uppercase bg-gray-50 px-2 py-1 rounded border border-gray-100">{{ $key }}: {{ $val }}</span>
+                                                            @endif
+                                                        @endforeach
+                                                    </div>
+                                                @endif
+                                            </div>
+                                            <div class="text-right">
+                                                <p class="text-sm font-black text-gray-900 font-display">@price($item->total, $order->currency)</p>
+                                                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-1">@price($item->unit_price, $order->currency) x {{ $item->quantity }}</p>
+                                                
+                                                @if(strtolower($order->status) === 'delivered' && $item->variant && $item->variant->product)
+                                                    <div class="mt-4">
+                                                        <a href="{{ route('frontend.products.show', $item->variant->product->slug) }}#write-review" class="text-[10px] font-bold text-gold hover:underline uppercase tracking-widest">
+                                                            {{ __('file.write_review') }}
+                                                        </a>
+                                                    </div>
+                                                @endif
+                                            </div>
                                         </div>
                                     </div>
-                                    <p class="text-base font-bold text-gray-900">@price($item->unit_price, $order->currency)</p>
                                 </div>
-                                <div class="mt-auto pt-4 flex justify-between items-end">
-                                    <p class="text-sm text-gray-600">{{ __('file.qty') }}: {{ $item->quantity }}</p>
-                                    <p class="text-sm font-medium text-gray-900">{{ __('file.subtotal') }}: @price($item->total, $order->currency)</p>
-                                </div>
-                            </div>
-                        </li>
-                        @endforeach
-                    </ul>
+                            @endforeach
+                        </div>
+                    </div>
                 </div>
 
-            </div>
-
-            {{-- Right Column: Summary & Details --}}
-            <div class="space-y-8">
-                
-                {{-- Order Summary --}}
-                <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
-                    <div class="px-6 py-5 border-b border-gray-100">
-                        <h2 class="text-lg font-bold text-gray-900">{{ __('file.order_summary') }}</h2>
-                    </div>
-                    <div class="p-6">
-                        <dl class="space-y-4 text-sm text-gray-600">
-                            <div class="flex justify-between">
-                                <dt>{{ __('file.subtotal') }}</dt>
-                                <dd class="font-medium text-gray-900">@price($order->subtotal, $order->currency)</dd>
+                {{-- RIGHT COLUMN --}}
+                <div class="lg:col-span-4 space-y-8">
+                    
+                    {{-- Summary Card --}}
+                    <div class="premium-card p-8">
+                        <h2 class="text-xs font-black text-gray-900 uppercase tracking-[0.2em] font-display mb-8">{{ __('file.order_summary') }}</h2>
+                        <div class="space-y-4">
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-400 font-bold uppercase tracking-widest text-[10px]">{{ __('file.subtotal') }}</span>
+                                <span class="font-black text-gray-900 font-display">@price($order->subtotal, $order->currency)</span>
                             </div>
-                            <div class="flex justify-between">
-                                <dt>{{ __('file.shipping') }}</dt>
-                                <dd class="font-medium text-gray-900">@price($order->shipping_amount, $order->currency)</dd>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-400 font-bold uppercase tracking-widest text-[10px]">{{ __('file.shipping') }}</span>
+                                <span class="font-black text-gray-900 font-display">@price($order->shipping_amount, $order->currency)</span>
                             </div>
                             @if($order->discount_amount > 0)
-                            <div class="flex justify-between text-red-600">
-                                <dt>{{ __('file.discount') }}</dt>
-                                <dd class="font-medium">-@price($order->discount_amount, $order->currency)</dd>
-                            </div>
-                            @endif
-                            @if($order->tax_amount > 0)
-                            <div class="flex justify-between">
-                                <dt>{{ __('file.tax') }}</dt>
-                                <dd class="font-medium text-gray-900">@price($order->tax_amount, $order->currency)</dd>
-                            </div>
-                            @endif
-                            <div class="border-t border-gray-100 pt-4 flex justify-between">
-                                <dt class="text-base font-bold text-gray-900">{{ __('file.total') }}</dt>
-                                <dd class="text-base font-bold text-gray-900">@price($order->total_amount, $order->currency)</dd>
-                            </div>
-                        </dl>
-                    </div>
-                </div>
-
-                {{-- Shipping Details --}}
-                <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
-                    <div class="px-6 py-5 border-b border-gray-100">
-                        <h2 class="text-lg font-bold text-gray-900">{{ __('file.delivery_information') }}</h2>
-                    </div>
-                    <div class="p-6">
-                        @if($order->shippingAddress)
-                            <address class="not-italic text-sm text-gray-600 space-y-1">
-                                <span class="block font-medium text-gray-900 mb-2">{{ $order->shippingAddress->first_name }} {{ $order->shippingAddress->last_name }}</span>
-                                <span class="block">{{ $order->shippingAddress->address_line1 }}</span>
-                                @if($order->shippingAddress->address_line2)
-                                    <span class="block">{{ $order->shippingAddress->address_line2 }}</span>
-                                @endif
-                                <span class="block">{{ $order->shippingAddress->city }}, {{ $order->shippingAddress->province }} {{ $order->shippingAddress->postal_code }}</span>
-                                <span class="block">{{ $order->shippingAddress->country }}</span>
-                                <span class="block mt-3 pt-3 border-t border-gray-100">
-                                    <i data-feather="phone" class="w-4 h-4 inline-block mr-1 text-gray-400"></i> {{ $order->shippingAddress->phone ?? $order->customer_phone }}
-                                </span>
-                            </address>
-                        @else
-                            <p class="text-sm text-gray-500">Shipping information not available.</p>
-                        @endif
-                    </div>
-                </div>
-
-                {{-- Payment Details --}}
-                <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
-                    <div class="px-6 py-5 border-b border-gray-100">
-                        <h2 class="text-lg font-bold text-gray-900">{{ __('file.payment_details') }}</h2>
-                    </div>
-                    <div class="p-6">
-                        <div class="text-sm text-gray-600 space-y-3">
-                            <div class="flex justify-between">
-                                <span class="font-medium text-gray-900">{{ __('file.method') }}</span>
-                                <span>{{ strtoupper(str_replace('_', ' ', $order->payment_method)) }}</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span class="font-medium text-gray-900">{{ __('file.status') }}</span>
-                                <span class="px-2 py-0.5 inline-flex text-xs leading-4 font-semibold rounded-full 
-                                    @if(strtolower($order->payment_status) == 'paid') bg-green-100 text-green-800 
-                                    @elseif(strtolower($order->payment_status) == 'failed') bg-red-100 text-red-800 
-                                    @else bg-yellow-100 text-yellow-800 @endif">
-                                    {{ __('file.' . strtolower($order->payment_status)) }}
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                {{-- Refund Request --}}
-                @if($order->canBeRefunded())
-                    @php $pendingRefund = $order->refunds()->where('status', 'pending')->first(); @endphp
-                    <div class="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
-                        <div class="px-6 py-5 border-b border-gray-100">
-                            <h2 class="text-lg font-bold text-gray-900">{{ __('file.refund_request') }}</h2>
-                        </div>
-                        <div class="p-6">
-                            @if($pendingRefund)
-                                <div class="bg-yellow-50 border border-yellow-200 p-4 rounded-lg">
-                                    <p class="text-sm text-yellow-800">{{ __('file.refund_request_pending') }}</p>
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-red-400 font-bold uppercase tracking-widest text-[10px]">{{ __('file.discount') }}</span>
+                                    <span class="font-black text-red-500 font-display">-@price($order->discount_amount, $order->currency)</span>
                                 </div>
-                            @else
-                                <form action="{{ route('account.orders.refund-request', $order->id) }}" method="POST" class="space-y-4">
-                                    @csrf
-                                    <div>
-                                        <label for="reason" class="block text-sm font-medium text-gray-700">{{ __('file.reason_for_refund') }}</label>
-                                        <textarea name="reason" id="reason" rows="3" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 sm:text-sm" placeholder="{{ __('file.e_g_item_damaged_wrong_size') }}"></textarea>
-                                    </div>
-                                    <button type="submit" onclick="return confirm('Submit refund request?')" class="w-full bg-primary-600 text-white py-2 px-4 rounded-lg text-sm font-bold hover:bg-primary-700 transition-colors">
-                                        {{ __('file.submit_refund_request') }}
-                                    </button>
-                                </form>
                             @endif
+                            <div class="pt-6 mt-6 border-t border-gray-100 flex justify-between items-end">
+                                <span class="text-xs font-black text-gray-900 uppercase tracking-widest">{{ __('file.total') }}</span>
+                                <span class="text-2xl font-black text-gold font-display leading-none">@price($order->total_amount, $order->currency)</span>
+                            </div>
                         </div>
                     </div>
-                @endif
 
+                    {{-- Shipping & Payment --}}
+                    <div class="premium-card p-8 space-y-10">
+                        <div>
+                            <h2 class="text-xs font-black text-gray-900 uppercase tracking-[0.2em] font-display mb-6">{{ __('file.delivery_information') }}</h2>
+                            @if($order->shippingAddress)
+                                <address class="not-italic">
+                                    <p class="text-sm font-black text-gray-900 mb-2 uppercase font-display">{{ $order->shippingAddress->first_name }} {{ $order->shippingAddress->last_name }}</p>
+                                    <div class="text-[12px] text-gray-500 leading-relaxed space-y-1">
+                                        <p>{{ $order->shippingAddress->address_line1 }}</p>
+                                        @if($order->shippingAddress->address_line2) <p>{{ $order->shippingAddress->address_line2 }}</p> @endif
+                                        <p>{{ $order->shippingAddress->city }}, {{ $order->shippingAddress->province }} {{ $order->shippingAddress->postal_code }}</p>
+                                        <p>{{ $order->shippingAddress->country }}</p>
+                                    </div>
+                                    <div class="mt-4 pt-4 border-t border-gray-50 flex items-center gap-2">
+                                        <i data-feather="phone" class="w-3 h-3 text-gold"></i>
+                                        <span class="text-[10px] font-bold text-gray-700 uppercase tracking-widest">{{ $order->shippingAddress->phone ?? $order->customer_phone }}</span>
+                                    </div>
+                                </address>
+                            @endif
+                        </div>
+
+                        <div>
+                            <h2 class="text-xs font-black text-gray-900 uppercase tracking-[0.2em] font-display mb-6">{{ __('file.payment_method') }}</h2>
+                            <div class="flex items-center justify-between p-4 rounded-xl bg-gray-50 border border-gray-100">
+                                <div class="flex items-center gap-3">
+                                    <div class="p-2 bg-white rounded-lg shadow-sm">
+                                        <i data-feather="credit-card" class="w-4 h-4 text-gold"></i>
+                                    </div>
+                                    <span class="text-[10px] font-black text-gray-900 uppercase tracking-widest">{{ str_replace('_', ' ', $order->payment_method) }}</span>
+                                </div>
+                                <span class="status-badge status-{{ strtolower($order->payment_status) }} !text-[8px] !px-2">
+                                    {{ $order->payment_status }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
             </div>
         </div>
-
     </div>
-</div>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        if (typeof feather !== 'undefined') {
-            feather.replace();
-        }
-    });
-</script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof feather !== 'undefined') {
+                feather.replace();
+            }
+        });
+    </script>
 @endsection
+
