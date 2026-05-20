@@ -16,7 +16,7 @@
             <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
                 <div>
                     <h1 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{ __('file.payment_gateways') }}</h1>
-                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Configure discrete payment protocols, calibrate API credentials, and manage transaction environments.</p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">{{ __('file.payment_gateways_subtitle') ?? 'Configure discrete payment protocols, calibrate API credentials, and manage transaction environments.' }}</p>
                 </div>
             </div>
 
@@ -79,27 +79,27 @@
                                 @if(!in_array($gw, ['cod', 'bank']))
                                     <div class="space-y-4">
                                         <div class="space-y-1.5">
-                                            <label class="text-sm font-medium text-gray-500 dark:text-gray-400">Environment</label>
+                                            <label class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('file.environment') ?? 'Environment' }}</label>
                                             <select name="environment" class="block w-full px-4 py-2.5 bg-gray-50 dark:bg-surface-tonal-a10 border border-gray-200 dark:border-surface-tonal-a30 rounded-lg text-sm font-medium text-gray-900 dark:text-white focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all">
-                                                <option value="sandbox" {{ $setting->environment === 'sandbox' ? 'selected' : '' }}>Sandbox / Development</option>
-                                                <option value="live" {{ $setting->environment === 'live' ? 'selected' : '' }}>Production / Live</option>
+                                                <option value="sandbox" {{ $setting->environment === 'sandbox' ? 'selected' : '' }}>{{ __('file.sandbox_development') ?? 'Sandbox / Development' }}</option>
+                                                <option value="live" {{ $setting->environment === 'live' ? 'selected' : '' }}>{{ __('file.production_live') ?? 'Production / Live' }}</option>
                                             </select>
                                         </div>
 
                                         @if($gw === 'payhere')
                                             <div class="space-y-1.5">
-                                                <label class="text-sm font-medium text-gray-500 dark:text-gray-400">Merchant ID</label>
+                                                <label class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('file.merchant_id') ?? 'Merchant ID' }}</label>
                                                 <input type="text" name="merchant_id" value="{{ old('merchant_id', $setting->merchant_id) }}" class="block w-full px-4 py-2.5 bg-gray-50 dark:bg-surface-tonal-a10 border border-gray-200 dark:border-surface-tonal-a30 rounded-lg text-sm font-mono text-gray-700 dark:text-gray-200 focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all">
                                             </div>
                                         @endif
 
                                         <div class="space-y-1.5">
-                                            <label class="text-sm font-medium text-gray-500 dark:text-gray-400">Public Key / Client ID</label>
+                                            <label class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('file.public_key_client_id') ?? 'Public Key / Client ID' }}</label>
                                             <input type="text" name="public_key" value="{{ old('public_key', $setting->public_key) }}" class="block w-full px-4 py-2.5 bg-gray-50 dark:bg-surface-tonal-a10 border border-gray-200 dark:border-surface-tonal-a30 rounded-lg text-sm font-mono text-gray-700 dark:text-gray-200 focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all">
                                         </div>
 
                                         <div class="space-y-1.5">
-                                            <label class="text-sm font-medium text-gray-500 dark:text-gray-400">Secret Key</label>
+                                            <label class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('file.secret_key') ?? 'Secret Key' }}</label>
                                             <div class="relative group/secret">
                                                 <input type="password" name="secret_key" value="{{ old('secret_key', $setting->secret_key) }}" class="block w-full px-4 py-2.5 bg-gray-50 dark:bg-surface-tonal-a10 border border-gray-200 dark:border-surface-tonal-a30 rounded-lg text-sm font-mono text-gray-700 dark:text-gray-200 focus:ring-4 focus:ring-indigo-500/10 focus:border-indigo-500 transition-all">
                                                 <div class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">
@@ -118,7 +118,7 @@
                                 <div class="pt-2 flex justify-end">
                                     <button type="submit" class="px-5 py-2.5 bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-sm font-bold rounded-lg hover:bg-black dark:hover:bg-gray-100 shadow-sm transition-all active:scale-[0.98] flex items-center gap-2">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
-                                        Update Settings
+                                        {{ __('file.update_settings') ?? 'Update Settings' }}
                                     </button>
                                 </div>
                             </form>

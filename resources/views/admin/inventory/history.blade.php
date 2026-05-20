@@ -57,19 +57,23 @@
                             <tr>
                                 <th scope="col"
                                     class="px-8 py-5 text-[10px] font-black text-gray-400 uppercase tracking-widest">
-                                    Temporal Marker</th>
+                                {{ __('file.temporal_marker') ?? 'Temporal Marker' }}
+                            </th>
                                 <th scope="col"
                                     class="px-8 py-5 text-[10px] font-black text-gray-400 uppercase tracking-widest text-center">
-                                    Protocol Type</th>
+                                {{ __('file.protocol_type') ?? 'Protocol Type' }}
+                            </th>
                                 <th scope="col"
                                     class="px-8 py-5 text-[10px] font-black text-gray-400 uppercase tracking-widest text-center">
-                                    Flux Magnitude</th>
+                                {{ __('file.flux_magnitude') ?? 'Flux Magnitude' }}
+                            </th>
                                 <th scope="col"
                                     class="px-8 py-5 text-[10px] font-black text-gray-400 uppercase tracking-widest">Context
                                     / Reference</th>
                                 <th scope="col"
                                     class="px-8 py-5 text-[10px] font-black text-gray-400 uppercase tracking-widest text-right">
-                                    Executor</th>
+                                {{ __('file.executor') ?? 'Executor' }}
+                            </th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-50 dark:divide-surface-tonal-a30">

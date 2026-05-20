@@ -34,7 +34,7 @@ style="width: 16rem; max-height: 100vh;">
     <nav x-data="{ 
             activeGroup: '{{ 
                 request()->routeIs('orders.*') ? 'orders' : (
-        request()->routeIs('transactions.*', 'refunds.*', 'settings.payment-gateways') ? 'finances' : (
+        request()->routeIs('transactions.*', 'refunds.*') ? 'finances' : (
             request()->routeIs('inventory.*') ? 'inventory' : (
                 request()->routeIs('shipping.*') ? 'shipping' : (
                     request()->routeIs('coupons.*', 'discount-rules.*') ? 'promotions' : (
@@ -180,7 +180,6 @@ style="width: 16rem; max-height: 100vh;">
                     <div x-show="activeGroup === 'finances'" x-transition x-cloak class="ml-8 space-y-1 mt-1">
                         @include('partials.sidebar-sub-item', ['route' => 'transactions.index', 'active' => request()->routeIs('transactions.*'), 'label' => __('file.transactions')])
                         @include('partials.sidebar-sub-item', ['route' => 'refunds.index', 'active' => request()->routeIs('refunds.*'), 'label' => __('file.refunds')])
-                        @include('partials.sidebar-sub-item', ['route' => 'settings.payment-gateways', 'active' => request()->routeIs('settings.payment-gateways'), 'label' => __('file.gateways')])
                     </div>
                 </div>
 

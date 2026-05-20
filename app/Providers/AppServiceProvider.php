@@ -75,6 +75,10 @@ class AppServiceProvider extends ServiceProvider
                 ? asset('storage/' . $setting->site_favicon)
                 : asset('images/favicon.ico'),
 
+            'admin_login_bg' => !empty($setting->admin_login_bg)
+                ? asset('storage/' . $setting->admin_login_bg)
+                : null,
+
             // Visual styling
             'primary_color' => $setting->primary_color ?? '#c02628',      // example: deep red
             'secondary_color' => $setting->secondary_color ?? '#111827',    // example: dark gray
@@ -92,9 +96,23 @@ class AppServiceProvider extends ServiceProvider
             'storefront_about_us' => $setting->storefront_about_us,
             'storefront_stats' => $setting->storefront_stats,
             'storefront_trust_items' => $setting->storefront_trust_items,
+            'storefront_delivery_items' => $setting->storefront_delivery_items,
+            'storefront_delivery_show' => $setting->storefront_delivery_show,
+            'storefront_measure_items' => $setting->storefront_measure_items,
+            'storefront_measure_note' => $setting->storefront_measure_note,
+            'storefront_measure_show' => $setting->storefront_measure_show,
             'storefront_logo_text' => $setting->storefront_logo_text,
             'storefront_logo_subtext' => $setting->storefront_logo_subtext,
             'storefront_use_logo_text' => $setting->storefront_use_logo_text,
+            'storefront_size_guide_show' => $setting->storefront_size_guide_show,
+            'storefront_size_guide_title' => $setting->storefront_size_guide_title,
+            'storefront_size_guide_headers' => $setting->storefront_size_guide_headers,
+            'storefront_size_guide_rows' => $setting->storefront_size_guide_rows,
+            'storefront_size_guide_note' => $setting->storefront_size_guide_note,
+            'storefront_size_guide_bust_desc' => $setting->storefront_size_guide_bust_desc,
+            'storefront_size_guide_waist_desc' => $setting->storefront_size_guide_waist_desc,
+            'storefront_size_guide_hip_desc' => $setting->storefront_size_guide_hip_desc,
+            'storefront_size_guide_fit_note' => $setting->storefront_size_guide_fit_note,
 
             // SEO & Metadata
             'meta_title' => $setting->meta_title ?? $setting->site_title ?? $setting->site_name ?? config('app.name'),

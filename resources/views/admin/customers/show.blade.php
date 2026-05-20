@@ -124,14 +124,14 @@
                                     <div class="flex items-center justify-between mb-2">
                                         <div class="flex items-center gap-2">
                                             <div
-                                                class="w-6 h-6 rounded-md bg-indigo-100 dark:bg-indigo-900/40 flex items-center justify-center text-[10px] font-bold text-indigo-600 dark:text-indigo-400">
+                                                class="w-6 h-6 rounded-md bg-indigo-100 dark:bg-indigo-900/40 flex items-center justify-center text-xs font-bold text-indigo-600 dark:text-indigo-400">
                                                 {{ strtoupper(substr($note->author->name ?? 'S', 0, 1)) }}
                                             </div>
                                             <span
                                                 class="text-xs font-bold text-gray-900 dark:text-white">{{ $note->author->name ?? __('file.system') }}</span>
                                         </div>
                                         <span
-                                            class="text-[10px] font-bold text-gray-400 uppercase tracking-tighter">{{ $note->created_at->format('M d, Y • H:i') }}</span>
+                                            class="text-xs font-semibold text-gray-400 uppercase tracking-tighter">{{ $note->created_at->format('M d, Y • H:i') }}</span>
                                     </div>
                                     <div class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed pl-8">
                                         {!! nl2br(e($note->content)) !!}
@@ -184,7 +184,7 @@
                                                     <span
                                                         class="text-sm font-bold text-gray-700 dark:text-white">{{ $order->created_at->format('M d, Y') }}</span>
                                                     <span
-                                                        class="text-[10px] text-gray-500">{{ $order->created_at->format('H:i') }}</span>
+                                                        class="text-xs text-gray-500">{{ $order->created_at->format('H:i') }}</span>
                                                 </div>
                                             </td>
                                             <td class="px-6 py-3.5">
@@ -199,7 +199,7 @@
                                                     $sClass = $statusClasses[$orderStatus] ?? 'bg-gray-100 text-gray-600 border-gray-200 dark:bg-surface-tonal-a30 dark:text-gray-400 dark:border-surface-tonal-a30';
                                                  @endphp
                                                 <span
-                                                    class="px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wider border {{ $sClass }}">
+                                                    class="px-2.5 py-1 rounded-lg text-xs font-bold uppercase tracking-wider border {{ $sClass }}">
                                                     {{ __('file.' . $orderStatus) }}
                                                 </span>
                                             </td>
@@ -242,13 +242,13 @@
                             </div>
                             <div class="grid grid-cols-2 gap-4 pt-4 border-t border-white/10">
                                 <div>
-                                    <p class="text-[10px] font-bold opacity-60 uppercase tracking-widest">
+                                    <p class="text-xs font-bold opacity-60 uppercase tracking-widest">
                                         {{ __('file.orders') }}
                                     </p>
                                     <p class="text-lg font-black">{{ $customer->total_orders }}</p>
                                 </div>
                                 <div>
-                                    <p class="text-[10px] font-bold opacity-60 uppercase tracking-widest">
+                                    <p class="text-xs font-bold opacity-60 uppercase tracking-widest">
                                         {{ __('file.ltv') }}
                                     </p>
                                     <p class="text-lg font-black tabular-nums">@price($customer->lifetime_value)</p>
@@ -270,11 +270,11 @@
                             <div class="flex flex-wrap gap-1.5 mb-6">
                                 @forelse($customer->tags as $tag)
                                     <span
-                                        class="px-2 py-0.5 rounded-md bg-gray-100 dark:bg-surface-tonal-a30 text-gray-700 dark:text-gray-300 text-[10px] font-bold border border-gray-200 dark:border-surface-tonal-a30">
+                                        class="px-2 py-0.5 rounded-md bg-gray-100 dark:bg-surface-tonal-a30 text-gray-700 dark:text-gray-300 text-xs font-semibold border border-gray-200 dark:border-surface-tonal-a30">
                                         {{ $tag->name }}
                                     </span>
                                 @empty
-                                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest italic">
+                                    <p class="text-xs text-gray-400 font-bold uppercase tracking-widest italic">
                                         {{ __('file.no_tags_assigned') }}
                                     </p>
                                 @endforelse

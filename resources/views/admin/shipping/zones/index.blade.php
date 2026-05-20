@@ -74,10 +74,10 @@
                                     <input type="checkbox" id="select-all"
                                         class="w-4 h-4 rounded border-gray-300 dark:border-surface-tonal-a30 text-gray-900 focus:ring-gray-300">
                                 </th>
-                                <th>{{ __('file.Country') }}</th>
-                                <th>{{ __('file.Zone Name') }}</th>
-                                <th>{{ __('file.Status') }}</th>
-                                <th class="!text-right">{{ __('file.Actions') }}</th>
+                                <th>{{ __('file.country') ?? 'Country' }}</th>
+                                <th>{{ __('file.zone_name') ?? 'Zone Name' }}</th>
+                                <th>{{ __('file.status') ?? 'Status' }}</th>
+                                <th class="!text-right">{{ __('file.action') ?? 'Actions' }}</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -290,11 +290,11 @@
                     lengthMenu: [10, 25, 50, 100],
                     language: {
                         search: "",
-                        searchPlaceholder: "{{ __('file.search_zones') }}...",
-                        lengthMenu: "{{ __('file.show_entries') }}",
-                        info: "{{ __('file.showing_entries') }}",
-                        infoEmpty: "{{ __('file.no_items_found') }}",
-                        emptyTable: "{{ __('file.no_zones_found') }}",
+                        searchPlaceholder: "{{ __('file.search_zones') ?? 'Search Zones...' }}",
+                        lengthMenu: "{{ __('file.show_entries') ?? 'Show entries' }}",
+                        info: "{{ __('file.showing_entries') ?? 'Showing entries' }}",
+                        infoEmpty: "{{ __('file.no_items_found') ?? 'No items found' }}",
+                        emptyTable: "{{ __('file.no_zones_found') ?? 'No zones found' }}",
                         processing: '<div class="admin-loader"></div>',
                         paginate: {
                             next: '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>',

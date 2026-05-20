@@ -77,9 +77,15 @@
                                     <input type="checkbox" id="select-all"
                                         class="w-4 h-4 rounded border-gray-300 dark:border-surface-tonal-a30 text-gray-900 focus:ring-gray-300">
                                 </th>
-                                <th>Role Name</th>
-                                <th>Permissions</th>
-                                <th class="!text-right">Actions</th>
+                                <th>
+                                {{ __('file.role_name') ?? 'Role Name' }}
+                            </th>
+                                <th>
+                                {{ __('file.permissions') ?? 'Permissions' }}
+                            </th>
+                                <th class="!text-right">
+                                {{ __('file.actions') ?? 'Actions' }}
+                            </th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -176,11 +182,11 @@
                     lengthMenu: [10, 25, 50, 100],
                     language: {
                         search: "",
-                        searchPlaceholder: "Search Roles...",
-                        lengthMenu: "_MENU_",
-                        info: "Showing _START_ to _END_ of _TOTAL_ Roles",
-                        infoEmpty: "No roles found",
-                        emptyTable: "No roles found.",
+                        searchPlaceholder: "{{ __('file.dt_search_roles') ?? "Search Roles..." }}",
+                        lengthMenu: "{{ __('file.dt_length_menu') ?? "_MENU_" }}",
+                        info: "{{ __('file.dt_info') ?? "Showing _START_ to _END_ of _TOTAL_ Roles" }}",
+                        infoEmpty: "{{ __('file.dt_no_roles_found') ?? "No roles found" }}",
+                        emptyTable: "{{ __('file.dt_no_roles_found') ?? "No roles found." }}",
                         processing: '<div class="admin-loader"></div>',
                         paginate: {
                             next: '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>',

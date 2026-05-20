@@ -89,12 +89,24 @@
                                     <input type="checkbox" id="select-all"
                                         class="w-4 h-4 rounded border-gray-300 dark:border-surface-tonal-a30 text-gray-900 focus:ring-gray-300">
                                 </th>
-                                <th>User</th>
-                                <th>Email</th>
-                                <th>Roles</th>
-                                <th class="!text-center">Status</th>
-                                <th>Joined</th>
-                                <th class="!text-right">Actions</th>
+                                <th>
+                                {{ __('file.user') ?? 'User' }}
+                            </th>
+                                <th>
+                                {{ __('file.email') ?? 'Email' }}
+                            </th>
+                                <th>
+                                {{ __('file.roles') ?? 'Roles' }}
+                            </th>
+                                <th class="!text-center">
+                                {{ __('file.status') ?? 'Status' }}
+                            </th>
+                                <th>
+                                {{ __('file.joined') ?? 'Joined' }}
+                            </th>
+                                <th class="!text-right">
+                                {{ __('file.actions') ?? 'Actions' }}
+                            </th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -315,11 +327,11 @@
                     lengthMenu: [10, 25, 50, 100],
                     language: {
                         search: "",
-                        searchPlaceholder: "Search Users...",
-                        lengthMenu: "_MENU_",
-                        info: "Showing _START_ to _END_ of _TOTAL_ Users",
-                        infoEmpty: "No users found",
-                        emptyTable: "No users found.",
+                        searchPlaceholder: "{{ __('file.dt_search_users') ?? "Search Users..." }}",
+                        lengthMenu: "{{ __('file.dt_length_menu') ?? "_MENU_" }}",
+                        info: "{{ __('file.dt_info') ?? "Showing _START_ to _END_ of _TOTAL_ Users" }}",
+                        infoEmpty: "{{ __('file.dt_no_users_found') ?? "No users found" }}",
+                        emptyTable: "{{ __('file.dt_no_users_found') ?? "No users found." }}",
                         processing: '<div class="admin-loader"></div>',
                         paginate: {
                             next: '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>',

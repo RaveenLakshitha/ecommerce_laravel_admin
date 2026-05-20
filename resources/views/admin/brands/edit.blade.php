@@ -234,11 +234,29 @@
                 }
             }
 
-            document.getElementById('name')?.addEventListener('input', function () {
-                document.getElementById('slug').value = this.value.toLowerCase()
-                    .replace(/[^\w\s-]/g, '')
-                    .replace(/[\s_-]+/g, '-')
-                    .replace(/^-+|-+$/g, '');
+            document.addEventListener('DOMContentLoaded', function() {
+                let metaTitleEdited = document.getElementById('meta_title').value.trim() !== '';
+                let metaDescEdited = document.getElementById('meta_description').value.trim() !== '';
+
+                document.getElementById('meta_title').addEventListener('input', () => metaTitleEdited = true);
+                document.getElementById('meta_description').addEventListener('input', () => metaDescEdited = true);
+
+                document.getElementById('name')?.addEventListener('input', function () {
+                    document.getElementById('slug').value = this.value.toLowerCase()
+                        .replace(/[^\w\s-]/g, '')
+                        .replace(/[\s_-]+/g, '-')
+                        .replace(/^-+|-+$/g, '');
+                        
+                    if (!metaTitleEdited) {
+                        document.getElementById('meta_title').value = this.value;
+                    }
+                });
+
+                document.getElementById('description')?.addEventListener('input', function() {
+                    if (!metaDescEdited) {
+                        document.getElementById('meta_description').value = this.value.substring(0, 160);
+                    }
+                });
             });
         </script>
     @endpush

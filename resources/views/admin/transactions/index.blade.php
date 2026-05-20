@@ -118,7 +118,7 @@
                             render: data => `
                                                 <div class="flex flex-col py-1">
                                                     <span class="text-sm font-bold text-gray-900 dark:text-white uppercase leading-tight">${data}</span>
-                                                    <span class="text-xs text-gray-400 font-medium tracking-tight uppercase">Verified Identity</span>
+                                                    <span class="text-xs text-gray-400 font-medium tracking-tight uppercase">{{ __('file.verified_identity') ?? 'Verified Identity' }}</span>
                                                 </div>`
                         },
                         {
@@ -152,7 +152,7 @@
                                 { extend: 'pageLength', className: 'dt-button' },
                                 {
                                     extend: 'collection',
-                                    text: "Exportata",
+                                    text: "{{ __('file.export') ?? 'Export' }}",
                                     className: 'dt-button',
                                     buttons: [
                                         { extend: 'copy', className: 'dt-button' },
@@ -172,11 +172,11 @@
                     lengthMenu: [10, 25, 50, 100],
                     language: {
                         search: "",
-                        searchPlaceholder: "Search Transactions...",
-                        lengthMenu: "_MENU_",
-                        info: "Showing _START_ to _END_ of _TOTAL_ Records",
-                        infoEmpty: "No records found",
-                        emptyTable: "No transactions found.",
+                        searchPlaceholder: "{{ __('file.dt_search_transactions') ?? 'Search Transactions...' }}",
+                        lengthMenu: "{{ __('file.dt_length_menu') ?? '_MENU_' }}",
+                        info: "{{ __('file.dt_info') ?? 'Showing _START_ to _END_ of _TOTAL_ Records' }}",
+                        infoEmpty: "{{ __('file.dt_no_records_found') ?? 'No records found' }}",
+                        emptyTable: "{{ __('file.dt_no_transactions_found') ?? 'No transactions found.' }}",
                         processing: '<div class="admin-loader"></div>',
                         paginate: {
                             next: '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>',

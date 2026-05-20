@@ -24,6 +24,7 @@ class UpdateSettingsRequest extends FormRequest
             'site_description'  => 'nullable|string',
             'site_logo'         => 'nullable|image|mimes:png,jpg,jpeg,svg|max:2048',
             'site_favicon'      => 'nullable|image|mimes:png,jpg,jpeg,ico,svg|max:1024',
+            'admin_login_bg'    => 'nullable|image|mimes:png,jpg,jpeg,svg|max:4096',
             'contact_email'     => 'required|email|max:255',
             'contact_phone'     => 'required|string|max:20',
             'address'           => 'required|string',

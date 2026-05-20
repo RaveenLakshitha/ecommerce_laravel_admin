@@ -61,6 +61,32 @@ class StorefrontController extends Controller
             'storefront_trust_items.*.subtitle' => 'nullable|string|max:120',
             'storefront_trust_items.*.svg' => 'nullable|string',
 
+            'storefront_delivery_show' => 'nullable|boolean',
+            'storefront_delivery_items' => 'nullable|array',
+            'storefront_delivery_items.*.title' => 'nullable|string|max:50',
+            'storefront_delivery_items.*.subtitle' => 'nullable|string|max:150',
+            'storefront_delivery_items.*.svg' => 'nullable|string',
+
+            'storefront_measure_show' => 'nullable|boolean',
+            'storefront_measure_note' => 'nullable|string|max:255',
+            'storefront_measure_items' => 'nullable|array',
+            'storefront_measure_items.*.label' => 'nullable|string|max:50',
+            'storefront_measure_items.*.cm' => 'nullable|string|max:20',
+            'storefront_measure_items.*.inches' => 'nullable|string|max:20',
+
+            'storefront_size_guide_show' => 'nullable|boolean',
+            'storefront_size_guide_title' => 'nullable|string|max:255',
+            'storefront_size_guide_headers' => 'nullable|array',
+            'storefront_size_guide_headers.*' => 'nullable|string|max:100',
+            'storefront_size_guide_rows' => 'nullable|array',
+            'storefront_size_guide_rows.*' => 'nullable|array',
+            'storefront_size_guide_rows.*.*' => 'nullable|string|max:100',
+            'storefront_size_guide_note' => 'nullable|string|max:500',
+            'storefront_size_guide_bust_desc' => 'nullable|string|max:500',
+            'storefront_size_guide_waist_desc' => 'nullable|string|max:500',
+            'storefront_size_guide_hip_desc' => 'nullable|string|max:500',
+            'storefront_size_guide_fit_note' => 'nullable|string|max:500',
+
             'banners' => 'nullable|array',
             'banners.*.tag' => 'nullable|string|max:25',
             'banners.*.title' => 'nullable|string|max:25',
@@ -87,12 +113,23 @@ class StorefrontController extends Controller
             'storefront_logo_subtext',
             'storefront_stats',
             'storefront_trust_items',
+            'storefront_delivery_items',
+            'storefront_measure_note',
+            'storefront_measure_items',
             'storefront_our_story_show',
             'storefront_stats_show',
             'storefront_trust_show',
             'storefront_use_logo_text',
             'storefront_video_title',
             'storefront_video_subtitle',
+            'storefront_size_guide_title',
+            'storefront_size_guide_headers',
+            'storefront_size_guide_rows',
+            'storefront_size_guide_note',
+            'storefront_size_guide_bust_desc',
+            'storefront_size_guide_waist_desc',
+            'storefront_size_guide_hip_desc',
+            'storefront_size_guide_fit_note',
         ]);
 
         // Remove storefront_video_url from the data array — it is managed via file upload, not a text field
@@ -103,6 +140,9 @@ class StorefrontController extends Controller
         $data['storefront_trust_show'] = $request->boolean('storefront_trust_show');
         $data['storefront_use_logo_text'] = $request->boolean('storefront_use_logo_text');
         $data['storefront_video_show'] = $request->boolean('storefront_video_show');
+        $data['storefront_delivery_show'] = $request->boolean('storefront_delivery_show');
+        $data['storefront_measure_show'] = $request->boolean('storefront_measure_show');
+        $data['storefront_size_guide_show'] = $request->boolean('storefront_size_guide_show');
 
         if ($request->hasFile('storefront_our_story_image')) {
             // Delete old image if exists

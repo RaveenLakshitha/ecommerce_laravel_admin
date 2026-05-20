@@ -13,6 +13,7 @@ class Setting extends Model
         'site_description',
         'site_logo', // path to logo image
         'site_favicon',
+        'admin_login_bg',
         'contact_email',
         'contact_phone',
         'address',
@@ -137,6 +138,20 @@ class Setting extends Model
         'storefront_video_title',
         'storefront_video_subtitle',
         'storefront_video_show',
+        'storefront_delivery_show',
+        'storefront_delivery_items',
+        'storefront_measure_show',
+        'storefront_measure_note',
+        'storefront_measure_items',
+        'storefront_size_guide_show',
+        'storefront_size_guide_title',
+        'storefront_size_guide_headers',
+        'storefront_size_guide_rows',
+        'storefront_size_guide_note',
+        'storefront_size_guide_bust_desc',
+        'storefront_size_guide_waist_desc',
+        'storefront_size_guide_hip_desc',
+        'storefront_size_guide_fit_note',
     ];
 
     protected $casts = [
@@ -175,11 +190,18 @@ class Setting extends Model
         'storefront_banners' => 'json',
         'storefront_stats' => 'json',
         'storefront_trust_items' => 'json',
+        'storefront_delivery_items' => 'json',
+        'storefront_measure_items' => 'json',
+        'storefront_size_guide_headers' => 'json',
+        'storefront_size_guide_rows' => 'json',
         'storefront_our_story_show' => 'boolean',
         'storefront_stats_show' => 'boolean',
         'storefront_trust_show' => 'boolean',
         'storefront_use_logo_text' => 'boolean',
         'storefront_video_show' => 'boolean',
+        'storefront_delivery_show' => 'boolean',
+        'storefront_measure_show' => 'boolean',
+        'storefront_size_guide_show' => 'boolean',
     ];
 
     /**

@@ -183,11 +183,11 @@
                     lengthMenu: [10, 25, 50, 100],
                     language: {
                         search: "",
-                        searchPlaceholder: "{{ __('file.search_categories') }}...",
-                        lengthMenu: "_MENU_",
-                        info: "{{ __('file.showing_entries') }}",
-                        infoEmpty: "{{ __('file.no_items_found') }}",
-                        emptyTable: "{{ __('file.no_categories_found_database') }}",
+                        searchPlaceholder: "{{ __('file.search_categories') ?? "Search Categories..." }}",
+                        lengthMenu: "{{ __('file.dt_length_menu') ?? "_MENU_" }}",
+                        info: "{{ __('file.showing_entries') ?? "Showing entries" }}",
+                        infoEmpty: "{{ __('file.no_items_found') ?? "No items found" }}",
+                        emptyTable: "{{ __('file.no_categories_found_database') ?? "No categories found database" }}",
                         processing: '<div class="admin-loader"></div>',
                         paginate: {
                             next: '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>',

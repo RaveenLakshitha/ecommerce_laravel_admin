@@ -68,9 +68,15 @@
                                         class="w-4 h-4 rounded border-gray-300 dark:border-surface-tonal-a30 text-gray-900 focus:ring-gray-300">
                                 </th>
                                 <th>Product / SKU</th>
-                                <th>Status</th>
-                                <th class="!text-center">Available Stock</th>
-                                <th class="!text-right">Actions</th>
+                                <th>
+                                {{ __('file.status') ?? 'Status' }}
+                            </th>
+                                <th class="!text-center">
+                                {{ __('file.available_stock') ?? 'Available Stock' }}
+                            </th>
+                                <th class="!text-right">
+                                {{ __('file.actions') ?? 'Actions' }}
+                            </th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -253,11 +259,11 @@
                     lengthMenu: [10, 25, 50, 100],
                     language: {
                         search: "",
-                        searchPlaceholder: "Search Inventory...",
-                        lengthMenu: "_MENU_",
-                        info: "Showing _START_ to _END_ of _TOTAL_ Records",
-                        infoEmpty: "No records found",
-                        emptyTable: "No inventory records found.",
+                        searchPlaceholder: "{{ __('file.dt_search_inventory') ?? "Search Inventory..." }}",
+                        lengthMenu: "{{ __('file.dt_length_menu') ?? "_MENU_" }}",
+                        info: "{{ __('file.dt_info') ?? "Showing _START_ to _END_ of _TOTAL_ Records" }}",
+                        infoEmpty: "{{ __('file.dt_no_records_found') ?? "No records found" }}",
+                        emptyTable: "{{ __('file.dt_no_inventory_records_found') ?? "No inventory records found." }}",
                         processing: '<div class="admin-loader"></div>',
                         paginate: {
                             next: '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>',

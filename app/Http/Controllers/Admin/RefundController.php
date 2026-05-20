@@ -51,7 +51,7 @@ class RefundController extends Controller
                     'failed' => 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400',
                 ];
                 $color = $colors[$row->status] ?? 'bg-gray-100 text-gray-800';
-                return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ' . $color . '">' . ucfirst($row->status) . '</span>';
+                return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ' . $color . '">' . (__('file.' . $row->status) ?? ucfirst($row->status)) . '</span>';
             })
             ->addColumn('date_html', function ($row) {
                 return $row->created_at->format('M d, Y h:i A');

@@ -181,9 +181,9 @@
                     },
                     pageLength: 10, lengthMenu: [10, 25, 50, 100],
                     language: {
-                        search: "", searchPlaceholder: "{{ __('file.search_collections') }}",
-                        lengthMenu: "{{ __('file.show_entries') }}", info: "{{ __('file.showing_entries') }}",
-                        infoEmpty: "{{ __('file.no_items_found') }}", emptyTable: "{{ __('file.no_collections_found') }}", processing: false,
+                        search: "", searchPlaceholder: "{{ __('file.search_collections') ?? "Search Collections..." }}",
+                        lengthMenu: "{{ __('file.show_entries') ?? "Show entries" }}", info: "{{ __('file.showing_entries') ?? "Showing entries" }}",
+                        infoEmpty: "{{ __('file.no_items_found') ?? "No items found" }}", emptyTable: "{{ __('file.no_collections_found') ?? "No collections found" }}", processing: false,
                     },
                     autoWidth: false,
                     scrollX: false

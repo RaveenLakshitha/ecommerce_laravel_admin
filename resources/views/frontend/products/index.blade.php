@@ -235,6 +235,7 @@
             display: flex;
             flex-wrap: wrap;
             gap: 0.5rem;
+            padding: 2px 6px;
         }
 
         .color-swatch-wrapper {
@@ -296,27 +297,78 @@
             display: flex;
             flex-direction: column;
             gap: 0.6rem;
+            padding: 2px 6px;
         }
 
         .filter-label {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.75rem;
             color: var(--dim);
             font-size: 0.85rem;
             cursor: pointer;
-            transition: color 0.2s;
+            transition: color 0.25s ease, transform 0.15s ease;
+            user-select: none;
+            padding: 0.2rem 0;
         }
 
         .filter-label:hover {
             color: var(--off-white);
         }
 
+        .filter-label:active {
+            transform: scale(0.98);
+        }
+
         .filter-label input[type="checkbox"] {
-            accent-color: var(--gold);
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border: 1px solid var(--bg-4);
+            background-color: var(--bg-3);
+            border-radius: 4px;
             cursor: pointer;
-            width: 16px;
-            height: 16px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            flex-shrink: 0;
+            margin: 0;
+        }
+
+        .filter-label:hover input[type="checkbox"] {
+            border-color: var(--gold);
+            background-color: var(--bg-4);
+            box-shadow: 0 0 8px rgba(200, 169, 110, 0.15);
+        }
+
+        .filter-label input[type="checkbox"]:checked {
+            background-color: var(--gold);
+            border-color: var(--gold);
+            box-shadow: 0 0 12px rgba(200, 169, 110, 0.3);
+        }
+
+        .filter-label input[type="checkbox"]::after {
+            content: "";
+            width: 5px;
+            height: 9px;
+            border: solid var(--bg);
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg) translate(-0.5px, -1.5px);
+            opacity: 0;
+            transition: opacity 0.15s ease, transform 0.15s ease;
+        }
+
+        .filter-label input[type="checkbox"]:checked::after {
+            opacity: 1;
+            transform: rotate(45deg) translate(-0.5px, -0.5px);
+        }
+
+        .filter-label input[type="checkbox"]:focus-visible {
+            outline: 2px solid var(--gold);
+            outline-offset: 2px;
         }
 
         /* ════════════════════════════════════════════════

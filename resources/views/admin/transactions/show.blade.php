@@ -31,9 +31,9 @@
                             $s = $statusColors[$transaction->status] ?? ['dot' => 'bg-gray-500', 'bg' => 'bg-gray-100 text-gray-700 dark:bg-surface-tonal-a30 dark:text-gray-400 border-gray-200 dark:border-surface-tonal-a30'];
                         @endphp
                         <div
-                            class="px-2.5 py-0.5 rounded-md text-[10px] font-bold border flex items-center gap-1.5 uppercase tracking-wider {{ $s['bg'] }}">
+                            class="px-3 py-1 rounded-md text-xs font-black border flex items-center gap-1.5 uppercase tracking-wider {{ $s['bg'] }}">
                             <span class="w-1.5 h-1.5 rounded-full {{ $s['dot'] }}"></span>
-                            {{ $transaction->status }}
+                            {{ __('file.' . $transaction->status) ?? $transaction->status }}
                         </div>
                     </div>
                     <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 font-semibold">
@@ -41,14 +41,6 @@
                         {{ $transaction->created_at->format('M d, Y H:i:s') }} UTC</p>
                 </div>
                 <div class="flex items-center gap-3">
-                    <a href="{{ route('transactions.index') }}"
-                        class="px-5 py-2.5 bg-white dark:bg-surface-tonal-a20 border border-gray-200 dark:border-surface-tonal-a30 rounded-lg text-xs font-semibold text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-surface-tonal-a30 transition-all shadow-sm active:scale-95 group">
-                        <svg class="w-4 h-4 transition-transform group-hover:-translate-x-1" fill="none"
-                            stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7" />
-                        </svg>
-                        {{ __('file.grid_return') }}
-                    </a>
                     @if(in_array($transaction->status, ['pending', 'failed']))
                         <form action="{{ route('transactions.mark-as-paid', $transaction->id) }}" method="POST" class="inline">
                             @csrf
@@ -70,7 +62,7 @@
                             <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
                             </svg>
-                            <p class="text-[10px] font-black text-emerald-800 dark:text-emerald-400 uppercase tracking-widest">
+                            <p class="text-xs font-bold text-emerald-800 dark:text-emerald-400 uppercase tracking-widest">
                                 {{ session('success') }}</p>
                         </div>
                     @endif
@@ -80,7 +72,7 @@
                             <svg class="w-4 h-4 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12" />
                             </svg>
-                            <p class="text-[10px] font-black text-rose-800 dark:text-rose-400 uppercase tracking-widest">
+                            <p class="text-xs font-bold text-rose-800 dark:text-rose-400 uppercase tracking-widest">
                                 {{ session('error') }}</p>
                         </div>
                     @endif
@@ -114,7 +106,7 @@
                                     <div
                                         class="px-3 py-1.5 rounded-md bg-gray-50 dark:bg-surface-tonal-a10 border border-gray-100 dark:border-surface-tonal-a30 inline-flex items-center gap-2">
                                         <span
-                                            class="text-[11px] font-black text-gray-900 dark:text-white uppercase tracking-tighter">{{ $transaction->gateway }}</span>
+                                            class="text-xs font-black text-gray-900 dark:text-white uppercase tracking-tighter">{{ __('file.' . $transaction->gateway) ?? $transaction->gateway }}</span>
                                     </div>
                                 </div>
                                 <div class="space-y-1">
@@ -123,7 +115,7 @@
                                     <div
                                         class="px-3 py-1.5 rounded-md bg-gray-50 dark:bg-surface-tonal-a10 border border-gray-100 dark:border-surface-tonal-a30 inline-flex items-center gap-2 text-indigo-500">
                                         <span
-                                            class="text-[11px] font-black uppercase tracking-tighter">{{ $transaction->payment_type }}</span>
+                                            class="text-xs font-black uppercase tracking-tighter">{{ __('file.' . $transaction->payment_type) ?? $transaction->payment_type }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -192,7 +184,7 @@
                                     class="text-xs font-semibold text-gray-400 uppercase tracking-wider block">{{ __('file.fiscal_principal_customer') }}</span>
                                 <div class="flex items-center gap-3">
                                     <div
-                                        class="w-10 h-10 rounded-lg bg-indigo-50 dark:bg-surface-tonal-a30 border border-indigo-100 dark:border-surface-tonal-a40 flex items-center justify-center text-indigo-600 dark:text-indigo-400 font-black text-[10px] uppercase shadow-sm">
+                                        class="w-10 h-10 rounded-lg bg-indigo-50 dark:bg-surface-tonal-a30 border border-indigo-100 dark:border-surface-tonal-a40 flex items-center justify-center text-indigo-600 dark:text-indigo-400 font-bold text-xs uppercase shadow-sm">
                                         {{ substr($transaction->customer->first_name ?? 'GU', 0, 1) }}{{ substr($transaction->customer->last_name ?? 'ST', 0, 1) }}
                                     </div>
                                     <div class="flex flex-col min-w-0">
@@ -200,7 +192,7 @@
                                             class="text-xs font-black text-gray-900 dark:text-white uppercase tracking-tighter truncate leading-none">{{ $transaction->customer ? $transaction->customer->first_name . ' ' . $transaction->customer->last_name : __('file.guest_participant') }}</span>
                                         @if($transaction->customer)
                                             <a href="mailto:{{ $transaction->customer->email }}"
-                                                class="text-[9px] font-bold text-gray-400 uppercase italic hover:text-indigo-500 transition-colors mt-1 truncate">{{ $transaction->customer->email }}</a>
+                                                class="text-xs font-semibold text-gray-400 uppercase italic hover:text-indigo-500 transition-colors mt-1 truncate">{{ $transaction->customer->email }}</a>
                                         @endif
                                     </div>
                                 </div>

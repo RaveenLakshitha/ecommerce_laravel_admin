@@ -152,9 +152,9 @@
                                             <td class="px-6 py-3.5">
                                                 <div class="flex flex-col">
                                                     <span class="text-sm font-bold text-gray-700 dark:text-white">{{ $variant->sku }}</span>
-                                                    @if($variant->is_default)
-                                                        <span class="text-[8px] font-black text-indigo-500 uppercase tracking-tighter">Default</span>
-                                                    @endif
+                                                     @if($variant->is_default)
+                                                         <span class="text-xs font-black text-indigo-500 uppercase tracking-tighter">Default</span>
+                                                     @endif
                                                 </div>
                                             </td>
                                             <td class="px-6 py-3.5">
@@ -174,9 +174,9 @@
                                             <td class="px-6 py-3.5 text-right">
                                                 <div class="flex flex-col items-end">
                                                     <span class="text-sm font-bold text-gray-900 dark:text-white">@price($variant->price)</span>
-                                                    @if($variant->sale_price)
-                                                        <span class="text-[10px] text-emerald-500 font-bold">@price($variant->sale_price)</span>
-                                                    @endif
+                                                     @if($variant->sale_price)
+                                                         <span class="text-xs text-emerald-500 font-bold">@price($variant->sale_price)</span>
+                                                     @endif
                                                 </div>
                                             </td>
                                         </tr>
@@ -234,7 +234,7 @@
                             @if($primary)
                                 <div class="aspect-square rounded-xl border border-gray-100 dark:border-surface-tonal-a30 overflow-hidden mb-3 bg-gray-50 dark:bg-surface-tonal-a30/20 relative">
                                     <img src="{{ Storage::url($primary->file_path) }}" class="w-full h-full object-contain p-2">
-                                    <div class="absolute top-2 left-2 px-2 py-1 bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-[10px] font-medium rounded-lg uppercase tracking-wider">Primary</div>
+                                     <div class="absolute top-2 left-2 px-2 py-1 bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-xs font-medium rounded-lg uppercase tracking-wider">Primary</div>
                                 </div>
                                 <div class="grid grid-cols-4 gap-2">
                                     @foreach($product->images as $image)
@@ -248,7 +248,7 @@
                             @else
                                 <div class="aspect-square rounded-xl border-2 border-dashed border-gray-100 dark:border-surface-tonal-a30 flex flex-col items-center justify-center gap-2 text-gray-400 p-8 text-center bg-gray-50 dark:bg-surface-tonal-a10">
                                     <svg class="h-8 w-8 opacity-40" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                                    <p class="text-[10px] font-bold uppercase tracking-widest">No images available</p>
+                                     <p class="text-xs font-bold uppercase tracking-widest">No images available</p>
                                 </div>
                             @endif
                         </div>
@@ -308,7 +308,7 @@
                                             </div>
                                             <div class="flex items-center justify-between">
                                                 <span class="text-xs font-medium text-gray-400 font-mono tracking-wider">{{ $variant->barcode }}</span>
-                                                <span class="text-[10px] font-medium text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity">Select for Print</span>
+                                                 <span class="text-xs font-medium text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity">Select for Print</span>
                                             </div>
                                         </div>
                                     </div>

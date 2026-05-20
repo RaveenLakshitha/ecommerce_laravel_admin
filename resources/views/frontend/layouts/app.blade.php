@@ -16,6 +16,15 @@
     <meta name="keywords" content="@yield('meta_keywords', $meta_keywords ?? '')">
     <meta name="author" content="{{ $store_name ?? 'Karbnzol' }}">
 
+    <!-- Canonical URL -->
+    <link rel="canonical" href="@yield('canonical_url', url()->current())">
+
+    <!-- Robots -->
+    <meta name="robots" content="@yield('robots', 'index, follow')">
+
+    <!-- JSON-LD Structured Data slot -->
+    @stack('json_ld')
+
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="@yield('og_type', 'website')">
     <meta property="og:url" content="{{ url()->current() }}">

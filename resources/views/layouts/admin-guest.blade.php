@@ -60,7 +60,7 @@
         }
 
         .image-section {
-            background-image: url('https://images.unsplash.com/photo-1497215728101-856f4ea42174?q=80&w=2070&auto=format&fit=crop');
+            background-image: url('{{ $admin_login_bg ?? 'https://images.unsplash.com/photo-1497215728101-856f4ea42174?q=80&w=2070&auto=format&fit=crop' }}');
             background-size: cover;
             background-position: center;
             position: relative;

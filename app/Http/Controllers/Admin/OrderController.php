@@ -160,9 +160,20 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
-        $order->load(['items', 'customer', 'shippingAddress', 'billingAddress', 'refunds', 'transactions']);
+        $order->load([
+            'items.variant.images',
+            'items.variant.product.primaryImage',
+            'customer',
+            'shippingAddress',
+            'billingAddress',
+            'refunds',
+            'transactions',
+            'shipments.courier',
+        ]);
 
-        return view('admin.orders.show', compact('order'));
+        $currency_symbol = Setting::getValue('currency_symbol', 'Rs.');
+
+        return view('admin.orders.show', compact('order', 'currency_symbol'));
     }
 
     /**

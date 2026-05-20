@@ -52,7 +52,7 @@ class PaymentTransactionController extends Controller
                 if ($row->customer) {
                     return $row->customer->first_name . ' ' . $row->customer->last_name;
                 }
-                return '<span class="text-gray-500">Guest</span>';
+                return '<span class="text-gray-500">' . (__('file.guest') ?? 'Guest') . '</span>';
             })
             ->addColumn('amount_html', function ($row) {
                 return Setting::formatPrice($row->amount);
@@ -68,7 +68,7 @@ class PaymentTransactionController extends Controller
                     'cancelled' => 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400',
                 ];
                 $color = $colors[$row->status] ?? 'bg-gray-100 text-gray-800';
-                return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ' . $color . '">' . ucfirst(str_replace('_', ' ', $row->status)) . '</span>';
+                return '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ' . $color . '">' . (__('file.' . $row->status) ?? ucfirst(str_replace('_', ' ', $row->status))) . '</span>';
             })
             ->addColumn('gateway_html', function ($row) {
                 $gateways = [
@@ -79,7 +79,7 @@ class PaymentTransactionController extends Controller
                     'bank' => 'Bank Transfer',
                     'manual' => 'Manual'
                 ];
-                return $gateways[$row->gateway] ?? ucfirst($row->gateway);
+                return __('file.' . $row->gateway) ?? $gateways[$row->gateway] ?? ucfirst($row->gateway);
             })
             ->addColumn('date_html', function ($row) {
                 return $row->created_at->format('M d, Y h:i A');

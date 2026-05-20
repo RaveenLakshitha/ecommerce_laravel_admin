@@ -215,18 +215,18 @@
             <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
                 <div>
                     <div class="flex items-center gap-4">
-                        <h1 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Settings</h1>
+                        <h1 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{ __('file.settings') ?? 'Settings' }}</h1>
                     </div>
-                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Manage your store settings and preferences.</p>
+                    <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">{{ __('file.settings_desc') ?? 'Manage your store settings and preferences.' }}</p>
                 </div>
                 <div class="flex flex-wrap gap-3">
                     <button type="submit" form="settings-form"
                         class="px-5 py-2.5 bg-indigo-600 border border-indigo-600 rounded-lg text-sm font-semibold text-white hover:bg-indigo-700 transition-all shadow-sm active:scale-[0.98]">
-                        Save Settings
+                        {{ __('file.save_settings') ?? 'Save Settings' }}
                     </button>
                     <a href="{{ route('admin.dashboard') }}"
                         class="px-5 py-2.5 bg-white dark:bg-surface-tonal-a20 border border-gray-200 dark:border-surface-tonal-a30 rounded-lg text-sm font-semibold text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-surface-tonal-a30 transition-all shadow-sm active:scale-[0.98]">
-                        Cancel
+                        {{ __('file.cancel') ?? 'Cancel' }}
                     </a>
                 </div>
             </div>
@@ -261,21 +261,21 @@
             {{-- ── Tab Bar ─────────────────────────────────────────────────────── --}}
             @php
                 $tabs = [
-                    'general' => 'General',
-                    'store' => 'Store Info',
-                    'currency' => 'Currency',
-                    'seo' => 'SEO & Meta',
-                    'shipping' => 'Shipping',
-                    'tax' => 'Tax',
-                    'payments' => 'Payments',
-                    'inventory' => 'Inventory',
-                    'customers' => 'Customers',
-                    'features' => 'Features',
-                    'marketing' => 'Marketing',
-                    'social' => 'Social',
-                    'analytics' => 'Analytics',
-                    'email' => 'Email',
-                    'maintenance' => 'Maintenance',
+                    'general' => __('file.general') ?? 'General',
+                    'store' => __('file.store_info') ?? 'Store Info',
+                    'currency' => __('file.currency') ?? 'Currency',
+                    'seo' => __('file.seo_meta') ?? 'SEO & Meta',
+                    'shipping' => __('file.shipping') ?? 'Shipping',
+                    'tax' => __('file.tax') ?? 'Tax',
+                    'payments' => __('file.payments') ?? 'Payments',
+                    'inventory' => __('file.inventory') ?? 'Inventory',
+                    'customers' => __('file.customers') ?? 'Customers',
+                    'features' => __('file.features') ?? 'Features',
+                    'marketing' => __('file.marketing') ?? 'Marketing',
+                    'social' => __('file.social') ?? 'Social',
+                    'analytics' => __('file.analytics') ?? 'Analytics',
+                    'email' => __('file.email') ?? 'Email',
+                    'maintenance' => __('file.maintenance') ?? 'Maintenance',
                 ];
             @endphp
 
@@ -298,7 +298,7 @@
                                 <div class="px-5 py-4 border-b border-gray-100 dark:border-surface-tonal-a30">
                                     <p
                                         class="text-sm font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">
-                                        System Modules</p>
+                                        {{ __('file.system_modules') ?? 'System Modules' }}</p>
                                 </div>
                                 <div class="p-2.5 space-y-1">
                                     @foreach($tabs as $key => $label)
@@ -327,9 +327,8 @@
                                 class="bg-white dark:bg-surface-tonal-a20 rounded-lg border border-gray-200 dark:border-surface-tonal-a30 shadow-sm overflow-hidden">
                                 <div
                                     class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
-                                    <h2 class="text-sm font-semibold text-gray-900 dark:text-white">General Settings</h2>
-                                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Basic site identity and brand
-                                        assets.</p>
+                                    <h2 class="text-sm font-semibold text-gray-900 dark:text-white">{{ __('file.general_settings') ?? 'General Settings' }}</h2>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{{ __('file.general_settings_desc') ?? 'Basic site identity and brand assets.' }}</p>
                                 </div>
                                 <div class="p-4 space-y-5">
 
@@ -337,7 +336,7 @@
                                         <div>
                                             <label for="site_name"
                                                 class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
-                                                Site Name <span class="text-red-500">*</span>
+                                                {{ __('file.site_name') ?? 'Site Name' }} <span class="text-red-500">*</span>
                                             </label>
                                             <input type="text" name="site_name" id="site_name"
                                                 value="{{ old('site_name', $setting->site_name) }}"
@@ -364,13 +363,13 @@
                                         <textarea name="site_description" id="site_description" rows="3"
                                             placeholder="A brief overview of your business."
                                             class="fi resize-none">{{ old('site_description', $setting->site_description) }}</textarea>
-                                        <p class="text-xs text-gray-400 mt-1">Used as the meta description for SEO.</p>
+                                        <p class="text-xs text-gray-400 mt-1">{{ __('file.short_description_desc') ?? 'Used as the meta description for SEO.' }}</p>
                                     </div>
 
                                     <div>
                                         <p
                                             class="text-sm font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-4">
-                                            Brand Assets</p>
+                                            {{ __('file.brand_assets') ?? 'Brand Assets' }}</p>
                                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                                             {{-- Logo --}}
                                             <div>
@@ -395,24 +394,24 @@
                                                 @error('site_logo')<p class="text-xs text-red-500 mt-1">{{ $message }}</p>
                                                 @enderror
                                             </div>
-                                            {{-- Favicon --}}
+                                            {{-- {{ __('file.favicon') ?? 'Favicon' }} --}}
                                             <div>
                                                 <label
-                                                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Favicon</label>
+                                                    class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{ __('file.favicon') ?? 'Favicon' }}</label>
                                                 <div
                                                     class="rounded-xl border border-dashed border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-surface-tonal-a10 p-4 flex flex-col items-center gap-3 text-center">
                                                     <div
                                                         class="w-full h-20 rounded-lg bg-white dark:bg-surface-tonal-a20 border border-gray-100 dark:border-surface-tonal-a30 flex items-center justify-center overflow-hidden">
                                                         <img id="favicon_preview"
                                                             src="{{ $setting->site_favicon ? asset('storage/' . $setting->site_favicon) : asset('images/favicon.ico') }}"
-                                                            class="h-10 w-10 object-contain" alt="Favicon">
+                                                            class="h-10 w-10 object-contain" alt="{{ __('file.favicon') ?? 'Favicon' }}">
                                                     </div>
                                                     <input type="file" name="site_favicon" id="site_favicon" class="hidden"
                                                         accept="image/*,.ico"
                                                         onchange="previewImage(this,'favicon_preview')">
                                                     <label for="site_favicon"
                                                         class="text-xs font-semibold text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-surface-tonal-a30 rounded-lg px-3 py-1.5 hover:bg-gray-100 dark:hover:bg-surface-tonal-a30 cursor-pointer transition">Upload
-                                                        Favicon</label>
+                                                        {{ __('file.favicon') ?? 'Favicon' }}</label>
                                                     <p class="text-[10px] text-gray-400">32×32 or 64×64px · ICO, PNG</p>
                                                 </div>
                                                 @error('site_favicon')<p class="text-xs text-red-500 mt-1">{{ $message }}
@@ -431,9 +430,8 @@
                                 class="bg-white dark:bg-surface-tonal-a20 rounded-lg border border-gray-200 dark:border-surface-tonal-a30 shadow-sm overflow-hidden">
                                 <div
                                     class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
-                                    <h2 class="text-sm font-semibold text-gray-900 dark:text-white">Store Information</h2>
-                                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Contact details and physical
-                                        address.</p>
+                                    <h2 class="text-sm font-semibold text-gray-900 dark:text-white">{{ __('file.store_information') ?? 'Store Information' }}</h2>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{{ __('file.store_information_desc') ?? 'Contact details and physical address.' }}</p>
                                 </div>
                                 <div class="p-4 space-y-5">
                                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
@@ -464,7 +462,7 @@
                                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                                         <div>
                                             <label for="city"
-                                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">City</label>
+                                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.city') ?? 'City' }}</label>
                                             <input type="text" name="city" id="city"
                                                 value="{{ old('city', $setting->city) }}" placeholder="New York" class="fi">
                                         </div>
@@ -477,7 +475,7 @@
                                         </div>
                                         <div>
                                             <label for="country"
-                                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Country</label>
+                                                class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.country') ?? 'Country' }}</label>
                                             <input type="text" name="country" id="country"
                                                 value="{{ old('country', $setting->country) }}" placeholder="United States"
                                                 class="fi">
@@ -503,9 +501,8 @@
                                 class="bg-white dark:bg-surface-tonal-a20 rounded-lg border border-gray-200 dark:border-surface-tonal-a30 shadow-sm overflow-hidden">
                                 <div
                                     class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
-                                    <h2 class="text-sm font-semibold text-gray-900 dark:text-white">Currency & Pricing</h2>
-                                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Configure how prices are
-                                        displayed across your store.</p>
+                                    <h2 class="text-sm font-semibold text-gray-900 dark:text-white">{{ __('file.currency_pricing') ?? 'Currency & Pricing' }}</h2>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{{ __('file.currency_pricing_desc') ?? 'Configure how prices are displayed across your store.' }}</p>
                                 </div>
                                 <div class="p-4 space-y-5">
                                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
@@ -582,9 +579,8 @@
                                 class="bg-white dark:bg-surface-tonal-a20 rounded-lg border border-gray-200 dark:border-surface-tonal-a30 shadow-sm overflow-hidden">
                                 <div
                                     class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
-                                    <h2 class="text-sm font-semibold text-gray-900 dark:text-white">SEO & Social Meta</h2>
-                                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Search engine and social
-                                        sharing metadata.</p>
+                                    <h2 class="text-sm font-semibold text-gray-900 dark:text-white">{{ __('file.seo_social_meta') ?? 'SEO & Social Meta' }}</h2>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{{ __('file.seo_social_meta_desc') ?? 'Search engine and social sharing metadata.' }}</p>
                                 </div>
                                 <div class="p-4 space-y-5">
                                     <div>
@@ -614,7 +610,7 @@
                                     <div>
                                         <p
                                             class="text-sm font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-3">
-                                            Open Graph / Social Image</p>
+                                            {{ __('file.open_graph_social_image') ?? 'Open Graph / Social Image' }}</p>
                                         <div
                                             class="rounded-xl border border-dashed border-gray-300 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10 p-4 flex flex-col items-center gap-3 text-center">
                                             <div
@@ -628,7 +624,7 @@
                                             <label for="og_image"
                                                 class="text-xs font-semibold text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-surface-tonal-a30 rounded-lg px-3 py-1.5 hover:bg-gray-100 dark:hover:bg-surface-tonal-a30 cursor-pointer transition">Upload
                                                 Share Image</label>
-                                            <p class="text-[10px] text-gray-400">Recommended 1200×630px · PNG, JPG</p>
+                                            <p class="text-[10px] text-gray-400">{{ __('file.recommended_og_dimensions') ?? 'Recommended 1200×630px · PNG, JPG' }}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -641,9 +637,8 @@
                                 class="bg-white dark:bg-surface-tonal-a20 rounded-lg border border-gray-200 dark:border-surface-tonal-a30 shadow-sm overflow-hidden">
                                 <div
                                     class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
-                                    <h2 class="text-sm font-semibold text-gray-900 dark:text-white">Shipping & Delivery</h2>
-                                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Configure shipping methods
-                                        and rates.</p>
+                                    <h2 class="text-sm font-semibold text-gray-900 dark:text-white">{{ __('file.shipping_delivery') ?? 'Shipping & Delivery' }}</h2>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{{ __('file.shipping_delivery_desc') ?? 'Configure shipping methods and rates.' }}</p>
                                 </div>
                                 <div class="p-4 space-y-5">
                                     <div
@@ -728,9 +723,8 @@
                                 class="bg-white dark:bg-surface-tonal-a20 rounded-lg border border-gray-200 dark:border-surface-tonal-a30 shadow-sm overflow-hidden">
                                 <div
                                     class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
-                                    <h2 class="text-sm font-semibold text-gray-900 dark:text-white">Tax Configuration</h2>
-                                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">VAT, GST and tax display
-                                        rules.</p>
+                                    <h2 class="text-sm font-semibold text-gray-900 dark:text-white">{{ __('file.tax_configuration') ?? 'Tax Configuration' }}</h2>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{{ __('file.tax_configuration_desc') ?? 'VAT, GST and tax display rules.' }}</p>
                                 </div>
                                 <div class="p-4 space-y-5">
                                     <div
@@ -754,16 +748,16 @@
                                             <input type="number" name="default_tax_rate" id="default_tax_rate"
                                                 value="{{ old('default_tax_rate', $setting->default_tax_rate) }}"
                                                 step="0.01" placeholder="15.00" class="fi">
-                                            <p class="text-xs text-gray-400 mt-1">Percentage applied at checkout.</p>
+                                            <p class="text-xs text-gray-400 mt-1">{{ __('file.default_tax_rate_desc') ?? 'Percentage applied at checkout.' }}</p>
                                         </div>
                                         <div>
                                             <label for="tax_inclusive"
                                                 class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">Price
                                                 Inclusion</label>
                                             <select name="tax_inclusive" id="tax_inclusive" class="fi">
-                                                <option value="1" @selected($setting->tax_inclusive)>Prices include tax
+                                                <option value="1" @selected($setting->tax_inclusive)>{{ __('file.prices_include_tax') ?? 'Prices include tax' }}
                                                 </option>
-                                                <option value="0" @selected(!$setting->tax_inclusive)>Tax added at checkout
+                                                <option value="0" @selected(!$setting->tax_inclusive)>{{ __('file.tax_added_at_checkout') ?? 'Tax added at checkout' }}
                                                 </option>
                                             </select>
                                         </div>
@@ -778,15 +772,14 @@
                                 class="bg-white dark:bg-surface-tonal-a20 rounded-lg border border-gray-200 dark:border-surface-tonal-a30 shadow-sm overflow-hidden">
                                 <div
                                     class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
-                                    <h2 class="text-sm font-semibold text-gray-900 dark:text-white">Payments & Checkout</h2>
-                                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">Payment methods and checkout
-                                        preferences.</p>
+                                    <h2 class="text-sm font-semibold text-gray-900 dark:text-white">{{ __('file.payments_checkout') ?? 'Payments & Checkout' }}</h2>
+                                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">{{ __('file.payments_checkout_desc') ?? 'Payment methods and checkout preferences.' }}</p>
                                 </div>
                                 <div class="p-4 space-y-6">
                                     <div>
                                         <p
                                             class="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-3">
-                                            Manual Payment Methods</p>
+                                            {{ __('file.manual_payment_methods') ?? 'Manual Payment Methods' }}</p>
                                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                             <label class="ck-card">
                                                 <input type="checkbox" name="cash_on_delivery_enabled" value="1"
@@ -815,7 +808,7 @@
                                     <div>
                                         <p
                                             class="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-3">
-                                            Checkout Preferences</p>
+                                            {{ __('file.checkout_preferences') ?? 'Checkout Preferences' }}</p>
                                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                             <label class="ck-card">
                                                 <input type="checkbox" name="guest_checkout_enabled" value="1"
@@ -851,8 +844,7 @@
                                 class="bg-white dark:bg-surface-tonal-a20 rounded-lg border border-gray-200 dark:border-surface-tonal-a30 shadow-sm overflow-hidden">
                                 <div
                                     class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
-                                    <h2 class="text-sm font-semibold text-gray-900 dark:text-white">Inventory & Order
-                                        Management</h2>
+                                    <h2 class="text-sm font-semibold text-gray-900 dark:text-white">{{ __('file.inventory_order_management') ?? 'Inventory & Order Management' }}</h2>
                                 </div>
                                 <div class="p-4 space-y-6">
                                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
@@ -908,8 +900,7 @@
                                 class="bg-white dark:bg-surface-tonal-a20 rounded-lg border border-gray-200 dark:border-surface-tonal-a30 shadow-sm overflow-hidden">
                                 <div
                                     class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
-                                    <h2 class="text-sm font-semibold text-gray-900 dark:text-white">Customer Preferences
-                                    </h2>
+                                    <h2 class="text-sm font-semibold text-gray-900 dark:text-white">{{ __('file.customer_preferences') ?? 'Customer Preferences' }}</h2>
                                 </div>
                                 <div class="p-4 space-y-4">
                                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -918,7 +909,7 @@
                                             <div>
                                                 <p class="text-sm font-semibold text-gray-900 dark:text-white">Enable
                                                     Newsletters</p>
-                                                <p class="text-xs text-gray-500 mt-1">Show newsletter signup fields</p>
+                                                <p class="text-xs text-gray-500 mt-1">{{ __('file.enable_newsletters_desc') ?? 'Show newsletter signup fields' }}</p>
                                             </div>
                                         </label>
                                         <label class="ck-card">
@@ -926,7 +917,7 @@
                                             <div>
                                                 <p class="text-sm font-semibold text-gray-900 dark:text-white">Enable
                                                     Wishlist</p>
-                                                <p class="text-xs text-gray-500 mt-1">Allow customers to save favorite items
+                                                <p class="text-xs text-gray-500 mt-1">{{ __('file.enable_wishlist_desc') ?? 'Allow customers to save favorite items' }}
                                                 </p>
                                             </div>
                                         </label>
@@ -941,17 +932,16 @@
                                 class="bg-white dark:bg-surface-tonal-a20 rounded-lg border border-gray-200 dark:border-surface-tonal-a30 shadow-sm overflow-hidden">
                                 <div
                                     class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
-                                    <h2 class="text-sm font-semibold text-gray-900 dark:text-white">Fashion & Store Features
-                                    </h2>
+                                    <h2 class="text-sm font-semibold text-gray-900 dark:text-white">{{ __('file.fashion_store_features') ?? 'Fashion & Store Features' }}</h2>
                                 </div>
                                 <div class="p-4 space-y-6">
                                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                         <label class="ck-card">
                                             <input type="checkbox" name="size_chart_enabled" value="1" class="w-4 h-4" {{ $setting->size_chart_enabled ? 'checked' : '' }}>
                                             <div>
-                                                <p class="text-sm font-semibold text-gray-900 dark:text-white">Size Chart
+                                                <p class="text-sm font-semibold text-gray-900 dark:text-white">{{ __('file.size_chart') ?? 'Size Chart' }}
                                                 </p>
-                                                <p class="text-xs text-gray-500 mt-1">Global size charts for products</p>
+                                                <p class="text-xs text-gray-500 mt-1">{{ __('file.size_chart_desc') ?? 'Global size charts for products' }}</p>
                                             </div>
                                         </label>
                                         <label class="ck-card">
@@ -970,15 +960,15 @@
                                         <label class="ck-card">
                                             <input type="checkbox" name="enable_product_quick_view" value="1"
                                                 class="w-4 h-4" {{ $setting->enable_product_quick_view ? 'checked' : '' }}>
-                                            <p class="text-xs font-semibold">Quick View</p>
+                                            <p class="text-xs font-semibold">{{ __('file.quick_view') ?? 'Quick View' }}</p>
                                         </label>
                                         <label class="ck-card">
                                             <input type="checkbox" name="enable_size_filter" value="1" class="w-4 h-4" {{ $setting->enable_size_filter ? 'checked' : '' }}>
-                                            <p class="text-xs font-semibold">Size Filter</p>
+                                            <p class="text-xs font-semibold">{{ __('file.size_filter') ?? 'Size Filter' }}</p>
                                         </label>
                                         <label class="ck-card">
                                             <input type="checkbox" name="enable_color_filter" value="1" class="w-4 h-4" {{ $setting->enable_color_filter ? 'checked' : '' }}>
-                                            <p class="text-xs font-semibold">Color Filter</p>
+                                            <p class="text-xs font-semibold">{{ __('file.color_filter') ?? 'Color Filter' }}</p>
                                         </label>
                                     </div>
                                 </div>
@@ -991,22 +981,21 @@
                                 class="bg-white dark:bg-surface-tonal-a20 rounded-lg border border-gray-200 dark:border-surface-tonal-a30 shadow-sm overflow-hidden">
                                 <div
                                     class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
-                                    <h2 class="text-sm font-semibold text-gray-900 dark:text-white">Marketing & Performance
-                                    </h2>
+                                    <h2 class="text-sm font-semibold text-gray-900 dark:text-white">{{ __('file.marketing_performance') ?? 'Marketing & Performance' }}</h2>
                                 </div>
                                 <div class="p-4 space-y-4">
                                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                                         <label class="ck-card">
                                             <input type="checkbox" name="enable_discounts" value="1" class="w-4 h-4" {{ $setting->enable_discounts ? 'checked' : '' }}>
-                                            <p class="text-xs font-semibold">Discounts</p>
+                                            <p class="text-xs font-semibold">{{ __('file.discounts') ?? 'Discounts' }}</p>
                                         </label>
                                         <label class="ck-card">
                                             <input type="checkbox" name="enable_coupons" value="1" class="w-4 h-4" {{ $setting->enable_coupons ? 'checked' : '' }}>
-                                            <p class="text-xs font-semibold">Coupons</p>
+                                            <p class="text-xs font-semibold">{{ __('file.coupons') ?? 'Coupons' }}</p>
                                         </label>
                                         <label class="ck-card">
                                             <input type="checkbox" name="enable_flash_sales" value="1" class="w-4 h-4" {{ $setting->enable_flash_sales ? 'checked' : '' }}>
-                                            <p class="text-xs font-semibold">Flash Sales</p>
+                                            <p class="text-xs font-semibold">{{ __('file.flash_sales') ?? 'Flash Sales' }}</p>
                                         </label>
                                     </div>
                                 </div>
@@ -1019,7 +1008,7 @@
                                 class="bg-white dark:bg-surface-tonal-a20 rounded-lg border border-gray-200 dark:border-surface-tonal-a30 shadow-sm overflow-hidden">
                                 <div
                                     class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
-                                    <h2 class="text-sm font-semibold text-gray-900 dark:text-white">Social Connectivity</h2>
+                                    <h2 class="text-sm font-semibold text-gray-900 dark:text-white">{{ __('file.social_connectivity') ?? 'Social Connectivity' }}</h2>
                                 </div>
                                 <div class="p-4 space-y-4">
                                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
@@ -1050,8 +1039,7 @@
                                 class="bg-white dark:bg-surface-tonal-a20 rounded-lg border border-gray-200 dark:border-surface-tonal-a30 shadow-sm overflow-hidden">
                                 <div
                                     class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
-                                    <h2 class="text-sm font-semibold text-gray-900 dark:text-white">Tracking & Intelligence
-                                    </h2>
+                                    <h2 class="text-sm font-semibold text-gray-900 dark:text-white">{{ __('file.tracking_intelligence') ?? 'Tracking & Intelligence' }}</h2>
                                 </div>
                                 <div class="p-4 space-y-4">
                                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
@@ -1082,7 +1070,7 @@
                                 class="bg-white dark:bg-surface-tonal-a20 rounded-lg border border-gray-200 dark:border-surface-tonal-a30 shadow-sm overflow-hidden">
                                 <div
                                     class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
-                                    <h2 class="text-sm font-semibold text-gray-900 dark:text-white">Email Configuration</h2>
+                                    <h2 class="text-sm font-semibold text-gray-900 dark:text-white">{{ __('file.email_configuration') ?? 'Email Configuration' }}</h2>
                                 </div>
                                 <div class="p-4 space-y-6">
                                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
@@ -1106,12 +1094,12 @@
                                         <label class="ck-card">
                                             <input type="checkbox" name="order_confirmation_email_enabled" value="1"
                                                 class="w-4 h-4" {{ $setting->order_confirmation_email_enabled ? 'checked' : '' }}>
-                                            <p class="text-xs font-semibold">Order Confirmations</p>
+                                            <p class="text-xs font-semibold">{{ __('file.order_confirmations') ?? 'Order Confirmations' }}</p>
                                         </label>
                                         <label class="ck-card">
                                             <input type="checkbox" name="shipping_notification_enabled" value="1"
                                                 class="w-4 h-4" {{ $setting->shipping_notification_enabled ? 'checked' : '' }}>
-                                            <p class="text-xs font-semibold">Shipping Alerts</p>
+                                            <p class="text-xs font-semibold">{{ __('file.shipping_alerts') ?? 'Shipping Alerts' }}</p>
                                         </label>
                                     </div>
                                 </div>
@@ -1124,15 +1112,14 @@
                                 class="bg-white dark:bg-surface-tonal-a20 rounded-lg border border-gray-200 dark:border-surface-tonal-a30 shadow-sm overflow-hidden">
                                 <div
                                     class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
-                                    <h2 class="text-sm font-semibold text-gray-900 dark:text-white">System Governance</h2>
+                                    <h2 class="text-sm font-semibold text-gray-900 dark:text-white">{{ __('file.system_governance') ?? 'System Governance' }}</h2>
                                 </div>
                                 <div class="p-4 space-y-5">
                                     <div
                                         class="flex items-center justify-between gap-4 p-4 rounded-xl border border-gray-200 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
                                         <div>
-                                            <p class="text-sm font-semibold text-gray-900 dark:text-white">Maintenance Mode
-                                            </p>
-                                            <p class="text-xs text-gray-500 mt-1">Restrict public access to the storefront
+                                            <p class="text-sm font-semibold text-gray-900 dark:text-white">{{ __('file.maintenance_mode') ?? 'Maintenance Mode' }}</p>
+                                            <p class="text-xs text-gray-500 mt-1">{{ __('file.maintenance_mode_desc') ?? 'Restrict public access to the storefront' }}
                                             </p>
                                         </div>
                                         <label class="tgl">

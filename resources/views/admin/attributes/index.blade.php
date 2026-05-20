@@ -76,7 +76,9 @@
                                     <input type="checkbox" id="select-all"
                                         class="w-4 h-4 rounded border-gray-300 dark:border-surface-tonal-a30 text-gray-900 focus:ring-gray-300">
                                 </th>
-                                <th>ID</th>
+                                <th>
+                                {{ __('file.id') ?? 'ID' }}
+                            </th>
                                 <th>{{ __('file.name') }}</th>
                                 <th>{{ __('file.type') }}</th>
                                 <th class="!text-center">{{ __('file.values_count') }}</th>
@@ -166,9 +168,9 @@
                     },
                     pageLength: 10, lengthMenu: [10, 25, 50, 100],
                     language: {
-                        search: "", searchPlaceholder: "{{ __('file.search_attributes') }}...",
-                        lengthMenu: "{{ __('file.show_entries') }}", info: "{{ __('file.showing_entries') }}",
-                        infoEmpty: "{{ __('file.no_items_found') }}", emptyTable: "{{ __('file.no_attributes_found') }}", processing: false,
+                        search: "", searchPlaceholder: "{{ __('file.search_attributes') ?? "Search Attributes..." }}",
+                        lengthMenu: "{{ __('file.show_entries') ?? "Show entries" }}", info: "{{ __('file.showing_entries') ?? "Showing entries" }}",
+                        infoEmpty: "{{ __('file.no_items_found') ?? "No items found" }}", emptyTable: "{{ __('file.no_attributes_found') ?? "No attributes found" }}", processing: false,
                     },
                     autoWidth: false, scrollX: false
                 });

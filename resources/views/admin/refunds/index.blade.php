@@ -142,7 +142,7 @@
                         topStart: {
                             buttons: [
                                 { extend: 'pageLength', className: 'btn btn-sm btn-light' },
-                                { extend: 'collection', text: "Export", className: 'btn btn-sm btn-dark', buttons: ['copy', 'excel', 'csv', 'pdf', 'print'] }
+                                { extend: 'collection', text: "{{ __('file.export') ?? 'Export' }}", className: 'btn btn-sm btn-dark', buttons: ['copy', 'excel', 'csv', 'pdf', 'print'] }
                             ]
                         },
                         topEnd: 'search',
@@ -153,11 +153,11 @@
                     lengthMenu: [10, 25, 50, 100],
                     language: {
                         search: "",
-                        searchPlaceholder: "Search refunds...",
-                        lengthMenu: "Show _MENU_ entries",
-                        info: "Showing _START_ to _END_ of _TOTAL_ entries",
-                        infoEmpty: "No items found",
-                        emptyTable: "No refunds found.",
+                        searchPlaceholder: "{{ __('file.dt_search_refunds') ?? 'Search refunds...' }}",
+                        lengthMenu: "{{ __('file.dt_length_menu') ?? 'Show _MENU_ entries' }}",
+                        info: "{{ __('file.dt_info') ?? 'Showing _START_ to _END_ of _TOTAL_ entries' }}",
+                        infoEmpty: "{{ __('file.dt_no_records_found') ?? 'No items found' }}",
+                        emptyTable: "{{ __('file.dt_no_refunds_found') ?? 'No refunds found.' }}",
                         processing: false,
                     },
                     autoWidth: false,

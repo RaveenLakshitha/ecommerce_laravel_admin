@@ -74,11 +74,11 @@
                                     <input type="checkbox" id="select-all"
                                         class="w-4 h-4 rounded border-gray-300 dark:border-surface-tonal-a30 text-gray-900 focus:ring-gray-300">
                                 </th>
-                                <th>{{ __('file.Rate Name') }}</th>
-                                <th>{{ __('file.Zone') }}</th>
-                                <th>{{ __('file.Amount') }}</th>
-                                <th>{{ __('file.Conditions') }}</th>
-                                <th class="!text-right">{{ __('file.Actions') }}</th>
+                                <th>{{ __('file.rate_name') ?? 'Rate Name' }}</th>
+                                <th>{{ __('file.zone') ?? 'Zone' }}</th>
+                                <th>{{ __('file.amount') ?? 'Amount' }}</th>
+                                <th>{{ __('file.conditions') ?? 'Conditions' }}</th>
+                                <th class="!text-right">{{ __('file.action') ?? 'Actions' }}</th>
                             </tr>
                         </thead>
                         <tbody></tbody>
@@ -295,11 +295,11 @@
                     lengthMenu: [10, 25, 50, 100],
                     language: {
                         search: "",
-                        searchPlaceholder: "{{ __('file.search_rates') }}...",
-                        lengthMenu: "{{ __('file.show_entries') }}",
-                        info: "{{ __('file.showing_entries') }}",
-                        infoEmpty: "{{ __('file.no_items_found') }}",
-                        emptyTable: "{{ __('file.no_rates_found') }}",
+                        searchPlaceholder: "{{ __('file.search_rates') ?? 'Search Rates...' }}",
+                        lengthMenu: "{{ __('file.show_entries') ?? 'Show entries' }}",
+                        info: "{{ __('file.showing_entries') ?? 'Showing entries' }}",
+                        infoEmpty: "{{ __('file.no_items_found') ?? 'No items found' }}",
+                        emptyTable: "{{ __('file.no_rates_found') ?? 'No rates found' }}",
                         processing: '<div class="admin-loader"></div>',
                         paginate: {
                             next: '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>',

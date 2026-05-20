@@ -371,6 +371,275 @@
                         </div>
                     </div>
 
+                    <!-- Delivery & Returns Section -->
+                    <div class="border-b border-gray-200 dark:border-surface-tonal-a30 pb-6">
+                        <div class="flex items-center justify-between mb-6">
+                            <div class="flex items-center gap-4">
+                                <h2 class="text-xl font-semibold text-gray-900 dark:text-primary-a0">Delivery & Returns (Product Page Accordion)</h2>
+                                <div
+                                    class="flex items-center gap-2 bg-gray-50 dark:bg-surface-tonal-a10 px-3 py-1.5 rounded-xl border border-gray-100 dark:border-surface-tonal-a20">
+                                    <span class="text-[10px] uppercase font-bold text-gray-400">Status:</span>
+                                    <label class="toggle-switch" style="transform: scale(0.8); transform-origin: left;">
+                                        <input type="hidden" name="storefront_delivery_show" value="0">
+                                        <input type="checkbox" name="storefront_delivery_show" value="1" {{ ($setting->storefront_delivery_show ?? true) ? 'checked' : '' }}>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                    <span
+                                        class="text-[10px] uppercase font-bold {{ ($setting->storefront_delivery_show ?? true) ? 'text-green-600' : 'text-gray-400' }}">
+                                        {{ ($setting->storefront_delivery_show ?? true) ? 'Visible' : 'Hidden' }}
+                                    </span>
+                                </div>
+                            </div>
+                            <button type="button" id="add-delivery-btn"
+                                class="inline-flex items-center justify-center px-4 py-2 bg-gray-100 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 text-xs font-semibold rounded-xl hover:bg-gray-200 dark:bg-transparent dark:hover:bg-gray-700 transition">
+                                + Add Delivery Detail
+                            </button>
+                        </div>
+                        <div id="delivery-container" class="space-y-4">
+                            @php
+                                $deliveries = is_array($setting->storefront_delivery_items) ? $setting->storefront_delivery_items : [
+                                    ['title' => 'Standard Delivery', 'subtitle' => ($currency_symbol ?? '$') . number_format($shipping_cost_per_order ?? 0) . ' · 3–5 business days | Free on orders over ' . ($currency_symbol ?? '$') . number_format($free_shipping_threshold ?? 5000), 'svg' => '<rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>'],
+                                    ['title' => 'Express Delivery', 'subtitle' => ($currency_symbol ?? '$') . '650.00 · Next business day | Order before 1 PM', 'svg' => '<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>'],
+                                    ['title' => 'Free Returns', 'subtitle' => '30 days · Unworn & with tags | Initiate via My Orders', 'svg' => '<polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/>'],
+                                    ['title' => 'In-Store Pickup', 'subtitle' => 'Colombo & Kandy · Ready in 2–3 hours', 'svg' => '<line x1="16.5" y1="9.4" x2="7.5" y2="4.21"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/>']
+                                ];
+                            @endphp
+                            @foreach($deliveries as $index => $delivery)
+                                <div
+                                    class="delivery-item p-4 border border-gray-200 dark:border-gray-600 rounded-xl relative bg-gray-50 dark:bg-surface-tonal-a10">
+                                    <button type="button" onclick="this.parentElement.remove()"
+                                        class="absolute top-1 right-2 text-red-500 hover:text-red-700 text-xs">×</button>
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                        <div class="md:col-span-1">
+                                            <label
+                                                class="block text-[10px] uppercase font-bold text-gray-400 mb-1">Title</label>
+                                            <input type="text" name="storefront_delivery_items[{{$index}}][title]"
+                                                value="{{ $delivery['title'] ?? '' }}" placeholder="Title"
+                                                class="w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded dark:bg-transparent dark:text-primary-a0">
+                                            <label
+                                                class="block text-[10px] uppercase font-bold text-gray-400 mt-2 mb-1">Subtitle</label>
+                                            <input type="text" name="storefront_delivery_items[{{$index}}][subtitle]"
+                                                value="{{ $delivery['subtitle'] ?? '' }}" placeholder="Subtitle"
+                                                class="w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded dark:bg-transparent dark:text-primary-a0">
+                                        </div>
+                                        <div class="md:col-span-2">
+                                            <label class="block text-[10px] uppercase font-bold text-gray-400 mb-2">Select
+                                                Icon</label>
+                                            <input type="hidden" name="storefront_delivery_items[{{$index}}][svg]"
+                                                value="{{ $delivery['svg'] ?? '' }}">
+                                            <div class="flex flex-wrap gap-2 icon-grid"
+                                                data-selected="{{ $delivery['svg'] ?? '' }}"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <!-- Measurements Section -->
+                    <div class="border-b border-gray-200 dark:border-surface-tonal-a30 pb-6">
+                        <div class="flex items-center justify-between mb-6">
+                            <div class="flex items-center gap-4">
+                                <h2 class="text-xl font-semibold text-gray-900 dark:text-primary-a0">Measurements (Product Page Accordion)</h2>
+                                <div
+                                    class="flex items-center gap-2 bg-gray-50 dark:bg-surface-tonal-a10 px-3 py-1.5 rounded-xl border border-gray-100 dark:border-surface-tonal-a20">
+                                    <span class="text-[10px] uppercase font-bold text-gray-400">Status:</span>
+                                    <label class="toggle-switch" style="transform: scale(0.8); transform-origin: left;">
+                                        <input type="hidden" name="storefront_measure_show" value="0">
+                                        <input type="checkbox" name="storefront_measure_show" value="1" {{ ($setting->storefront_measure_show ?? true) ? 'checked' : '' }}>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                    <span
+                                        class="text-[10px] uppercase font-bold {{ ($setting->storefront_measure_show ?? true) ? 'text-green-600' : 'text-gray-400' }}">
+                                        {{ ($setting->storefront_measure_show ?? true) ? 'Visible' : 'Hidden' }}
+                                    </span>
+                                </div>
+                            </div>
+                            <button type="button" id="add-measure-btn"
+                                class="inline-flex items-center justify-center px-4 py-2 bg-gray-100 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 text-xs font-semibold rounded-xl hover:bg-gray-200 dark:bg-transparent dark:hover:bg-gray-700 transition">
+                                + Add Measurement Row
+                            </button>
+                        </div>
+                        <div class="mb-6">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Measurement Note</label>
+                            <input type="text" name="storefront_measure_note"
+                                value="{{ old('storefront_measure_note', $setting->storefront_measure_note ?? 'Measurements taken on size S. Add 5cm per size.') }}"
+                                class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-transparent dark:text-primary-a0 transition-shadow">
+                        </div>
+                        <div id="measure-container" class="space-y-4">
+                            @php
+                                $measures = is_array($setting->storefront_measure_items) ? $setting->storefront_measure_items : [
+                                    ['label' => 'Total length', 'cm' => '118', 'inches' => '46.5"'],
+                                    ['label' => 'Bust', 'cm' => '92', 'inches' => '36.2"'],
+                                    ['label' => 'Waist', 'cm' => '76', 'inches' => '29.9"'],
+                                    ['label' => 'Hem', 'cm' => '152', 'inches' => '59.8"'],
+                                    ['label' => 'Sleeve length', 'cm' => '62', 'inches' => '24.4"']
+                                ];
+                            @endphp
+                            @foreach($measures as $index => $measure)
+                                <div
+                                    class="measure-item p-4 border border-gray-200 dark:border-gray-600 rounded-xl relative bg-gray-50 dark:bg-surface-tonal-a10">
+                                    <button type="button" onclick="this.parentElement.remove()"
+                                        class="absolute top-1 right-2 text-red-500 hover:text-red-700 text-xs">×</button>
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                        <div>
+                                            <label
+                                                class="block text-[10px] uppercase font-bold text-gray-400 mb-1">Measurement Label</label>
+                                            <input type="text" name="storefront_measure_items[{{$index}}][label]"
+                                                value="{{ $measure['label'] ?? '' }}" placeholder="e.g., Total length"
+                                                class="w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded dark:bg-transparent dark:text-primary-a0">
+                                        </div>
+                                        <div>
+                                            <label
+                                                class="block text-[10px] uppercase font-bold text-gray-400 mb-1">Value (cm)</label>
+                                            <input type="text" name="storefront_measure_items[{{$index}}][cm]"
+                                                value="{{ $measure['cm'] ?? '' }}" placeholder="e.g., 118"
+                                                class="w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded dark:bg-transparent dark:text-primary-a0">
+                                        </div>
+                                        <div>
+                                            <label
+                                                class="block text-[10px] uppercase font-bold text-gray-400 mb-1">Value (inches)</label>
+                                            <input type="text" name="storefront_measure_items[{{$index}}][inches]"
+                                                value="{{ $measure['inches'] ?? '' }}" placeholder="e.g., 46.5\""
+                                                class="w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded dark:bg-transparent dark:text-primary-a0">
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <!-- Size Guide Section -->
+                    <div class="border-b border-gray-200 dark:border-surface-tonal-a30 pb-6">
+                        <div class="flex items-center justify-between mb-6">
+                            <div class="flex items-center gap-4">
+                                <h2 class="text-xl font-semibold text-gray-900 dark:text-primary-a0">Size Guide (Product Detail Modal)</h2>
+                                <div
+                                    class="flex items-center gap-2 bg-gray-50 dark:bg-surface-tonal-a10 px-3 py-1.5 rounded-xl border border-gray-100 dark:border-surface-tonal-a20">
+                                    <span class="text-[10px] uppercase font-bold text-gray-400">Status:</span>
+                                    <label class="toggle-switch" style="transform: scale(0.8); transform-origin: left;">
+                                        <input type="hidden" name="storefront_size_guide_show" value="0">
+                                        <input type="checkbox" name="storefront_size_guide_show" value="1" {{ ($setting->storefront_size_guide_show ?? true) ? 'checked' : '' }}>
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                    <span
+                                        class="text-[10px] uppercase font-bold {{ ($setting->storefront_size_guide_show ?? true) ? 'text-green-600' : 'text-gray-400' }}">
+                                        {{ ($setting->storefront_size_guide_show ?? true) ? 'Visible' : 'Hidden' }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Size Guide Modal Title</label>
+                                <input type="text" name="storefront_size_guide_title"
+                                    value="{{ old('storefront_size_guide_title', $setting->storefront_size_guide_title ?? 'Size Guide') }}"
+                                    class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-transparent dark:text-primary-a0 transition-shadow">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Footnote / Note</label>
+                                <input type="text" name="storefront_size_guide_note"
+                                    value="{{ old('storefront_size_guide_note', $setting->storefront_size_guide_note ?? 'All measurements in centimetres. If between sizes, size up for a relaxed fit.') }}"
+                                    class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-transparent dark:text-primary-a0 transition-shadow">
+                            </div>
+                        </div>
+
+                        @php
+                            $headers = is_array($setting->storefront_size_guide_headers) ? $setting->storefront_size_guide_headers : ['SIZE', 'BUST (CM)', 'WAIST (CM)', 'HIP (CM)', 'UK/EU'];
+                            $rows = is_array($setting->storefront_size_guide_rows) ? $setting->storefront_size_guide_rows : [
+                                ['XS', '80–84', '62–66', '88–92', '6 / 34'],
+                                ['S', '84–88', '66–70', '92–96', '8 / 36'],
+                                ['M', '88–92', '70–74', '96–100', '10 / 38'],
+                                ['L', '92–98', '74–80', '100–106', '12 / 40'],
+                                ['XL', '98–104', '80–86', '106–112', '14 / 42'],
+                                ['XXL', '104–112', '86–94', '112–120', '16 / 44']
+                            ];
+                        @endphp
+
+                        <!-- Size Table Column Headers -->
+                        <div class="mb-6">
+                            <h3 class="text-sm font-bold text-gray-700 dark:text-gray-300 mb-3">Table Column Headers (5 Columns)</h3>
+                            <div class="grid grid-cols-5 gap-2">
+                                <div>
+                                    <label class="block text-[10px] text-gray-400 uppercase font-bold mb-1">Col 1</label>
+                                    <input type="text" name="storefront_size_guide_headers[]" value="{{ $headers[0] ?? 'SIZE' }}" class="w-full px-2 py-1 text-xs border border-gray-300 dark:border-gray-600 rounded dark:bg-transparent dark:text-primary-a0">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] text-gray-400 uppercase font-bold mb-1">Col 2</label>
+                                    <input type="text" name="storefront_size_guide_headers[]" value="{{ $headers[1] ?? 'BUST (CM)' }}" class="w-full px-2 py-1 text-xs border border-gray-300 dark:border-gray-600 rounded dark:bg-transparent dark:text-primary-a0">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] text-gray-400 uppercase font-bold mb-1">Col 3</label>
+                                    <input type="text" name="storefront_size_guide_headers[]" value="{{ $headers[2] ?? 'WAIST (CM)' }}" class="w-full px-2 py-1 text-xs border border-gray-300 dark:border-gray-600 rounded dark:bg-transparent dark:text-primary-a0">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] text-gray-400 uppercase font-bold mb-1">Col 4</label>
+                                    <input type="text" name="storefront_size_guide_headers[]" value="{{ $headers[3] ?? 'HIP (CM)' }}" class="w-full px-2 py-1 text-xs border border-gray-300 dark:border-gray-600 rounded dark:bg-transparent dark:text-primary-a0">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] text-gray-400 uppercase font-bold mb-1">Col 5</label>
+                                    <input type="text" name="storefront_size_guide_headers[]" value="{{ $headers[4] ?? 'UK/EU' }}" class="w-full px-2 py-1 text-xs border border-gray-300 dark:border-gray-600 rounded dark:bg-transparent dark:text-primary-a0">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Dynamic Table Rows -->
+                        <div class="mb-6 border-t border-gray-100 dark:border-gray-700 pt-4">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-sm font-bold text-gray-700 dark:text-gray-300">Size Chart Rows</h3>
+                                <button type="button" id="add-size-row-btn" class="inline-flex items-center justify-center px-3 py-1.5 bg-gray-100 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 text-xs font-semibold rounded-lg hover:bg-gray-200 dark:bg-transparent dark:hover:bg-gray-700 transition">
+                                    + Add Size Row
+                                </button>
+                            </div>
+                            <div id="size-rows-container" class="space-y-2">
+                                @foreach($rows as $rIdx => $row)
+                                    <div class="size-row-item p-3 border border-gray-200 dark:border-gray-600 rounded-xl relative bg-gray-50 dark:bg-surface-tonal-a10 flex items-center gap-2 flex-wrap sm:flex-nowrap">
+                                        <input type="text" name="storefront_size_guide_rows[{{$rIdx}}][]" value="{{ $row[0] ?? '' }}" placeholder="Col 1" class="w-full sm:w-1/5 px-2 py-1 text-sm border rounded dark:bg-transparent dark:text-primary-a0">
+                                        <input type="text" name="storefront_size_guide_rows[{{$rIdx}}][]" value="{{ $row[1] ?? '' }}" placeholder="Col 2" class="w-full sm:w-1/5 px-2 py-1 text-sm border rounded dark:bg-transparent dark:text-primary-a0">
+                                        <input type="text" name="storefront_size_guide_rows[{{$rIdx}}][]" value="{{ $row[2] ?? '' }}" placeholder="Col 3" class="w-full sm:w-1/5 px-2 py-1 text-sm border rounded dark:bg-transparent dark:text-primary-a0">
+                                        <input type="text" name="storefront_size_guide_rows[{{$rIdx}}][]" value="{{ $row[3] ?? '' }}" placeholder="Col 4" class="w-full sm:w-1/5 px-2 py-1 text-sm border rounded dark:bg-transparent dark:text-primary-a0">
+                                        <input type="text" name="storefront_size_guide_rows[{{$rIdx}}][]" value="{{ $row[4] ?? '' }}" placeholder="Col 5" class="w-full sm:w-1/5 px-2 py-1 text-sm border rounded dark:bg-transparent dark:text-primary-a0">
+                                        <button type="button" class="text-red-500 hover:text-red-700 font-bold px-2 remove-size-row-btn">×</button>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+
+                        <!-- How to Measure Instructions -->
+                        <div class="mb-6 border-t border-gray-100 dark:border-gray-700 pt-4">
+                            <h3 class="text-sm font-bold text-gray-700 dark:text-gray-300 mb-4">How to Measure Descriptions</h3>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-xs font-semibold text-gray-500 dark:text-gray-400 mb-1">Bust Description</label>
+                                    <input type="text" name="storefront_size_guide_bust_desc"
+                                        value="{{ old('storefront_size_guide_bust_desc', $setting->storefront_size_guide_bust_desc ?? 'measure around the fullest part of your chest, keeping the tape horizontal.') }}"
+                                        class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-transparent dark:text-primary-a0 transition-shadow">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-gray-500 dark:text-gray-400 mb-1">Waist Description</label>
+                                    <input type="text" name="storefront_size_guide_waist_desc"
+                                        value="{{ old('storefront_size_guide_waist_desc', $setting->storefront_size_guide_waist_desc ?? 'measure around the narrowest part of your natural waist.') }}"
+                                        class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-transparent dark:text-primary-a0 transition-shadow">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-gray-500 dark:text-gray-400 mb-1">Hip Description</label>
+                                    <input type="text" name="storefront_size_guide_hip_desc"
+                                        value="{{ old('storefront_size_guide_hip_desc', $setting->storefront_size_guide_hip_desc ?? 'measure around the fullest part of your hips, about 20cm below your waist.') }}"
+                                        class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-transparent dark:text-primary-a0 transition-shadow">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Fit note for this style -->
+                        <div class="mb-2 border-t border-gray-100 dark:border-gray-700 pt-4">
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Fit Note for this style</label>
+                            <textarea name="storefront_size_guide_fit_note" rows="3"
+                                class="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-gray-900 dark:focus:ring-gray-500 focus:border-transparent dark:bg-transparent dark:text-primary-a0 transition-shadow"
+                                placeholder="e.g. This piece is cut in a relaxed silhouette with a slightly dropped shoulder. Our model is 175cm and wears a size S.">{{ old('storefront_size_guide_fit_note', $setting->storefront_size_guide_fit_note ?? 'This piece is cut in a relaxed silhouette with a slightly dropped shoulder. Our model is 175cm and wears a size S.') }}</textarea>
+                        </div>
+                    </div>
+
                     <!-- Navbar Category Order Section -->
                     <div class="border-b border-gray-200 dark:border-surface-tonal-a30 pb-6">
                         <h2 class="text-xl font-semibold text-gray-900 dark:text-primary-a0 mb-6">Navbar Category Order</h2>
@@ -659,31 +928,88 @@
         </div>
     </template>
 
+    <!-- Delivery Template for JS -->
+    <template id="delivery-template">
+        <div
+            class="delivery-item p-4 border border-gray-200 dark:border-gray-600 rounded-xl relative bg-gray-50 dark:bg-surface-tonal-a10">
+            <button type="button" class="absolute top-1 right-2 text-red-500 hover:text-red-700 text-xs remove-delivery-btn">×</button>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="md:col-span-1">
+                    <label class="block text-[10px] uppercase font-bold text-gray-400 mb-1">Title</label>
+                    <input type="text" name="storefront_delivery_items[__INDEX__][title]" placeholder="Title"
+                        class="w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded dark:bg-transparent dark:text-primary-a0">
+                    <label class="block text-[10px] uppercase font-bold text-gray-400 mt-2 mb-1">Subtitle</label>
+                    <input type="text" name="storefront_delivery_items[__INDEX__][subtitle]" placeholder="Subtitle"
+                        class="w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded dark:bg-transparent dark:text-primary-a0">
+                </div>
+                <div class="md:col-span-2">
+                    <label class="block text-[10px] uppercase font-bold text-gray-400 mb-2">Select Icon</label>
+                    <input type="hidden" name="storefront_delivery_items[__INDEX__][svg]" value="">
+                    <div class="flex flex-wrap gap-2 icon-grid" data-selected=""></div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- Measurement Template for JS -->
+    <template id="measure-template">
+        <div
+            class="measure-item p-4 border border-gray-200 dark:border-gray-600 rounded-xl relative bg-gray-50 dark:bg-surface-tonal-a10">
+            <button type="button" class="absolute top-1 right-2 text-red-500 hover:text-red-700 text-xs remove-measure-btn">×</button>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                    <label class="block text-[10px] uppercase font-bold text-gray-400 mb-1">Measurement Label</label>
+                    <input type="text" name="storefront_measure_items[__INDEX__][label]" placeholder="e.g., Total length"
+                        class="w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded dark:bg-transparent dark:text-primary-a0">
+                </div>
+                <div>
+                    <label class="block text-[10px] uppercase font-bold text-gray-400 mb-1">Value (cm)</label>
+                    <input type="text" name="storefront_measure_items[__INDEX__][cm]" placeholder="e.g., 118"
+                        class="w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded dark:bg-transparent dark:text-primary-a0">
+                </div>
+                <div>
+                    <label class="block text-[10px] uppercase font-bold text-gray-400 mb-1">Value (inches)</label>
+                    <input type="text" name="storefront_measure_items[__INDEX__][inches]" placeholder="e.g., 46.5\""
+                        class="w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded dark:bg-transparent dark:text-primary-a0">
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- Size Chart Row Template for JS -->
+    <template id="size-row-template">
+        <div class="size-row-item p-3 border border-gray-200 dark:border-gray-600 rounded-xl relative bg-gray-50 dark:bg-surface-tonal-a10 flex items-center gap-2 flex-wrap sm:flex-nowrap">
+            <input type="text" name="storefront_size_guide_rows[__INDEX__][]" placeholder="Col 1" class="w-full sm:w-1/5 px-2 py-1 text-sm border rounded dark:bg-transparent dark:text-primary-a0">
+            <input type="text" name="storefront_size_guide_rows[__INDEX__][]" placeholder="Col 2" class="w-full sm:w-1/5 px-2 py-1 text-sm border rounded dark:bg-transparent dark:text-primary-a0">
+            <input type="text" name="storefront_size_guide_rows[__INDEX__][]" placeholder="Col 3" class="w-full sm:w-1/5 px-2 py-1 text-sm border rounded dark:bg-transparent dark:text-primary-a0">
+            <input type="text" name="storefront_size_guide_rows[__INDEX__][]" placeholder="Col 4" class="w-full sm:w-1/5 px-2 py-1 text-sm border rounded dark:bg-transparent dark:text-primary-a0">
+            <input type="text" name="storefront_size_guide_rows[__INDEX__][]" placeholder="Col 5" class="w-full sm:w-1/5 px-2 py-1 text-sm border rounded dark:bg-transparent dark:text-primary-a0">
+            <button type="button" class="text-red-500 hover:text-red-700 font-bold px-2 remove-size-row-btn">×</button>
+        </div>
+    </template>
+
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            const container = document.getElementById('banners-container');
-            const addBtn = document.getElementById('add-banner-btn');
-            const template = document.getElementById('banner-template');
+            // Banners Handlers
+            const bannerContainer = document.getElementById('banners-container');
+            const addBannerBtn = document.getElementById('add-banner-btn');
+            const bannerTemplate = document.getElementById('banner-template');
 
-            // Generate a unique index for new items
-            let bannerIndex = document.querySelectorAll('.banner-item').length;
+            if (addBannerBtn && bannerContainer && bannerTemplate) {
+                let bannerIndex = document.querySelectorAll('.banner-item').length;
 
-            addBtn.addEventListener('click', function () {
-                const clone = template.content.cloneNode(true);
+                addBannerBtn.addEventListener('click', function () {
+                    const clone = bannerTemplate.content.cloneNode(true);
+                    const html = clone.querySelector('.banner-item').outerHTML.replace(/__INDEX__/g, bannerIndex);
+                    const temp = document.createElement('div');
+                    temp.innerHTML = html;
+                    const newElem = temp.firstElementChild;
 
-                // Replace __INDEX__ with actual index
-                const html = clone.querySelector('.banner-item').outerHTML.replace(/__INDEX__/g, bannerIndex);
-
-                // Create a temporary div to convert string back to DOM element
-                const temp = document.createElement('div');
-                temp.innerHTML = html;
-                const newElem = temp.firstElementChild;
-
-                container.appendChild(newElem);
-                bannerIndex++;
-
-                attachRemoveEvent(newElem.querySelector('.remove-banner-btn'));
-            });
+                    bannerContainer.appendChild(newElem);
+                    bannerIndex++;
+                    attachRemoveEvent(newElem.querySelector('.remove-banner-btn'));
+                });
+            }
 
             function attachRemoveEvent(btn) {
                 if (!btn) return;
@@ -693,9 +1019,111 @@
                 });
             }
 
-            // Attach remove event to existing buttons
             document.querySelectorAll('.remove-banner-btn').forEach(btn => {
                 attachRemoveEvent(btn);
+            });
+
+            // Delivery Details Handlers
+            const deliveryContainer = document.getElementById('delivery-container');
+            const addDeliveryBtn = document.getElementById('add-delivery-btn');
+            const deliveryTemplate = document.getElementById('delivery-template');
+
+            if (addDeliveryBtn && deliveryContainer && deliveryTemplate) {
+                let deliveryIndex = document.querySelectorAll('.delivery-item').length;
+
+                addDeliveryBtn.addEventListener('click', function () {
+                    const clone = deliveryTemplate.content.cloneNode(true);
+                    const html = clone.querySelector('.delivery-item').outerHTML.replace(/__INDEX__/g, deliveryIndex);
+                    const temp = document.createElement('div');
+                    temp.innerHTML = html;
+                    const newElem = temp.firstElementChild;
+
+                    deliveryContainer.appendChild(newElem);
+                    
+                    // Initialize the icon grid inside this new delivery element
+                    initIconGridForContainer(newElem.querySelector('.icon-grid'));
+
+                    deliveryIndex++;
+                    attachRemoveEventDelivery(newElem.querySelector('.remove-delivery-btn'));
+                });
+            }
+
+            function attachRemoveEventDelivery(btn) {
+                if (!btn) return;
+                btn.addEventListener('click', function () {
+                    const item = this.closest('.delivery-item');
+                    if (item) item.remove();
+                });
+            }
+
+            document.querySelectorAll('.remove-delivery-btn').forEach(btn => {
+                attachRemoveEventDelivery(btn);
+            });
+
+            // Measurements Handlers
+            const measureContainer = document.getElementById('measure-container');
+            const addMeasureBtn = document.getElementById('add-measure-btn');
+            const measureTemplate = document.getElementById('measure-template');
+
+            if (addMeasureBtn && measureContainer && measureTemplate) {
+                let measureIndex = document.querySelectorAll('.measure-item').length;
+
+                addMeasureBtn.addEventListener('click', function () {
+                    const clone = measureTemplate.content.cloneNode(true);
+                    const html = clone.querySelector('.measure-item').outerHTML.replace(/__INDEX__/g, measureIndex);
+                    const temp = document.createElement('div');
+                    temp.innerHTML = html;
+                    const newElem = temp.firstElementChild;
+
+                    measureContainer.appendChild(newElem);
+                    measureIndex++;
+                    attachRemoveEventMeasure(newElem.querySelector('.remove-measure-btn'));
+                });
+            }
+
+            function attachRemoveEventMeasure(btn) {
+                if (!btn) return;
+                btn.addEventListener('click', function () {
+                    const item = this.closest('.measure-item');
+                    if (item) item.remove();
+                });
+            }
+
+            document.querySelectorAll('.remove-measure-btn').forEach(btn => {
+                attachRemoveEventMeasure(btn);
+            });
+
+            // Size Rows Handlers
+            const sizeRowsContainer = document.getElementById('size-rows-container');
+            const addSizeRowBtn = document.getElementById('add-size-row-btn');
+            const sizeRowTemplate = document.getElementById('size-row-template');
+
+            if (addSizeRowBtn && sizeRowsContainer && sizeRowTemplate) {
+                let sizeRowIndex = document.querySelectorAll('.size-row-item').length;
+
+                addSizeRowBtn.addEventListener('click', function () {
+                    const clone = sizeRowTemplate.content.cloneNode(true);
+                    const html = clone.querySelector('.size-row-item').outerHTML.replace(/__INDEX__/g, sizeRowIndex);
+                    const temp = document.createElement('div');
+                    temp.innerHTML = html;
+                    const newElem = temp.firstElementChild;
+
+                    sizeRowsContainer.appendChild(newElem);
+                    sizeRowIndex++;
+                    attachRemoveEventSizeRow(newElem.querySelector('.remove-size-row-btn'));
+                });
+            }
+
+            function attachRemoveEventSizeRow(btn) {
+                if (!btn) return;
+                btn.addEventListener('click', function () {
+                    const item = this.closest('.size-row-item');
+                    if (item) item.remove();
+                });
+            }
+
+            document.querySelectorAll('.remove-size-row-btn').forEach(btn => {
+                attachRemoveEventSizeRow(btn);
             });
         });
 
@@ -713,26 +1141,31 @@
             'Smile': '<circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/>'
         };
 
+        function initIconGridForContainer(container) {
+            if (!container) return;
+            const selectedPath = container.dataset.selected;
+            container.innerHTML = '';
+            Object.entries(FEATHER_ICONS).forEach(([name, path]) => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                const isSelected = selectedPath === path;
+                btn.className = `p-2 border rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition ${isSelected ? 'border-gray-900 dark:border-white bg-gray-100 dark:bg-gray-700' : 'border-gray-200 dark:border-gray-600'}`;
+                btn.title = name;
+                btn.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-700 dark:text-gray-300">${path}</svg>`;
+                btn.onclick = () => {
+                    container.parentElement.querySelector('input[type="hidden"]').value = path;
+                    container.querySelectorAll('button').forEach(b => b.classList.remove('border-gray-900', 'dark:border-white', 'bg-gray-100', 'dark:bg-gray-700'));
+                    container.querySelectorAll('button').forEach(b => b.classList.add('border-gray-200', 'dark:border-gray-600'));
+                    btn.classList.add('border-gray-900', 'dark:border-white', 'bg-gray-100', 'dark:bg-gray-700');
+                    btn.classList.remove('border-gray-200', 'dark:border-gray-600');
+                };
+                container.appendChild(btn);
+            });
+        }
+
         function initIconGrids() {
             document.querySelectorAll('.icon-grid').forEach(container => {
-                const selectedPath = container.dataset.selected;
-                container.innerHTML = '';
-                Object.entries(FEATHER_ICONS).forEach(([name, path]) => {
-                    const btn = document.createElement('button');
-                    btn.type = 'button';
-                    const isSelected = selectedPath === path;
-                    btn.className = `p-2 border rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition ${isSelected ? 'border-gray-900 dark:border-white bg-gray-100 dark:bg-gray-700' : 'border-gray-200 dark:border-gray-600'}`;
-                    btn.title = name;
-                    btn.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-700 dark:text-gray-300">${path}</svg>`;
-                    btn.onclick = () => {
-                        container.parentElement.querySelector('input[type="hidden"]').value = path;
-                        container.querySelectorAll('button').forEach(b => b.classList.remove('border-gray-900', 'dark:border-white', 'bg-gray-100', 'dark:bg-gray-700'));
-                        container.querySelectorAll('button').forEach(b => b.classList.add('border-gray-200', 'dark:border-gray-600'));
-                        btn.classList.add('border-gray-900', 'dark:border-white', 'bg-gray-100', 'dark:bg-gray-700');
-                        btn.classList.remove('border-gray-200', 'dark:border-gray-600');
-                    };
-                    container.appendChild(btn);
-                });
+                initIconGridForContainer(container);
             });
         }
 

@@ -120,7 +120,7 @@
                             <table class="w-full text-left">
                                 <thead>
                                     <tr
-                                        class="bg-gray-100/100 dark:bg-surface-tonal-a10/50 border-b border-gray-100 dark:border-surface-tonal-a30">
+                                        class=" dark:bg-surface-tonal-a10/50 border-b border-gray-100 dark:border-surface-tonal-a30">
                                         <th
                                             class="px-5 py-3 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                                             {{ __('file.order_num_alias') }}</th>
@@ -187,7 +187,7 @@
                             <table class="w-full text-left">
                                 <thead>
                                     <tr
-                                        class="bg-gray-100/100 dark:bg-surface-tonal-a10/50 border-b border-gray-100 dark:border-surface-tonal-a30">
+                                        class=" dark:bg-surface-tonal-a10/50 border-b border-gray-100 dark:border-surface-tonal-a30">
                                         <th
                                             class="px-5 py-3 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                                             {{ __('file.order_num_alias') }}</th>
@@ -295,7 +295,7 @@
                             @forelse($ordersByStatus as $s)
                                 @php $sc = $statusColors[$s->status] ?? ['dot' => 'bg-gray-400', 'badge' => '']; @endphp
                                 <div
-                                    class="flex items-center justify-between p-3 rounded-xl bg-gray-100/100 dark:bg-surface-tonal-a30/50 border border-gray-100 dark:border-surface-tonal-a30">
+                                    class="flex items-center justify-between p-3 rounded-xl  dark:bg-surface-tonal-a30/50 border border-gray-100 dark:border-surface-tonal-a30">
                                     <div class="flex items-center gap-2.5">
                                         <span class="w-2.5 h-2.5 rounded-full {{ $sc['dot'] }} shrink-0"></span>
                                         <span

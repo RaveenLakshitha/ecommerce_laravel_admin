@@ -146,7 +146,7 @@
                             <table class="w-full text-left">
                                 <thead>
                                     <tr
-                                        class="bg-gray-100/100 dark:bg-surface-tonal-a10/50 border-b border-gray-100 dark:border-surface-tonal-a30">
+                                        class=" dark:bg-surface-tonal-a10/50 border-b border-gray-100 dark:border-surface-tonal-a30">
                                         <th
                                             class="px-5 py-3 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                                             {{ __('file.product') }}</th>
@@ -242,7 +242,7 @@
                             <table class="w-full text-left">
                                 <thead>
                                     <tr
-                                        class="bg-gray-100/100 dark:bg-surface-tonal-a10/50 border-b border-gray-100 dark:border-surface-tonal-a30">
+                                        class=" dark:bg-surface-tonal-a10/50 border-b border-gray-100 dark:border-surface-tonal-a30">
                                         <th
                                             class="px-5 py-3 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                                             {{ __('file.product') }}</th>

@@ -1320,6 +1320,26 @@
             }
         }
 
+        /* Dynamic Selection Styling and Shake Animations */
+        @keyframes pd-shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-6px); }
+            40%, 80% { transform: translateX(6px); }
+        }
+        
+        .pd-attribute-group {
+            transition: border-color 0.3s ease, background-color 0.3s ease, padding 0.3s ease;
+            border: 1px solid transparent;
+            border-radius: 6px;
+            padding: 0.5rem;
+            margin: -0.5rem;
+        }
+        
+        .pd-attribute-group.pd-highlight-error {
+            border-color: rgba(196, 96, 42, 0.4);
+            background-color: rgba(196, 96, 42, 0.03);
+            animation: pd-shake 0.4s ease-in-out;
+        }
 
     </style>
 
@@ -1328,7 +1348,7 @@
     ════════════════════════════════════════════════════ --}}
     <div class="pd-toast" id="pdToast">
         <span class="pd-toast-icon">✓</span>
-        <span id="pdToastMsg">Item added to cart</span>
+        <span id="pdToastMsg">{{ __('product.item_added_to_cart') }}</span>
     </div>
 
     {{-- ════════════════════════════════════════════════════
@@ -1388,15 +1408,15 @@
 
                 {{-- Breadcrumb --}}
                 <div class="pd-breadcrumbs">
-                    <a href="{{ route('home') }}">Home</a>
+                    <a href="{{ route('home') }}">{{ __('product.home') }}</a>
                     <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <polyline points="9 18 15 12 9 6" />
                     </svg>
-                    <a href="{{ route('frontend.products.index') }}">Shop</a>
+                    <a href="{{ route('frontend.products.index') }}">{{ __('product.shop') }}</a>
                     <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <polyline points="9 18 15 12 9 6" />
                     </svg>
-                    <span>{{ $product->category->name ?? 'Product' }}</span>
+                    <span>{{ $product->category->name ?? __('product.shop') }}</span>
                 </div>
 
                 <h1 class="pd-title">{{ $product->name }}</h1>
@@ -1414,8 +1434,8 @@
                             </svg>
                         @endfor
                     </div>
-                    <span class="pd-rating-count">{{ $avgRating > 0 ? $avgRating : 'No' }} ({{ $product->reviews->count() }}
-                        reviews)</span>
+                    <span class="pd-rating-count">{{ $avgRating > 0 ? $avgRating : __('product.no_reviews') }} ({{ $product->reviews->count() }}
+                        {{ __('product.reviews') }})</span>
                 </div>
 
                 {{-- Price --}}
@@ -1439,7 +1459,7 @@
                     $totalStock = $product->variants->sum('stock_quantity') ?? 0;
                     $stockClass = $totalStock > 10 ? 'in-stock' : ($totalStock > 0 ? 'low-stock' : 'out-stock');
                     $stockDot = $totalStock > 10 ? '' : ($totalStock > 0 ? 'low' : 'out');
-                    $stockText = $totalStock > 10 ? 'In Stock' : ($totalStock > 0 ? "Only {$totalStock} left" : 'Out of Stock');
+                    $stockText = $totalStock > 10 ? __('product.in_stock') : ($totalStock > 0 ? __('product.only_left', ['count' => $totalStock]) : __('product.out_of_stock'));
                 @endphp
                 <div class="pd-stock {{ $stockClass }}" id="pdStockWrap">
                     <span class="pd-stock-dot {{ $stockDot }}" id="pdStockDot"></span>
@@ -1484,8 +1504,7 @@
                             <div class="pd-attribute-group" data-attr-id="{{ $attr->id }}" data-attr-index="{{ $index }}"
                                 style="margin-bottom:1.5rem;">
                                 <div class="pd-option-label">
-                                    {{ $attr->name }} — <span class="selected-value-label" id="label-attr-{{ $attr->id }}">Select a
-                                        {{ strtolower($attr->name) }}</span>
+                                    {{ $attr->name }} — <span class="selected-value-label" id="label-attr-{{ $attr->id }}">{{ __('product.select_attribute', ['name' => strtolower($attr->name)]) }}</span>
                                 </div>
                                 <div class="{{ $isColor ? 'pd-swatches' : 'pd-sizes' }}">
                                     @foreach($values as $val)
@@ -1505,7 +1524,7 @@
                                         @endif
                                     @endforeach
                                 </div>
-                                @if(strtolower($attr->name) === 'size')
+                                @if(strtolower($attr->name) === 'size' && ($storefront_size_guide_show ?? true))
                                     <button type="button" class="pd-size-chart-link" style="margin-top:0.5rem;"
                                         onclick="openSizeChart()">
                                         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -1517,7 +1536,7 @@
                                             <line x1="3" y1="12" x2="3.01" y2="12" />
                                             <line x1="3" y1="18" x2="3.01" y2="18" />
                                         </svg>
-                                        Size guide &amp; fit chart
+                                        {{ __('product.size_guide_fit_chart') }}
                                     </button>
                                 @endif
                             </div>
@@ -1539,19 +1558,19 @@
                         </div>
                         <button type="submit" class="pd-add-btn" id="addToCartBtn" @if($product->variants->isEmpty())
                         disabled @endif onclick="handleAddToCart(event)">
-                            Add to Cart
+                            {{ __('product.add_to_cart') }}
                         </button>
                     </div>
 
                     <button type="button" class="pd-buy-btn" @if($product->variants->isEmpty()) disabled @endif
                         onclick="handleBuyNow()">
-                        Buy Now
+                        {{ __('product.buy_now') }}
                     </button>
 
                     @if($product->variants->isEmpty())
                         <p
                             style="color:var(--rust);font-size:0.78rem;margin-top:-1rem;margin-bottom:1rem;letter-spacing:0.05em;">
-                            Currently out of stock — join the waitlist below.
+                            {{ __('product.out_of_stock_waitlist') }}
                         </p>
                     @endif
                 </form>
@@ -1561,7 +1580,7 @@
                     <div
                         style="margin-bottom:1.5rem;padding:0.9rem 1rem;background:rgba(122,158,126,0.1);border:1px solid var(--sage);color:var(--sage);font-size:0.85rem;display:flex;align-items:center;gap:0.5rem;">
                         ✓ {{ session('success') }} <a href="{{ route('cart.index') }}"
-                            style="font-weight:600;text-decoration:underline;color:var(--sage);">View Cart →</a>
+                            style="font-weight:600;text-decoration:underline;color:var(--sage);">{{ __('product.view_all') }} →</a>
                     </div>
                 @endif
                 @if(session('error'))
@@ -1577,12 +1596,12 @@
                     {{-- Description --}}
                     <div class="pd-acc-item open" id="acc-desc">
                         <button class="pd-acc-btn" onclick="toggleAcc('acc-desc')">
-                            <span>Description</span>
+                            <span>{{ __('product.description') }}</span>
                             <span class="pd-acc-icon">+</span>
                         </button>
                         <div class="pd-acc-body" id="acc-desc-body">
                             <div class="pd-acc-body-inner">
-                                {!! nl2br(e($product->description ?? 'No detailed description available.')) !!}
+                                {!! nl2br(e($product->description ?? __('product.no_description'))) !!}
                             </div>
                         </div>
                     </div>
@@ -1590,7 +1609,7 @@
                     {{-- Fabric & Care --}}
                     <div class="pd-acc-item" id="acc-care">
                         <button class="pd-acc-btn" onclick="toggleAcc('acc-care')">
-                            <span>Fabric &amp; Care</span>
+                            <span>{{ __('product.fabric_care') }}</span>
                             <span class="pd-acc-icon">+</span>
                         </button>
                         <div class="pd-acc-body" id="acc-care-body">
@@ -1599,112 +1618,132 @@
                                     {!! nl2br(e($product->fabric_details)) !!}
                                 @else
                                     <ul>
-                                        <li>100% Organic Cotton — breathable and lightweight</li>
-                                        <li>Lining: 100% ECOVERO™ Viscose</li>
-                                        <li>Machine wash cold, delicate cycle</li>
-                                        <li>Do not tumble dry — lay flat to dry</li>
-                                        <li>Warm iron on reverse side</li>
-                                        <li>Do not dry clean</li>
+                                        <li>{{ __('product.fabric_care_1') }}</li>
+                                        <li>{{ __('product.fabric_care_2') }}</li>
+                                        <li>{{ __('product.fabric_care_3') }}</li>
+                                        <li>{{ __('product.fabric_care_4') }}</li>
+                                        <li>{{ __('product.fabric_care_5') }}</li>
+                                        <li>{{ __('product.fabric_care_6') }}</li>
                                     </ul>
                                 @endif
                             </div>
                         </div>
                     </div>
 
+                    @if($storefront_measure_show ?? true)
                     {{-- Measurements --}}
                     <div class="pd-acc-item" id="acc-measure">
                         <button class="pd-acc-btn" onclick="toggleAcc('acc-measure')">
-                            <span>Measurements</span>
+                            <span>{{ __('product.measurements') }}</span>
                             <span class="pd-acc-icon">+</span>
                         </button>
                         <div class="pd-acc-body" id="acc-measure-body">
                             <div class="pd-acc-body-inner">
-                                <p style="margin-bottom:0.5rem;font-size:0.82rem;">Measurements taken on size S. Add 5cm per
-                                    size.</p>
+                                <p style="margin-bottom:0.5rem;font-size:0.82rem;">{{ ($storefront_measure_note === 'Measurements taken on size S. Add 5cm per size.') ? __('product.measurements_note') : ($storefront_measure_note ?? __('product.measurements_note')) }}</p>
                                 <table class="pd-measure-table">
                                     <thead>
                                         <tr>
-                                            <th>Measurement</th>
-                                            <th>cm</th>
-                                            <th>inches</th>
+                                            <th>{{ __('product.measurement') }}</th>
+                                            <th>{{ __('product.cm') }}</th>
+                                            <th>{{ __('product.inches') }}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>Total length</td>
-                                            <td>118</td>
-                                            <td>46.5"</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Bust</td>
-                                            <td>92</td>
-                                            <td>36.2"</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Waist</td>
-                                            <td>76</td>
-                                            <td>29.9"</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Hem</td>
-                                            <td>152</td>
-                                            <td>59.8"</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Sleeve length</td>
-                                            <td>62</td>
-                                            <td>24.4"</td>
-                                        </tr>
+                                        @php
+                                            $measures = is_array($storefront_measure_items) ? $storefront_measure_items : [
+                                                ['label' => 'Total length', 'cm' => '118', 'inches' => '46.5"'],
+                                                ['label' => 'Bust', 'cm' => '92', 'inches' => '36.2"'],
+                                                ['label' => 'Waist', 'cm' => '76', 'inches' => '29.9"'],
+                                                ['label' => 'Hem', 'cm' => '152', 'inches' => '59.8"'],
+                                                ['label' => 'Sleeve length', 'cm' => '62', 'inches' => '24.4"']
+                                            ];
+                                        @endphp
+                                        @foreach($measures as $measure)
+                                            <tr>
+                                                <td>
+                                                    @if(isset($measure['label']))
+                                                        @if($measure['label'] === 'Total length')
+                                                            {{ __('product.total_length') }}
+                                                        @elseif($measure['label'] === 'Bust')
+                                                            {{ __('product.bust_label') }}
+                                                        @elseif($measure['label'] === 'Waist')
+                                                            {{ __('product.waist_label') }}
+                                                        @elseif($measure['label'] === 'Hem')
+                                                            {{ __('product.hem_label') }}
+                                                        @elseif($measure['label'] === 'Sleeve length')
+                                                            {{ __('product.sleeve_length') }}
+                                                        @else
+                                                            {{ $measure['label'] }}
+                                                        @endif
+                                                    @endif
+                                                </td>
+                                                <td>{{ $measure['cm'] ?? '' }}</td>
+                                                <td>{{ $measure['inches'] ?? '' }}</td>
+                                            </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
+                    @endif
 
+                    @if($storefront_delivery_show ?? true)
                     {{-- Delivery & Returns --}}
                     <div class="pd-acc-item" id="acc-delivery">
                         <button class="pd-acc-btn" onclick="toggleAcc('acc-delivery')">
-                            <span>Delivery &amp; Returns</span>
+                            <span>{{ __('product.delivery_returns') }}</span>
                             <span class="pd-acc-icon">+</span>
                         </button>
                         <div class="pd-acc-body" id="acc-delivery-body">
                             <div class="pd-acc-body-inner">
                                 <div class="pd-delivery-grid">
-                                    <div class="pd-del-item">
-                                        <span class="pd-del-icon">🚚</span>
-                                        <div>
-                                            <div class="pd-del-title">Standard Delivery</div>
-                                            <div class="pd-del-sub">@price($shipping_cost_per_order) · 3–5 business
-                                                days<br>Free on orders over @price($free_shipping_threshold)</div>
-                                        </div>
-                                    </div>
-                                    <div class="pd-del-item">
-                                        <span class="pd-del-icon">⚡</span>
-                                        <div>
-                                            <div class="pd-del-title">Express Delivery</div>
-                                            <div class="pd-del-sub">@price(650) · Next business day<br>Order before 1 PM
+                                    @php
+                                        $deliveries = is_array($storefront_delivery_items) ? $storefront_delivery_items : [
+                                            [
+                                                'title' => __('product.standard_delivery'),
+                                                'subtitle' => \App\Models\Setting::formatPrice($shipping_cost_per_order ?? 0) . ' · ' . __('product.standard_delivery_days') . '<br>' . __('product.free_on_orders_over') . ' ' . \App\Models\Setting::formatPrice($free_shipping_threshold ?? 5000),
+                                                'svg' => '<rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>'
+                                            ],
+                                            [
+                                                'title' => __('product.express_delivery'),
+                                                'subtitle' => \App\Models\Setting::formatPrice(650) . ' · ' . __('product.express_delivery_days') . '<br>' . __('product.order_before_1pm'),
+                                                'svg' => '<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>'
+                                            ],
+                                            [
+                                                'title' => __('product.free_returns'),
+                                                'subtitle' => __('product.free_returns_days') . ' · ' . __('product.unworn_with_tags') . '<br>' . __('product.initiate_via_orders'),
+                                                'svg' => '<polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/>'
+                                            ],
+                                            [
+                                                'title' => __('product.in_store_pickup'),
+                                                'subtitle' => __('product.pickup_locations') . '<br>' . __('product.ready_in_hours'),
+                                                'svg' => '<line x1="16.5" y1="9.4" x2="7.5" y2="4.21"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/>'
+                                            ]
+                                        ];
+                                    @endphp
+                                    @foreach($deliveries as $delivery)
+                                        <div class="pd-del-item">
+                                            <span class="pd-del-icon" style="display: inline-flex; align-items: center; color: var(--ink);">
+                                                @if(isset($delivery['svg']) && !empty($delivery['svg']))
+                                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                                        {!! $delivery['svg'] !!}
+                                                    </svg>
+                                                @else
+                                                    🚚
+                                                @endif
+                                            </span>
+                                            <div>
+                                                <div class="pd-del-title">{{ $delivery['title'] ?? '' }}</div>
+                                                <div class="pd-del-sub">{!! $delivery['subtitle'] ?? '' !!}</div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="pd-del-item">
-                                        <span class="pd-del-icon">↩️</span>
-                                        <div>
-                                            <div class="pd-del-title">Free Returns</div>
-                                            <div class="pd-del-sub">30 days · Unworn &amp; with tags<br>Initiate via My
-                                                Orders</div>
-                                        </div>
-                                    </div>
-                                    <div class="pd-del-item">
-                                        <span class="pd-del-icon">🏪</span>
-                                        <div>
-                                            <div class="pd-del-title">In-Store Pickup</div>
-                                            <div class="pd-del-sub">Colombo &amp; Kandy<br>Ready in 2–3 hours</div>
-                                        </div>
-                                    </div>
+                                    @endforeach
                                 </div>
                             </div>
                         </div>
                     </div>
+                    @endif
 
                 </div>{{-- end accordions --}}
 
@@ -1720,7 +1759,7 @@
     <section class="pd-reviews-section" id="reviewsSection">
         <div class="pd-reviews-header">
             <div>
-                <div class="pd-reviews-title">Customer Reviews</div>
+                <div class="pd-reviews-title">{{ __('product.customer_reviews') }}</div>
                 <div style="margin-top:0.75rem;">
                     <div class="pd-rating-breakdown">
                         @php
@@ -1735,7 +1774,7 @@
                         @endphp
                         @foreach([5, 4, 3, 2, 1] as $star)
                             <div class="pd-rb-row">
-                                <span class="pd-rb-label">{{ $star }} star</span>
+                                <span class="pd-rb-label">{{ $star }} {{ __('product.star') }}</span>
                                 <div class="pd-rb-bar">
                                     <div class="pd-rb-fill"
                                         style="width:{{ $totalReviews > 0 ? ($ratingDist[$star] / $totalReviews) * 100 : 0 }}%;">
@@ -1761,10 +1800,10 @@
                                 </svg>
                             @endfor
                         </div>
-                        <div style="font-size:0.78rem;color:var(--mink);">{{ $totalReviews }} reviews</div>
+                        <div style="font-size:0.78rem;color:var(--mink);">{{ $totalReviews }} {{ __('product.reviews') }}</div>
                     </div>
                 </div>
-                <button class="pd-write-review-btn" onclick="openReviewModal()">Write a Review</button>
+                <button class="pd-write-review-btn" onclick="openReviewModal()">{{ __('product.write_review') }}</button>
             </div>
         </div>
 
@@ -1776,10 +1815,12 @@
                     <div class="pd-review-top">
                         <div>
                             <div class="pd-reviewer-name">
-                                {{ $review->is_anonymous ? 'Anonymous' : ($review->customer->first_name ?? 'Customer') }}</div>
-                            <div class="pd-review-date">{{ $review->created_at->format('F Y') }}</div>
+                                {{ $review->is_anonymous ? __('product.anonymous') : ($review->customer->first_name ?? __('product.anonymous')) }}</div>
+                            <div class="pd-review-date">
+                                {{ app()->getLocale() === 'es' ? $review->created_at->translatedFormat('F Y') : $review->created_at->format('F Y') }}
+                            </div>
                         </div>
-                        <span class="pd-verified">✓ Verified</span>
+                        <span class="pd-verified">✓ {{ __('product.verified') }}</span>
                     </div>
 
                     <div class="pd-review-stars pd-stars">
@@ -1797,21 +1838,21 @@
 
                     <div class="pd-review-meta">
                         <span class="pd-review-helpful" onclick="markHelpful({{ $review->id }}, this)">
-                            👍 <span class="helpful-label">Helpful</span> (<span
+                            👍 <span class="helpful-label">{{ __('product.helpful') }}</span> (<span
                                 class="helpful-count">{{ $review->helpful_count ?? 0 }}</span>)
                         </span>
                     </div>
                 </div>
             @empty
                 <div style="grid-column: 1 / -1; color: var(--mink); font-style: italic;">
-                    No reviews yet. Be the first to review this product!
+                    {{ __('product.no_reviews_yet') }}
                 </div>
             @endforelse
 
         </div>
 
         <div class="pd-load-more">
-            <button class="pd-load-more-btn">Load More Reviews</button>
+            <button class="pd-load-more-btn">{{ __('product.load_more_reviews') }}</button>
         </div>
     </section>
 
@@ -1823,8 +1864,8 @@
         <section class="pd-related-section">
             <div class="pd-related-inner">
                 <div class="pd-related-header">
-                    <div class="pd-related-title">You may also like</div>
-                    <a href="{{ route('frontend.products.index') }}" class="pd-related-link">View all →</a>
+                    <div class="pd-related-title">{{ __('product.you_may_also_like') }}</div>
+                    <a href="{{ route('frontend.products.index') }}" class="pd-related-link">{{ __('product.view_all') }} →</a>
                 </div>
 
                 <div class="pd-related-grid">
@@ -1837,7 +1878,7 @@
                                     $rpOriginalPrice = ($rpDefaultVariant && $rpDefaultVariant->sale_price) ? $rpDefaultVariant->price : null;
                                 @endphp
                                 @if($rpOriginalPrice)
-                                    <span class="pd-card-badge">Sale</span>
+                                    <span class="pd-card-badge">{{ __('product.sale') }}</span>
                                 @endif
                                 @php
                                     $rpInWishlist = auth()->check() && auth()->user()->wishlists()->where('product_id', $rp->id)->exists();
@@ -1886,83 +1927,74 @@
     {{-- ════════════════════════════════════════════════════
     SIZE CHART MODAL
     ════════════════════════════════════════════════════ --}}
-    <div class="modal-overlay" id="sizeChartModal" onclick="closeSizeChart(event)">
-        <div class="modal-box">
-            <button class="modal-close" onclick="closeSizeChartBtn()">×</button>
-            <div class="modal-title">Size Guide</div>
+    {{-- ════════════════════════════════════════════════════
+    SIZE CHART MODAL
+    ════════════════════════════════════════════════════ --}}
+    @if($storefront_size_guide_show ?? true)
+        @php
+            $sgTitle = ($storefront_size_guide_title === 'Size Guide') ? __('product.size_guide_fit_chart') : ($storefront_size_guide_title ?? __('product.size_guide_fit_chart'));
+            $sgHeaders = is_array($storefront_size_guide_headers) ? $storefront_size_guide_headers : [
+                __('product.size'),
+                __('product.bust_cm'),
+                __('product.waist_cm'),
+                __('product.hip_cm'),
+                __('product.uk_eu')
+            ];
+            $sgRows = is_array($storefront_size_guide_rows) ? $storefront_size_guide_rows : [
+                ['XS', '80–84', '62–66', '88–92', '6 / 34'],
+                ['S', '84–88', '66–70', '92–96', '8 / 36'],
+                ['M', '88–92', '70–74', '96–100', '10 / 38'],
+                ['L', '92–98', '74–80', '100–106', '12 / 40'],
+                ['XL', '98–104', '80–86', '106–112', '14 / 42'],
+                ['XXL', '104–112', '86–94', '112–120', '16 / 44']
+            ];
+            $sgNote = ($storefront_size_guide_note === 'All measurements in centimetres. If between sizes, size up for a relaxed fit.') ? __('product.size_guide_note_desc') : ($storefront_size_guide_note ?? __('product.size_guide_note_desc'));
+            $sgBust = ($storefront_size_guide_bust_desc === 'measure around the fullest part of your chest, keeping the tape horizontal.') ? __('product.bust_desc') : ($storefront_size_guide_bust_desc ?? __('product.bust_desc'));
+            $sgWaist = ($storefront_size_guide_waist_desc === 'measure around the narrowest part of your natural waist.') ? __('product.waist_desc') : ($storefront_size_guide_waist_desc ?? __('product.waist_desc'));
+            $sgHip = ($storefront_size_guide_hip_desc === 'measure around the fullest part of your hips, about 20cm below your waist.') ? __('product.hip_desc') : ($storefront_size_guide_hip_desc ?? __('product.hip_desc'));
+            $sgFit = ($storefront_size_guide_fit_note === 'This piece is cut in a relaxed silhouette with a slightly dropped shoulder. Our model is 175cm and wears a size S.') ? __('product.fit_note_desc') : ($storefront_size_guide_fit_note ?? __('product.fit_note_desc'));
+        @endphp
+        <div class="modal-overlay" id="sizeChartModal" onclick="closeSizeChart(event)">
+            <div class="modal-box">
+                <button class="modal-close" onclick="closeSizeChartBtn()">×</button>
+                <div class="modal-title">{{ $sgTitle }}</div>
 
-            <table class="size-chart-table">
-                <thead>
-                    <tr>
-                        <th>Size</th>
-                        <th>Bust (cm)</th>
-                        <th>Waist (cm)</th>
-                        <th>Hip (cm)</th>
-                        <th>UK/EU</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>XS</td>
-                        <td>80–84</td>
-                        <td>62–66</td>
-                        <td>88–92</td>
-                        <td>6 / 34</td>
-                    </tr>
-                    <tr>
-                        <td>S</td>
-                        <td>84–88</td>
-                        <td>66–70</td>
-                        <td>92–96</td>
-                        <td>8 / 36</td>
-                    </tr>
-                    <tr>
-                        <td>M</td>
-                        <td>88–92</td>
-                        <td>70–74</td>
-                        <td>96–100</td>
-                        <td>10 / 38</td>
-                    </tr>
-                    <tr>
-                        <td>L</td>
-                        <td>92–98</td>
-                        <td>74–80</td>
-                        <td>100–106</td>
-                        <td>12 / 40</td>
-                    </tr>
-                    <tr>
-                        <td>XL</td>
-                        <td>98–104</td>
-                        <td>80–86</td>
-                        <td>106–112</td>
-                        <td>14 / 42</td>
-                    </tr>
-                    <tr>
-                        <td>XXL</td>
-                        <td>104–112</td>
-                        <td>86–94</td>
-                        <td>112–120</td>
-                        <td>16 / 44</td>
-                    </tr>
-                </tbody>
-            </table>
-            <p class="size-chart-note">All measurements in centimetres. If between sizes, size up for a relaxed fit.</p>
+                <table class="size-chart-table">
+                    <thead>
+                        <tr>
+                            @foreach($sgHeaders as $header)
+                                <th>{{ $header }}</th>
+                            @endforeach
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($sgRows as $row)
+                            <tr>
+                                @foreach($row as $cell)
+                                    <td>{{ $cell }}</td>
+                                @endforeach
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+                <p class="size-chart-note">{{ $sgNote }}</p>
 
-            <div class="fit-guide" style="margin-top:1.5rem;">
-                <strong>How to measure:</strong><br>
-                <strong>Bust</strong> — measure around the fullest part of your chest, keeping the tape horizontal.<br>
-                <strong>Waist</strong> — measure around the narrowest part of your natural waist.<br>
-                <strong>Hip</strong> — measure around the fullest part of your hips, about 20cm below your waist.
-            </div>
+                <div class="fit-guide" style="margin-top:1.5rem;">
+                    <strong>{{ __('product.how_to_measure') }}</strong><br>
+                    <strong>{{ __('product.bust') }}</strong> — {{ $sgBust }}<br>
+                    <strong>{{ __('product.waist') }}</strong> — {{ $sgWaist }}<br>
+                    <strong>{{ __('product.hip') }}</strong> — {{ $sgHip }}
+                </div>
 
-            <div
-                style="margin-top:1.5rem;padding:1rem;background:var(--sand);font-size:0.82rem;color:var(--mink);border-left:3px solid var(--rust);">
-                <strong style="color:var(--ink);">Fit note for this style:</strong>
-                This piece is cut in a relaxed silhouette with a slightly dropped shoulder.
-                Our model is 175cm and wears a size S.
+                @if($sgFit)
+                    <div style="margin-top:1.5rem;padding:1rem;background:var(--sand);font-size:0.82rem;color:var(--mink);border-left:3px solid var(--rust);">
+                        <strong style="color:var(--ink);">{{ __('product.fit_note_style') }}</strong>
+                        {{ $sgFit }}
+                    </div>
+                @endif
             </div>
         </div>
-    </div>
+    @endif
 
 
 
@@ -1973,12 +2005,12 @@
     <div class="modal-overlay" id="reviewModal" onclick="closeReviewModal(event)">
         <div class="modal-box">
             <button class="modal-close" onclick="closeReviewModalBtn()">×</button>
-            <div class="modal-title">Write a Review</div>
+            <div class="modal-title">{{ __('product.write_review') }}</div>
 
             <form class="review-form" id="actualReviewForm" onsubmit="submitReview(event)">
                 @csrf
                 <div>
-                    <label>Your Rating</label>
+                    <label>{{ __('product.your_rating') }}</label>
                     <div class="star-picker" id="starPicker">
                         @for($i = 1; $i <= 5; $i++)
                             <span class="star-picker-star" data-val="{{ $i }}" onmouseover="hoverStars({{ $i }})"
@@ -1988,21 +2020,20 @@
                     <input type="hidden" id="ratingInput" name="rating" value="0">
                 </div>
                 <div>
-                    <label>Review Title</label>
-                    <input type="text" name="title" placeholder="e.g. Stunning quality" required>
+                    <label>{{ __('product.review_title') }}</label>
+                    <input type="text" name="title" placeholder="{{ app()->getLocale() === 'es' ? 'ej. Excelente calidad' : 'e.g. Stunning quality' }}" required>
                 </div>
                 <div>
-                    <label>Your Review</label>
-                    <textarea name="content" placeholder="Tell others about your experience with this product..."
+                    <label>{{ __('product.your_review') }}</label>
+                    <textarea name="content" placeholder="{{ app()->getLocale() === 'es' ? 'Cuéntale a otros sobre tu experiencia con este producto...' : 'Tell others about your experience with this product...' }}"
                         required></textarea>
                 </div>
                 <div style="display:flex; align-items:center; gap:0.5rem; margin-top:-0.5rem;">
                     <input type="checkbox" id="is_anonymous" name="is_anonymous" value="1" style="width:auto; margin:0;">
                     <label for="is_anonymous"
-                        style="margin:0; text-transform:none; font-weight:400; font-style:italic;">Post this review
-                        anonymously</label>
+                        style="margin:0; text-transform:none; font-weight:400; font-style:italic;">{{ __('product.post_anonymously') }}</label>
                 </div>
-                <button type="submit" class="review-submit-btn" id="reviewSubmitBtn">Submit Review</button>
+                <button type="submit" class="review-submit-btn" id="reviewSubmitBtn">{{ __('product.submit_review') }}</button>
             </form>
         </div>
     </div>
@@ -2048,17 +2079,97 @@
         });
 
         /* ── QTY ───────────────────────────────────────── */
-        function incrementQty() {
-            const i = document.getElementById('quantityInput');
-            i.value = parseInt(i.value) + 1;
+        function updateQtyButtonStates() {
+            const qtyInput = document.getElementById('quantityInput');
+            if (!qtyInput) return;
+            const decBtn = qtyInput.previousElementSibling;
+            const incBtn = qtyInput.nextElementSibling;
+            const val = parseInt(qtyInput.value) || 1;
+            const max = parseInt(qtyInput.getAttribute('max')) || 9999;
+            
+            const isVariantSelected = Object.keys(selectedAttributes).length === numRequiredAttributes;
+            
+            if (decBtn) {
+                decBtn.disabled = !isVariantSelected || (val <= 1);
+                decBtn.style.opacity = decBtn.disabled ? '0.3' : '1';
+                decBtn.style.pointerEvents = decBtn.disabled ? 'none' : 'auto';
+            }
+            if (incBtn) {
+                incBtn.disabled = !isVariantSelected || (val >= max);
+                incBtn.style.opacity = incBtn.disabled ? '0.3' : '1';
+                incBtn.style.pointerEvents = incBtn.disabled ? 'none' : 'auto';
+            }
         }
-        function decrementQty() {
+
+        function incrementQty() {
+            if (Object.keys(selectedAttributes).length < numRequiredAttributes) {
+                validateOptionsSelected();
+                return;
+            }
             const i = document.getElementById('quantityInput');
-            if (parseInt(i.value) > 1) i.value = parseInt(i.value) - 1;
+            const max = parseInt(i.getAttribute('max')) || 9999;
+            const val = parseInt(i.value) || 1;
+            if (val < max) {
+                i.value = val + 1;
+            }
+            updateQtyButtonStates();
+        }
+        
+        function decrementQty() {
+            if (Object.keys(selectedAttributes).length < numRequiredAttributes) {
+                validateOptionsSelected();
+                return;
+            }
+            const i = document.getElementById('quantityInput');
+            const val = parseInt(i.value) || 1;
+            if (val > 1) {
+                i.value = val - 1;
+            }
+            updateQtyButtonStates();
+        }
+
+        /* ── OPTIONS VALIDATION ─────────────────────────── */
+        function validateOptionsSelected() {
+            if (Object.keys(selectedAttributes).length < numRequiredAttributes) {
+                // Find and highlight/shake missing options
+                document.querySelectorAll('.pd-attribute-group').forEach(group => {
+                    const attrId = parseInt(group.dataset.attrId);
+                    if (!selectedAttributes[attrId]) {
+                        group.classList.add('pd-highlight-error');
+                        setTimeout(() => {
+                            group.classList.remove('pd-highlight-error');
+                        }, 500);
+                    }
+                });
+                
+                // Show toast notification
+                showToast(@json(__('product.select_all_options')));
+                return false;
+            }
+            return true;
+        }
+
+        function validateQuantity() {
+            const qtyInput = document.getElementById('quantityInput');
+            if (qtyInput) {
+                const val = parseInt(qtyInput.value) || 1;
+                const max = parseInt(qtyInput.getAttribute('max'));
+                if (max !== null && !isNaN(max) && val > max) {
+                    showToast(@json(__('product.out_of_stock')) || 'Selected quantity exceeds available stock.');
+                    qtyInput.value = max;
+                    updateQtyButtonStates();
+                    return false;
+                }
+            }
+            return true;
         }
 
         /* ── CART ──────────────────────────────────────── */
         function handleAddToCart(e) {
+            if (!validateOptionsSelected() || !validateQuantity()) {
+                e.preventDefault();
+                return;
+            }
             /* Allow the form to POST normally — just show a toast on success page reload.
                Or intercept with fetch for AJAX. */
             /* Uncomment below for AJAX (requires a JSON response from your controller): */
@@ -2076,6 +2187,9 @@
         }
 
         function handleBuyNow() {
+            if (!validateOptionsSelected() || !validateQuantity()) {
+                return;
+            }
             const form = document.getElementById('addToCartForm');
             // Could redirect to checkout directly
             form.action = form.action.replace('cart/add', 'checkout/quick');
@@ -2098,9 +2212,11 @@
         // Convert array structure for easy filtering
         const variants = rawVariants.map(v => {
             const attrs = {};
-            if (v.attribute_values) {
-                v.attribute_values.forEach(av => {
-                    attrs[av.attribute_id] = av.id;
+            const attrValues = v.attribute_values || v.attributeValues;
+            if (attrValues) {
+                attrValues.forEach(av => {
+                    const attrId = av.attribute_id !== undefined ? av.attribute_id : av.attributeId;
+                    attrs[attrId] = av.id;
                 });
             }
 
@@ -2124,10 +2240,17 @@
         const productPrimaryImage = @json($product->primaryImage ? $product->primaryImage->url : ($product->images->first() ? $product->images->first()->url : null)) || "@placeholder($product->id)";
 
         const numRequiredAttributes = @json(isset($productAttributes) ? $productAttributes->count() : 0);
-        // Disable add to cart button initially if there are attributes needed
-        if (numRequiredAttributes > 0) {
+        
+        // Keep buttons enabled on load unless the entire product is out of stock
+        const totalProductStock = @json($product->variants->sum('stock_quantity') ?? 0);
+        if (totalProductStock === 0) {
             addToCartBtn.disabled = true;
-            addToCartBtn.textContent = 'Select Options';
+            addToCartBtn.textContent = @json(__('product.out_of_stock'));
+            const buyNowBtn = document.querySelector('.pd-buy-btn');
+            if (buyNowBtn) buyNowBtn.disabled = true;
+        } else {
+            addToCartBtn.disabled = false;
+            addToCartBtn.textContent = @json(__('product.add_to_cart'));
         }
 
         function getMatchingVariants(selections) {
@@ -2145,7 +2268,7 @@
                 delete selectedAttributes[attrId];
                 btn.classList.remove('active');
                 if (btn.classList.contains('pd-swatch')) btn.style.borderColor = 'transparent';
-                document.getElementById('label-attr-' + attrId).textContent = "Select an option";
+                document.getElementById('label-attr-' + attrId).textContent = @json(__('product.select_an_option'));
             } else {
                 selectedAttributes[attrId] = valId;
                 // Remove active from peers in the DOM
@@ -2172,23 +2295,28 @@
                 const matchesIgnoreThisAttr = getMatchingVariants(otherSelections);
                 const validValsForThisAttr = new Set();
                 matchesIgnoreThisAttr.forEach(v => {
-                    if (v.attributes[attrId]) validValsForThisAttr.add(v.attributes[attrId]);
+                    // Limit availability only to options that have stock available
+                    if (v.attributes[attrId] && v.stock > 0) {
+                        validValsForThisAttr.add(v.attributes[attrId]);
+                    }
                 });
 
                 group.querySelectorAll('.attr-btn').forEach(btn => {
                     const valId = parseInt(btn.dataset.valId);
                     if (validValsForThisAttr.has(valId)) {
                         btn.classList.remove('soldout');
+                        btn.removeAttribute('data-sold-out');
                         btn.disabled = false;
                     } else {
                         btn.classList.add('soldout');
+                        btn.setAttribute('data-sold-out', 'true');
                         btn.disabled = true;
                         // Auto-deselect if it becomes invalid and was selected
                         if (selectedAttributes[attrId] === valId) {
                             delete selectedAttributes[attrId];
                             btn.classList.remove('active');
                             if (btn.classList.contains('pd-swatch')) btn.style.borderColor = 'transparent';
-                            document.getElementById('label-attr-' + attrId).textContent = "Select an option";
+                            document.getElementById('label-attr-' + attrId).textContent = @json(__('product.select_an_option'));
                         }
                     }
                 });
@@ -2201,12 +2329,17 @@
                     Object.keys(v.attributes).every(k => v.attributes[k] === selectedAttributes[k]);
             });
 
+            const buyNowBtn = document.querySelector('.pd-buy-btn');
+
             if (exactMatch && Object.keys(selectedAttributes).length === numRequiredAttributes) {
                 // Update Add to Cart Form
                 addToCartForm.action = addToCartForm.action.replace(/\/\d+$/, '/' + exactMatch.id);
                 const inStock = exactMatch.stock > 0;
                 addToCartBtn.disabled = !inStock;
-                addToCartBtn.textContent = inStock ? 'Add to Cart' : 'Out of Stock';
+                addToCartBtn.textContent = inStock ? @json(__('product.add_to_cart')) : @json(__('product.out_of_stock'));
+                if (buyNowBtn) {
+                    buyNowBtn.disabled = !inStock;
+                }
 
                 // Update Price
                 const basePriceFmt = new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(exactMatch.price);
@@ -2220,10 +2353,16 @@
                 }
                 document.getElementById('pdPriceWrap').innerHTML = priceHtml;
 
-                // Update Stock
+                // Update Stock availability and display
+                const transInStock = @json(__('product.in_stock'));
+                const transOutOfStock = @json(__('product.out_of_stock'));
+                const transOnlyLeft = @json(__('product.only_left', ['count' => '__COUNT__']));
+
                 const stockClass = exactMatch.stock > 10 ? 'in-stock' : (exactMatch.stock > 0 ? 'low-stock' : 'out-stock');
                 const stockDot = exactMatch.stock > 10 ? '' : (exactMatch.stock > 0 ? 'low' : 'out');
-                const stockText = exactMatch.stock > 10 ? 'In Stock' : (exactMatch.stock > 0 ? `Only ${exactMatch.stock} left` : 'Out of Stock');
+                const stockText = exactMatch.stock > 10 
+                    ? `${transInStock} (${exactMatch.stock} available)` 
+                    : (exactMatch.stock > 0 ? transOnlyLeft.replace('__COUNT__', exactMatch.stock) : transOutOfStock);
 
                 const stockWrap = document.getElementById('pdStockWrap');
                 stockWrap.className = 'pd-stock ' + stockClass;
@@ -2231,6 +2370,18 @@
                     <span class="pd-stock-dot ${stockDot}" id="pdStockDot"></span>
                     <span class="pd-stock-label" id="pdStockLabel">${stockText}</span>
                 `;
+
+                // Set max attribute on quantity selector to match stock
+                const qtyInput = document.getElementById('quantityInput');
+                if (qtyInput) {
+                    qtyInput.removeAttribute('disabled');
+                    qtyInput.setAttribute('max', exactMatch.stock);
+                    const maxStock = exactMatch.stock > 0 ? exactMatch.stock : 1;
+                    if (parseInt(qtyInput.value) > maxStock) {
+                        qtyInput.value = maxStock;
+                    }
+                    updateQtyButtonStates();
+                }
 
                 // Update Image
                 const targetImageUrl = exactMatch.image_url || productPrimaryImage;
@@ -2247,22 +2398,37 @@
                     }
                 }
             } else {
-                // Not a complete match yet or variant not found
-                addToCartBtn.disabled = true;
-                addToCartBtn.textContent = 'Select Options';
+                // Not a complete match yet or variant not found, keep button enabled for validation
+                addToCartBtn.disabled = false;
+                addToCartBtn.textContent = @json(__('product.add_to_cart'));
+                if (buyNowBtn) {
+                    buyNowBtn.disabled = false;
+                }
+
+                // Reset max attribute on quantity selector and disable it
+                const qtyInput = document.getElementById('quantityInput');
+                if (qtyInput) {
+                    qtyInput.setAttribute('disabled', 'true');
+                    qtyInput.removeAttribute('max');
+                    qtyInput.value = 1;
+                    updateQtyButtonStates();
+                }
 
                 // Revert stock to "Select options" state
                 const stockWrap = document.getElementById('pdStockWrap');
                 stockWrap.className = 'pd-stock in-stock';
                 stockWrap.innerHTML = `
                     <span class="pd-stock-dot" style="background:#ccc;"></span>
-                    <span class="pd-stock-label" style="color:#777;">Please select all options</span>
+                    <span class="pd-stock-label" style="color:#777;">${@json(__('product.select_all_options'))}</span>
                 `;
             }
         }
 
-        // Run once on load to dim truly unavailable starting attributes
-        document.addEventListener('DOMContentLoaded', updateAttributeAvailability);
+        // Run once on load to dim truly unavailable starting attributes and set correct initial disabled states
+        document.addEventListener('DOMContentLoaded', () => {
+            updateAttributeAvailability();
+            resolveVariant();
+        });
 
         /* ── WISHLIST ──────────────────────────────────── */
         function toggleWishlist(btn, productId) {
@@ -2286,17 +2452,17 @@
                 .then(data => {
                     if (data.status === 'added') {
                         btn.classList.add('active');
-                        showToast('❤ Saved to wishlist');
+                        showToast('❤ ' + @json(__('product.saved_to_wishlist')));
                     } else if (data.status === 'removed') {
                         btn.classList.remove('active');
-                        showToast('Removed from wishlist');
+                        showToast(@json(__('product.removed_from_wishlist')));
                     }
                 })
                 .catch(error => {
                     console.error('Error:', error);
                     // Revert optimistic UI update
                     btn.classList.toggle('active');
-                    showToast('Error updating wishlist');
+                    showToast(@json(__('product.error_wishlist')));
                 });
         }
 
@@ -2327,6 +2493,32 @@
                 // Scroll to reviews section
                 const reviewsSection = document.getElementById('reviewsSection');
                 if (reviewsSection) reviewsSection.scrollIntoView({ behavior: 'smooth' });
+            }
+
+            // Setup manual quantity inputs validation and update button states
+            const qtyInput = document.getElementById('quantityInput');
+            if (qtyInput) {
+                const validateQty = function() {
+                    let val = parseInt(qtyInput.value) || 1;
+                    let max = parseInt(qtyInput.getAttribute('max')) || 9999;
+                    if (val > max) val = max;
+                    if (val < 1) val = 1;
+                    qtyInput.value = val;
+                    updateQtyButtonStates();
+                };
+                qtyInput.addEventListener('input', validateQty);
+                qtyInput.addEventListener('change', validateQty);
+                updateQtyButtonStates();
+            }
+
+            // Capture clicks on quantity selector before variant is chosen to trigger option validation
+            const qtySelector = document.querySelector('.pd-qty-selector');
+            if (qtySelector) {
+                qtySelector.addEventListener('click', function(e) {
+                    if (Object.keys(selectedAttributes).length < numRequiredAttributes) {
+                        validateOptionsSelected();
+                    }
+                }, true); // Capture phase click interception
             }
         });
 
@@ -2370,14 +2562,14 @@
 
             const rating = document.getElementById('ratingInput').value;
             if (rating == 0) {
-                showToast('Please select a rating');
+                showToast(@json(__('product.please_select_rating')));
                 return;
             }
 
             const btn = document.getElementById('reviewSubmitBtn');
             const originalText = btn.textContent;
             btn.disabled = true;
-            btn.textContent = 'Submitting...';
+            btn.textContent = @json(__('product.submitting'));
 
             const formData = new FormData(e.target);
 
@@ -2403,7 +2595,7 @@
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    showToast('✕ Network error. Please try again.');
+                    showToast('✕ ' + @json(__('product.network_error')));
                 })
                 .finally(() => {
                     btn.disabled = false;
@@ -2434,7 +2626,7 @@
                 .then(data => {
                     if (data.success) {
                         el.classList.add('active');
-                        label.textContent = 'Thanks!';
+                        label.textContent = @json(__('product.thanks'));
                         count.textContent = data.helpful_count;
                         el.style.color = 'var(--ink)';
                         el.style.pointerEvents = 'none';

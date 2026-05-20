@@ -11,10 +11,10 @@
                 <div>
                     <h1
                         class="text-3xl font-bold tracking-tight text-gray-900 dark:text-white uppercase tracking-tighter">
-                        System Parametrics</h1>
+                        {{ __('file.system_parametrics') ?? 'System Parametrics' }}</h1>
                     <p
                         class="mt-6 text-sm text-gray-400 dark:text-gray-500 font-medium">
-                        Calibrate core store identity, regional localization, and architectural branding assets.</p>
+                        {{ __('file.system_parametrics_subtitle') ?? 'Calibrate core store identity, regional localization, and architectural branding assets.' }}</p>
                 </div>
                 <div class="flex items-center gap-3 animate-fade-in-up delay-100">
                     <a href="{{ route('admin.dashboard') }}"
@@ -23,7 +23,7 @@
                             stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7" />
                         </svg>
-                        Center Return
+                        {{ __('file.center_return') ?? 'Center Return' }}
                     </a>
                 </div>
             </div>
@@ -39,7 +39,7 @@
                     <div
                         class="px-8 py-6 border-b border-gray-50 dark:border-surface-tonal-a30 bg-gray-50/30 dark:bg-surface-tonal-a10/30">
                         <h3 class="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em]">
-                            Identity Matrix</h3>
+                            {{ __('file.identity_matrix') ?? 'Identity Matrix' }}</h3>
                     </div>
                     <div class="p-8 space-y-8">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -111,7 +111,7 @@
                     <div
                         class="px-8 py-6 border-b border-gray-50 dark:border-surface-tonal-a30 bg-gray-50/30 dark:bg-surface-tonal-a10/30">
                         <h3 class="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em]">
-                            Regional Calibration</h3>
+                            {{ __('file.regional_calibration') ?? 'Regional Calibration' }}</h3>
                     </div>
                     <div class="p-8 space-y-8">
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -232,7 +232,7 @@
                     <div
                         class="px-8 py-6 border-b border-gray-50 dark:border-surface-tonal-a30 bg-gray-50/30 dark:bg-surface-tonal-a10/30">
                         <h3 class="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em]">
-                            Branding Interface</h3>
+                            {{ __('file.branding_interface') ?? 'Branding Interface' }}</h3>
                     </div>
                     <div class="p-8 space-y-10">
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
@@ -259,8 +259,7 @@
                                                     d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
                                             </svg>
                                             <span
-                                                class="text-[10px] font-black text-gray-400 group-hover/upload:text-indigo-600 dark:group-hover/upload:text-indigo-400 uppercase tracking-widest transition-colors">Overwrite
-                                                Master Asset</span>
+                                                class="text-[10px] font-black text-gray-400 group-hover/upload:text-indigo-600 dark:group-hover/upload:text-indigo-400 uppercase tracking-widest transition-colors">{{ __('file.overwrite_master_asset') ?? 'Overwrite Master Asset' }}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -289,8 +288,7 @@
                                                     d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
                                             </svg>
                                             <span
-                                                class="text-[10px] font-black text-gray-400 group-hover/upload-favicon:text-indigo-600 dark:group-hover/upload-favicon:text-indigo-400 uppercase tracking-widest transition-colors">Overwrite
-                                                Favicon</span>
+                                                class="text-[10px] font-black text-gray-400 group-hover/upload-favicon:text-indigo-600 dark:group-hover/upload-favicon:text-indigo-400 uppercase tracking-widest transition-colors">{{ __('file.overwrite_favicon') ?? 'Overwrite Favicon' }}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -312,14 +310,12 @@
                                                 value="{{ old('primary_color', $setting->primary_color) }}" readonly
                                                 class="w-32 px-4 py-2 bg-white dark:bg-surface-tonal-a20 border border-gray-100 dark:border-surface-tonal-a30 rounded-xl text-xs font-bold text-gray-700 dark:text-white uppercase text-center shadow-sm">
                                             <span
-                                                class="text-[9px] font-black text-gray-400 uppercase tracking-widest">Chromatic
-                                                ID</span>
+                                                class="text-[9px] font-black text-gray-400 uppercase tracking-widest">{{ __('file.chromatic_id') ?? 'Chromatic ID' }}</span>
                                         </div>
                                     </div>
                                     <p
                                         class="text-[11px] font-bold text-gray-400 leading-relaxed border-l-2 border-indigo-500/20 pl-4">
-                                        System-wide UI saturation level. Impacts primary interactive elements and visual
-                                        highlights.</p>
+                                        {{ __('file.chromatic_id_helper') ?? 'System-wide UI saturation level. Impacts primary interactive elements and visual highlights.' }}</p>
                                 </div>
                             </div>
                         </div>
@@ -330,7 +326,7 @@
                 <div class="flex flex-col sm:flex-row gap-4 pt-6 animate-fade-in-up delay-200">
                     <button type="submit"
                         class="flex-1 sm:flex-none inline-flex items-center justify-center px-10 py-5 bg-indigo-600 text-white text-[11px] font-black uppercase tracking-[0.2em] rounded-3xl hover:bg-indigo-700 shadow-2xl shadow-indigo-500/30 transition-all active:scale-[0.98] group">
-                        Commit Changes
+                        {{ __('file.commit_changes') ?? 'Commit Changes' }}
                         <svg class="w-4 h-4 ml-3 transition-transform group-hover:translate-x-1" fill="none"
                             stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
@@ -338,8 +334,7 @@
                         </svg>
                     </button>
                     <a href="{{ route('admin.dashboard') }}"
-                        class="flex-1 sm:flex-none inline-flex items-center justify-center px-10 py-5 bg-transparent border border-gray-200 dark:border-surface-tonal-a30 rounded-3xl text-[10px] font-black uppercase tracking-widest text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-50 dark:hover:bg-surface-tonal-a30 transition-all">Abat
-                        Protocol</a>
+                        class="flex-1 sm:flex-none inline-flex items-center justify-center px-10 py-5 bg-transparent border border-gray-200 dark:border-surface-tonal-a30 rounded-3xl text-[10px] font-black uppercase tracking-widest text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 hover:bg-gray-50 dark:hover:bg-surface-tonal-a30 transition-all">{{ __('file.abort_protocol') ?? 'Abat Protocol' }}</a>
                 </div>
             </form>
         </div>

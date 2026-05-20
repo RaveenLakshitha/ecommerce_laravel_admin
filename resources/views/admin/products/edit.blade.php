@@ -295,7 +295,7 @@
                                 <div>
                                     <label
                                         class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.meta_title') }}</label>
-                                    <input type="text" name="meta_title"
+                                    <input type="text" name="meta_title" id="meta_title"
                                         value="{{ old('meta_title', $product->meta_title) }}" placeholder="SEO Title"
                                         class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/100 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5">
                                 </div>
@@ -303,7 +303,7 @@
                                 <div>
                                     <label
                                         class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.meta_description') }}</label>
-                                    <textarea name="meta_description" rows="3"
+                                    <textarea name="meta_description" id="meta_description" rows="3"
                                         placeholder="Search engine description preview..."
                                         class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/100 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5 resize-y">{{ old('meta_description', $product->meta_description) }}</textarea>
                                 </div>
@@ -311,7 +311,7 @@
                                 <div>
                                     <label
                                         class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.meta_keywords') }}</label>
-                                    <input type="text" name="meta_keywords"
+                                    <input type="text" name="meta_keywords" id="meta_keywords"
                                         value="{{ old('meta_keywords', $product->meta_keywords) }}"
                                         placeholder="keyword1, keyword2..."
                                         class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/100 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5">
@@ -320,7 +320,7 @@
                                 <div>
                                     <label
                                         class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">{{ __('file.canonical_url') }}</label>
-                                    <input type="url" name="canonical_url"
+                                    <input type="url" name="canonical_url" id="canonical_url"
                                         value="{{ old('canonical_url', $product->canonical_url) }}"
                                         placeholder="https://..."
                                         class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/100 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5">
@@ -456,6 +456,32 @@
                     form.submit();
                 }
             }
+
+            // SEO Auto-fill logic
+            document.addEventListener('DOMContentLoaded', function() {
+                let metaTitleEdited = document.getElementById('meta_title').value.trim() !== '';
+                let metaDescEdited = document.getElementById('meta_description').value.trim() !== '';
+                let metaKeywordsEdited = document.getElementById('meta_keywords').value.trim() !== '';
+
+                document.getElementById('meta_title').addEventListener('input', () => metaTitleEdited = true);
+                document.getElementById('meta_description').addEventListener('input', () => metaDescEdited = true);
+                document.getElementById('meta_keywords').addEventListener('input', () => metaKeywordsEdited = true);
+
+                document.getElementById('name').addEventListener('input', function() {
+                    if (!metaTitleEdited) {
+                        document.getElementById('meta_title').value = this.value;
+                    }
+                    if (!metaKeywordsEdited && this.value) {
+                        document.getElementById('meta_keywords').value = this.value.toLowerCase().replace(/[^a-z0-9\s]/g, '').split(/\s+/).join(', ');
+                    }
+                });
+
+                document.getElementById('short_description').addEventListener('input', function() {
+                    if (!metaDescEdited) {
+                        document.getElementById('meta_description').value = this.value.substring(0, 160);
+                    }
+                });
+            });
         </script>
     @endpush
 @endsection

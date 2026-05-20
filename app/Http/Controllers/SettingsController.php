@@ -79,9 +79,10 @@ class SettingsController extends Controller
 
             // Handle file uploads
             $files = [
-                'site_logo'   => 'logos',
-                'site_favicon' => 'favicons',
-                'og_image'    => 'seo',
+                'site_logo'      => 'logos',
+                'site_favicon'   => 'favicons',
+                'admin_login_bg' => 'backgrounds',
+                'og_image'       => 'seo',
             ];
 
             foreach ($files as $field => $folder) {

@@ -299,11 +299,11 @@
                     lengthMenu: [10, 25, 50, 100],
                     language: {
                         search: "",
-                        searchPlaceholder: "{{ __('file.search_orders') }}...",
-                        lengthMenu: "_MENU_",
-                        info: "{{ __('file.showing_products') }}",
-                        infoEmpty: "{{ __('file.no_orders_found') }}",
-                        emptyTable: "{{ __('file.no_orders_found') }}.",
+                        searchPlaceholder: "{{ __('file.search_orders') ?? "Search Orders..." }}",
+                        lengthMenu: "{{ __('file.dt_length_menu') ?? "_MENU_" }}",
+                        info: "{{ __('file.showing_products') ?? "Showing _START_ to _END_ of _TOTAL_ Products" }}",
+                        infoEmpty: "{{ __('file.no_orders_found') ?? "No orders found" }}",
+                        emptyTable: "{{ __('file.no_orders_found') ?? "No orders found" }}",
                         processing: '<div class="admin-loader"></div>',
                         paginate: {
                             next: '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>',
