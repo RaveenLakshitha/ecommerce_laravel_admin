@@ -31,14 +31,14 @@
 <div class="admin-page animate-fade-in-up">
     <div class="admin-page-inner">
 
-        {{-- Breadcrumbs --}}
+        
         <div class="mb-4 mt-10 no-print">
             <a href="{{ route('shipping.shipments.index') }}" class="text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 transition-colors uppercase tracking-wider inline-block">
                 &larr; {{ __('file.back_to_logistics_manifest') }}
             </a>
         </div>
 
-        {{-- Header Area --}}
+        
         <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8 no-print">
             <div>
                 <div class="flex items-center gap-4">
@@ -60,10 +60,10 @@
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 no-print">
-            {{-- Left Column: Config & Timeline --}}
+            
             <div class="lg:col-span-2 space-y-4">
                 
-                {{-- Logistics Configuration --}}
+                
                 <div class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                     <div class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
                         <h2 class="text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wider">{{ __('file.routing_configuration') }}</h2>
@@ -119,7 +119,7 @@
                     </div>
                 </div>
 
-                {{-- Real-time Event Stream --}}
+                
                 <div class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                     <div class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10 flex items-center justify-between">
                         <h2 class="text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wider">{{ __('file.real_time_event_stream') }}</h2>
@@ -207,10 +207,10 @@
                 </div>
             </div>
 
-            {{-- Right Column: Intelligence & Actions --}}
+            
             <div class="col-span-1 space-y-4">
                 
-                {{-- Consignee Intelligence --}}
+                
                 <div class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 p-4">
                     <h3 class="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-4">{{ __('file.consignee_intelligence') }}</h3>
                     <div class="flex flex-col gap-1">
@@ -226,7 +226,7 @@
                     </div>
                 </div>
 
-                {{-- Geodesic Destination --}}
+                
                 <div class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 p-4 relative overflow-hidden group">
                     <div class="absolute -right-4 -bottom-4 w-24 h-24 bg-indigo-500/5 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700"></div>
                     <h3 class="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-4 relative z-10">{{ __('file.geodesic_destination') }}</h3>
@@ -266,7 +266,7 @@
                     </div>
                 </div>
 
-                {{-- Output Processing --}}
+                
                 <div class="bg-gray-900 dark:bg-white rounded-lg shadow-lg p-4 relative overflow-hidden group">
                     <div class="absolute -right-4 -bottom-4 w-24 h-24 bg-white/10 dark:bg-gray-900/5 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700"></div>
                     <h4 class="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider relative z-10">{{ __('file.output_processing') }}</h4>
@@ -282,7 +282,7 @@
             </div>
         </div>
 
-        {{-- Hidden Printable Waybill --}}
+        
         <div id="printable-waybill" class="hidden">
             <div class="flex justify-between items-start border-b-2 border-black pb-6 mb-8">
                 <div>

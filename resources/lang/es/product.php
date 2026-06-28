@@ -1,5 +1,4 @@
 <?php
-
 return [
     'home' => 'Inicio',
     'shop' => 'Tienda',
@@ -32,23 +31,17 @@ return [
     'measurement' => 'Medida',
     'cm' => 'cm',
     'inches' => 'pulgadas',
-    
-    // Measurement labels fallbacks
     'total_length' => 'Longitud total',
     'bust_label' => 'Busto',
     'waist_label' => 'Cintura',
     'hem_label' => 'Dobladillo',
     'sleeve_length' => 'Longitud de la manga',
-
-    // Fabric Care items
     'fabric_care_1' => '100% Algodón orgánico — transpirable y ligero',
     'fabric_care_2' => 'Forro: 100% Viscosa ECOVERO™',
     'fabric_care_3' => 'Lavar a máquina en frío, ciclo delicado',
     'fabric_care_4' => 'No secar en secadora — secar en plano',
     'fabric_care_5' => 'Plancha tibia por el revés',
     'fabric_care_6' => 'No limpiar en seco',
-
-    // Deliveries fallbacks
     'standard_delivery' => 'Envío estándar',
     'standard_delivery_days' => '3–5 días hábiles',
     'free_on_orders_over' => 'Gratis en pedidos superiores a',
@@ -62,8 +55,6 @@ return [
     'in_store_pickup' => 'Recogida en tienda',
     'pickup_locations' => 'Colombo y Kandy',
     'ready_in_hours' => 'Listo en 2–3 horas',
-
-    // Reviews section
     'customer_reviews' => 'Reseñas de clientes',
     'star' => 'estrella',
     'write_review' => 'Escribir una reseña',
@@ -73,19 +64,14 @@ return [
     'thanks' => '¡Gracias!',
     'no_reviews_yet' => 'Aún no hay reseñas. ¡Sé el primero en calificar este producto!',
     'load_more_reviews' => 'Cargar más reseñas',
-    
-    // Related products
     'you_may_also_like' => 'También te puede interesar',
     'view_all' => 'Ver todo',
     'sale' => 'Rebaja',
-
-    // Size Chart modal
     'size' => 'Talla',
     'bust_cm' => 'Busto (cm)',
     'waist_cm' => 'Cintura (cm)',
     'hip_cm' => 'Cadera (cm)',
     'uk_eu' => 'UK/EU',
-    
     'how_to_measure' => 'Cómo medir:',
     'bust' => 'Busto',
     'waist' => 'Cintura',
@@ -96,8 +82,6 @@ return [
     'size_guide_note_desc' => 'Todas las medidas en centímetros. Si estás entre dos tallas, elige la más grande para un ajuste más relajado.',
     'fit_note_style' => 'Nota de ajuste para este estilo:',
     'fit_note_desc' => 'Esta prenda tiene un corte de silueta relajada con el hombro ligeramente caído. Nuestra modelo mide 175 cm y usa una talla S.',
-    
-    // Write review modal
     'your_rating' => 'Tu calificación',
     'review_title' => 'Título de la reseña',
     'your_review' => 'Tu reseña',

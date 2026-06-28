@@ -1,12 +1,9 @@
 <?php
-
 namespace App\Http\Controllers\Admin;
-
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\OrderRefund;
 use App\Models\Setting;
-
 class RefundController extends Controller
 {
     public function __construct()
@@ -14,23 +11,13 @@ class RefundController extends Controller
         $this->middleware('permission:orders.refund', ['only' => ['index', 'datatable', 'show', 'approve', 'reject']]);
         $this->middleware('permission:orders.delete', ['only' => ['destroy', 'bulkDelete']]);
     }
-
-    /**
-
-     * Display a listing of refunds.
-     */
     public function index()
     {
         return view('admin.refunds.index');
     }
-
-    /**
-     * Datatable JSON response.
-     */
     public function datatable(Request $request)
     {
         $query = OrderRefund::with(['order', 'performedBy']);
-
         return datatables()->of($query)
             ->addColumn('refund_id_html', function ($row) {
                 return '<a href="' . route('refunds.show', $row->id) . '" class="text-indigo-600 hover:underline">#' . str_pad($row->id, 5, '0', STR_PAD_LEFT) . '</a>';
@@ -65,16 +52,11 @@ class RefundController extends Controller
             ->rawColumns(['refund_id_html', 'order_number_html', 'status_html'])
             ->make(true);
     }
-
-    /**
-     * Display the specified refund.
-     */
     public function show($id)
     {
         $refund = OrderRefund::with(['order', 'performedBy'])->findOrFail($id);
         return view('admin.refunds.show', compact('refund'));
     }
-
     public function destroy($id)
     {
         $refund = OrderRefund::findOrFail($id);
@@ -84,27 +66,21 @@ class RefundController extends Controller
         }
         return back()->with('success', 'Refund deleted successfully.');
     }
-
     public function bulkDelete(Request $request)
     {
         $ids = $request->input('ids');
-
         if (is_string($ids)) {
             $ids = array_filter(array_map('trim', explode(',', $ids ?? '')));
         }
-
         if (!is_array($ids) || empty($ids)) {
             return response()->json(['success' => false, 'message' => 'No items selected.'], 400);
         }
-
         OrderRefund::whereIn('id', $ids)->delete();
-
         return response()->json([
             'success' => true,
             'message' => 'Selected refunds deleted successfully.'
         ]);
     }
-
     public function approve($id)
     {
         $refund = OrderRefund::findOrFail($id);
@@ -113,19 +89,14 @@ class RefundController extends Controller
             'refunded_at' => now(),
             'performed_by' => auth()->id()
         ]);
-
-        // Update order payment status and refunded amount
         $order = $refund->order;
         $totalRefunded = $order->refunds()->where('status', 'processed')->sum('amount');
-        
         $order->update([
             'refunded_amount' => $totalRefunded,
             'payment_status' => $totalRefunded >= $order->total_amount ? 'refunded' : 'partially_refunded'
         ]);
-
         return back()->with('success', 'Refund approved successfully.');
     }
-
     public function reject($id)
     {
         $refund = OrderRefund::findOrFail($id);
@@ -133,7 +104,6 @@ class RefundController extends Controller
             'status' => 'failed',
             'performed_by' => auth()->id()
         ]);
-
         return back()->with('success', 'Refund rejected.');
     }
 }

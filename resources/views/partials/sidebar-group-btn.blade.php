@@ -1,7 +1,4 @@
-{{-- partials/sidebar-group-btn.blade.php
-Required vars: $label, $icon (SVG path d="...")
-Uses AlpineJS x-data parent's `open` variable.
---}}
+
 <button @click="activeGroup = (activeGroup === '{{ $name }}' ? 'none' : '{{ $name }}')"
     class="w-full group flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 text-gray-700 dark:text-gray-200 sidebar-item-hover">
     <div class="flex items-center">

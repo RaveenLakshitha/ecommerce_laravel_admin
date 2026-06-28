@@ -1,22 +1,17 @@
 <?php
-
 namespace App\Models;
-
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
-
 class Product extends Model implements HasMedia
 {
     use HasFactory, SoftDeletes, InteractsWithMedia;
-
     protected $fillable = [
         'name',
         'slug',
@@ -34,70 +29,57 @@ class Product extends Model implements HasMedia
         'meta_keywords',
         'canonical_url',
     ];
-
-    // Relationships
     public function brand(): BelongsTo
     {
         return $this->belongsTo(Brand::class);
     }
-
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
     }
-
     public function collections(): BelongsToMany
     {
         return $this->belongsToMany(Collection::class);
     }
-
     public function tags(): BelongsToMany
     {
         return $this->belongsToMany(Tag::class);
     }
-
     public function variants(): HasMany
     {
         return $this->hasMany(Variant::class);
     }
-
     public function images(): HasMany
     {
         return $this->hasMany(ProductImage::class)->orderBy('sort_order');
     }
-
     public function reviews(): HasMany
     {
         return $this->hasMany(Review::class)->visible()->latest();
     }
-
-    // Helper: get primary image
     public function primaryImage(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
         return $this->hasOne(ProductImage::class)
             ->orderByDesc('is_primary')
             ->orderBy('sort_order');
     }
-
     public function orderItems()
     {
         return $this->hasManyThrough(
             \App\Models\OrderItem::class,
             \App\Models\Variant::class,
-            'product_id',     // foreign key on variants table → references products.id
-            'variant_id',     // foreign key on order_items table → references variants.id
-            'id',             // local key on products
-            'id'              // local key on variants
+            'product_id',     
+            'variant_id',     
+            'id',             
+            'id'              
         );
     }
-
     public function registerMediaConversions(Media $media = null): void
     {
         $this->addMediaConversion('optimized')
              ->format('webp')
              ->quality(80)
              ->nonQueued();
-
         $this->addMediaConversion('thumb')
              ->format('webp')
              ->width(300)
@@ -105,7 +87,6 @@ class Product extends Model implements HasMedia
              ->quality(80)
              ->nonQueued();
     }
-
     public function getActiveDiscountRulesAttribute()
     {
         return \App\Models\DiscountRule::where('is_active', true)

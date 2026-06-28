@@ -6,7 +6,7 @@
     <div class="admin-page animate-fade-in-up">
         <div class="admin-page-inner">
 
-            {{-- Breadcrumbs --}}
+            
             <div class="mb-4 mt-10">
                 <a href="{{ route('discount-rules.index') }}"
                     class="text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 transition-colors uppercase tracking-wider inline-block">
@@ -14,7 +14,7 @@
                 </a>
             </div>
 
-            {{-- Header --}}
+            
             <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
                 <div>
                     <h1 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
@@ -37,10 +37,10 @@
 
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
 
-                    {{-- Left Column --}}
+                    
                     <div class="lg:col-span-2 space-y-4">
 
-                        {{-- Rule Configuration --}}
+                        
                         <div
                             class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                             <div
@@ -119,7 +119,7 @@
                             </div>
                         </div>
 
-                        {{-- Requirements & Scope --}}
+                        
                         <div
                             class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                             <div
@@ -156,7 +156,7 @@
                                     </div>
                                 </div>
 
-                                {{-- Products Selector --}}
+                                
                                 <div x-show="appliesTo === 'products'" x-transition.opacity class="space-y-4" x-data="{ 
                                         search: '', 
                                         page: 1, 
@@ -231,7 +231,7 @@
                                     </template>
                                 </div>
 
-                                {{-- Categories Selector --}}
+                                
                                 <div x-show="appliesTo === 'categories'" x-transition.opacity class="space-y-4" x-data="{ 
                                         search: '', 
                                         page: 1, 
@@ -307,7 +307,7 @@
                                     </template>
                                 </div>
 
-                                {{-- Collections Selector --}}
+                                
                                 <div x-show="appliesTo === 'collections'" x-transition.opacity class="space-y-4" x-data="{ 
                                         search: '', 
                                         page: 1, 
@@ -385,7 +385,7 @@
                             </div>
                         </div>
 
-                        {{-- Promotional Banners --}}
+                        
                         <div
                             class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                             <div
@@ -417,7 +417,7 @@
                         </div>
                     </div>
 
-                    {{-- Right Column --}}
+                    
                     <div class="lg:col-span-1 space-y-4">
                         <div
                             class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden sticky top-24">

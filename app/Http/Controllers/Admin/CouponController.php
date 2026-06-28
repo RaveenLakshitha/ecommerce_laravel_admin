@@ -1,12 +1,9 @@
 <?php
-
 namespace App\Http\Controllers\Admin;
-
 use App\Http\Controllers\Controller;
 use App\Models\Coupon;
 use App\Models\Setting;
 use Illuminate\Http\Request;
-
 class CouponController extends Controller
 {
     public function __construct()
@@ -16,12 +13,10 @@ class CouponController extends Controller
         $this->middleware('permission:promotions.edit', ['only' => ['edit', 'update']]);
         $this->middleware('permission:promotions.delete', ['only' => ['destroy', 'bulkDelete']]);
     }
-
     public function index()
     {
         return view('admin.promotions.coupons.index');
     }
-
     public function datatable(Request $request)
     {
         $draw = $request->input('draw');
@@ -30,17 +25,13 @@ class CouponController extends Controller
         $orderIdx = $request->input('order.0.column', 0);
         $orderDir = $request->input('order.0.dir', 'desc');
         $searchValue = trim($request->input('search.value', ''));
-
         $query = Coupon::query();
-
         if ($searchValue !== '') {
             $query->where('code', 'like', "%{$searchValue}%")
                 ->orWhere('description', 'like', "%{$searchValue}%");
         }
-
         $totalRecords = Coupon::count();
         $filteredRecords = (clone $query)->count();
-
         $sortColumn = match ((int) $orderIdx) {
             0 => 'is_active',
             1 => 'code',
@@ -49,16 +40,13 @@ class CouponController extends Controller
             4 => 'starts_at',
             default => 'created_at',
         };
-
         if ($sortColumn === 'created_at') {
             $query->orderBy('created_at', 'desc');
         } else {
             $query->orderBy($sortColumn, $orderDir);
-            $query->orderBy('created_at', 'desc'); // Secondary sort fallback
+            $query->orderBy('created_at', 'desc'); 
         }
-
         $coupons = $query->offset($start)->limit($length)->get();
-
         $data = $coupons->map(function ($coupon) {
             $statusHtml = '';
             if ($coupon->is_active && (!$coupon->starts_at || now()->gte($coupon->starts_at)) && (!$coupon->expires_at || now()->lte($coupon->expires_at))) {
@@ -68,19 +56,15 @@ class CouponController extends Controller
             } else {
                 $statusHtml = '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">' . __('file.scheduled_expired') . '</span>';
             }
-
             $codeHtml = '<div class="text-sm font-semibold text-gray-900 dark:text-primary-a0">' . htmlspecialchars($coupon->code) . '</div>';
             $codeHtml .= '<div class="text-xs text-gray-500">' . htmlspecialchars(ucfirst(str_replace('_', ' ', $coupon->applies_to))) . '</div>';
-
             $discountHtml = '<div class="text-sm text-gray-900 dark:text-primary-a0">';
             $discountHtml .= $coupon->type == 'percentage' ? rtrim(rtrim((string) $coupon->value, '0'), '.') . '%' : Setting::formatPrice($coupon->value);
             $discountHtml .= '</div>';
             if ($coupon->min_order_amount) {
                 $discountHtml .= '<div class="text-xs text-gray-500">' . __('file.min') . ': ' . Setting::formatPrice($coupon->min_order_amount) . '</div>';
             }
-
             $usageHtml = '<div class="text-sm text-gray-900 dark:text-primary-a0">' . $coupon->used_count . ' / ' . ($coupon->usage_limit ?? '∞') . '</div>';
-
             $datesHtml = '<div class="text-sm text-gray-500">';
             if ($coupon->starts_at || $coupon->expires_at) {
                 $startsAtStr = $coupon->starts_at ? $coupon->starts_at->format('M d, Y') : __('file.always');
@@ -90,7 +74,6 @@ class CouponController extends Controller
                 $datesHtml .= __('file.no_expiry');
             }
             $datesHtml .= '</div>';
-
             return [
                 'id' => $coupon->id,
                 'status_html' => $statusHtml,
@@ -102,7 +85,6 @@ class CouponController extends Controller
                 'delete_url' => route('coupons.destroy', $coupon->id),
             ];
         });
-
         return response()->json([
             'draw' => (int) $draw,
             'recordsTotal' => $totalRecords,
@@ -110,7 +92,6 @@ class CouponController extends Controller
             'data' => $data->toArray(),
         ]);
     }
-
     public function create()
     {
         $products = \App\Models\Product::all();
@@ -118,7 +99,6 @@ class CouponController extends Controller
         $collections = \App\Models\Collection::all();
         return view('admin.promotions.coupons.create', compact('products', 'categories', 'collections'));
     }
-
     public function store(Request $request)
     {
         $data = $request->validate([
@@ -140,15 +120,11 @@ class CouponController extends Controller
             'collection_ids' => 'array',
             'collection_ids.*' => 'exists:collections,id',
         ]);
-
         $data['is_active'] = $request->has('is_active');
-
         $coupon = Coupon::create($data);
         $this->syncRelations($coupon, $request);
-
         return redirect()->route('admin.coupons.index')->with('success', __('file.item_created_successfully'));
     }
-
     public function edit(Coupon $coupon)
     {
         $products = \App\Models\Product::all();
@@ -156,7 +132,6 @@ class CouponController extends Controller
         $collections = \App\Models\Collection::all();
         return view('admin.promotions.coupons.edit', compact('coupon', 'products', 'categories', 'collections'));
     }
-
     public function update(Request $request, Coupon $coupon)
     {
         $data = $request->validate([
@@ -178,15 +153,11 @@ class CouponController extends Controller
             'collection_ids' => 'array',
             'collection_ids.*' => 'exists:collections,id',
         ]);
-
         $data['is_active'] = $request->has('is_active');
-
         $coupon->update($data);
         $this->syncRelations($coupon, $request);
-
         return redirect()->route('admin.coupons.index')->with('success', __('file.item_updated_successfully'));
     }
-
     protected function syncRelations(Coupon $coupon, Request $request)
     {
         if ($request->applies_to === 'specific_products') {
@@ -194,45 +165,35 @@ class CouponController extends Controller
         } else {
             $coupon->products()->detach();
         }
-
         if ($request->applies_to === 'specific_categories') {
             $coupon->categories()->sync($request->category_ids ?? []);
         } else {
             $coupon->categories()->detach();
         }
-
         if ($request->applies_to === 'specific_collections') {
             $coupon->collections()->sync($request->collection_ids ?? []);
         } else {
             $coupon->collections()->detach();
         }
     }
-
     public function destroy(Coupon $coupon)
     {
         $coupon->delete();
-
         if (request()->ajax()) {
             return response()->json(['success' => true, 'message' => __('file.item_deleted_successfully')]);
         }
-
         return redirect()->route('admin.coupons.index')->with('success', __('file.item_deleted_successfully'));
     }
-
     public function bulkDelete(Request $request)
     {
         $ids = $request->input('ids');
-
         if (is_string($ids)) {
             $ids = array_filter(array_map('trim', explode(',', $ids ?? '')));
         }
-
         if (!is_array($ids) || empty($ids)) {
             return response()->json(['success' => false, 'message' => __('file.no_items_selected')], 400);
         }
-
         \App\Models\Coupon::whereIn('id', $ids)->delete();
-
         return response()->json([
             'success' => true,
             'message' => __('file.selected_items_deleted_successfully')

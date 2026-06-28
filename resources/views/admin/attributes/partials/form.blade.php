@@ -5,7 +5,7 @@
     @endif
 
     <div class="space-y-4">
-        {{-- Attribute Name --}}
+        
         <div>
             <label for="drawer_attr_name" class="block text-[10px] font-black text-black dark:text-white uppercase tracking-widest mb-1">
                 {{ __('file.attribute_name') }} <span class="text-red-500">*</span>
@@ -15,7 +15,7 @@
                 class="block w-full rounded-md border border-gray-100/50 dark:border-white/5 bg-gray-50/30 dark:bg-surface-tonal-a20 px-3 py-2 text-xs font-bold shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-300 text-black dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-indigo-300 dark:focus:border-indigo-500/50 focus:ring-2 focus:ring-indigo-500/5 focus:shadow-md">
         </div>
 
-        {{-- Slug --}}
+        
         <div>
             <label for="drawer_attr_slug" class="block text-[10px] font-black text-black dark:text-white uppercase tracking-widest mb-1">
                 {{ __('file.slug') }} <span class="text-red-500">*</span>
@@ -25,7 +25,7 @@
                 class="block w-full rounded-md border border-gray-100/50 dark:border-white/5 bg-gray-50/30 dark:bg-surface-tonal-a20 px-3 py-2 text-xs font-bold shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-300 text-black dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 font-mono">
         </div>
 
-        {{-- Display Type --}}
+        
         <div>
             <label for="drawer_attr_type" class="block text-[10px] font-black text-black dark:text-white uppercase tracking-widest mb-1">
                 {{ __('file.display_type') }} <span class="text-red-500">*</span>
@@ -39,7 +39,7 @@
             </select>
         </div>
 
-        {{-- Sort Order --}}
+        
         <div>
             <label for="drawer_attr_sort" class="block text-[10px] font-black text-black dark:text-white uppercase tracking-widest mb-1">
                 {{ __('file.sort_order') }}

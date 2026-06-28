@@ -1,9 +1,9 @@
-{{-- resources/views/partials/navbar.blade.php --}}
+
 <header
     class="bg-white dark:bg-surface-tonal-a20 shadow-sm border-b dark:border-surface-tonal-a30 transition-colors fixed top-0 left-0 right-0 z-50">
     <div class="max-w-full px-4 sm:px-6 flex items-center justify-between h-16">
 
-        {{-- Left: sidebar toggle --}}
+        
         <div class="flex items-center">
             <button id="open-sidebar" class="lg:hidden p-2 rounded-md text-gray-500 hover:text-gray-700 hover:bg-gray-100
                            dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-gray-700
@@ -15,10 +15,10 @@
             </button>
         </div>
 
-        {{-- Right: all controls --}}
+        
         <div class="flex items-center gap-1 sm:gap-2">
 
-            {{-- Appointment Manager Link --}}
+            
             <a href="{{ route('appointments.manager') }}" title="{{ __('Appointment Manager') }}" class="p-2 rounded-md text-gray-500 hover:text-gray-700 hover:bg-gray-100
                            dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-gray-700
                            focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2
@@ -30,7 +30,7 @@
             </a>
 
             @can('invoices.index')
-                {{-- POS Link --}}
+                
                 <a href="{{ route('invoices.pos') }}" title="{{ __('file.pos') ?? 'POS' }}" class="p-2 rounded-md text-gray-500 hover:text-gray-700 hover:bg-gray-100
                                dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-gray-700
                                focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2
@@ -42,7 +42,7 @@
                 </a>
             @endcan
 
-            {{-- Language switcher --}}
+            
             <div x-data="{ open: false }" x-init="open = false" class="relative">
                 <button @click="open = !open" class="flex items-center space-x-1 text-sm font-medium text-gray-700 dark:text-gray-300
                                hover:text-primary dark:hover:text-primary-400
@@ -79,7 +79,7 @@
                 </div>
             </div>
 
-            {{-- Dark mode toggle --}}
+            
             <button id="theme-toggle-navbar" aria-label="Toggle dark mode" class="p-2 rounded-md text-gray-500 hover:text-gray-700 hover:bg-gray-100
                         dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-gray-700
                         focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2
@@ -94,7 +94,7 @@
                 </svg>
             </button>
 
-            {{-- Fullscreen toggle --}}
+            
             <button id="fullscreen-toggle" aria-label="Toggle fullscreen" class="hidden sm:block p-2 rounded-md text-gray-500 hover:text-gray-700 hover:bg-gray-100
                     dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-gray-700
                     focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2
@@ -112,7 +112,7 @@
 
 
 
-            {{-- User menu --}}
+            
             <div class="relative" x-data="{ open: false }" x-cloak x-init="open = false">
                 <button id="user-menu-button" @click="open = !open" class="flex items-center space-x-2 text-sm font-medium text-gray-700 dark:text-gray-300
                                hover:text-primary dark:hover:text-primary-400

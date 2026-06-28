@@ -1,30 +1,22 @@
 <?php
-
 namespace App\Models;
-
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-
-/**
- * Individual product line in an order (variant + quantity + price snapshot)
- */
 class OrderItem extends Model
 {
     use HasFactory;
-
     protected $fillable = [
         'order_id',
         'variant_id',
-        'product_name_snapshot',    // frozen name at order time
-        'variant_attributes',       // json: {"Size": "M", "Color": "Red"}
+        'product_name_snapshot',    
+        'variant_attributes',       
         'quantity',
         'unit_price',
         'subtotal',
         'discount_amount',
         'total',
     ];
-
     protected $casts = [
         'quantity' => 'integer',
         'unit_price' => 'decimal:2',
@@ -33,12 +25,10 @@ class OrderItem extends Model
         'total' => 'decimal:2',
         'variant_attributes' => 'array',
     ];
-
     public function order(): BelongsTo
     {
         return $this->belongsTo(Order::class);
     }
-
     public function variant(): BelongsTo
     {
         return $this->belongsTo(Variant::class);

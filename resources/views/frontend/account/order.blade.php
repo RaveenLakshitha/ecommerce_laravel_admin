@@ -127,7 +127,7 @@
     <div class="order-details-page pt-10">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             
-            {{-- Header & Breadcrumbs --}}
+            
             <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
                 <div>
                     <nav class="flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.15em] text-gray-400 mb-4">
@@ -156,10 +156,10 @@
 
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
                 
-                {{-- LEFT COLUMN --}}
+                
                 <div class="lg:col-span-8 space-y-8">
                     
-                    {{-- Tracking Status Card --}}
+                    
                     <div class="premium-card p-8">
                         <div class="flex items-center justify-between mb-10">
                             <h2 class="text-xs font-black text-gray-900 uppercase tracking-[0.2em] font-display">{{ __('file.shipment_status') }}</h2>
@@ -200,7 +200,7 @@
                         </div>
                     </div>
 
-                    {{-- Items Card --}}
+                    
                     <div class="premium-card">
                         <div class="px-8 py-6 border-b border-gray-50 flex items-center justify-between">
                             <h2 class="text-xs font-black text-gray-900 uppercase tracking-[0.2em] font-display">{{ __('file.items_ordered') }}</h2>
@@ -255,10 +255,10 @@
                     </div>
                 </div>
 
-                {{-- RIGHT COLUMN --}}
+                
                 <div class="lg:col-span-4 space-y-8">
                     
-                    {{-- Summary Card --}}
+                    
                     <div class="premium-card p-8">
                         <h2 class="text-xs font-black text-gray-900 uppercase tracking-[0.2em] font-display mb-8">{{ __('file.order_summary') }}</h2>
                         <div class="space-y-4">
@@ -283,7 +283,7 @@
                         </div>
                     </div>
 
-                    {{-- Shipping & Payment --}}
+                    
                     <div class="premium-card p-8 space-y-10">
                         <div>
                             <h2 class="text-xs font-black text-gray-900 uppercase tracking-[0.2em] font-display mb-6">{{ __('file.delivery_information') }}</h2>

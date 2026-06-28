@@ -1,5 +1,4 @@
 <?php
-
 return [
     'home' => 'Home',
     'shop' => 'Shop',
@@ -32,23 +31,17 @@ return [
     'measurement' => 'Measurement',
     'cm' => 'cm',
     'inches' => 'inches',
-    
-    // Measurement labels fallbacks
     'total_length' => 'Total length',
     'bust_label' => 'Bust',
     'waist_label' => 'Waist',
     'hem_label' => 'Hem',
     'sleeve_length' => 'Sleeve length',
-
-    // Fabric Care items
     'fabric_care_1' => '100% Organic Cotton — breathable and lightweight',
     'fabric_care_2' => 'Lining: 100% ECOVERO™ Viscose',
     'fabric_care_3' => 'Machine wash cold, delicate cycle',
     'fabric_care_4' => 'Do not tumble dry — lay flat to dry',
     'fabric_care_5' => 'Warm iron on reverse side',
     'fabric_care_6' => 'Do not dry clean',
-
-    // Deliveries fallbacks
     'standard_delivery' => 'Standard Delivery',
     'standard_delivery_days' => '3–5 business days',
     'free_on_orders_over' => 'Free on orders over',
@@ -62,8 +55,6 @@ return [
     'in_store_pickup' => 'In-Store Pickup',
     'pickup_locations' => 'Colombo & Kandy',
     'ready_in_hours' => 'Ready in 2–3 hours',
-
-    // Reviews section
     'customer_reviews' => 'Customer Reviews',
     'star' => 'star',
     'write_review' => 'Write a Review',
@@ -73,19 +64,14 @@ return [
     'thanks' => 'Thanks!',
     'no_reviews_yet' => 'No reviews yet. Be the first to review this product!',
     'load_more_reviews' => 'Load More Reviews',
-    
-    // Related products
     'you_may_also_like' => 'You may also like',
     'view_all' => 'View all',
     'sale' => 'Sale',
-
-    // Size Chart modal
     'size' => 'Size',
     'bust_cm' => 'Bust (cm)',
     'waist_cm' => 'Waist (cm)',
     'hip_cm' => 'Hip (cm)',
     'uk_eu' => 'UK/EU',
-    
     'how_to_measure' => 'How to measure:',
     'bust' => 'Bust',
     'waist' => 'Waist',
@@ -96,8 +82,6 @@ return [
     'size_guide_note_desc' => 'All measurements in centimetres. If between sizes, size up for a relaxed fit.',
     'fit_note_style' => 'Fit note for this style:',
     'fit_note_desc' => 'This piece is cut in a relaxed silhouette with a slightly dropped shoulder. Our model is 175cm and wears a size S.',
-    
-    // Write review modal
     'your_rating' => 'Your Rating',
     'review_title' => 'Review Title',
     'your_review' => 'Your Review',

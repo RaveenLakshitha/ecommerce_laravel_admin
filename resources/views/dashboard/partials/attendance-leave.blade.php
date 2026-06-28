@@ -1,14 +1,11 @@
-{{-- dashboard/partials/attendance-leave.blade.php
-Shared by doctor.blade.php and default.blade.php
-Requires: $todayAttendance, $leaveTypes, $leaveBalances, $primary_color
---}}
+
 <section class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
 
-    {{-- ── TODAY'S ATTENDANCE ─────────────────────────────────────────────── --}}
+    
     <div
         class="bg-white dark:bg-surface-tonal-a20 rounded-2xl shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
 
-        {{-- Card header --}}
+        
         <div class="px-6 py-4 border-b border-gray-100 dark:border-surface-tonal-a30 flex items-center gap-3"
             style="background: linear-gradient(135deg, {{ $primary_color }}15, {{ $primary_color }}08)">
             <div class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:{{ $primary_color }}20">
@@ -27,7 +24,7 @@ Requires: $todayAttendance, $leaveTypes, $leaveBalances, $primary_color
         </div>
 
         <div class="p-6">
-            {{-- Flash messages --}}
+            
             @if(session('success'))
                 <div
                     class="mb-4 p-3 bg-green-50 border border-green-200 text-green-700 rounded-xl text-sm dark:bg-green-900/20 dark:border-green-700 dark:text-green-300">
@@ -48,7 +45,7 @@ Requires: $todayAttendance, $leaveTypes, $leaveBalances, $primary_color
             @endif
 
             @if($todayAttendance ?? false)
-                {{-- Status badge row --}}
+                
                 <div class="flex items-center justify-between mb-5">
                     @php
                         $attStatusClass = match ($todayAttendance->status) {
@@ -67,7 +64,7 @@ Requires: $todayAttendance, $leaveTypes, $leaveBalances, $primary_color
                     <span class="text-xs text-gray-400 dark:text-gray-500">{{ __('file.marked') ?? 'Marked' }}</span>
                 </div>
 
-                {{-- Times --}}
+                
                 <div class="grid grid-cols-2 gap-3 mb-5">
                     <div class="rounded-xl p-3 bg-gray-50 dark:bg-surface-tonal-a30/50 text-center">
                         <p class="text-xs text-gray-500 dark:text-gray-400 mb-1">{{ __('file.clock_in') ?? 'Clock In' }}</p>
@@ -128,11 +125,11 @@ Requires: $todayAttendance, $leaveTypes, $leaveBalances, $primary_color
         </div>
     </div>
 
-    {{-- ── LEAVE REQUEST ──────────────────────────────────────────────────── --}}
+    
     <div
         class="bg-white dark:bg-surface-tonal-a20 rounded-2xl shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
 
-        {{-- Card header --}}
+        
         <div class="px-6 py-4 border-b border-gray-100 dark:border-surface-tonal-a30 flex items-center gap-3"
             style="background: linear-gradient(135deg, {{ $primary_color }}15, {{ $primary_color }}08)">
             <div class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:{{ $primary_color }}20">

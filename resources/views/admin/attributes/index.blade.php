@@ -16,7 +16,7 @@
                 <span>{{ __('file.attributes') }}</span>
             </nav>
 
-            {{-- Header --}}
+            
             <div class="admin-page-header">
                 <div>
                     <h1 class="admin-page-title">{{ __('file.attributes') }}</h1>
@@ -32,7 +32,7 @@
                 </div>
             </div>
 
-            {{-- Success Alert --}}
+            
             @if(session('success'))
                 <div class="admin-alert-success animate-fade-in-scale">
                     <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -42,7 +42,7 @@
                 </div>
             @endif
 
-            {{-- Bulk Delete --}}
+            
             <div id="bulk-delete-form" class="hidden animate-fade-in-scale">
                 <form method="POST" action="{{ route('attributes.bulkDelete') }}" id="bulk-delete-form-el"
                     class="admin-bulk-bar">
@@ -66,7 +66,7 @@
                 </form>
             </div>
 
-            {{-- Data Table --}}
+            
             <div class="admin-card">
                 <div class="overflow-x-auto">
                     <table id="application-table" class="w-full" style="width:100%">

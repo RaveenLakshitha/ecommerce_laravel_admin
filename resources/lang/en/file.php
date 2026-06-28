@@ -1,5 +1,4 @@
 <?php
-
 return [
     'categories' => 'Categories',
     'manage_categories' => 'Manage Categories',
@@ -31,8 +30,6 @@ return [
     'confirm_delete_item' => 'Are you sure you want to delete this item?',
     'category_updated_successfully' => 'Category updated successfully!',
     'unauthorized' => 'Unauthorized action.',
-
-    // Sidebar & Navigation
     'dashboard' => 'Dashboard',
     'orders' => 'Orders',
     'orders_list' => 'All Orders',
@@ -48,7 +45,6 @@ return [
     'financial_reports' => 'Financial Reports',
     'inventory_reports' => 'Inventory Reports',
     'administration' => 'Settings',
-    // Report Pages
     'financial_report_subtitle' => 'Revenue, transactions, and refund analytics',
     'inventory_report_subtitle' => 'Stock levels, valuation, and restock alerts',
     'total_revenue' => 'Total Revenue',
@@ -66,7 +62,6 @@ return [
     'approved_refunds_period' => 'Approved refunds this period',
     'amount' => 'Amount',
     'revenue' => 'Revenue',
-    // Inventory Report
     'total_variants' => 'Total Variants',
     'across_all_products' => 'Across all products',
     'in_stock' => 'In Stock',
@@ -83,7 +78,6 @@ return [
     'all_items_in_stock' => 'All items are currently in stock',
     'threshold' => 'Threshold',
     'manage_inventory' => 'Manage Inventory',
-    // Dashboard
     'dashboard_overview' => 'Welcome back! Here\'s what\'s happening in your store.',
     'live' => 'Live',
     'view_all_orders' => 'View All Orders',
@@ -144,8 +138,6 @@ return [
     'date_range' => 'Date Range',
     'from' => 'From',
     'to' => 'To',
-
-    // Products & Catalog
     'manage_products' => 'Manage Products',
     'add_product' => 'Add Product',
     'add_new_product' => 'Add New Product',
@@ -235,8 +227,6 @@ return [
     'error_occurred_while_deleting_image' => 'An error occurred while deleting the image',
     'english' => 'English',
     'spanish' => 'Spanish',
-
-    // Frontend Strings
     'home' => 'Home',
     'new_arrivals' => 'New Arrivals',
     'new' => 'New',
@@ -326,8 +316,6 @@ return [
     'added' => 'Added',
     'error_adding_to_cart' => 'Could not add to cart.',
     'network_error' => 'Network error — please try again.',
-
-    // Error Pages
     'error_419_title' => 'Page Expired',
     'error_419_message' => 'Your session has expired. Please refresh the page or go back to the login page and try again.',
     'go_to_login' => 'Go to Login',
@@ -336,8 +324,6 @@ return [
     'my_orders' => 'My Orders',
     'sign_out' => 'Sign Out',
     'my_account' => 'My Account',
-
-    // Cart Page
     'shopping_cart' => 'Shopping Cart',
     'cart' => 'Cart',
     'item' => 'item',
@@ -363,8 +349,6 @@ return [
     'your_cart_is_empty' => 'Your cart is empty',
     'looks_like_you_havent_added_anything_yet' => "Looks like you haven't added anything yet.",
     'explore_collection' => 'Explore Collection',
-
-    // Checkout Page
     'secure_checkout' => 'Secure Checkout',
     'contact_information' => 'Contact Information',
     'first_name' => 'First Name',
@@ -397,10 +381,6 @@ return [
     'order_number' => 'Order Number',
     'total_amount' => 'Total Amount',
     'view_order_history' => 'View Order History',
-
-
-
-    // User Profile / Account
     'welcome_back' => 'Welcome back,',
     'dashboard' => 'Dashboard',
     'order_history' => 'Order History',
@@ -755,8 +735,6 @@ return [
     'attribute_value_deleted_successfully' => 'Attribute value deleted successfully.',
     'core_parameters' => 'Core Parameters',
     'color_hex' => 'Color HEX',
-
-    // Shipping & Fulfillment
     'shipping_rates' => 'Shipping Rates',
     'shipping_zones' => 'Shipping Zones',
     'logistics_providers' => 'Logistics Providers',
@@ -934,8 +912,6 @@ return [
     'status_updated_by_admin' => 'Status automatically updated by Admin',
     'tracking_event_logged_manually' => 'Tracking event logged manually.',
     'in_store_pickup' => 'In-Store Pickup',
-
-    // Refunds System (Admin)
     'reversal_inspection' => 'Reversal Inspection',
     'trace' => 'Trace',
     'approve_restitution' => 'Approve Restitution',
@@ -952,8 +928,6 @@ return [
     'autonomous_system' => 'Autonomous System',
     'validation_layer' => 'Validation Layer',
     'approval_magnitude' => 'Approval Magnitude',
-
-    // Shipments & Orders (Admin & Frontend)
     'shipment_management' => 'Shipment Management',
     'no_shipment_found' => 'No shipment found',
     'create_shipment' => 'Create Shipment',
@@ -968,8 +942,6 @@ return [
     'reason_for_refund' => 'Reason for Refund',
     'submit_refund_request' => 'Submit Refund Request',
     'e_g_item_damaged_wrong_size' => 'e.g. Item damaged, wrong size, etc.',
-
-    // Customers & CRM
     'manage_customers' => 'Manage Customers',
     'customers_selected' => 'Customers Selected',
     'verified_identity' => 'Verified Identity',
@@ -990,22 +962,16 @@ return [
     'no_tags_assigned' => 'No tags assigned',
     'update_tags' => 'Update Tags',
     'sync_tags' => 'Sync Tags',
-
-    // Newsletters (Subscribers)
     'manage_subscribers' => 'Manage Newsletter Subscribers',
     'subscribers_selected' => 'Subscribers Selected',
     'search_subscribers' => 'Search Subscribers...',
     'showing_subscribers' => 'Showing _START_ to _END_ of _TOTAL_ Subscribers',
     'no_subscribers_found' => 'No subscribers found',
-
-    // Product Reviews
     'manage_reviews' => 'Moderate customer feedback',
     'reviews_selected' => 'Reviews Selected',
     'search_reviews' => 'Search reviews...',
     'showing_reviews' => 'Showing _START_ to _END_ of _TOTAL_ reviews',
     'no_reviews_found' => 'No reviews found',
-
-    // Promotions (Coupons & Discount Rules)
     'manage_coupons' => 'Manage promotional codes',
     'add_coupon' => 'Add Coupon',
     'coupons_selected' => 'Coupons Selected',
@@ -1139,8 +1105,6 @@ return [
     'transactions' => 'Transactions',
     'gateways' => 'Gateways',
     'storefront' => 'Storefront',
-
-    // Added from DataTables & Table Headers
     'id' => 'ID',
     'dt_{{_(' => '{{ __(',
     'dt_length_menu' => '_MENU_',
@@ -1171,8 +1135,6 @@ return [
     'dt_search_users' => 'Search Users...',
     'dt_no_users_found' => 'No users found.',
     'refunds' => 'Refunds',
-
-    // General Settings System Keys
     'system_parametrics' => 'System Parametrics',
     'system_parametrics_subtitle' => 'Calibrate core store identity, regional localization, and architectural branding assets.',
     'center_return' => 'Center Return',
@@ -1185,8 +1147,6 @@ return [
     'chromatic_id_helper' => 'System-wide UI saturation level. Impacts primary interactive elements and visual highlights.',
     'commit_changes' => 'Commit Changes',
     'abort_protocol' => 'Abat Protocol',
-
-    // Sidebar & Setting Tab Keys
     'general' => 'General',
     'store_info' => 'Store Info',
     'seo_meta' => 'SEO & Meta',
@@ -1203,8 +1163,6 @@ return [
     'upload_logo' => 'Upload Logo',
     'upload_favicon' => 'Upload Favicon',
     'upload_background' => 'Upload Background',
-
-    // All Settings View Tab Keys
     'store_information' => 'Store Information',
     'store_information_desc' => 'Contact details and physical address.',
     'contact_email' => 'Contact Email',
@@ -1294,8 +1252,6 @@ return [
     'maintenance_mode' => 'Maintenance Mode',
     'maintenance_mode_desc' => 'Restrict public access to the storefront',
     'maintenance_message' => 'Maintenance Message',
-
-    // Payment Gateways Key Entries
     'payment_gateways_subtitle' => 'Configure discrete payment protocols, calibrate API credentials, and manage transaction environments.',
     'environment' => 'Environment',
     'sandbox_development' => 'Sandbox / Development',

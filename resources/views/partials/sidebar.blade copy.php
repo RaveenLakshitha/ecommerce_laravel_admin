@@ -1,6 +1,5 @@
 <!-- Sidebar -->
 <aside id="sidebar" class="fixed left-0 top-0 h-screen bg-white dark:bg-gray-800 shadow-lg border-r dark:border-gray-700 transition-all duration-300 z-50 overflow-y-auto overflow-x-hidden flex flex-col lg:translate-x-0 -translate-x-full" style="width: 16rem;">
-    
     <!-- Logo Section with Collapse Button -->
     <div class="h-16 flex items-center justify-between px-4 border-b dark:border-gray-700 flex-shrink-0">
         <div class="flex items-center space-x-3 min-w-0">
@@ -15,7 +14,6 @@
                 </svg>
         </button>
     </div>
-
     <!-- Navigation Menu -->
     <nav class="p-4 space-y-2 flex-1">
         <!-- Dashboard -->
@@ -25,7 +23,6 @@
             </svg>
             <span class="sidebar-text">Dashboard</span>
         </a>
-
         <!-- Users -->
         <a href="#" data-tooltip="Users" class="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
             <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -33,7 +30,6 @@
             </svg>
             <span class="sidebar-text">Users</span>
         </a>
-
         <!-- Products -->
         <a href="#" data-tooltip="Products" class="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
             <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -41,7 +37,6 @@
             </svg>
             <span class="sidebar-text">Products</span>
         </a>
-
         <!-- Orders -->
         <a href="#" data-tooltip="Orders" class="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
             <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -49,7 +44,6 @@
             </svg>
             <span class="sidebar-text">Orders</span>
         </a>
-
         <!-- Analytics -->
         <a href="#" data-tooltip="Analytics" class="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
             <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -57,7 +51,6 @@
             </svg>
             <span class="sidebar-text">Analytics</span>
         </a>
-
         <!-- Settings -->
         <a href="#" data-tooltip="Settings" class="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
             <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -66,7 +59,6 @@
             </svg>
             <span class="sidebar-text">Settings</span>
         </a>
-
         <!-- Messages -->
         <a href="#" data-tooltip="Messages" class="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
             <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -74,7 +66,6 @@
             </svg>
             <span class="sidebar-text">Messages</span>
         </a>
-
         <!-- Reports -->
         <a href="#" data-tooltip="Reports" class="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
             <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -83,5 +74,4 @@
             <span class="sidebar-text">Reports</span>
         </a>
     </nav>
-
 </aside>

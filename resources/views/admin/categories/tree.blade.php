@@ -6,7 +6,7 @@
     <div class="px-4 sm:px-6 lg:px-8 pb-4 sm:py-12 pt-20 transition-all duration-300">
         <div class="max-w-5xl mx-auto">
 
-            {{-- Header Area --}}
+            
             <div class="mb-10 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 animate-fade-in-up">
                 <div>
                     <nav class="flex items-center gap-2 mb-4 group/nav">
@@ -36,14 +36,14 @@
                 </div>
             </div>
 
-            {{-- Tree Card --}}
+            
             <div
                 class="bg-white dark:bg-surface-tonal-a20 rounded-3xl shadow-sm border border-gray-100 dark:border-surface-tonal-a30 overflow-hidden animate-fade-in-scale">
                 <div class="p-10">
                     <ul class="space-y-6">
                         @forelse($categories as $category)
                             <li class="relative">
-                                {{-- Phase 1: Root Architecture --}}
+                                
                                 <div class="flex items-center group/root transition-all hover:translate-x-1">
                                     <div
                                         class="w-10 h-10 rounded-xl bg-indigo-500/10 dark:bg-indigo-500/20 flex items-center justify-center text-indigo-600 dark:text-indigo-400 border border-indigo-200/50 dark:border-indigo-500/30 mr-4 shadow-lg shadow-indigo-500/5 group-hover/root:bg-indigo-600 group-hover/root:text-white transition-all">
@@ -70,7 +70,7 @@
                                     </div>
                                 </div>
 
-                                {{-- Phase 2: Structural Branches --}}
+                                
                                 @if($category->children->count() > 0)
                                     <ul class="mt-6 pl-10 border-l-2 border-gray-50 dark:border-surface-tonal-a30 ml-5 space-y-5">
                                         @foreach($category->children as $child)
@@ -92,7 +92,7 @@
                                                     @endif
                                                 </div>
 
-                                                {{-- Phase 3: Terminal Elements --}}
+                                                
                                                 @if($child->children->count() > 0)
                                                     <ul
                                                         class="mt-4 pl-8 border-l border-dashed border-gray-200 dark:border-surface-tonal-a30/50 ml-1.5 space-y-3 pb-2">

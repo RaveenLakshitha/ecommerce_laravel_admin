@@ -117,7 +117,7 @@
     </div>
     </div>
 
-    {{-- Filter Drawer --}}
+    
     <div id="filter-drawer" class="fixed inset-0 z-[100] hidden overflow-hidden transition-all duration-500">
         <div id="filter-overlay"
             class="absolute inset-0 bg-black/40 backdrop-blur-sm opacity-0 transition-opacity duration-300"

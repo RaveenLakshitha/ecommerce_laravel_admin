@@ -32,10 +32,10 @@
 
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
 
-                    {{-- LEFT COLUMN - Wider --}}
+                    
                     <div class="lg:col-span-2 space-y-4">
 
-                        {{-- General Information --}}
+                        
                         <div
                             class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                             <div
@@ -64,7 +64,7 @@
                             </div>
                         </div>
 
-                        {{-- Discount Configuration --}}
+                        
                         <div
                             class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                             <div
@@ -108,7 +108,7 @@
                             </div>
                         </div>
 
-                        {{-- Requirements & Limits --}}
+                        
                         <div
                             class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                             <div
@@ -142,7 +142,7 @@
                                     </div>
                                 </div>
 
-                                {{-- Dynamic Selectors --}}
+                                
                                 <div class="hidden space-y-1.5" id="products_container">
                                     <label
                                         class="block text-[10px] font-black text-black dark:text-white uppercase tracking-widest mb-1">{{ __('file.select_products') }}</label>
@@ -200,9 +200,9 @@
                         </div>
                     </div>
 
-                    {{-- RIGHT COLUMN --}}
+                    
                     <div class="lg:col-span-1 space-y-4">
-                        {{-- Active Period --}}
+                        
                         <div
                             class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                             <div
@@ -228,7 +228,7 @@
                             </div>
                         </div>
 
-                        {{-- Status Card --}}
+                        
                         <div
                             class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden sticky top-24">
                             <div

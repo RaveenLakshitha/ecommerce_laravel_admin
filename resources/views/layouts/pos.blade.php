@@ -236,7 +236,7 @@
             }
         });
     </script>
-    <!-- Dynamic Notifications Container -->
+    
     <div id="notification-container" class="fixed top-5 right-5 z-[9999] flex flex-col gap-3 pointer-events-none"></div>
 
     <script>

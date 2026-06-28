@@ -6,7 +6,7 @@
     @endif
 
     <div class="space-y-4">
-        {{-- Basic Information --}}
+        
         <div>
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
                 {{ __('file.Location Name') }} <span class="text-red-500">*</span>
@@ -35,7 +35,7 @@
             </div>
         </div>
 
-        {{-- Address Details --}}
+        
         <div class="pt-4 border-t border-gray-100 dark:border-white/5 space-y-4">
             <h3 class="text-sm font-semibold text-gray-400">{{ __('file.geographic_information') }}</h3>
 
@@ -88,7 +88,7 @@
             </div>
         </div>
 
-        {{-- Status --}}
+        
         <div>
             <label
                 class="flex items-start p-3 rounded-xl border border-gray-100 dark:border-white/5 bg-gray-50/30 dark:bg-surface-tonal-a10 cursor-pointer hover:bg-gray-50 dark:hover:bg-surface-tonal-a20 transition-colors">

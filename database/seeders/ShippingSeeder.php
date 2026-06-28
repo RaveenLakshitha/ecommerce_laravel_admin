@@ -1,7 +1,5 @@
 <?php
-
 namespace Database\Seeders;
-
 use Illuminate\Database\Seeder;
 use App\Models\Courier;
 use App\Models\ShippingZone;
@@ -11,12 +9,10 @@ use App\Models\Shipment;
 use App\Models\ShipmentTrackingEvent;
 use App\Models\Order;
 use Illuminate\Support\Str;
-
 class ShippingSeeder extends Seeder
 {
     public function run()
     {
-        // 1. Couriers
         $domex = Courier::create([
             'name' => 'DOMEX',
             'slug' => 'domex',
@@ -28,7 +24,6 @@ class ShippingSeeder extends Seeder
             'is_active' => true,
             'sort_order' => 1,
         ]);
-
         $prompt = Courier::create([
             'name' => 'Prompt Xpress',
             'slug' => 'prompt-xpress',
@@ -39,22 +34,17 @@ class ShippingSeeder extends Seeder
             'is_active' => true,
             'sort_order' => 2,
         ]);
-
-        // 2. Shipping Zones
         $western = ShippingZone::create([
             'name' => 'Western Province',
             'country_code' => 'LK',
             'region' => 'Western',
             'is_active' => true,
         ]);
-
         $islandwide = ShippingZone::create([
             'name' => 'Island-Wide (Sri Lanka)',
             'country_code' => 'LK',
             'is_active' => true,
         ]);
-
-        // 3. Shipping Rates
         ShippingRate::create([
             'shipping_zone_id' => $western->id,
             'courier_id' => $domex->id,
@@ -63,7 +53,6 @@ class ShippingSeeder extends Seeder
             'free_shipping_threshold' => 15000.00,
             'is_active' => true,
         ]);
-
         ShippingRate::create([
             'shipping_zone_id' => $islandwide->id,
             'name' => 'Outstation Delivery',
@@ -71,7 +60,6 @@ class ShippingSeeder extends Seeder
             'free_shipping_threshold' => 20000.00,
             'is_active' => true,
         ]);
-
         ShippingRate::create([
             'shipping_zone_id' => $islandwide->id,
             'name' => 'Heavy Items (> 5kg)',
@@ -79,8 +67,6 @@ class ShippingSeeder extends Seeder
             'rate_amount' => 800.00,
             'is_active' => true,
         ]);
-
-        // 4. Pickup Locations
         $colomboPickup = PickupLocation::create([
             'name' => 'Colombo Main Store',
             'address_line_1' => '123 Galle Road',
@@ -91,7 +77,6 @@ class ShippingSeeder extends Seeder
             'email' => 'pickup.colombo@example.com',
             'is_active' => true,
         ]);
-
         $kandyPickup = PickupLocation::create([
             'name' => 'Kandy Branch',
             'address_line_1' => '456 Peradeniya Road',
@@ -102,13 +87,10 @@ class ShippingSeeder extends Seeder
             'email' => 'pickup.kandy@example.com',
             'is_active' => true,
         ]);
-
-        // 5. Shipments
         $orders = Order::inRandomOrder()->take(3)->get();
         if ($orders->count() > 0) {
             foreach ($orders as $index => $order) {
                 if ($index == 0) {
-                    // Pending Shipment
                     Shipment::create([
                         'order_id' => $order->id,
                         'courier_id' => $domex->id,
@@ -116,7 +98,6 @@ class ShippingSeeder extends Seeder
                         'notes' => 'Awaiting fulfillment.',
                     ]);
                 } elseif ($index == 1) {
-                    // In-Transit Shipment
                     $shipment = Shipment::create([
                         'order_id' => $order->id,
                         'courier_id' => $prompt->id,
@@ -124,7 +105,6 @@ class ShippingSeeder extends Seeder
                         'status' => 'out_for_delivery',
                         'shipped_at' => now()->subDays(1),
                     ]);
-
                     ShipmentTrackingEvent::create([
                         'shipment_id' => $shipment->id,
                         'status' => 'shipped',
@@ -142,7 +122,6 @@ class ShippingSeeder extends Seeder
                         'updated_at' => now()->subHours(2),
                     ]);
                 } elseif ($index == 2) {
-                    // In-Store Pickup
                     $shipment = Shipment::create([
                         'order_id' => $order->id,
                         'pickup_location_id' => $colomboPickup->id,

@@ -1,13 +1,10 @@
 <?php
-
 namespace App\Http\Controllers\Admin;
-
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\OrderRefund;
 use App\Models\Setting;
 use Illuminate\Http\Request;
-
 class OrderController extends Controller
 {
     public function __construct()
@@ -17,31 +14,19 @@ class OrderController extends Controller
         $this->middleware('permission:orders.refund', ['only' => ['processRefund']]);
         $this->middleware('permission:orders.delete', ['only' => ['destroy', 'bulkDelete']]);
     }
-
-    /**
-
-     * Display a listing of orders.
-     */
     public function index(Request $request)
     {
         return view('admin.orders.index');
     }
-
-    /**
-     * Display the comprehensive Order Manager / Kanban board screen.
-     */
     public function manager(Request $request)
     {
         $orders = Order::with(['items.variant.product', 'customer', 'shippingAddress'])
             ->orderBy('placed_at', 'desc')
             ->take(100)
             ->get();
-
         $currency_symbol = Setting::getValue('currency_symbol', 'Rs.');
-
         return view('admin.orders.manager', compact('orders', 'currency_symbol'));
     }
-
     public function datatable(Request $request)
     {
         $draw = $request->input('draw');
@@ -50,30 +35,23 @@ class OrderController extends Controller
         $orderIdx = $request->input('order.0.column');
         $orderDir = $request->input('order.0.dir', 'desc');
         $search = trim($request->input('search.value', ''));
-
         $statusFilter = $request->input('status');
         $paymentStatusFilter = $request->input('payment_status');
         $dateFrom = $request->input('date_from');
         $dateTo = $request->input('date_to');
-
         $query = Order::query();
-
         if ($statusFilter) {
             $query->where('status', $statusFilter);
         }
-
         if ($paymentStatusFilter) {
             $query->where('payment_status', $paymentStatusFilter);
         }
-
         if ($dateFrom) {
             $query->whereDate('placed_at', '>=', $dateFrom);
         }
-
         if ($dateTo) {
             $query->whereDate('placed_at', '<=', $dateTo);
         }
-
         if ($search !== '') {
             $query->where(function ($q) use ($search) {
                 $q->where('order_number', 'like', "%{$search}%")
@@ -82,10 +60,8 @@ class OrderController extends Controller
                     ->orWhere('customer_phone', 'like', "%{$search}%");
             });
         }
-
         $totalRecords = Order::count();
         $filteredRecords = (clone $query)->count();
-
         $sortColumn = match ((int) $orderIdx) {
             0 => 'order_number',
             1 => 'placed_at',
@@ -93,10 +69,8 @@ class OrderController extends Controller
             5 => 'total_amount',
             default => 'created_at',
         };
-
         $query->orderBy($sortColumn, $orderDir);
         $orders = $query->offset($start)->limit($length)->get();
-
         $data = $orders->map(function ($order) {
             $statusColors = [
                 'pending' => 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400',
@@ -108,7 +82,6 @@ class OrderController extends Controller
             ];
             $colorClass = $statusColors[$order->status] ?? 'bg-gray-100 text-gray-800';
             $statusHtml = '<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ' . $colorClass . '">' . __('file.' . $order->status) . '</span>';
-            
             $payColors = [
                 'pending' => 'text-yellow-600 dark:text-yellow-400',
                 'paid' => 'text-green-600 dark:text-green-400',
@@ -118,21 +91,16 @@ class OrderController extends Controller
             ];
             $pClass = $payColors[$order->payment_status] ?? 'text-gray-500';
             $payStatus = __('file.' . $order->payment_status);
-
             $paymentHtml = '
                 <div class="font-medium ' . $pClass . '">' . $payStatus . '</div>
                 <div class="text-xs text-gray-500 uppercase">' . $order->payment_method . '</div>
             ';
-
             $customerHtml = '
                 <div class="text-sm font-medium text-gray-900 dark:text-white">' . $order->customer_name . '</div>
                 <div class="text-xs text-gray-500">' . $order->customer_email . '</div>
             ';
-
             $orderNumberHtml = '<a href="' . route('orders.show', $order->id) . '" class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 hover:underline">' . $order->order_number . '</a>';
-
             $dateHtml = $order->placed_at ? $order->placed_at->format('M d, Y h:i A') : $order->created_at->format('M d, Y h:i A');
-
             return [
                 'id' => $order->id,
                 'order_number_html' => $orderNumberHtml,
@@ -146,7 +114,6 @@ class OrderController extends Controller
                 'delete_url' => route('orders.destroy', $order->id),
             ];
         });
-
         return response()->json([
             'draw' => (int) $draw,
             'recordsTotal' => $totalRecords,
@@ -154,10 +121,6 @@ class OrderController extends Controller
             'data' => $data->toArray(),
         ]);
     }
-
-    /**
-     * Display the specified order.
-     */
     public function show(Order $order)
     {
         $order->load([
@@ -170,31 +133,22 @@ class OrderController extends Controller
             'transactions',
             'shipments.courier',
         ]);
-
         $currency_symbol = Setting::getValue('currency_symbol', 'Rs.');
-
         return view('admin.orders.show', compact('order', 'currency_symbol'));
     }
-
-    /**
-     * Update the order status.
-     */
     public function updateStatus(Request $request, Order $order)
     {
         $request->validate([
             'status' => 'required|in:pending,processing,shipped,delivered,cancelled,returned',
         ]);
-
-        // Status Transition Guards
         $validTransitions = [
             'pending' => ['processing', 'cancelled'],
             'processing' => ['shipped', 'cancelled'],
             'shipped' => ['delivered', 'returned'],
             'delivered' => ['returned'],
-            'cancelled' => [], // Terminal state
-            'returned' => [],  // Terminal state
+            'cancelled' => [], 
+            'returned' => [],  
         ];
-
         $allowed = $validTransitions[$order->status] ?? [];
         if (!in_array($request->status, $allowed) && $request->status !== $order->status) {
             $msg = 'Invalid status transition from ' . $order->status . ' to ' . $request->status;
@@ -203,13 +157,10 @@ class OrderController extends Controller
             }
             return back()->withErrors(['status' => $msg]);
         }
-
         $oldStatus = $order->status;
         $order->update([
             'status' => $request->status
         ]);
-
-        // Restore inventory on cancellation or return if not already restored
         if (($request->status === 'cancelled' || $request->status === 'returned') && !in_array($oldStatus, ['cancelled', 'returned'])) {
             foreach ($order->items as $item) {
                 if ($item->variant) {
@@ -225,7 +176,6 @@ class OrderController extends Controller
                 }
             }
         }
-
         if ($request->ajax() || $request->wantsJson()) {
             return response()->json([
                 'success' => true,
@@ -233,23 +183,13 @@ class OrderController extends Controller
                 'status' => $request->status
             ]);
         }
-
         return redirect()->back()->with('success', __('file.order_status_updated_successfully'));
     }
-
-    /**
-     * Generate / Print the invoice or packing slip.
-     */
     public function printInvoice(Order $order)
     {
         $order->load(['items', 'customer', 'shippingAddress', 'billingAddress']);
-
         return view('admin.orders.invoice', compact('order'));
     }
-
-    /**
-     * Process a refund for the order.
-     */
     public function processRefund(Request $request, Order $order)
     {
         $request->validate([
@@ -257,8 +197,6 @@ class OrderController extends Controller
             'reason' => 'nullable|string|max:255',
             'notes' => 'nullable|string',
         ]);
-
-        // Create the Refund record
         OrderRefund::create([
             'order_id' => $order->id,
             'amount' => $request->amount,
@@ -268,16 +206,11 @@ class OrderController extends Controller
             'notes' => $request->notes,
             'performed_by' => auth()->id() ?? null,
         ]);
-
-        // Update Order's payment_status based on total refunded amount
         $totalRefunded = $order->refunds()->where('status', '!=', 'failed')->sum('amount');
         $order->update([
             'refunded_amount' => $totalRefunded,
             'payment_status' => $totalRefunded >= $order->total_amount ? 'refunded' : 'partially_refunded'
         ]);
-
-        // Restore inventory if this was a full refund or specific logic applies
-        // For simplicity here, we restore stock for all items if fully refunded
         if ($order->payment_status === 'refunded' || $order->status === 'returned') {
             foreach ($order->items as $item) {
                 if ($item->variant) {
@@ -293,51 +226,32 @@ class OrderController extends Controller
                 }
             }
         }
-
         return redirect()->back()->with('success', __('file.refund_processed_successfully'));
     }
-
-    /**
-     * Update internal notes for the order.
-     */
     public function addNote(Request $request, Order $order)
     {
         $request->validate([
             'internal_notes' => 'required|string',
         ]);
-
         $order->update([
             'internal_notes' => $request->internal_notes
         ]);
-
         return redirect()->back()->with('success', __('file.internal_notes_updated_successfully'));
     }
-
-    /**
-     * Remove the specified order softly.
-     */
     public function destroy(Order $order)
     {
         $order->delete();
-
         if (request()->ajax()) {
             return response()->json(['success' => true, 'message' => __('file.order_deleted_successfully') ?? 'Order deleted successfully.']);
         }
-
         return back()->with('success', __('file.order_deleted_successfully') ?? 'Order deleted successfully.');
     }
-
-    /**
-     * Bulk delete selected orders softly.
-     */
     public function bulkDelete(Request $request)
     {
         $ids = $request->input('ids');
-
         if (is_string($ids)) {
             $ids = array_filter(array_map('trim', explode(',', $ids ?? '')));
         }
-
         if (!is_array($ids) || empty($ids)) {
             $msg = __('file.no_items_selected') ?? 'No orders selected for deletion.';
             if ($request->ajax()) {
@@ -345,12 +259,10 @@ class OrderController extends Controller
             }
             return back()->with('error', $msg);
         }
-
         $validator = \Illuminate\Support\Facades\Validator::make(['ids' => $ids], [
             'ids'   => 'required|array',
             'ids.*' => 'exists:orders,id'
         ]);
-
         if ($validator->fails()) {
             $msg = __('file.validation_failed') ?? 'Validation failed for selected orders.';
             if ($request->ajax()) {
@@ -358,16 +270,13 @@ class OrderController extends Controller
             }
             return back()->with('error', $msg);
         }
-
         Order::whereIn('id', $ids)->delete();
-
         if ($request->ajax()) {
             return response()->json([
                 'success' => true,
                 'message' => __('file.orders_bulk_deleted_successfully') ?? 'Selected orders deleted successfully.'
             ]);
         }
-
         return back()->with('success', __('file.orders_bulk_deleted_successfully') ?? 'Selected orders deleted successfully.');
     }
 }

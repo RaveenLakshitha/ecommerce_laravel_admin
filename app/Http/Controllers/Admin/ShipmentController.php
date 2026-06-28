@@ -1,14 +1,11 @@
 <?php
-
 namespace App\Http\Controllers\Admin;
-
 use App\Http\Controllers\Controller;
 use App\Models\Shipment;
 use App\Models\Courier;
 use App\Models\PickupLocation;
 use App\Models\ShipmentTrackingEvent;
 use Illuminate\Http\Request;
-
 class ShipmentController extends Controller
 {
     public function __construct()
@@ -18,18 +15,15 @@ class ShipmentController extends Controller
         $this->middleware('permission:shipments.edit', ['only' => ['update', 'addTracking']]);
         $this->middleware('permission:shipments.delete', ['only' => ['destroy', 'bulkDelete']]);
     }
-
     public function index()
     {
         $couriers = Courier::all();
         $pickups = PickupLocation::all();
         return view('admin.shipping.shipments.index', compact('couriers', 'pickups'));
     }
-
     public function datatable(Request $request)
     {
         $query = Shipment::with(['order', 'courier', 'pickupLocation'])->select('shipments.*');
-
         return datatables()->of($query)
             ->addColumn('order_id_html', function ($row) {
                 if ($row->order) {
@@ -58,7 +52,6 @@ class ShipmentController extends Controller
                 $deleteUrl = route('shipping.shipments.destroy', $row->id);
                 $viewLabel   = __('file.view_shipment');
                 $deleteLabel = __('file.delete');
-
                 return '
                 <div class="flex items-center justify-end gap-2">
                     <a href="' . $viewUrl . '"
@@ -103,30 +96,23 @@ class ShipmentController extends Controller
             'status' => 'required|string|in:pending,shipped,out_for_delivery,delivered,failed,returned',
             'notes' => 'nullable|string'
         ]);
-
         $shipment = Shipment::create($data);
-
-        // Log initial status
         ShipmentTrackingEvent::create([
             'shipment_id' => $shipment->id,
             'status' => $data['status'],
             'description' => __('file.shipment_created') . ': ' . auth()->user()->name,
         ]);
-
         if (request()->ajax()) {
             return response()->json(['success' => true, 'message' => __('file.item_created_successfully'), 'shipment' => $shipment]);
         }
-
         return redirect()->route('shipping.shipments.index')->with('success', __('file.item_created_successfully'));
     }
-
     public function show(Shipment $shipment)
     {
         $shipment->load(['order.customer', 'courier', 'trackingEvents', 'pickupLocation']);
         $couriers = Courier::where('is_active', true)->get();
         return view('admin.shipping.shipments.show', compact('shipment', 'couriers'));
     }
-
     public function update(Request $request, Shipment $shipment)
     {
         $data = $request->validate([
@@ -135,30 +121,22 @@ class ShipmentController extends Controller
             'status' => 'required|string|in:pending,shipped,out_for_delivery,delivered,failed,returned',
             'notes' => 'nullable|string'
         ]);
-
         $oldStatus = $shipment->status;
-
         if ($data['status'] === 'shipped' && !$shipment->shipped_at) {
             $data['shipped_at'] = now();
         }
         if ($data['status'] === 'delivered' && !$shipment->delivered_at) {
             $data['delivered_at'] = now();
         }
-
         $shipment->update($data);
-
-        // Sync order status if needed
         $statusSync = [
             'shipped' => 'shipped',
             'delivered' => 'delivered',
             'returned' => 'returned',
         ];
-
         if (isset($statusSync[$data['status']])) {
             $shipment->order->update(['status' => $statusSync[$data['status']]]);
         }
-
-        // Auto log status change event if it changed
         if ($oldStatus !== $data['status']) {
             ShipmentTrackingEvent::create([
                 'shipment_id' => $shipment->id,
@@ -166,10 +144,8 @@ class ShipmentController extends Controller
                 'description' => __('file.status_updated_by_admin') . ': ' . auth()->user()->name,
             ]);
         }
-
         return back()->with('success', __('file.item_updated_successfully'));
     }
-
     public function addTracking(Request $request, Shipment $shipment)
     {
         $data = $request->validate([
@@ -177,19 +153,15 @@ class ShipmentController extends Controller
             'location' => 'nullable|string|max:255',
             'description' => 'required|string',
         ]);
-
         $data['shipment_id'] = $shipment->id;
         ShipmentTrackingEvent::create($data);
-
         return back()->with('success', __('file.tracking_event_logged_manually'));
     }
-
     public function destroy(Shipment $shipment)
     {
         $shipment->delete();
         return response()->json(['success' => true, 'message' => __('file.item_deleted_successfully')]);
     }
-
     public function bulkDelete(Request $request)
     {
         $request->validate(['ids' => 'required|array', 'ids.*' => 'exists:shipments,id']);

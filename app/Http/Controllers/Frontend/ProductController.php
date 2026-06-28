@@ -1,11 +1,8 @@
 <?php
-
 namespace App\Http\Controllers\Frontend;
-
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use Illuminate\Http\Request;
-
 class ProductController extends Controller
 {
     public function index(Request $request)
@@ -13,14 +10,12 @@ class ProductController extends Controller
         $currentCategory = null;
         $categoryBanners = [];
         $promoBanners = [];
-        
         if ($request->has('category') && $request->category !== '') {
             $currentCategory = \App\Models\Category::where('slug', $request->category)->first();
             if ($currentCategory) {
                 $categoryBanners = $currentCategory->banner_urls;
             }
         }
-
         $currentCollection = null;
         if ($request->has('collection') && $request->collection !== '') {
             $currentCollection = \App\Models\Collection::where('slug', $request->collection)->first();
@@ -33,8 +28,6 @@ class ProductController extends Controller
                 ];
             }
         }
-
-        // Fetch active Discount Rule banners
         $activeRules = \App\Models\DiscountRule::where('is_active', true)
             ->where(function ($q) {
                 $q->whereNull('starts_at')->orWhere('starts_at', '<=', now());
@@ -56,7 +49,6 @@ class ProductController extends Controller
             })
             ->orderBy('priority', 'desc')
             ->get();
-
         foreach ($activeRules as $rule) {
             foreach ($rule->banner_urls as $banner) {
                 if (empty($banner['eyebrow'])) {
@@ -65,32 +57,21 @@ class ProductController extends Controller
                 $promoBanners[] = $banner;
             }
         }
-
         $banners = array_merge($promoBanners, $categoryBanners);
-
-        // --- QUERY FOR PRODUCTS ---
         $query = Product::where('is_visible', true)
             ->with(['variants.attributeValues.attribute', 'primaryImage', 'category', 'brand', 'variants.images', 'images']);
-
         if ($currentCategory) {
             $query->where('category_id', $currentCategory->id);
         }
         if ($currentCollection) {
             $query->whereHas('collections', fn($q) => $q->where('collections.id', $currentCollection->id));
         }
-
-        // Get base query for loaded items (before user filters) to determine available filters
         $baseQuery = clone $query;
         $baseProductIds = collect(); 
-        // We do a pluck instead of raw query for easier compatibility, though raw might be faster.
-        // Actually, just using whereIn with the subquery is efficient.
         $baseProductIdsQuery = clone $query;
-        
         $maxPrice = $baseProductIdsQuery->max('base_price') ?? 1000;
-
         $availableCategories = \App\Models\Category::whereIn('id', (clone $query)->select('category_id'))->get();
         $availableBrands = \App\Models\Brand::whereIn('id', (clone $query)->select('brand_id'))->get();
-
         $availableAttributes = \App\Models\Attribute::with(['values' => function($q) use ($query) {
             $q->whereHas('variants', function($q2) use ($query) {
                 $q2->whereIn('product_id', (clone $query)->select('id'));
@@ -98,28 +79,20 @@ class ProductController extends Controller
         }])->whereHas('values.variants', function($q2) use ($query) {
             $q2->whereIn('product_id', (clone $query)->select('id'));
         })->get();
-
-        // Apply Price Filter
         if ($request->filled('min_price')) {
             $query->where('base_price', '>=', $request->min_price);
         }
         if ($request->filled('max_price')) {
             $query->where('base_price', '<=', $request->max_price);
         }
-
-        // Apply Brand Filter
         if ($request->filled('brand_id')) {
             $brands = is_array($request->brand_id) ? $request->brand_id : explode(',', $request->brand_id);
             $query->whereIn('brand_id', $brands);
         }
-
-        // Apply Category Filter (if we are not already restricted to a single category)
         if ($request->filled('filter_category_id')) {
             $cats = is_array($request->filter_category_id) ? $request->filter_category_id : explode(',', $request->filter_category_id);
             $query->whereIn('category_id', $cats);
         }
-
-        // Apply Dynamic Attributes Filter
         if ($request->has('attributes') && is_array($request->input('attributes'))) {
             foreach ($request->input('attributes') as $slug => $values) {
                 if (empty($values)) continue;
@@ -131,8 +104,6 @@ class ProductController extends Controller
                 });
             }
         }
-
-        // Sorting
         if ($request->has('sort') && $request->sort !== '') {
             switch ($request->sort) {
                 case 'az': $query->orderBy('name', 'asc'); break;
@@ -144,23 +115,18 @@ class ProductController extends Controller
         } else {
             $query->latest();
         }
-
         $products = $query->paginate(12)->withQueryString();
-
         if ($request->ajax()) {
             return view('frontend.products.partials.grid', compact('products'))->render();
         }
-
         return view('frontend.products.index', compact('products', 'currentCategory', 'currentCollection', 'banners', 'maxPrice', 'availableCategories', 'availableBrands', 'availableAttributes'));
     }
-
     public function show($slug)
     {
         $product = Product::with(['variants.attributeValues.attribute', 'variants.images', 'images', 'brand', 'category', 'reviews.customer'])
             ->where('slug', $slug)
             ->where('is_visible', true)
             ->firstOrFail();
-
         $relatedProducts = collect();
         if ($product->category_id) {
             $relatedProducts = Product::with('primaryImage', 'images', 'variants')
@@ -171,7 +137,6 @@ class ProductController extends Controller
                 ->take(4)
                 ->get();
         }
-
         return view('frontend.products.show', compact('product', 'relatedProducts'));
     }
 }

@@ -230,7 +230,7 @@
     </div>
 
     <div class="checkout-container">
-        <!-- Left Column: Forms -->
+        
         <div class="checkout-form-area">
             @if(session('error'))
                 <div style="background: #ffebee; color: #c62828; padding: 1rem; margin-bottom: 1rem; border-left: 4px solid #c62828;">
@@ -250,7 +250,7 @@
             <form action="{{ route('checkout.process') }}" method="POST" id="checkout-form">
                 @csrf
 
-                <!-- Contact Info -->
+                
                 <h2 class="section-title">{{ __('file.contact_information') }}</h2>
                 <div class="form-row">
                     <div class="form-group">
@@ -273,7 +273,7 @@
                     </div>
                 </div>
 
-                <!-- Shipping Address -->
+                
                 <h2 class="section-title" style="margin-top: 2rem;">{{ __('file.shipping_address') }}</h2>
                 
                 @php
@@ -309,7 +309,7 @@
                     </div>
                 </div>
 
-                <!-- Shipping Method -->
+                
                 <h2 class="section-title" style="margin-top: 2rem;">{{ __('file.shipping_method') }}</h2>
                 <div class="shipping-methods-container">
                     @forelse($shippingRates as $index => $rate)
@@ -326,7 +326,7 @@
                     @endforelse
                 </div>
 
-                <!-- Payment Method (Bypass) -->
+                
                 <h2 class="section-title" style="margin-top: 2rem;">{{ __('file.payment_method') }}</h2>
                 <div class="payment-methods-container">
                     <label class="payment-method-card">
@@ -359,7 +359,7 @@
             </form>
         </div>
 
-        <!-- Right Column: Summary -->
+        
         <div class="checkout-summary">
             <h2 class="section-title">{{ __('file.order_summary') }}</h2>
             

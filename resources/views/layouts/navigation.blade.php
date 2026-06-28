@@ -1,4 +1,4 @@
-{{-- resources/views/layouts/app.blade.php --}}
+
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="h-full">
 
@@ -13,7 +13,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
 
-    <!-- Tailwind CDN -->
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -33,7 +33,7 @@
 <body class="h-full bg-gray-100 dark:bg-surface-tonal-a10 text-gray-900 dark:text-gray-100 transition-colors" style="font-family:'Inter',system-ui,sans-serif;">
     <div class="flex h-full">
 
-        {{-- ====================== SIDEBAR ====================== --}}
+        
         <aside id="sidebar"
             class="fixed inset-y-0 left-0 z-50 w-64 bg-white dark:bg-surface-tonal-a20 shadow-lg transform -translate-x-full lg:translate-x-0 lg:static lg:inset-0 transition-transform duration-300">
             <div class="flex items-center justify-between p-4 border-b dark:border-surface-tonal-a30">
@@ -51,7 +51,7 @@
 
             <nav class="mt-6 space-y-1 px-3">
 
-                {{-- ==== DASHBOARD (All logged‑in users) ==== --}}
+                
                 @auth
                     <x-sidebar-link href="{{ route('admin.dashboard') }}" :active="request()->routeIs('dashboard')">
                         <x-icon name="home" /> Dashboard
@@ -60,7 +60,7 @@
 
 
 
-                {{-- ==== ADMIN ==== --}}
+                
                 @role('admin')
                 <x-sidebar-link href="{{ route('admin.appointments.create') }}">
                     <x-icon name="plus" /> First Appointment
@@ -73,14 +73,14 @@
                 </x-sidebar-link>
                 @endrole
 
-                {{-- ==== COUNTER ==== --}}
+                
                 @role('counter')
                 <x-sidebar-link href="{{ route('counter.invoices.index') }}">
                     <x-icon name="file-invoice" /> Issue Invoice
                 </x-sidebar-link>
                 @endrole
 
-                {{-- ==== HR ==== --}}
+                
                 @role('hr')
                 <x-sidebar-link href="{{ route('hr.dashboard') }}">
                     <x-icon name="chart" /> Real‑Time Ops
@@ -89,7 +89,7 @@
 
 
 
-                {{-- ==== USER PROFILE & LOGOUT ==== --}}
+                
                 @auth
                     <hr class="my-4 border-gray-300 dark:border-gray-600">
                     <x-sidebar-link href="{{ route('profile.edit') }}">
@@ -104,7 +104,7 @@
                     </form>
                 @endauth
 
-                {{-- ==== GUEST ==== --}}
+                
                 @guest
                     <x-sidebar-link href="{{ route('login') }}">
                         <x-icon name="login" /> Log In
@@ -113,7 +113,7 @@
                 @endguest
             </nav>
 
-            {{-- ==== DARK MODE TOGGLE ==== --}}
+            
             <div class="absolute bottom-0 w-full p-4 border-t dark:border-surface-tonal-a30">
                 <button id="theme-toggle"
                     class="flex items-center w-full px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md">
@@ -132,12 +132,12 @@
             </div>
         </aside>
 
-        {{-- Overlay for mobile --}}
+        
         <div id="sidebar-overlay" class="fixed inset-0 bg-black opacity-50 z-40 hidden lg:hidden"></div>
 
-        {{-- ====================== MAIN CONTENT ====================== --}}
+        
         <div class="flex-1 flex flex-col">
-            {{-- Mobile Header --}}
+            
             <header class="lg:hidden bg-white dark:bg-surface-tonal-a20 shadow-sm">
                 <div class="flex items-center justify-between p-4">
                     <button id="open-sidebar"
@@ -154,7 +154,7 @@
                 </div>
             </header>
 
-            {{-- Page Header --}}
+            
             @if(isset($header))
                 <header class="bg-white dark:bg-surface-tonal-a20 shadow-sm">
                     <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
@@ -163,14 +163,14 @@
                 </header>
             @endif
 
-            {{-- Page Content --}}
+            
             <main class="flex-1 p-4 lg:p-8">
                 @yield('content')
             </main>
         </div>
     </div>
 
-    {{-- JS: Sidebar + Dark Mode --}}
+    
     <script>
         const sidebar = document.getElementById('sidebar');
         const overlay = document.getElementById('sidebar-overlay');

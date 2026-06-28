@@ -6,7 +6,7 @@
     <div class="admin-page">
         <div class="admin-page-inner">
 
-            {{-- ── PAGE HEADER ─────────────────────────────────────────────────────── --}}
+            
             <div class="admin-page-header">
                 <div>
                     <nav class="admin-breadcrumb">
@@ -28,10 +28,10 @@
                 </a>
             </div>
 
-            {{-- ── KPI CARDS ──────────────────────────────────────────────────────── --}}
+            
             <div class="grid grid-cols-2 sm:grid-cols-2 xl:grid-cols-5 gap-4 mb-8">
 
-                {{-- Total Variants --}}
+                
                 <div class="admin-card p-5 flex flex-col gap-3 hover:shadow-md transition-shadow">
                     <div class="flex items-center justify-between">
                         <span
@@ -49,7 +49,7 @@
                     <span class="text-xs text-gray-400 dark:text-gray-500">{{ __('file.across_all_products') }}</span>
                 </div>
 
-                {{-- In Stock --}}
+                
                 <div class="admin-card p-5 flex flex-col gap-3 hover:shadow-md transition-shadow">
                     <div class="flex items-center justify-between">
                         <span
@@ -68,7 +68,7 @@
                         class="text-xs text-emerald-600 dark:text-emerald-400 font-semibold">{{ __('file.healthy_stock') }}</span>
                 </div>
 
-                {{-- Low Stock --}}
+                
                 <div class="admin-card p-5 flex flex-col gap-3 hover:shadow-md transition-shadow">
                     <div class="flex items-center justify-between">
                         <span
@@ -87,7 +87,7 @@
                         class="text-xs text-amber-600 dark:text-amber-400 font-semibold">{{ __('file.needs_attention') }}</span>
                 </div>
 
-                {{-- Out of Stock --}}
+                
                 <div class="admin-card p-5 flex flex-col gap-3 hover:shadow-md transition-shadow">
                     <div class="flex items-center justify-between">
                         <span
@@ -106,7 +106,7 @@
                         class="text-xs text-rose-600 dark:text-rose-400 font-semibold">{{ __('file.needs_restocking') }}</span>
                 </div>
 
-                {{-- Inventory Value --}}
+                
                 <div class="admin-card p-5 flex flex-col gap-3 hover:shadow-md transition-shadow col-span-2 xl:col-span-1">
                     <div class="flex items-center justify-between">
                         <span
@@ -125,13 +125,13 @@
                 </div>
             </div>
 
-            {{-- ── MAIN GRID ──────────────────────────────────────────────────────── --}}
+            
             <div class="grid grid-cols-1 xl:grid-cols-12 gap-6">
 
-                {{-- LEFT: Low Stock + Out of Stock --}}
+                
                 <div class="xl:col-span-8 space-y-6">
 
-                    {{-- Low Stock Items --}}
+                    
                     <div class="admin-card overflow-hidden">
                         <div class="admin-card-header flex items-center justify-between">
                             <div>
@@ -226,7 +226,7 @@
                         </div>
                     </div>
 
-                    {{-- Out of Stock Items --}}
+                    
                     <div class="admin-card overflow-hidden">
                         <div class="admin-card-header flex items-center justify-between">
                             <div>
@@ -305,10 +305,10 @@
 
                 </div>
 
-                {{-- RIGHT: Stock distribution + Top stocked --}}
+                
                 <div class="xl:col-span-4 space-y-6">
 
-                    {{-- Stock Distribution Chart --}}
+                    
                     <div class="admin-card p-6">
                         <h2 class="text-sm font-black text-black dark:text-white uppercase tracking-wider mb-1">
                             {{ __('file.stock_distribution') }}</h2>
@@ -337,7 +337,7 @@
                         </div>
                     </div>
 
-                    {{-- Top Stocked Items --}}
+                    
                     <div class="admin-card p-6">
                         <h2 class="text-sm font-black text-black dark:text-white uppercase tracking-wider mb-1">
                             {{ __('file.top_stocked') }}</h2>

@@ -1,7 +1,5 @@
 <?php
-
 namespace Database\Seeders;
-
 use App\Models\Attribute;
 use App\Models\AttributeValue;
 use App\Models\Brand;
@@ -10,33 +8,23 @@ use App\Models\Product;
 use App\Models\Variant;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
-
 class RealisticProductSeeder extends Seeder
 {
     public function run(): void
     {
-        // ── Load reusable references ───────────────────────────────────────
         $sizeAttr = Attribute::where('slug', 'size')->firstOrFail();
         $colorAttr = Attribute::where('slug', 'color')->firstOrFail();
         $fitAttr = Attribute::where('slug', 'fit')->firstOrFail();
-        // $materialAttr = Attribute::where('slug', 'material')->firstOrFail();
-
         $sizes = AttributeValue::where('attribute_id', $sizeAttr->id)->pluck('id', 'slug')->toArray();
         $colors = AttributeValue::where('attribute_id', $colorAttr->id)->pluck('id', 'slug')->toArray();
         $fits = AttributeValue::where('attribute_id', $fitAttr->id)->pluck('id', 'slug')->toArray();
-
-        // Brands
         $nike = Brand::where('slug', 'nike')->first();
         $adidas = Brand::where('slug', 'adidas')->first();
         $puma = Brand::where('slug', 'puma')->first();
         $local = Brand::where('slug', 'local-threads')->first();
-
-        // Categories (adjust slugs if your CategorySeeder used different ones)
         $menTshirts = Category::where('slug', 't-shirts')->first();
         $menJeans = Category::where('slug', 'jeans')->first();
         $menHoodies = Category::where('slug', 'hoodies')->first();
-
-        // ── Product 1: Nike Sport T-Shirt ────────────────────────────────
         $tshirt = Product::updateOrCreate(
             ['slug' => Str::slug('Nike Sportswear Club T-Shirt')],
             [
@@ -49,7 +37,6 @@ class RealisticProductSeeder extends Seeder
                 'is_featured' => true,
             ]
         );
-
         if ($nike) {
             $tshirt->brand_id = $nike->id;
             $tshirt->save();
@@ -57,7 +44,6 @@ class RealisticProductSeeder extends Seeder
         if ($menTshirts) {
             $tshirt->categories()->syncWithoutDetaching([$menTshirts->id]);
         }
-
         $tshirtVariants = [
             [
                 'sku' => 'NK-TS-BLK-S',
@@ -94,7 +80,6 @@ class RealisticProductSeeder extends Seeder
                 'colors' => ['grey']
             ],
         ];
-
         foreach ($tshirtVariants as $data) {
             $variant = $tshirt->variants()->updateOrCreate(
                 ['sku' => $data['sku']],
@@ -106,15 +91,11 @@ class RealisticProductSeeder extends Seeder
                     'weight_grams' => 180,
                 ]
             );
-
-            // Attach attributes
             foreach ($data['sizes'] as $s)
                 $variant->attributeValues()->syncWithoutDetaching([$sizes[$s]]);
             foreach ($data['colors'] as $c)
                 $variant->attributeValues()->syncWithoutDetaching([$colors[$c]]);
         }
-
-        // ── Product 2: Adidas Originals Jeans ─────────────────────────────
         $jeans = Product::updateOrCreate(
             ['slug' => Str::slug('Adidas Originals Adicolor Trefoil Jeans')],
             [
@@ -127,7 +108,6 @@ class RealisticProductSeeder extends Seeder
                 'is_featured' => false,
             ]
         );
-
         if ($adidas) {
             $jeans->brand_id = $adidas->id;
             $jeans->save();
@@ -135,7 +115,6 @@ class RealisticProductSeeder extends Seeder
         if ($menJeans) {
             $jeans->categories()->syncWithoutDetaching([$menJeans->id]);
         }
-
         $jeansVariants = [
             [
                 'sku' => 'AD-JNS-BLK-30',
@@ -163,7 +142,6 @@ class RealisticProductSeeder extends Seeder
                 'colors' => ['navy']
             ],
         ];
-
         foreach ($jeansVariants as $data) {
             $variant = $jeans->variants()->updateOrCreate(
                 ['sku' => $data['sku']],
@@ -175,16 +153,12 @@ class RealisticProductSeeder extends Seeder
                     'weight_grams' => 680,
                 ]
             );
-
             foreach ($data['sizes'] as $s)
                 $variant->attributeValues()->syncWithoutDetaching([$sizes[$s]]);
             foreach ($data['colors'] as $c)
                 $variant->attributeValues()->syncWithoutDetaching([$colors[$c]]);
-            // Optional: attach 'slim' fit if wanted
             $variant->attributeValues()->syncWithoutDetaching([$fits['slim']]);
         }
-
-        // ── Product 3: Local Threads Oversized Hoodie ─────────────────────
         $hoodie = Product::updateOrCreate(
             ['slug' => Str::slug('Local Threads Heavyweight Oversized Hoodie')],
             [
@@ -197,7 +171,6 @@ class RealisticProductSeeder extends Seeder
                 'is_featured' => true,
             ]
         );
-
         if ($local) {
             $hoodie->brand_id = $local->id;
             $hoodie->save();
@@ -205,7 +178,6 @@ class RealisticProductSeeder extends Seeder
         if ($menHoodies) {
             $hoodie->categories()->syncWithoutDetaching([$menHoodies->id]);
         }
-
         $hoodieVariants = [
             [
                 'sku' => 'LT-HD-BLK-M',
@@ -241,7 +213,6 @@ class RealisticProductSeeder extends Seeder
                 'colors' => ['black']
             ],
         ];
-
         foreach ($hoodieVariants as $data) {
             $variant = $hoodie->variants()->updateOrCreate(
                 ['sku' => $data['sku']],
@@ -253,14 +224,12 @@ class RealisticProductSeeder extends Seeder
                     'weight_grams' => 620,
                 ]
             );
-
             foreach ($data['sizes'] as $s)
                 $variant->attributeValues()->syncWithoutDetaching([$sizes[$s]]);
             foreach ($data['colors'] as $c)
                 $variant->attributeValues()->syncWithoutDetaching([$colors[$c]]);
             $variant->attributeValues()->syncWithoutDetaching([$fits['oversized']]);
         }
-
         $this->command->info('→ 3 realistic clothing products + variants + brand/category links seeded.');
     }
 }

@@ -6,7 +6,7 @@
     <div class="admin-page animate-fade-in-up">
         <div class="admin-page-inner">
 
-            {{-- Breadcrumbs --}}
+            
             <div class="mb-4 mt-10">
                 <a href="{{ route('customers.index') }}"
                     class="text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 transition-colors uppercase tracking-wider inline-block">
@@ -14,7 +14,7 @@
                 </a>
             </div>
 
-            {{-- Header --}}
+            
             <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
                 <div>
                     <div class="flex items-center gap-4">
@@ -34,10 +34,10 @@
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
 
-                {{-- Left Column --}}
+                
                 <div class="lg:col-span-2 space-y-4">
 
-                    {{-- Customer Overview --}}
+                    
                     <div
                         class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                         <div
@@ -86,7 +86,7 @@
                         </div>
                     </div>
 
-                    {{-- Internal Notes Section --}}
+                    
                     <div
                         class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                         <div
@@ -98,7 +98,7 @@
                                 {{ __('file.notes') }}</span>
                         </div>
 
-                        {{-- New Note Form --}}
+                        
                         <div
                             class="p-4 bg-indigo-50/30 dark:bg-indigo-900/10 border-b border-gray-100 dark:border-surface-tonal-a30">
                             <form action="{{ route('customers.notes.add', $customer->id) }}" method="POST"
@@ -116,7 +116,7 @@
                             </form>
                         </div>
 
-                        {{-- Notes List --}}
+                        
                         <div
                             class="divide-y divide-gray-50 dark:divide-surface-tonal-a30 max-h-[400px] overflow-y-auto custom-scrollbar">
                             @forelse($customer->notes()->latest()->get() as $note)
@@ -145,7 +145,7 @@
                         </div>
                     </div>
 
-                    {{-- Recent Orders Table --}}
+                    
                     <div
                         class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                         <div
@@ -223,10 +223,10 @@
 
                 </div>
 
-                {{-- Right Column --}}
+                
                 <div class="col-span-1 space-y-4">
 
-                    {{-- Financial Summary Card --}}
+                    
                     <div class="bg-indigo-600 rounded-lg shadow-lg p-5 text-white overflow-hidden relative group">
                         <div
                             class="absolute -right-4 -bottom-4 w-24 h-24 bg-white/10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700">
@@ -257,7 +257,7 @@
                         </div>
                     </div>
 
-                    {{-- Customer Tags Card --}}
+                    
                     <div
                         class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                         <div

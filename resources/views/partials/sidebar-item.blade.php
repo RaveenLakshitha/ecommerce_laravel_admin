@@ -1,6 +1,4 @@
-{{-- partials/sidebar-item.blade.php
-Required vars: $route, $active (bool), $label, $icon (SVG path d=""), $tooltip (optional)
---}}
+
 <a href="{{ Route::has($route) ? route($route) : '#' }}"
     class="group flex items-center px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 relative overflow-hidden sidebar-item-hover {{ $active ? 'sidebar-item-active' : 'text-gray-600 dark:text-gray-200' }}"
     @isset($tooltip) data-tooltip="{{ $tooltip }}" @endisset>

@@ -37,7 +37,7 @@
                 </div>
             </div>
 
-            {{-- Success Alert --}}
+            
             @if(session('success'))
                 <div class="admin-alert-success animate-fade-in-scale">
                     <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -47,7 +47,7 @@
                 </div>
             @endif
 
-            {{-- Bulk Delete --}}
+            
             <div id="bulk-delete-form" class="hidden animate-fade-in-scale sticky top-20 z-30 mb-6">
                 <form method="POST" action="{{ route('brands.bulkDelete') }}" id="bulk-delete-form-el"
                     class="admin-bulk-bar">
@@ -68,7 +68,7 @@
                 </form>
             </div>
 
-            {{-- Data Table --}}
+            
             <div class="admin-card">
                 <div class="overflow-x-auto">
                     <table id="application-table" class="w-full" style="width:100%">
@@ -95,7 +95,7 @@
 @endsection
 
 @push('drawers')
-    {{-- Brand Drawer --}}
+    
     <div id="brand-drawer" class="fixed inset-0 z-[9999] hidden overflow-hidden">
         <div id="brand-drawer-overlay"
             class="absolute inset-0 bg-black/40 backdrop-blur-sm opacity-0 transition-opacity duration-300"

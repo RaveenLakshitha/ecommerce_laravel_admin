@@ -10,7 +10,7 @@
 
     <link rel="icon" href="{{ $store_favicon ?? asset('images/favicon.ico') }}" type="image/png">
 
-    {{-- DRAPE theme fonts --}}
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -163,7 +163,7 @@
         </main>
     </div>
 
-    {{-- Body-level drawers rendered outside stacking contexts --}}
+    
     @stack('drawers')
 
     @stack('scripts')

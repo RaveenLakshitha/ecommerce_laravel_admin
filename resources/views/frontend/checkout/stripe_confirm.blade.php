@@ -135,7 +135,7 @@
     </div>
 </div>
 
-{{-- Hidden form posted to server after Stripe confirms --}}
+
 <form id="confirm-form" action="{{ route('checkout.stripe.confirm') }}" method="POST" style="display:none;">
     @csrf
     <input type="hidden" name="payment_intent_id" id="payment_intent_id">

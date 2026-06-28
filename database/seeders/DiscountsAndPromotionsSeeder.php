@@ -1,22 +1,13 @@
 <?php
-
 namespace Database\Seeders;
-
 use Illuminate\Database\Seeder;
 use App\Models\Coupon;
 use App\Models\DiscountRule;
 use Carbon\Carbon;
-
 class DiscountsAndPromotionsSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        // ------------- COUPONS -------------
-        
-        // 1. Fixed $10 Off New User Coupon
         Coupon::create([
             'code' => 'WELCOME10',
             'description' => '$10 off your first purchase',
@@ -28,8 +19,6 @@ class DiscountsAndPromotionsSeeder extends Seeder
             'is_active' => true,
             'applies_to' => 'all',
         ]);
-
-        // 2. 20% Off Summer Sale Coupon
         Coupon::create([
             'code' => 'SUMMER20',
             'description' => '20% off all products for the summer',
@@ -40,21 +29,15 @@ class DiscountsAndPromotionsSeeder extends Seeder
             'applies_to' => 'all',
             'expires_at' => Carbon::now()->addMonths(2),
         ]);
-
-        // 3. 50% Off Electronics (Specific Category simulation)
         Coupon::create([
             'code' => 'TECH50',
             'description' => 'Huge 50% discount on tech',
             'type' => 'percentage',
             'value' => 50.00,
-            'usage_limit' => 100, // Only 100 redemptions
+            'usage_limit' => 100, 
             'is_active' => true,
             'applies_to' => 'specific_categories',
         ]);
-        
-        // ------------- DISCOUNT RULES -------------
-
-        // 1. Buy 2 Get 1 Free (BOGO)
         DiscountRule::create([
             'name' => 'Buy 2 Get 1 Free Tees',
             'description' => 'Add 3 t-shirts to your cart and the cheapest is free.',
@@ -66,22 +49,18 @@ class DiscountsAndPromotionsSeeder extends Seeder
             'is_active' => true,
             'is_flash_sale' => false,
         ]);
-
-        // 2. 15% Off Storewide Flash Sale
         DiscountRule::create([
             'name' => 'Midnight Flash Sale',
             'description' => '15% off everything for 24 hours!',
             'type' => 'percentage',
             'value' => 15.00,
             'applies_to' => 'all',
-            'priority' => 100, // Very high priority
+            'priority' => 100, 
             'is_active' => true,
             'is_flash_sale' => true,
-            'starts_at' => Carbon::now()->subHours(1), // Started an hour ago
+            'starts_at' => Carbon::now()->subHours(1), 
             'expires_at' => Carbon::now()->addHours(23),
         ]);
-
-        // 3. $5 Off Orders Over $100
         DiscountRule::create([
             'name' => 'Saver Tier 1',
             'description' => 'Spend over $100 and automatically save $5.',

@@ -33,10 +33,10 @@
 
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
 
-                    {{-- Left Column --}}
+                    
                     <div class="lg:col-span-2 space-y-4">
 
-                        {{-- Basic Information --}}
+                        
                         <div
                             class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                             <div
@@ -83,7 +83,7 @@
                             </div>
                         </div>
 
-                        {{-- Banners --}}
+                        
                         <div
                             class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                             <div
@@ -117,10 +117,10 @@
                         </div>
                     </div>
 
-                    {{-- Right Column --}}
+                    
                     <div class="lg:col-span-1 space-y-4">
                         
-                        {{-- Search Engine Optimization --}}
+                        
                         <div class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                             <div class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
                                 <h2 class="text-sm font-bold text-gray-900 dark:text-white">{{ __('file.seo_settings') }}</h2>

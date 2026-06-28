@@ -1,29 +1,22 @@
 <?php
-
 namespace Database\Seeders;
-
 use App\Models\Attribute;
 use App\Models\AttributeValue;
 use App\Models\Product;
 use App\Models\Variant;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
-
 class ProductVariantSeeder extends Seeder
 {
     public function run(): void
     {
-        // Pre-load attributes & some values for easier reference
         $sizeAttr = Attribute::where('slug', 'size')->firstOrFail();
         $colorAttr = Attribute::where('slug', 'color')->firstOrFail();
         $fitAttr = Attribute::where('slug', 'fit')->firstOrFail();
         $materialAttr = Attribute::where('slug', 'material')->firstOrFail();
-
         $sizes = AttributeValue::where('attribute_id', $sizeAttr->id)->pluck('id', 'slug')->toArray();
         $colors = AttributeValue::where('attribute_id', $colorAttr->id)->pluck('id', 'slug')->toArray();
         $fits = AttributeValue::where('attribute_id', $fitAttr->id)->pluck('id', 'slug')->toArray();
-
-        // ── Product 1: Basic Cotton T-Shirt ───────────────────────────────
         $tshirt = Product::create([
             'name' => 'Basic Cotton T-Shirt',
             'slug' => Str::slug('Basic Cotton T-Shirt'),
@@ -31,9 +24,7 @@ class ProductVariantSeeder extends Seeder
             'is_visible' => true,
             'is_featured' => true,
         ]);
-
         $tshirtVariantsData = [
-            // S - Black
             [
                 'sku' => 'TS-BLK-S',
                 'price' => 24.99,
@@ -43,7 +34,6 @@ class ProductVariantSeeder extends Seeder
                 'sizes' => ['s'],
                 'colors' => ['black']
             ],
-            // S - White
             [
                 'sku' => 'TS-WHT-S',
                 'price' => 24.99,
@@ -51,7 +41,6 @@ class ProductVariantSeeder extends Seeder
                 'sizes' => ['s'],
                 'colors' => ['white']
             ],
-            // M - Black
             [
                 'sku' => 'TS-BLK-M',
                 'price' => 24.99,
@@ -60,7 +49,6 @@ class ProductVariantSeeder extends Seeder
                 'sizes' => ['m'],
                 'colors' => ['black']
             ],
-            // M - Navy
             [
                 'sku' => 'TS-NVY-M',
                 'price' => 24.99,
@@ -68,7 +56,6 @@ class ProductVariantSeeder extends Seeder
                 'sizes' => ['m'],
                 'colors' => ['navy']
             ],
-            // L - Grey
             [
                 'sku' => 'TS-GRY-L',
                 'price' => 24.99,
@@ -76,7 +63,6 @@ class ProductVariantSeeder extends Seeder
                 'sizes' => ['l'],
                 'colors' => ['grey']
             ],
-            // XL - Black
             [
                 'sku' => 'TS-BLK-XL',
                 'price' => 24.99,
@@ -86,7 +72,6 @@ class ProductVariantSeeder extends Seeder
                 'colors' => ['black']
             ],
         ];
-
         foreach ($tshirtVariantsData as $data) {
             $variant = $tshirt->variants()->create([
                 'sku' => $data['sku'],
@@ -95,19 +80,13 @@ class ProductVariantSeeder extends Seeder
                 'stock_quantity' => $data['stock_quantity'],
                 'is_default' => $data['is_default'] ?? false,
             ]);
-
-            // Attach sizes
             foreach ($data['sizes'] as $sizeSlug) {
                 $variant->attributeValues()->attach($sizes[$sizeSlug]);
             }
-
-            // Attach colors
             foreach ($data['colors'] as $colorSlug) {
                 $variant->attributeValues()->attach($colors[$colorSlug]);
             }
         }
-
-        // ── Product 2: Slim Fit Jeans ─────────────────────────────────────
         $jeans = Product::create([
             'name' => 'Slim Fit Stretch Jeans',
             'slug' => Str::slug('Slim Fit Stretch Jeans'),
@@ -115,7 +94,6 @@ class ProductVariantSeeder extends Seeder
             'is_visible' => true,
             'is_featured' => false,
         ]);
-
         $jeansVariantsData = [
             [
                 'sku' => 'JNS-DRK-30',
@@ -152,7 +130,6 @@ class ProductVariantSeeder extends Seeder
                 'fits' => ['slim']
             ],
         ];
-
         foreach ($jeansVariantsData as $data) {
             $variant = $jeans->variants()->create([
                 'sku' => $data['sku'],
@@ -161,7 +138,6 @@ class ProductVariantSeeder extends Seeder
                 'stock_quantity' => $data['stock_quantity'],
                 'is_default' => $data['is_default'] ?? false,
             ]);
-
             foreach ($data['sizes'] as $s) {
                 $variant->attributeValues()->attach($sizes[$s]);
             }
@@ -172,8 +148,6 @@ class ProductVariantSeeder extends Seeder
                 $variant->attributeValues()->attach($fits[$f]);
             }
         }
-
-        // ── Product 3: Oversized Hoodie ───────────────────────────────────
         $hoodie = Product::create([
             'name' => 'Heavyweight Oversized Hoodie',
             'slug' => Str::slug('Heavyweight Oversized Hoodie'),
@@ -181,7 +155,6 @@ class ProductVariantSeeder extends Seeder
             'is_visible' => true,
             'is_featured' => true,
         ]);
-
         $hoodieVariantsData = [
             [
                 'sku' => 'HD-BLK-S',
@@ -215,7 +188,6 @@ class ProductVariantSeeder extends Seeder
                 'colors' => ['olive']
             ],
         ];
-
         foreach ($hoodieVariantsData as $data) {
             $variant = $hoodie->variants()->create([
                 'sku' => $data['sku'],
@@ -224,7 +196,6 @@ class ProductVariantSeeder extends Seeder
                 'stock_quantity' => $data['stock_quantity'],
                 'is_default' => $data['is_default'] ?? false,
             ]);
-
             foreach ($data['sizes'] as $s) {
                 $variant->attributeValues()->attach($sizes[$s]);
             }
@@ -232,7 +203,6 @@ class ProductVariantSeeder extends Seeder
                 $variant->attributeValues()->attach($colors[$c]);
             }
         }
-
         $this->command->info('Sample products, variants and attribute combinations seeded successfully!');
     }
 }

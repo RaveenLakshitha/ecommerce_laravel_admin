@@ -6,7 +6,7 @@
     <div class="min-h-screen bg-gray-50 dark:bg-surface-tonal-a10">
         <div class="px-4 sm:px-6 lg:px-8 pb-10 pt-20">
 
-            {{-- ── PAGE HEADER ────────────────────────────────────────────────────── --}}
+            
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8 gap-4">
                 <div>
                     <h1 class="text-3xl font-bold text-gray-900 dark:text-primary-a0">
@@ -14,7 +14,7 @@
                     </h1>
                     <p class="text-gray-500 dark:text-gray-400 mt-1 text-sm">{{ $currentDate }}</p>
                 </div>
-                {{-- Role + Notification pills --}}
+                
                 <div class="flex flex-wrap gap-3">
                     <span class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium"
                         style="background:{{ $primary_color }}20; color:{{ $primary_color }}">
@@ -37,7 +37,7 @@
                 </div>
             </div>
 
-            {{-- ── TAB BAR ─────────────────────────────────────────────────────────── --}}
+            
             <div class="mb-8 border-b border-gray-200 dark:border-surface-tonal-a30">
                 <nav class="flex space-x-6" aria-label="Dashboard Tabs">
                     <button onclick="switchTab('overview')" id="tab-overview"
@@ -66,12 +66,10 @@
                 </nav>
             </div>
 
-            {{-- ════════════════════════════════════════════════════════════════════════
-            OVERVIEW TAB
-            ═════════════════════════════════════════════════════════════════════════ --}}
+            
             <div id="content-overview" class="tab-content">
 
-                {{-- ── QUICK ACCESS CARDS (based on permissions) ───────────────────── --}}
+                
                 @php
                     $hasAnyCardAccess = auth()->user()->canAny([
                         'invoices.index',
@@ -137,11 +135,9 @@
 
 
 
-            </div>{{-- /content-overview --}}
+            </div>
 
-            {{-- ════════════════════════════════════════════════════════════════════════
-            NOTIFICATIONS TAB
-            ═════════════════════════════════════════════════════════════════════════ --}}
+            
             <div id="content-notifications" class="tab-content hidden">
                 @include('dashboard.partials.notifications')
             </div>

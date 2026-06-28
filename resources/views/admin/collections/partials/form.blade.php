@@ -7,7 +7,7 @@
     @endif
 
     <div class="space-y-4">
-        {{-- General Information --}}
+        
         <div>
             <label for="drawer_col_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
                 {{ __('file.collection_name') }} <span class="text-red-500">*</span>
@@ -55,7 +55,7 @@
             </div>
         </div>
 
-        {{-- Banner Image --}}
+        
         <div>
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 {{ __('file.banner_image') }}
@@ -103,7 +103,7 @@
             @endif
         </div>
 
-        {{-- Status and Featured --}}
+        
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <label
                 class="flex items-center gap-3 p-3 rounded-xl border border-gray-100 dark:border-white/5 bg-gray-50/30 dark:bg-surface-tonal-a10 cursor-pointer hover:bg-gray-50 dark:hover:bg-surface-tonal-a20 transition-colors">

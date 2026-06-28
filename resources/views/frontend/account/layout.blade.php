@@ -758,10 +758,10 @@
     <div class="account-wrap">
         <div class="max-w-6xl mx-auto flex">
 
-            {{-- ══ SIDEBAR ══ --}}
+            
             <aside class="acc-sidebar">
 
-                {{-- Profile block --}}
+                
                 <div class="acc-sidebar__profile">
                     <div class="acc-sidebar__avatar-wrap">
                         <img class="acc-sidebar__avatar"
@@ -775,7 +775,7 @@
                     </div>
                 </div>
 
-                {{-- Nav group --}}
+                
                 <p class="acc-sidebar__nav-label">Menu</p>
 
                 @php
@@ -801,10 +801,10 @@
 
             </aside>
 
-            {{-- ══ MAIN ══ --}}
+            
             <main class="acc-main">
 
-                {{-- Mobile nav dropdown --}}
+                
                 <div class="acc-mobile-nav" x-data="{ open: false }">
                     <button @click="open = !open"
                         class="w-full flex items-center justify-between bg-white px-4 py-3 rounded-xl border border-gray-100 shadow-sm">
@@ -836,7 +836,7 @@
                     </div>
                 </div>
 
-                {{-- ══ DASHBOARD ══ --}}
+                
                 @if($activeTab === 'dashboard')
                     <div>
                         <h1 class="acc-page-title">{{ __('file.hello') }}, {{ $customer->first_name ?? $user->name }}</h1>
@@ -911,7 +911,7 @@
                     </div>
                 @endif
 
-                {{-- ══ ORDERS ══ --}}
+                
                 @if($activeTab === 'orders')
                     <div>
                         <h2 class="acc-page-title" style="margin-bottom: 20px">{{ __('file.order_history') }}</h2>
@@ -953,7 +953,7 @@
                     </div>
                 @endif
 
-                {{-- ══ ADDRESSES ══ --}}
+                
                 @if($activeTab === 'addresses')
                     <div x-data="{ showAddForm: false }">
                         <div class="flex items-center justify-between" style="margin-bottom: 20px">
@@ -964,7 +964,7 @@
                             </button>
                         </div>
 
-                        {{-- Add form --}}
+                        
                         <div x-show="showAddForm" x-cloak x-transition:enter="transition ease-out duration-200"
                             x-transition:enter-start="opacity-0 -translate-y-2"
                             x-transition:enter-end="opacity-100 translate-y-0" style="margin-bottom: 24px">
@@ -1086,14 +1086,14 @@
                     </div>
                 @endif
 
-                {{-- ══ PROFILE ══ --}}
+                
                 @if($activeTab === 'profile')
                     <div>
                         <h2 class="acc-page-title" style="margin-bottom: 24px">{{ __('file.account_info') }}</h2>
 
                         <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
 
-                            {{-- Avatar card --}}
+                            
                             <div class="xl:col-span-1">
                                 <div class="acc-profile-avatar-card">
                                     <div class="acc-profile-avatar-wrap">
@@ -1120,7 +1120,7 @@
                                 </div>
                             </div>
 
-                            {{-- Forms --}}
+                            
                             <div class="xl:col-span-2" style="display:flex; flex-direction:column; gap:20px">
                                 <form action="{{ route('account.profile.update') }}" method="POST" class="acc-card">
                                     @csrf @method('PUT')
@@ -1184,7 +1184,7 @@
                     </div>
                 @endif
 
-                {{-- ══ WISHLIST ══ --}}
+                
                 @if($activeTab === 'wishlist')
                     <div>
                         <h2 class="acc-page-title" style="margin-bottom: 24px">{{ __('file.my_wishlist') }}</h2>
@@ -1240,7 +1240,7 @@
                     </div>
                 @endif
 
-                {{-- ══ RETURNS ══ --}}
+                
                 @if($activeTab === 'returns')
                     <div>
                         <h2 class="acc-page-title" style="margin-bottom: 24px">{{ __('file.returns') }}</h2>

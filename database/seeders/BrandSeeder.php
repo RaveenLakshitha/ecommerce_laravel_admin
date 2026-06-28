@@ -1,11 +1,8 @@
 <?php
-
 namespace Database\Seeders;
-
 use App\Models\Brand;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
-
 class BrandSeeder extends Seeder
 {
     public function run(): void
@@ -56,7 +53,6 @@ class BrandSeeder extends Seeder
                 'sort_order' => 5,
             ],
         ];
-
         foreach ($brands as $data) {
             Brand::updateOrCreate(
                 ['slug' => $data['slug']],

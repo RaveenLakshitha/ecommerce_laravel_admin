@@ -6,7 +6,7 @@
     @endif
 
     <div class="space-y-4">
-        {{-- Basic Information --}}
+        
         <div>
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
                 {{ __('file.Rate Name') }} <span class="text-red-500">*</span>
@@ -56,7 +56,7 @@
                 class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/100 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5">
         </div>
 
-        {{-- Conditions --}}
+        
         <div class="pt-4 border-t border-gray-100 dark:border-white/5 space-y-4">
             <h3 class="text-sm font-semibold text-gray-400">{{ __('file.Conditions') }} (Optional)</h3>
 
@@ -109,7 +109,7 @@
             </div>
         </div>
 
-        {{-- Status --}}
+        
         <div>
             <label
                 class="flex items-start p-3 rounded-xl border border-gray-100 dark:border-white/5 bg-gray-50/30 dark:bg-surface-tonal-a10 cursor-pointer hover:bg-gray-50 dark:hover:bg-surface-tonal-a20 transition-colors">

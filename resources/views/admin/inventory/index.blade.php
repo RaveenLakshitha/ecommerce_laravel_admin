@@ -86,7 +86,7 @@
         </div>
     </div>
 
-    {{-- Adjustment Modal --}}
+    
     <div x-show="isModalOpen" class="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6"
         style="display: none;">
         <div class="fixed inset-0 bg-black/40 backdrop-blur-sm" @click="isModalOpen = false"></div>

@@ -6,7 +6,7 @@
     <div class="admin-page animate-fade-in-up">
         <div class="admin-page-inner">
 
-            {{-- Breadcrumbs --}}
+            
             <div class="mb-4 mt-10">
                 <a href="{{ route('orders.index') }}"
                     class="text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 transition-colors uppercase tracking-wider inline-block">
@@ -14,7 +14,7 @@
                 </a>
             </div>
 
-            {{-- Header --}}
+            
             <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
                 <div>
                     <div class="flex items-center gap-4">
@@ -49,10 +49,10 @@
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
 
-                {{-- Left Column --}}
+                
                 <div class="lg:col-span-2 space-y-4">
 
-                    {{-- Order Items --}}
+                    
                     <div
                         class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                         <div
@@ -85,7 +85,7 @@
                                         <tr class="hover:bg-gray-50 dark:hover:bg-surface-tonal-a30 transition-colors">
                                             <td class="px-4 py-4">
                                                 <div class="flex items-center gap-3">
-                                                    {{-- Product Image --}}
+                                                    
                                                     @php
                                                         // 1. Try variant-specific images first
                                                         $itemImageUrl = $item->variant?->images?->first()?->url
@@ -111,7 +111,7 @@
                                                             </div>
                                                         @endif
                                                     </div>
-                                                    {{-- Product Info --}}
+                                                    
                                                     <div class="min-w-0">
                                                         <div class="text-sm font-bold text-gray-800 dark:text-white leading-snug">
                                                             {{ $item->product_name_snapshot }}
@@ -147,7 +147,7 @@
                             </table>
                         </div>
 
-                        {{-- Financial Summary Footer --}}
+                        
                         <div
                             class="p-6 bg-gray-50 dark:bg-surface-tonal-a10 border-t border-gray-100 dark:border-surface-tonal-a30">
                             <div class="flex justify-end">
@@ -193,7 +193,7 @@
                         </div>
                     </div>
 
-                    {{-- Refund History --}}
+                    
                     @if($order->refunds->count() > 0)
                         <div
                             class="bg-rose-50/30 dark:bg-rose-950/10 rounded-lg border border-rose-100 dark:border-rose-950/20 overflow-hidden">
@@ -228,7 +228,7 @@
                         </div>
                     @endif
 
-                    {{-- Refund Action Form --}}
+                    
                     @php $refundableAmount = $order->total_amount - $order->refunded_amount; @endphp
                     @if($refundableAmount > 0)
                         <div
@@ -269,10 +269,10 @@
                     @endif
                 </div>
 
-                {{-- Right Column --}}
+                
                 <div class="col-span-1 space-y-4">
 
-                    {{-- Workflow Phase --}}
+                    
                     <div
                         class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                         <div
@@ -303,7 +303,7 @@
                         </div>
                     </div>
 
-                    {{-- Customer Identity --}}
+                    
                     <div
                         class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 p-4">
                         <h3 class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-4">
@@ -339,7 +339,7 @@
                         </div>
                     </div>
 
-                    {{-- Logistic Destination --}}
+                    
                     <div
                         class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 p-4 relative overflow-hidden group">
                         <div
@@ -369,7 +369,7 @@
                         @endif
                     </div>
 
-                    {{-- Shipment Control --}}
+                    
                     <div
                         class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 p-4">
                         <h3 class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-4">
@@ -426,7 +426,7 @@
                         @endif
                     </div>
 
-                    {{-- Staff Annotations --}}
+                    
                     <div
                         class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 p-4">
                         <h3 class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-widest mb-4">

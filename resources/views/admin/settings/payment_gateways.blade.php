@@ -12,7 +12,7 @@
                 </a>
             </div>
 
-            {{-- Header --}}
+            
             <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
                 <div>
                     <h1 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{ __('file.payment_gateways') }}</h1>

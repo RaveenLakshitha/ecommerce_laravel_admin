@@ -1,18 +1,14 @@
 <?php
-
 namespace Database\Seeders;
-
 use Illuminate\Database\Seeder;
 use App\Models\Collection;
 use App\Models\Product;
 use App\Models\Coupon;
 use App\Models\DiscountRule;
-
 class CollectionDemoSeeder extends Seeder
 {
     public function run(): void
     {
-        // 1. Create a couple of Collections
         $summerCollection = Collection::firstOrCreate(
             ['slug' => 'summer-collection-2026'],
             [
@@ -22,7 +18,6 @@ class CollectionDemoSeeder extends Seeder
                 'is_featured' => true,
             ]
         );
-
         $winterCollection = Collection::firstOrCreate(
             ['slug' => 'winter-exclusives'],
             [
@@ -32,14 +27,11 @@ class CollectionDemoSeeder extends Seeder
                 'is_featured' => false,
             ]
         );
-
-        // 2. Attach some products if they exist
         $products = Product::take(5)->get();
         if ($products->count() > 0) {
             $summerCollection->products()->syncWithoutDetaching($products->take(3)->pluck('id'));
             $winterCollection->products()->syncWithoutDetaching($products->skip(3)->take(2)->pluck('id'));
         } else {
-            // Create some dummy products if database is empty
             $prod1 = Product::create([
                 'name' => 'Summer T-Shirt',
                 'slug' => 'summer-tshirt-1',
@@ -55,8 +47,6 @@ class CollectionDemoSeeder extends Seeder
             $summerCollection->products()->syncWithoutDetaching([$prod1->id]);
             $winterCollection->products()->syncWithoutDetaching([$prod2->id]);
         }
-
-        // 3. Create a Coupon for specific_collections
         $coupon = Coupon::firstOrCreate(
             ['code' => 'SUMMER20'],
             [
@@ -68,8 +58,6 @@ class CollectionDemoSeeder extends Seeder
             ]
         );
         $coupon->collections()->syncWithoutDetaching([$summerCollection->id]);
-
-        // 4. Create a Discount Rule for collections
         $discountRule = DiscountRule::firstOrCreate(
             ['name' => 'Winter Clearance'],
             [

@@ -1,4 +1,4 @@
-<!-- Auth Modals Styles -->
+
 <style>
     .auth-modal-overlay {
         position: fixed;
@@ -223,10 +223,10 @@
     }
 </style>
 
-<!-- Auth Modal Overlay -->
+
 <div id="authModalOverlay" class="auth-modal-overlay" onclick="closeAuthModals()"></div>
 
-<!-- Login Modal -->
+
 <div id="loginModal" class="auth-modal">
     <div class="auth-modal-header">
         <h3>{{ __('file.sign_in') }}</h3>
@@ -263,10 +263,10 @@
             
             <button type="submit" class="auth-btn">{{ __('file.sign_in_to_your_account') }}</button>
 
-            {{-- OR divider --}}
+            
             <div class="auth-divider"><span>{{ __('file.or') }}</span></div>
 
-            {{-- Google Sign-In --}}
+            
             <a href="{{ route('auth.google') }}" class="auth-google-btn" id="btn-modal-google-login">
                 <svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
@@ -284,7 +284,7 @@
     </div>
 </div>
 
-<!-- Register Modal -->
+
 <div id="registerModal" class="auth-modal">
     <div class="auth-modal-header">
         <h3>{{ __('file.register') }}</h3>
@@ -326,10 +326,10 @@
             
             <button type="submit" class="auth-btn">{{ __('file.create_account') }}</button>
 
-            {{-- OR divider --}}
+            
             <div class="auth-divider"><span>{{ __('file.or') }}</span></div>
 
-            {{-- Google Sign-Up --}}
+            
             <a href="{{ route('auth.google') }}" class="auth-google-btn" id="btn-modal-google-register">
                 <svg width="18" height="18" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>

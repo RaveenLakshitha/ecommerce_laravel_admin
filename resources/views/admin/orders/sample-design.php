@@ -57,31 +57,24 @@ tailwind.config = {
 <style>
   * { box-sizing: border-box; }
   body { font-family: 'DM Sans', sans-serif; background: #0a0a0b; color: #f0f0f2; margin: 0; }
-
   ::-webkit-scrollbar { width: 4px; height: 4px; }
   ::-webkit-scrollbar-track { background: #111113; }
   ::-webkit-scrollbar-thumb { background: #2e2e35; border-radius: 2px; }
   ::-webkit-scrollbar-thumb:hover { background: #3a3a45; }
-
   .tab-btn { transition: all 0.15s ease; }
   .tab-btn.active { background: #1f1f23; color: #f0f0f2; }
   .tab-btn:not(.active) { color: #8b8b9a; }
   .tab-btn:not(.active):hover { color: #f0f0f2; background: #18181b; }
-
   .nav-item { transition: all 0.15s ease; border-left: 2px solid transparent; }
   .nav-item.active { border-left-color: #e8c547; background: rgba(232,197,71,0.06); color: #f0f0f2; }
   .nav-item:not(.active) { color: #8b8b9a; }
   .nav-item:not(.active):hover { color: #f0f0f2; background: #18181b; border-left-color: #2e2e35; }
-
   .pane { display: none; }
   .pane.active { display: block; }
-
   .badge { font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 500; letter-spacing: 0.04em; padding: 2px 7px; border-radius: 4px; }
-
   .order-row { transition: background 0.12s ease; cursor: pointer; }
   .order-row:hover { background: #18181b; }
   .order-row.selected { background: rgba(232,197,71,0.05); border-left: 2px solid #e8c547; }
-
   .stepper-step { position: relative; }
   .stepper-step::after {
     content: '';
@@ -98,7 +91,6 @@ tailwind.config = {
   .stepper-step.active .step-dot { border-color: #e8c547; background: rgba(232,197,71,0.12); }
   .stepper-step.active .step-dot svg { color: #e8c547; }
   .stepper-step.done::after { background: #e8c547; }
-
   .card { background: #111113; border: 1px solid #2a2a32; border-radius: 10px; }
   .input-field {
     background: #18181b;
@@ -114,22 +106,17 @@ tailwind.config = {
   }
   .input-field:focus { border-color: #e8c547; box-shadow: 0 0 0 3px rgba(232,197,71,0.1); }
   .input-field::placeholder { color: #4a4a58; }
-
   .btn-primary { background: #e8c547; color: #0a0a0b; font-weight: 600; font-size: 13px; padding: 8px 16px; border-radius: 7px; border: none; cursor: pointer; transition: all 0.15s; }
   .btn-primary:hover { background: #c9a82e; }
   .btn-ghost { background: transparent; color: #8b8b9a; font-size: 13px; padding: 7px 12px; border-radius: 7px; border: 1px solid #2a2a32; cursor: pointer; transition: all 0.15s; }
   .btn-ghost:hover { color: #f0f0f2; border-color: #3a3a45; background: #18181b; }
-
   .stat-card { background: #111113; border: 1px solid #2a2a32; border-radius: 10px; padding: 16px; }
   .progress-bar { height: 3px; background: #2a2a32; border-radius: 2px; overflow: hidden; }
   .progress-fill { height: 100%; border-radius: 2px; background: #e8c547; transition: width 0.4s ease; }
-
   .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(4px); z-index: 100; display: flex; align-items: center; justify-content: center; }
   .modal { background: #111113; border: 1px solid #2a2a32; border-radius: 14px; width: 520px; max-width: 95vw; max-height: 85vh; overflow-y: auto; }
   .tag { background: #1f1f23; border: 1px solid #2a2a32; border-radius: 4px; font-size: 11px; color: #8b8b9a; padding: 2px 8px; }
-
   .section-label { font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #4a4a58; margin-bottom: 8px; }
-
   .tooltip { position: relative; }
   .tooltip:hover::after {
     content: attr(data-tip);
@@ -137,27 +124,19 @@ tailwind.config = {
     background: #2e2e35; color: #f0f0f2; font-size: 11px; padding: 4px 8px;
     border-radius: 5px; white-space: nowrap; z-index: 50; pointer-events: none;
   }
-
   select.input-field { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238b8b9a' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 10px center; padding-right: 30px; }
-
   .chip { display: inline-flex; align-items: center; gap: 4px; padding: 3px 9px; border-radius: 20px; font-size: 11px; font-weight: 500; }
-
   @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
   .pane.active { animation: fadeIn 0.2s ease; }
-
   .color-swatch { width: 20px; height: 20px; border-radius: 50%; border: 2px solid #2a2a32; display: inline-block; cursor: pointer; transition: transform 0.1s; }
   .color-swatch:hover { transform: scale(1.2); }
   .color-swatch.selected { border-color: #e8c547; }
-
   .size-chip { padding: 3px 10px; border-radius: 5px; font-size: 12px; font-family: 'DM Mono', monospace; border: 1px solid #2a2a32; background: #18181b; color: #8b8b9a; cursor: pointer; transition: all 0.1s; }
   .size-chip:hover, .size-chip.selected { border-color: #e8c547; background: rgba(232,197,71,0.08); color: #e8c547; }
-
   .img-thumb { width: 56px; height: 56px; border-radius: 7px; background: #18181b; border: 1px solid #2a2a32; object-fit: cover; }
-
   .courier-card { border: 1px solid #2a2a32; border-radius: 8px; padding: 10px 14px; cursor: pointer; transition: all 0.15s; }
   .courier-card:hover { border-color: #3a3a45; background: #18181b; }
   .courier-card.selected { border-color: #e8c547; background: rgba(232,197,71,0.05); }
-
   .timeline-item::before { content: ''; position: absolute; left: -21px; top: 5px; width: 8px; height: 8px; border-radius: 50%; background: #3a3a45; border: 2px solid #2a2a32; }
   .timeline-item.done::before { background: #e8c547; border-color: #e8c547; }
   .timeline-line { position: absolute; left: -17px; top: 14px; bottom: -8px; width: 1px; background: #2a2a32; }
@@ -165,7 +144,6 @@ tailwind.config = {
 </style>
 </head>
 <body class="min-h-screen flex flex-col">
-
 <!-- Top Bar -->
 <header class="flex items-center justify-between px-5 h-12 border-b border-border bg-surface-1 shrink-0 sticky top-0 z-40">
   <div class="flex items-center gap-3">
@@ -196,9 +174,7 @@ tailwind.config = {
     </div>
   </div>
 </header>
-
 <div class="flex flex-1 overflow-hidden" style="height: calc(100vh - 48px);">
-
 <!-- Sidebar -->
 <aside class="w-48 shrink-0 bg-surface-1 border-r border-border flex flex-col overflow-y-auto">
   <div class="p-3 pt-4">
@@ -227,7 +203,6 @@ tailwind.config = {
         Shipping
       </button>
     </nav>
-
     <div class="section-label px-2 mt-4">Finance</div>
     <nav class="flex flex-col gap-0.5">
       <button onclick="showPane('payments')" class="nav-item flex items-center gap-2.5 px-2.5 py-2 rounded-r-md text-left text-[13px] font-medium" id="nav-payments">
@@ -239,7 +214,6 @@ tailwind.config = {
         Discounts
       </button>
     </nav>
-
     <div class="section-label px-2 mt-4">Customers</div>
     <nav class="flex flex-col gap-0.5">
       <button onclick="showPane('customers')" class="nav-item flex items-center gap-2.5 px-2.5 py-2 rounded-r-md text-left text-[13px] font-medium" id="nav-customers">
@@ -248,7 +222,6 @@ tailwind.config = {
       </button>
     </nav>
   </div>
-
   <div class="mt-auto p-3 border-t border-border">
     <div class="bg-surface-3 rounded-lg p-3">
       <div class="text-[11px] text-ink-muted mb-1">Today's Revenue</div>
@@ -258,10 +231,8 @@ tailwind.config = {
     </div>
   </div>
 </aside>
-
 <!-- Main Content -->
 <main class="flex-1 overflow-y-auto bg-surface-0">
-
   <!-- ==================== DASHBOARD ==================== -->
   <div id="pane-dashboard" class="pane active p-5">
     <div class="flex items-center justify-between mb-5">
@@ -274,7 +245,6 @@ tailwind.config = {
         New Order
       </button>
     </div>
-
     <!-- KPI Cards -->
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-5">
       <div class="stat-card">
@@ -328,7 +298,6 @@ tailwind.config = {
         </div>
       </div>
     </div>
-
     <!-- Order Pipeline Funnel -->
     <div class="card p-4 mb-5">
       <div class="flex items-center justify-between mb-4">
@@ -377,7 +346,6 @@ tailwind.config = {
         </div>
       </div>
     </div>
-
     <!-- Recent orders + Low Stock -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
       <div class="card">
@@ -432,7 +400,6 @@ tailwind.config = {
           </div>
         </div>
       </div>
-
       <div class="card">
         <div class="flex items-center justify-between p-4 border-b border-border">
           <h2 class="text-sm font-semibold text-ink">Low Stock Alerts</h2>
@@ -482,7 +449,6 @@ tailwind.config = {
       </div>
     </div>
   </div>
-
   <!-- ==================== ORDERS ==================== -->
   <div id="pane-orders" class="pane">
     <div class="flex h-full" style="height: calc(100vh - 48px);">
@@ -505,7 +471,6 @@ tailwind.config = {
             <button class="tab-btn text-[11px] px-2.5 py-1 rounded-md">Delivered</button>
           </div>
         </div>
-
         <!-- Order Rows -->
         <div class="flex-1 overflow-y-auto divide-y divide-border-subtle">
           <!-- Order Item -->
@@ -523,7 +488,6 @@ tailwind.config = {
               </div>
             </div>
           </div>
-
           <div class="order-row px-3 py-3 flex gap-3" onclick="selectOrder(this, 'ORD-002')">
             <div class="w-8 h-8 rounded-full bg-surface-4 flex items-center justify-center text-[11px] font-semibold shrink-0">SP</div>
             <div class="flex-1 min-w-0">
@@ -538,7 +502,6 @@ tailwind.config = {
               </div>
             </div>
           </div>
-
           <div class="order-row px-3 py-3 flex gap-3" onclick="selectOrder(this, 'ORD-003')">
             <div class="w-8 h-8 rounded-full bg-surface-4 flex items-center justify-center text-[11px] font-semibold shrink-0">RA</div>
             <div class="flex-1 min-w-0">
@@ -553,7 +516,6 @@ tailwind.config = {
               </div>
             </div>
           </div>
-
           <div class="order-row px-3 py-3 flex gap-3" onclick="selectOrder(this, 'ORD-004')">
             <div class="w-8 h-8 rounded-full bg-surface-4 flex items-center justify-center text-[11px] font-semibold shrink-0">MS</div>
             <div class="flex-1 min-w-0">
@@ -568,7 +530,6 @@ tailwind.config = {
               </div>
             </div>
           </div>
-
           <div class="order-row px-3 py-3 flex gap-3" onclick="selectOrder(this, 'ORD-005')">
             <div class="w-8 h-8 rounded-full bg-surface-4 flex items-center justify-center text-[11px] font-semibold shrink-0">KD</div>
             <div class="flex-1 min-w-0">
@@ -583,7 +544,6 @@ tailwind.config = {
               </div>
             </div>
           </div>
-
           <div class="order-row px-3 py-3 flex gap-3" onclick="selectOrder(this, 'ORD-006')">
             <div class="w-8 h-8 rounded-full bg-surface-4 flex items-center justify-center text-[11px] font-semibold shrink-0">PF</div>
             <div class="flex-1 min-w-0">
@@ -600,7 +560,6 @@ tailwind.config = {
           </div>
         </div>
       </div>
-
       <!-- Order Detail Panel -->
       <div id="order-detail-col" class="flex-1 overflow-y-auto p-5 bg-surface-0">
         <!-- Status Pipeline -->
@@ -620,7 +579,6 @@ tailwind.config = {
             </button>
           </div>
         </div>
-
         <!-- Stepper -->
         <div class="card p-4 mb-4">
           <div class="flex items-start justify-between" id="order-stepper">
@@ -660,7 +618,6 @@ tailwind.config = {
               <div class="text-[9px] text-ink-muted">—</div>
             </div>
           </div>
-
           <!-- Action Buttons -->
           <div class="mt-4 pt-4 border-t border-border flex items-center gap-2 flex-wrap">
             <button class="btn-primary text-xs flex items-center gap-1.5" onclick="acceptOrder()">
@@ -684,7 +641,6 @@ tailwind.config = {
             </button>
           </div>
         </div>
-
         <!-- Two columns: Items + Customer -->
         <div class="grid grid-cols-1 xl:grid-cols-2 gap-4 mb-4">
           <!-- Items -->
@@ -722,7 +678,6 @@ tailwind.config = {
               <div class="flex justify-between text-xs font-semibold text-ink pt-1 border-t border-border"><span>Total</span><span>LKR 12,500</span></div>
             </div>
           </div>
-
           <!-- Customer + Shipping -->
           <div class="space-y-3">
             <div class="card p-3">
@@ -753,7 +708,6 @@ tailwind.config = {
             </div>
           </div>
         </div>
-
         <!-- Packing Checklist -->
         <div class="card p-3 mb-4">
           <h3 class="text-xs font-semibold text-ink mb-3">Packing Checklist</h3>
@@ -776,7 +730,6 @@ tailwind.config = {
             </label>
           </div>
         </div>
-
         <!-- Tracking Timeline + Internal Notes -->
         <div class="grid grid-cols-1 xl:grid-cols-2 gap-4">
           <div class="card p-3">
@@ -808,7 +761,6 @@ tailwind.config = {
               </div>
             </div>
           </div>
-
           <div class="card p-3">
             <h3 class="text-xs font-semibold text-ink mb-3">Internal Notes</h3>
             <div class="space-y-2 mb-3">
@@ -826,7 +778,6 @@ tailwind.config = {
       </div>
     </div>
   </div>
-
   <!-- ==================== PRODUCTS ==================== -->
   <div id="pane-products" class="pane p-5">
     <div class="flex items-center justify-between mb-5">
@@ -839,7 +790,6 @@ tailwind.config = {
         Add Product
       </button>
     </div>
-
     <!-- Filters -->
     <div class="flex items-center gap-2 mb-4 flex-wrap">
       <div class="flex items-center gap-1.5 bg-surface-2 rounded-md px-2.5 py-1.5 border border-border">
@@ -850,7 +800,6 @@ tailwind.config = {
       <select class="input-field w-28 text-xs py-1.5"><option>All Status</option><option>Active</option><option>Draft</option><option>Archived</option></select>
       <select class="input-field w-28 text-xs py-1.5"><option>All Brands</option><option>DRAPE</option><option>Colombo Co.</option></select>
     </div>
-
     <!-- Product Table -->
     <div class="card overflow-hidden">
       <table class="w-full text-xs">
@@ -961,7 +910,6 @@ tailwind.config = {
       </table>
     </div>
   </div>
-
   <!-- ==================== INVENTORY ==================== -->
   <div id="pane-inventory" class="pane p-5">
     <div class="flex items-center justify-between mb-5">
@@ -974,7 +922,6 @@ tailwind.config = {
         Export CSV
       </button>
     </div>
-
     <!-- Summary Cards -->
     <div class="grid grid-cols-3 gap-3 mb-5">
       <div class="stat-card text-center">
@@ -990,7 +937,6 @@ tailwind.config = {
         <div class="text-[10px] text-ink-muted">Out of Stock</div>
       </div>
     </div>
-
     <div class="card overflow-hidden">
       <table class="w-full text-xs">
         <thead>
@@ -1074,7 +1020,6 @@ tailwind.config = {
       </table>
     </div>
   </div>
-
   <!-- ==================== SHIPPING ==================== -->
   <div id="pane-shipping" class="pane p-5">
     <div class="flex items-center justify-between mb-5">
@@ -1083,13 +1028,11 @@ tailwind.config = {
         <p class="text-xs text-ink-muted mt-0.5">Fulfillment, couriers, tracking & shipping zones</p>
       </div>
     </div>
-
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-5">
       <div class="stat-card"><div class="text-xl font-semibold text-ink mb-0.5">19</div><div class="text-[10px] text-ink-muted">Ready to Ship</div></div>
       <div class="stat-card"><div class="text-xl font-semibold text-cyan-400 mb-0.5">34</div><div class="text-[10px] text-ink-muted">In Transit</div></div>
       <div class="stat-card"><div class="text-xl font-semibold text-emerald-400 mb-0.5">89</div><div class="text-[10px] text-ink-muted">Delivered Today</div></div>
     </div>
-
     <!-- Courier Providers -->
     <div class="card p-4 mb-4">
       <h2 class="text-sm font-semibold text-ink mb-3">Delivery Providers</h2>
@@ -1115,7 +1058,6 @@ tailwind.config = {
         </div>
       </div>
     </div>
-
     <!-- Shipments Table -->
     <div class="card overflow-hidden">
       <div class="p-3 border-b border-border flex items-center justify-between">
@@ -1157,7 +1099,6 @@ tailwind.config = {
       </table>
     </div>
   </div>
-
   <!-- ==================== PAYMENTS ==================== -->
   <div id="pane-payments" class="pane p-5">
     <div class="flex items-center justify-between mb-5">
@@ -1166,14 +1107,12 @@ tailwind.config = {
         <p class="text-xs text-ink-muted mt-0.5">Transactions, gateways & refund management</p>
       </div>
     </div>
-
     <div class="grid grid-cols-4 gap-3 mb-5">
       <div class="stat-card"><div class="text-xl font-semibold text-green-400 mb-0.5">LKR 284.5K</div><div class="text-[10px] text-ink-muted">Collected Today</div></div>
       <div class="stat-card"><div class="text-xl font-semibold text-amber-400 mb-0.5">LKR 45.2K</div><div class="text-[10px] text-ink-muted">COD Pending</div></div>
       <div class="stat-card"><div class="text-xl font-semibold text-red-400 mb-0.5">LKR 8,500</div><div class="text-[10px] text-ink-muted">Refunded</div></div>
       <div class="stat-card"><div class="text-xl font-semibold text-ink mb-0.5">LKR 12,200</div><div class="text-[10px] text-ink-muted">Failed</div></div>
     </div>
-
     <!-- Payment Gateways -->
     <div class="grid grid-cols-3 gap-3 mb-5">
       <div class="card p-3">
@@ -1204,7 +1143,6 @@ tailwind.config = {
         <div class="text-[10px] text-ink-muted mt-1">10% of all orders</div>
       </div>
     </div>
-
     <!-- Transactions Table -->
     <div class="card overflow-hidden">
       <table class="w-full text-xs">
@@ -1229,7 +1167,6 @@ tailwind.config = {
       </table>
     </div>
   </div>
-
   <!-- ==================== DISCOUNTS ==================== -->
   <div id="pane-discounts" class="pane p-5">
     <div class="flex items-center justify-between mb-5">
@@ -1239,7 +1176,6 @@ tailwind.config = {
       </div>
       <button class="btn-primary text-xs flex items-center gap-1.5">+ Create Coupon</button>
     </div>
-
     <!-- Flash Sale Banner -->
     <div class="bg-gradient-to-r from-accent-muted to-surface-3 border border-accent/30 rounded-xl p-4 mb-5 flex items-center justify-between">
       <div>
@@ -1252,7 +1188,6 @@ tailwind.config = {
       </div>
       <button class="btn-ghost text-xs">Edit</button>
     </div>
-
     <!-- Coupons -->
     <div class="card overflow-hidden mb-4">
       <div class="p-3 border-b border-border"><h2 class="text-xs font-semibold text-ink">Active Coupons</h2></div>
@@ -1276,7 +1211,6 @@ tailwind.config = {
       </table>
     </div>
   </div>
-
   <!-- ==================== CUSTOMERS ==================== -->
   <div id="pane-customers" class="pane p-5">
     <div class="flex items-center justify-between mb-5">
@@ -1285,13 +1219,11 @@ tailwind.config = {
         <p class="text-xs text-ink-muted mt-0.5">Customer profiles, order history & reviews</p>
       </div>
     </div>
-
     <div class="grid grid-cols-3 gap-3 mb-5">
       <div class="stat-card"><div class="text-xl font-semibold text-ink mb-0.5">1,284</div><div class="text-[10px] text-ink-muted">Total Customers</div></div>
       <div class="stat-card"><div class="text-xl font-semibold text-accent mb-0.5">342</div><div class="text-[10px] text-ink-muted">VIP Members</div></div>
       <div class="stat-card"><div class="text-xl font-semibold text-blue-400 mb-0.5">892</div><div class="text-[10px] text-ink-muted">Newsletter Subscribers</div></div>
     </div>
-
     <div class="card overflow-hidden">
       <table class="w-full text-xs">
         <thead>
@@ -1313,12 +1245,9 @@ tailwind.config = {
       </table>
     </div>
   </div>
-
 </main>
 </div>
-
 <!-- ==================== MODALS ==================== -->
-
 <!-- Assign Courier Modal -->
 <div id="ship-modal" class="modal-overlay hidden" onclick="if(event.target===this)closeShipModal()">
   <div class="modal p-5">
@@ -1358,7 +1287,6 @@ tailwind.config = {
     </div>
   </div>
 </div>
-
 <!-- Refund Modal -->
 <div id="refund-modal" class="modal-overlay hidden" onclick="if(event.target===this)closeRefundModal()">
   <div class="modal p-5">
@@ -1393,7 +1321,6 @@ tailwind.config = {
     </div>
   </div>
 </div>
-
 <!-- Add Product Modal -->
 <div id="add-product-modal" class="modal-overlay hidden" onclick="if(event.target===this)closeAddProductModal()">
   <div class="modal p-5" style="width:600px;">
@@ -1451,7 +1378,6 @@ tailwind.config = {
     </div>
   </div>
 </div>
-
 <!-- Toast Notification -->
 <div id="toast" class="fixed bottom-5 right-5 z-50 hidden">
   <div class="bg-surface-4 border border-border rounded-lg px-4 py-3 flex items-center gap-2.5 shadow-xl">
@@ -1459,7 +1385,6 @@ tailwind.config = {
     <span id="toast-msg" class="text-xs text-ink font-medium"></span>
   </div>
 </div>
-
 <script>
 // ---- Navigation ----
 function showPane(name) {
@@ -1468,13 +1393,11 @@ function showPane(name) {
   document.getElementById('pane-' + name).classList.add('active');
   document.getElementById('nav-' + name).classList.add('active');
 }
-
 // ---- Order Selection ----
 function selectOrder(el, id) {
   document.querySelectorAll('.order-row').forEach(r => r.classList.remove('selected'));
   el.classList.add('selected');
 }
-
 // ---- Toast ----
 function showToast(msg, success=true) {
   const t = document.getElementById('toast');
@@ -1483,7 +1406,6 @@ function showToast(msg, success=true) {
   t.classList.remove('hidden');
   setTimeout(() => t.classList.add('hidden'), 2500);
 }
-
 // ---- Order Actions ----
 function acceptOrder() {
   const steps = document.querySelectorAll('.stepper-step');
@@ -1493,7 +1415,6 @@ function acceptOrder() {
   steps[2].classList.add('active');
   showToast('Order accepted and moved to Processing');
 }
-
 function markPacking() {
   const steps = document.querySelectorAll('.stepper-step');
   steps[2].classList.add('done');
@@ -1501,19 +1422,15 @@ function markPacking() {
   steps[3].classList.add('active');
   showToast('Order marked as Packed');
 }
-
 function markDelivered() {
   const steps = document.querySelectorAll('.stepper-step');
   steps.forEach(s => { s.classList.add('done'); s.classList.remove('active'); });
   showToast('Order marked as Delivered ✓');
 }
-
 function cancelOrder() {
   if(confirm('Are you sure you want to cancel this order?')) showToast('Order cancelled', false);
 }
-
 function printInvoice() { showToast('Preparing invoice for print…'); }
-
 // ---- Ship Modal ----
 function openShipModal() { document.getElementById('ship-modal').classList.remove('hidden'); }
 function closeShipModal() { document.getElementById('ship-modal').classList.add('hidden'); }
@@ -1522,7 +1439,6 @@ function selectCourier(el) {
   document.querySelectorAll('.courier-card').forEach(c => c.classList.remove('selected'));
   el.classList.add('selected');
 }
-
 // ---- Refund Modal ----
 function openRefundModal() { document.getElementById('refund-modal').classList.remove('hidden'); }
 function closeRefundModal() { document.getElementById('refund-modal').classList.add('hidden'); }
@@ -1539,18 +1455,14 @@ function toggleRefundType(type) {
     amt.readOnly = false; amt.focus();
   }
 }
-
 // ---- Add Product Modal ----
 function openAddProductModal() { document.getElementById('add-product-modal').classList.remove('hidden'); }
 function closeAddProductModal() { document.getElementById('add-product-modal').classList.add('hidden'); }
 function openAddOrderModal() { showPane('orders'); showToast('Create a new order from the Orders panel'); }
-
 // ---- Product detail (placeholder) ----
 function openProductDetail() { showToast('Opening product editor…'); }
-
 // ---- Toggle size chip ----
 function toggleSize(el) { el.classList.toggle('selected'); }
-
 // ---- Tab buttons in order list ----
 document.querySelectorAll('.tab-btn').forEach(btn => {
   btn.addEventListener('click', function() {

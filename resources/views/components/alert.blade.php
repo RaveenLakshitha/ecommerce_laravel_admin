@@ -1,4 +1,4 @@
-{{-- Success Message --}}
+
 @if (session('success'))
     <div class="mb-6 p-4 rounded-lg bg-green-100 dark:bg-green-900/30 border border-green-200 dark:border-green-800 text-green-800 dark:text-green-300 flex items-center gap-3">
         <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -8,7 +8,7 @@
     </div>
 @endif
 
-{{-- General Error Message --}}
+
 @if (session('error'))
     <div class="mb-6 p-4 rounded-lg bg-red-100 dark:bg-red-900/30 border border-red-200 dark:border-red-800 text-red-800 dark:text-red-300 flex items-center gap-3">
         <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -18,7 +18,7 @@
     </div>
 @endif
 
-{{-- Validation Errors Summary --}}
+
 @if ($errors->any())
     <div class="mb-6 p-4 rounded-lg bg-red-100 dark:bg-red-900/30 border border-red-200 dark:border-red-800 text-red-800 dark:text-red-300">
         <div class="flex items-center gap-3 mb-3">

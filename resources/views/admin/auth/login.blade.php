@@ -1,6 +1,6 @@
 <x-admin-guest-layout>
 
-    <!-- Mobile Header (Visible only on small screens since left side is hidden) -->
+    
     <div class="lg:hidden flex flex-col items-center mb-8 text-center pt-8">
         <div
             class="w-16 h-16 bg-slate-100 rounded-2xl flex items-center justify-center p-3 shadow-md mb-4 text-slate-800">
@@ -22,20 +22,20 @@
         </h1>
     </div>
 
-    <!-- Title & Greeting -->
+    
     <div class="mb-10 lg:text-left text-center">
         <h2 class="text-3xl font-bold text-slate-800 mb-2">{{ __('messages.Admin Portal') }}</h2>
         <p class="text-slate-500 text-base">{{ __('messages.Please enter your admin credentials.') }}</p>
     </div>
 
-    <!-- Session Status -->
+    
     <x-auth-session-status class="mb-6 p-4 bg-emerald-50 text-emerald-600 border border-emerald-200 rounded-xl text-sm"
         :status="session('status')" />
 
     <form method="POST" action="{{ route('admin.login') }}" class="space-y-6">
         @csrf
 
-        <!-- Email Address -->
+        
         <div class="space-y-2">
             <label for="email"
                 class="block text-sm font-medium text-slate-700">{{ __('messages.Email Address') }}</label>
@@ -46,7 +46,7 @@
                             d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
                     </svg>
                 </div>
-                <!-- Manual input to handle icons easily -->
+                
                 <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus
                     autocomplete="username" placeholder="admin@admin.com"
                     class="block w-full pl-11 pr-4 py-3.5 text-base text-slate-800 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 transition-all duration-200 shadow-sm outline-none" />
@@ -54,7 +54,7 @@
             <x-input-error :messages="$errors->get('email')" class="mt-2 text-red-500 text-sm" />
         </div>
 
-        <!-- Password -->
+        
         <div class="space-y-2">
             <div class="flex items-center justify-between">
                 <label for="password"
@@ -97,7 +97,7 @@
             <x-input-error :messages="$errors->get('password')" class="mt-2 text-red-500 text-sm" />
         </div>
 
-        <!-- Remember Me -->
+        
         <div class="flex items-center">
             <label for="remember_me" class="inline-flex items-center cursor-pointer group">
                 <div class="relative flex items-center">
@@ -113,7 +113,7 @@
             </label>
         </div>
 
-        <!-- Login Button -->
+        
         <div class="pt-2">
             <button type="submit"
                 class="w-full flex justify-center items-center py-3.5 px-4 text-base font-semibold text-white rounded-xl bg-sky-600 hover:bg-sky-500 focus:ring-4 focus:ring-sky-500/30 transition-all duration-200 shadow-lg shadow-sky-600/20 active:scale-[0.98]">
@@ -126,7 +126,7 @@
         </div>
 
     </form>
-    <!-- Auto-refresh CSRF token to prevent 419 errors on stale tabs -->
+    
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             // Refresh CSRF token every 15 minutes to prevent 419 Page Expired

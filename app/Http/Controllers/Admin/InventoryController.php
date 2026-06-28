@@ -1,13 +1,10 @@
 <?php
-
 namespace App\Http\Controllers\Admin;
-
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Variant;
 use App\Models\InventoryTransaction;
 use Illuminate\Support\Facades\DB;
-
 class InventoryController extends Controller
 {
     public function __construct()
@@ -16,23 +13,13 @@ class InventoryController extends Controller
         $this->middleware('permission:variants.edit', ['only' => ['adjust']]);
         $this->middleware('permission:variants.delete', ['only' => ['destroy', 'bulkDelete']]);
     }
-
-    /**
-
-     * Display the inventory overview.
-     */
     public function index()
     {
         return view('admin.inventory.index');
     }
-
-    /**
-     * Datatable JSON response for variants stock.
-     */
     public function datatable(Request $request)
     {
         $query = Variant::with('product')->select('variants.*');
-
         return datatables()->of($query)
             ->addColumn('product_html', function ($row) {
                 if ($row->product) {
@@ -68,10 +55,6 @@ class InventoryController extends Controller
             ->rawColumns(['product_html', 'sku_html', 'status_html', 'actions_html'])
             ->make(true);
     }
-
-    /**
-     * Handle manual stock adjustment.
-     */
     public function adjust(Request $request, Variant $variant)
     {
         $request->validate([
@@ -79,19 +62,12 @@ class InventoryController extends Controller
             'quantity' => 'required|integer|min:1',
             'notes' => 'nullable|string|max:255',
         ]);
-
         $quantityChange = $request->adjustment_type === 'add' ? $request->quantity : -$request->quantity;
-
-        // Ensure we don't drop below 0 by subtraction
         if ($quantityChange < 0 && $variant->stock_quantity + $quantityChange < 0) {
             return back()->with('error', 'Cannot subtract more stock than what is currently available.');
         }
-
         DB::transaction(function () use ($variant, $quantityChange, $request) {
-            // Update variant stock directly
             $variant->increment('stock_quantity', $quantityChange);
-
-            // Log the transaction
             InventoryTransaction::create([
                 'variant_id' => $variant->id,
                 'quantity_change' => $quantityChange,
@@ -100,26 +76,19 @@ class InventoryController extends Controller
                 'performed_by' => auth()->id() ?? auth('admin')->id(),
             ]);
         });
-
         return back()->with('success', 'Stock adjusted successfully.');
     }
-
-    /**
-     * View history of stock changes for a variant.
-     */
     public function history(Variant $variant)
     {
         $variant->load('product');
         $transactions = $variant->transactions()->with('user')->orderBy('created_at', 'desc')->paginate(20);
         return view('admin.inventory.history', compact('variant', 'transactions'));
     }
-
     public function destroy(Variant $variant)
     {
         $variant->delete();
         return response()->json(['success' => true, 'message' => 'Variant deleted successfully.']);
     }
-
     public function bulkDelete(Request $request)
     {
         $request->validate(['ids' => 'required|array', 'ids.*' => 'exists:variants,id']);

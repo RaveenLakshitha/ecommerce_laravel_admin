@@ -6,7 +6,7 @@
     <div class="px-4 sm:px-6 lg:px-8 pb-4 sm:py-12 pt-20 transition-all duration-300">
         <div class="max-w-[1400px] mx-auto">
 
-            {{-- Header Area --}}
+            
             <div class="mb-8 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
                 <div class="animate-fade-in-up">
                     <nav class="flex items-center gap-2 mb-4 group/nav">
@@ -47,7 +47,7 @@
                 </div>
             </div>
 
-            {{-- Table Card --}}
+            
             <div
                 class="bg-white dark:bg-surface-tonal-a20 rounded-3xl shadow-sm border border-gray-100 dark:border-surface-tonal-a30 overflow-hidden animate-fade-in-scale">
                 <div class="overflow-x-auto custom-scrollbar">

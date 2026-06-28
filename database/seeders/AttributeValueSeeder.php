@@ -1,18 +1,13 @@
 <?php
-
 namespace Database\Seeders;
-
 use App\Models\Attribute;
 use App\Models\AttributeValue;
 use Illuminate\Database\Seeder;
-
 class AttributeValueSeeder extends Seeder
 {
     public function run(): void
     {
-        // ── Size ───────────────────────────────────────────────
         $size = Attribute::where('slug', 'size')->firstOrFail();
-
         $sizes = [
             ['value' => 'XXS', 'slug' => 'xxs', 'sort_order' => 1],
             ['value' => 'XS', 'slug' => 'xs', 'sort_order' => 2],
@@ -23,24 +18,19 @@ class AttributeValueSeeder extends Seeder
             ['value' => 'XXL', 'slug' => 'xxl', 'sort_order' => 7],
             ['value' => '3XL', 'slug' => '3xl', 'sort_order' => 8],
             ['value' => '4XL', 'slug' => '4xl', 'sort_order' => 9],
-            // Optional numeric (jeans, shirts, etc.)
             ['value' => '28', 'slug' => '28', 'sort_order' => 10],
             ['value' => '30', 'slug' => '30', 'sort_order' => 11],
             ['value' => '32', 'slug' => '32', 'sort_order' => 12],
             ['value' => '34', 'slug' => '34', 'sort_order' => 13],
             ['value' => '36', 'slug' => '36', 'sort_order' => 14],
         ];
-
         foreach ($sizes as $item) {
             AttributeValue::updateOrCreate(
                 ['attribute_id' => $size->id, 'slug' => $item['slug']],
                 $item + ['attribute_id' => $size->id]
             );
         }
-
-        // ── Color (with hex for swatches) ─────────────────────────────
         $color = Attribute::where('slug', 'color')->firstOrFail();
-
         $colors = [
             ['value' => 'Black', 'slug' => 'black', 'color_hex' => '#000000'],
             ['value' => 'White', 'slug' => 'white', 'color_hex' => '#FFFFFF'],
@@ -60,17 +50,13 @@ class AttributeValueSeeder extends Seeder
             ['value' => 'Purple', 'slug' => 'purple', 'color_hex' => '#800080'],
             ['value' => 'Cream', 'slug' => 'cream', 'color_hex' => '#FFFDD0'],
         ];
-
         foreach ($colors as $item) {
             AttributeValue::updateOrCreate(
                 ['attribute_id' => $color->id, 'slug' => $item['slug']],
                 $item + ['attribute_id' => $color->id]
             );
         }
-
-        // ── Material ───────────────────────────────────────────
         $material = Attribute::where('slug', 'material')->firstOrFail();
-
         $materials = [
             ['value' => 'Cotton', 'slug' => 'cotton'],
             ['value' => 'Organic Cotton', 'slug' => 'organic-cotton'],
@@ -88,17 +74,13 @@ class AttributeValueSeeder extends Seeder
             ['value' => 'Leather', 'slug' => 'leather'],
             ['value' => 'Suede', 'slug' => 'suede'],
         ];
-
         foreach ($materials as $item) {
             AttributeValue::updateOrCreate(
                 ['attribute_id' => $material->id, 'slug' => $item['slug']],
                 $item + ['attribute_id' => $material->id, 'sort_order' => 0]
             );
         }
-
-        // ── Fit ────────────────────────────────────────────────
         $fit = Attribute::where('slug', 'fit')->firstOrFail();
-
         $fits = [
             ['value' => 'Slim', 'slug' => 'slim'],
             ['value' => 'Regular', 'slug' => 'regular'],
@@ -110,7 +92,6 @@ class AttributeValueSeeder extends Seeder
             ['value' => 'Loose', 'slug' => 'loose'],
             ['value' => 'Athletic', 'slug' => 'athletic'],
         ];
-
         foreach ($fits as $i => $item) {
             AttributeValue::updateOrCreate(
                 ['attribute_id' => $fit->id, 'slug' => $item['slug']],

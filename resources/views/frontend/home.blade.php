@@ -595,9 +595,7 @@
         }
     </style>
 
-    {{-- ═══════════════════════════════════════════════════
-         HERO SLIDER
-    ═══════════════════════════════════════════════════ --}}
+    
     <section class="hero" id="heroSection">
         <div class="hero-track" id="heroTrack">
 
@@ -661,9 +659,7 @@
         <div class="scroll-hint" aria-hidden="true">{{ __('file.scroll_to_explore') }}</div>
     </section>
 
-    {{-- ═══════════════════════════════════════════════════
-         STATS BAR
-    ═══════════════════════════════════════════════════ --}}
+    
     @if($storefront->storefront_stats_show ?? true)
     <div class="stats-bar">
         @php 
@@ -685,9 +681,7 @@
 
 
 
-    {{-- ═══════════════════════════════════════════════════
-         NEW ARRIVALS
-    ═══════════════════════════════════════════════════ --}}
+    
     <section class="pg-sec">
         <div class="sec-wrap">
             <div class="sec-head reveal">
@@ -761,9 +755,7 @@
         </div>
     </section>
 
-    {{-- ═══════════════════════════════════════════════════
-         MARQUEE
-    ═══════════════════════════════════════════════════ --}}
+    
     <div class="marquee-bar" aria-hidden="true">
         <div class="marquee-track">
             @php 
@@ -793,9 +785,7 @@
         </div>
     </div>
 
-    {{-- ═══════════════════════════════════════════════════
-         VIDEO SECTION
-    ═══════════════════════════════════════════════════ --}}
+    
     @php
         $videoUrl      = $storefront->storefront_video_url ?? null;
         $videoTitle    = $storefront->storefront_video_title ?? null;
@@ -890,9 +880,7 @@
     </section>
     @endif
 
-    {{-- ═══════════════════════════════════════════════════
-         COLLECTIONS
-    ═══════════════════════════════════════════════════ --}}
+    
 
     <section class="pg-sec-alt">
         <div class="sec-wrap">
@@ -939,7 +927,7 @@
                         </a>
                     @endforeach
                 @else
-                    {{-- Fallback static collections when none configured in admin --}}
+                    
                     @foreach($fallbackCols as $c)
                         <div class="col-card reveal">
                             <div class="col-bg" style="background-image: url('{{ $c['img'] }}');"></div>
@@ -960,9 +948,7 @@
         </div>
     </section>
 
-    {{-- ═══════════════════════════════════════════════════
-         BEST SELLERS
-    ═══════════════════════════════════════════════════ --}}
+    
     <section class="pg-sec">
         <div class="sec-wrap">
             <div class="sec-head reveal">
@@ -1035,9 +1021,7 @@
         </div>
     </section>
 
-    {{-- ═══════════════════════════════════════════════════
-         EDITORIAL STRIP
-    ═══════════════════════════════════════════════════ --}}
+    
     @if($storefront->storefront_our_story_show ?? true)
     <section class="editorial-strip">
         <div class="editorial-img reveal-x">
@@ -1064,9 +1048,7 @@
     </section>
     @endif
 
-    {{-- ═══════════════════════════════════════════════════
-         TRUST BAR
-    ═══════════════════════════════════════════════════ --}}
+    
     @if($storefront->storefront_trust_show ?? true)
     <div class="trust-bar">
         @php 
@@ -1086,9 +1068,7 @@
     </div>
     @endif
 
-    {{-- ═══════════════════════════════════════════════════
-         NEWSLETTER
-    ═══════════════════════════════════════════════════ --}}
+    
     <section class="nl-section">
         <div class="nl-inner">
             <div class="nl-text reveal">
@@ -1103,9 +1083,7 @@
         </div>
     </section>
 
-    {{-- ═══════════════════════════════════════════════════
-         CART TOAST NOTIFICATION
-    ═══════════════════════════════════════════════════ --}}
+    
     <style>
         #cart-toast {
             position: fixed;

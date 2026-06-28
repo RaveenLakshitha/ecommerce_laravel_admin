@@ -1,5 +1,5 @@
 <div class="group premium-card !bg-white border-none hover:shadow-2xl transition-all duration-500">
-    {{-- Card Header --}}
+    
     <div class="px-6 py-4 bg-gray-50/30 flex flex-wrap justify-between items-center gap-4 border-b border-gray-100">
         <div class="flex items-center gap-8">
             <div>
@@ -28,7 +28,7 @@
         </div>
     </div>
 
-    {{-- Card Body --}}
+    
     <div class="p-6">
         <div class="flex items-center justify-between gap-6">
             <div class="flex items-center gap-3">

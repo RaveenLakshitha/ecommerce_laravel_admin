@@ -6,7 +6,7 @@
     <div class="admin-page">
         <div class="admin-page-inner">
 
-            {{-- ── PAGE HEADER ─────────────────────────────────────────────────────── --}}
+            
             <div class="admin-page-header">
                 <div>
                     <nav class="admin-breadcrumb">
@@ -20,7 +20,7 @@
                     <p class="admin-page-subtitle">{{ __('file.financial_report_subtitle') }}</p>
                 </div>
 
-                {{-- Date Range Filter --}}
+                
                 <form method="GET" action="{{ route('reports.financial') }}" class="flex flex-wrap items-end gap-2">
                     <div class="flex flex-col gap-1">
                         <label class="fi-label">{{ __('file.from') }}</label>
@@ -38,7 +38,7 @@
                             </svg>
                             {{ __('file.apply') }}
                         </button>
-                        {{-- Quick ranges --}}
+                        
                         @foreach([['7', '7d'], ['30', '30d'], ['90', '90d']] as [$v, $l])
                             <a href="{{ route('reports.financial', ['range' => $v]) }}"
                                 class="px-3 py-2 rounded-xl border text-xs font-bold transition-all
@@ -50,7 +50,7 @@
                 </form>
             </div>
 
-            {{-- ── KPI CARDS ──────────────────────────────────────────────────────── --}}
+            
             <div class="grid grid-cols-2 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-8">
 
                 @php
@@ -87,13 +87,13 @@
                 @endforeach
             </div>
 
-            {{-- ── MAIN GRID ──────────────────────────────────────────────────────── --}}
+            
             <div class="grid grid-cols-1 xl:grid-cols-12 gap-6">
 
-                {{-- LEFT: Daily Revenue Chart + Payment methods --}}
+                
                 <div class="xl:col-span-8 space-y-6">
 
-                    {{-- Daily Revenue Chart --}}
+                    
                     <div class="admin-card">
                         <div class="admin-card-header flex items-center justify-between">
                             <div>
@@ -106,7 +106,7 @@
                         </div>
                     </div>
 
-                    {{-- Recent Transactions --}}
+                    
                     <div class="admin-card overflow-hidden">
                         <div class="admin-card-header flex items-center justify-between">
                             <div>
@@ -173,7 +173,7 @@
                         </div>
                     </div>
 
-                    {{-- Recent Refunds --}}
+                    
                     <div class="admin-card overflow-hidden">
                         <div class="admin-card-header flex items-center justify-between">
                             <div>
@@ -235,10 +235,10 @@
 
                 </div>
 
-                {{-- RIGHT: Revenue by Method + Orders by Status --}}
+                
                 <div class="xl:col-span-4 space-y-6">
 
-                    {{-- Revenue by Payment Method --}}
+                    
                     <div class="admin-card p-6">
                         <h2 class="text-sm font-black text-black dark:text-white uppercase tracking-wider mb-1">
                             {{ __('file.revenue_by_method') }}</h2>
@@ -273,7 +273,7 @@
                         @endforelse
                     </div>
 
-                    {{-- Orders by Status --}}
+                    
                     <div class="admin-card p-6">
                         <h2 class="text-sm font-black text-black dark:text-white uppercase tracking-wider mb-1">
                             {{ __('file.orders_by_status') }}</h2>
@@ -311,7 +311,7 @@
                         </div>
                     </div>
 
-                    {{-- Avg Order Value --}}
+                    
                     <div class="admin-card p-6 text-center">
                         <p class="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-2">
                             {{ __('file.avg_order_value') }}</p>

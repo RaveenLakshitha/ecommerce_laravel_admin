@@ -1,8 +1,5 @@
 <?php
-// app/Http/Controllers/Auth/AuthController.php
-
 namespace App\Http\Controllers\Auth;
-
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -12,23 +9,15 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use App\Models\Setting;
-
 class AuthController extends Controller
 {
-    // ========================
-    // GUEST VIEWS
-    // ========================
-
     public function showLoginForm()
     {
-        // Already logged in → go to account dashboard
         if (auth('web')->check()) {
             return redirect()->route('account.dashboard');
         }
-        // Open the login modal on the homepage instead of a full-page view
         return redirect()->route('home')->with('open_modal', 'login');
     }
-
     public function showRegisterForm()
     {
         if (auth('web')->check()) {
@@ -36,41 +25,30 @@ class AuthController extends Controller
         }
         return redirect()->route('home')->with('open_modal', 'register');
     }
-
     public function showForgotPasswordForm()
     {
         return view('frontend.auth.forgot-password');
     }
-
     public function showResetPasswordForm($token)
     {
         return view('frontend.auth.reset-password', ['token' => $token]);
     }
-
-    // ========================
-    // AUTH ACTIONS
-    // ========================
-
     public function login(Request $request)
     {
         $credentials = $request->validate([
             'email' => 'required|email',
             'password' => 'required',
         ]);
-
         $remember = $request->filled('remember');
-
         if (Auth::attempt($credentials, $remember)) {
             $request->session()->regenerate();
             \App\Http\Controllers\Frontend\CartController::mergeAfterLogin();
             return redirect()->intended(route('home'));
         }
-
         return back()->withErrors([
             'email' => 'The provided credentials are incorrect.',
         ])->onlyInput('email');
     }
-
     public function register(Request $request)
     {
         $data = $request->validate([
@@ -82,44 +60,34 @@ class AuthController extends Controller
             ],
             'password' => 'required|min:8|confirmed',
         ]);
-
         $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
-
-        // Create a basic Customer record linked to this user
         $nameParts = explode(' ', $data['name'], 2);
         $firstName = $nameParts[0] ?? '';
         $lastName = $nameParts[1] ?? '';
-
         \App\Models\Customer::create([
             'user_id' => $user->id,
             'first_name' => $firstName,
             'last_name' => $lastName,
             'email' => $data['email'],
         ]);
-
         Auth::login($user);
         \App\Http\Controllers\Frontend\CartController::mergeAfterLogin();
-
         return redirect()->route('home');
     }
-
     public function forgotPassword(Request $request)
     {
         $request->validate(['email' => 'required|email']);
-
         $status = Password::sendResetLink(
             $request->only('email')
         );
-
         return $status === Password::RESET_LINK_SENT
             ? back()->with('status', __($status))
             : back()->withErrors(['email' => __($status)]);
     }
-
     public function resetPassword(Request $request)
     {
         $request->validate([
@@ -127,7 +95,6 @@ class AuthController extends Controller
             'email' => 'required|email',
             'password' => 'required|min:8|confirmed',
         ]);
-
         $status = Password::reset(
             $request->only('email', 'password', 'password_confirmation', 'token'),
             function ($user, $password) {
@@ -136,19 +103,15 @@ class AuthController extends Controller
                 ])->save();
             }
         );
-
         return $status === Password::PASSWORD_RESET
             ? redirect()->route('login')->with('status', __($status))
             : back()->withErrors(['email' => [__($status)]]);
     }
-
     public function logout(Request $request)
     {
         Auth::guard('web')->logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-
-        // Go back to homepage — modal will not be shown
         return redirect()->route('home')
             ->with('status', __('file.logged_out_successfully') ?? 'You have been logged out successfully.');
     }

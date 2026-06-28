@@ -1,17 +1,11 @@
 <?php
-
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
-        // Coupons Table
         Schema::create('coupons', function (Blueprint $table) {
             $table->id();
             $table->string('code')->unique();
@@ -29,24 +23,18 @@ return new class extends Migration
             $table->integer('used_count')->default(0);
             $table->timestamps();
         });
-
-        // Coupon Product Pivot
         Schema::create('coupon_product', function (Blueprint $table) {
             $table->id();
             $table->foreignId('coupon_id')->constrained()->cascadeOnDelete();
             $table->foreignId('product_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
-
-        // Coupon Category Pivot
         Schema::create('coupon_category', function (Blueprint $table) {
             $table->id();
             $table->foreignId('coupon_id')->constrained()->cascadeOnDelete();
             $table->foreignId('category_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
-
-        // Coupon Usages
         Schema::create('coupon_usages', function (Blueprint $table) {
             $table->id();
             $table->foreignId('coupon_id')->constrained()->cascadeOnDelete();
@@ -57,8 +45,6 @@ return new class extends Migration
             $table->dateTime('used_at');
             $table->timestamps();
         });
-
-        // Discount Rules Table
         Schema::create('discount_rules', function (Blueprint $table) {
             $table->id();
             $table->string('name');
@@ -76,24 +62,18 @@ return new class extends Migration
             $table->boolean('is_flash_sale')->default(false);
             $table->timestamps();
         });
-
-        // Discount Rule Product Pivot
         Schema::create('discount_rule_product', function (Blueprint $table) {
             $table->id();
             $table->foreignId('discount_rule_id')->constrained()->cascadeOnDelete();
             $table->foreignId('product_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
-
-        // Discount Rule Category Pivot
         Schema::create('discount_rule_category', function (Blueprint $table) {
             $table->id();
             $table->foreignId('discount_rule_id')->constrained()->cascadeOnDelete();
             $table->foreignId('category_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
-
-        // Discount Rule Collection Pivot
         Schema::create('discount_rule_collection', function (Blueprint $table) {
             $table->id();
             $table->foreignId('discount_rule_id')->constrained()->cascadeOnDelete();
@@ -101,17 +81,12 @@ return new class extends Migration
             $table->timestamps();
         });
     }
-
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('discount_rule_collection');
         Schema::dropIfExists('discount_rule_category');
         Schema::dropIfExists('discount_rule_product');
         Schema::dropIfExists('discount_rules');
-        
         Schema::dropIfExists('coupon_usages');
         Schema::dropIfExists('coupon_category');
         Schema::dropIfExists('coupon_product');

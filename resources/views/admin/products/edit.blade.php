@@ -96,10 +96,10 @@
 
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
 
-                    {{-- Left Column --}}
+                    
                     <div class="lg:col-span-2 space-y-4">
 
-                        {{-- Basic Information --}}
+                        
                         <div
                             class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                             <div
@@ -163,7 +163,7 @@
                             </div>
                         </div>
 
-                        {{-- Content Details --}}
+                        
                         <div
                             class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                             <div
@@ -196,7 +196,7 @@
                             </div>
                         </div>
 
-                        {{-- Organization --}}
+                        
                         <div
                             class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                             <div
@@ -224,7 +224,7 @@
                             </div>
                         </div>
 
-                        {{-- Media Gallery --}}
+                        
                         <div
                             class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                             <div
@@ -276,14 +276,14 @@
                             </div>
                         </div>
 
-                        {{-- Options & Variants --}}
+                        
                         @include('admin.products.partials.variants-panel')
 
                     </div>
 
-                    {{-- Right Column --}}
+                    
                     <div class="xl:col-span-1 space-y-4">
-                        {{-- Search Engine Optimization --}}
+                        
                         <div
                             class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                             <div

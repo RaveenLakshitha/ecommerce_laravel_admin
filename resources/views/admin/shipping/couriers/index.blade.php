@@ -88,7 +88,7 @@
     </div>
 
     @push('drawers')
-        {{-- Courier Drawer --}}
+        
         <div id="courier-drawer" class="fixed inset-0 z-[9999] hidden overflow-hidden">
             <div id="courier-drawer-overlay"
                 class="absolute inset-0 bg-black/40 backdrop-blur-sm opacity-0 transition-opacity duration-300"

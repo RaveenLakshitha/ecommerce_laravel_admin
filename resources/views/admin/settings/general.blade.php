@@ -6,7 +6,7 @@
     <div class="px-4 sm:px-6 lg:px-8 pb-4 sm:py-12 pt-20 transition-all duration-300">
         <div class="max-w-5xl mx-auto">
 
-            {{-- Header Area --}}
+            
             <div class="mb-10 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 animate-fade-in-up">
                 <div>
                     <h1
@@ -33,7 +33,7 @@
                 @csrf
                 <input type="hidden" name="_method" value="PUT">
 
-                {{-- Section 1: Identity Matrix --}}
+                
                 <div
                     class="bg-white dark:bg-surface-tonal-a20 rounded-3xl shadow-sm border border-gray-100 dark:border-surface-tonal-a30 overflow-hidden">
                     <div
@@ -105,7 +105,7 @@
                     </div>
                 </div>
 
-                {{-- Section 2: Regional Calibration --}}
+                
                 <div
                     class="bg-white dark:bg-surface-tonal-a20 rounded-3xl shadow-sm border border-gray-100 dark:border-surface-tonal-a30 overflow-hidden">
                     <div
@@ -226,7 +226,7 @@
                     </div>
                 </div>
 
-                {{-- Section 3: Branding Interface --}}
+                
                 <div
                     class="bg-white dark:bg-surface-tonal-a20 rounded-3xl shadow-sm border border-gray-100 dark:border-surface-tonal-a30 overflow-hidden">
                     <div
@@ -322,7 +322,7 @@
                     </div>
                 </div>
 
-                {{-- Form Governance --}}
+                
                 <div class="flex flex-col sm:flex-row gap-4 pt-6 animate-fade-in-up delay-200">
                     <button type="submit"
                         class="flex-1 sm:flex-none inline-flex items-center justify-center px-10 py-5 bg-indigo-600 text-white text-[11px] font-black uppercase tracking-[0.2em] rounded-3xl hover:bg-indigo-700 shadow-2xl shadow-indigo-500/30 transition-all active:scale-[0.98] group">

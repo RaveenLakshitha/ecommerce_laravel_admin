@@ -46,10 +46,10 @@
 
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
 
-                    {{-- LEFT COLUMN - Wider --}}
+                    
                     <div class="lg:col-span-2 space-y-4">
 
-                        {{-- General Information --}}
+                        
                         <div
                             class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                             <div
@@ -105,7 +105,7 @@
                             </div>
                         </div>
 
-                        {{-- Pricing and Brands --}}
+                        
                         <div
                             class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                             <div
@@ -144,7 +144,7 @@
                             </div>
                         </div>
 
-                        {{-- Organization / Category --}}
+                        
                         <div
                             class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                             <div
@@ -172,7 +172,7 @@
                             </div>
                         </div>
 
-                        {{-- Product Gallery --}}
+                        
                         <div
                             class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                             <div
@@ -204,16 +204,16 @@
                             </div>
                         </div>
 
-                        {{-- Options & Variants --}}
+                        
                         @include('admin.products.partials.variants-panel')
 
-                    </div>{{-- end lg:col-span-2 --}}
+                    </div>
 
-                    {{-- RIGHT COLUMN --}}
+                    
                     <div class="lg:col-span-1 space-y-4">
 
 
-                        {{-- Search Engine Optimization --}}
+                        
                         <div
                             class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                             <div
@@ -256,7 +256,7 @@
                             </div>
                         </div>
 
-                        {{-- Hidden Fields --}}
+                        
                         <input type="hidden" name="slug" :value="slugify(formData.name)">
                         <input type="hidden" name="is_visible" value="1">
                         <input type="hidden" name="is_featured" value="0">

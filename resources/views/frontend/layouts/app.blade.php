@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <!-- Primary Meta Tags -->
+    
     <title>@hasSection('title')@yield('title') |
     {{ $store_name ?? 'Karbnzol' }}@else{{ $meta_title ?? $store_name ?? 'Karbnzol' }}@endif
     </title>
@@ -16,23 +16,23 @@
     <meta name="keywords" content="@yield('meta_keywords', $meta_keywords ?? '')">
     <meta name="author" content="{{ $store_name ?? 'Karbnzol' }}">
 
-    <!-- Canonical URL -->
+    
     <link rel="canonical" href="@yield('canonical_url', url()->current())">
 
-    <!-- Robots -->
+    
     <meta name="robots" content="@yield('robots', 'index, follow')">
 
-    <!-- JSON-LD Structured Data slot -->
+    
     @stack('json_ld')
 
-    <!-- Open Graph / Facebook -->
+    
     <meta property="og:type" content="@yield('og_type', 'website')">
     <meta property="og:url" content="{{ url()->current() }}">
     <meta property="og:title" content="@yield('meta_title', $meta_title ?? '')">
     <meta property="og:description" content="@yield('meta_description', $meta_description ?? '')">
     <meta property="og:image" content="@yield('og_image', $og_image ?? '')">
 
-    <!-- Twitter -->
+    
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="{{ url()->current() }}">
     <meta property="twitter:title" content="@yield('meta_title', $meta_title ?? '')">
@@ -1620,7 +1620,7 @@
 <body class="@yield('body_class')">
     <div id="page-wipe"></div>
 
-    <!-- Announcement bar -->
+    
     <div class="announce-bar" aria-live="polite">
         <span class="announce-inner">
             @php
@@ -1632,11 +1632,9 @@
         </span>
     </div>
 
-    <!-- ═══════════════════════════════════════════
-         HEADER
-    ═══════════════════════════════════════════ -->
+    
     <header class="site-header" id="siteHeader">
-        <div class="nav-wrap"><!-- Logo -->
+        <div class="nav-wrap">
             <a href="{{ route('home') }}" class="nav-logo">
                 @if($storefront_use_logo_text)
                     <span class="logo-main">
@@ -1658,17 +1656,17 @@
                 @endif
             </a>
 
-            <!-- Desktop Nav -->
+            
             <nav aria-label="Main navigation"
                 style="flex: 1; display: flex; justify-content: center; overflow: hidden; min-width: 0;">
                 <ul class="nav-links">
 
-                    <!-- Home (no dropdown) -->
+                    
                     <li class="nav-item">
                         <a href="{{ route('home') }}" class="active">{{ __('file.home') }}</a>
                     </li>
 
-                    <!-- New Arrivals — Link -->
+                    
                     <li class="nav-item">
                         <a href="{{ route('frontend.products.index', ['sort' => 'new']) }}">
                             {{ __('file.new_arrivals') }}
@@ -1676,7 +1674,7 @@
                         </a>
                     </li>
 
-                    <!-- Dynamic Categories — MEGA dropdown -->
+                    
                     @foreach($globalCategories as $category)
                         <li class="nav-item {{ $category->children->count() > 0 ? 'has-drop has-mega' : '' }}">
                             <a href="{{ route('frontend.products.index', ['category' => $category->slug]) }}"
@@ -1692,7 +1690,7 @@
                             @if($category->children->count() > 0)
                                 <div class="nav-dropdown mega" role="menu">
                                     <div class="dd-inner">
-                                        <!-- Promo image column -->
+                                        
                                         <div class="dd-promo">
                                             <div class="dd-promo-img"
                                                 style="background-image: url('{{ $category->image_url ?? ($category->banner_urls[0] ?? '') }}'); @if(!$category->image_url && empty($category->banner_urls)) background-image: url('@placeholder($category->id)'); @endif">
@@ -1709,7 +1707,7 @@
                                                 </svg>
                                             </a>
                                         </div>
-                                        <!-- Category columns -->
+                                        
                                         <div class="dd-cols" style="flex-wrap: wrap; gap: 1rem 0;">
                                             @foreach($category->children as $child)
                                                 @php
@@ -1745,15 +1743,15 @@
                         </li>
                     @endforeach
 
-                    <!-- About (no dropdown) -->
+                    
                     <li class="nav-item"><a href="{{ route('frontend.about') }}">{{ __('file.about') }}</a></li>
 
                 </ul>
             </nav>
 
-            <!-- Right icons -->
+            
             <div class="nav-right">
-                <!-- Language Switcher -->
+                
                 <div class="nav-item has-drop lang-switcher">
                     <a href="#" class="nav-icon" aria-label="{{ __('file.switch_language') }}">
                         <span class="lang-text">{{ strtoupper(app()->getLocale()) }}</span>
@@ -1894,15 +1892,13 @@
         </div>
     </header>
 
-    <!-- ═══════════════════════════════════════════
-         MOBILE NAV (accordion)
-    ═══════════════════════════════════════════ -->
+    
     <nav class="mobile-nav" id="mobileNav" aria-label="Mobile navigation">
 
-        <!-- Plain link: Home -->
+        
         <div class="mob-item mob-plain"><a href="{{ route('home') }}">{{ __('file.home') }}</a></div>
 
-        <!-- New Arrivals link -->
+        
         <div class="mob-item mob-plain">
             <a href="{{ route('frontend.products.index', ['sort' => 'new']) }}">
                 {{ __('file.new_arrivals') }}
@@ -1911,7 +1907,7 @@
             </a>
         </div>
 
-        <!-- Dynamic Categories accordion -->
+        
         @foreach($globalCategories as $category)
             @if($category->children->count() > 0)
                 <div class="mob-item" id="mob-cat-{{ $category->id }}">
@@ -1949,7 +1945,7 @@
             @endif
         @endforeach
 
-        <!-- Plain links -->
+        
         <div class="mob-item mob-plain"><a href="{{ route('frontend.about') }}">{{ __('file.about') }}</a></div>
         <div class="mob-item mob-plain"><a
                 href="{{ route('frontend.about') }}#contact-info">{{ __('file.contact') }}</a></div>
@@ -1957,7 +1953,7 @@
         <div class="mob-item mob-plain"><a href="{{ route('cart.index') }}">{{ __('file.my_bag') }}
                 ({{ \Darryldecode\Cart\Facades\CartFacade::getTotalQuantity() }})</a></div>
 
-        <!-- Language row -->
+        
         <div class="mob-lang-row">
             <form action="{{ route('language.switch') }}" method="POST" style="flex: 1;">
                 @csrf
@@ -1971,7 +1967,7 @@
             </form>
         </div>
 
-        <!-- Auth buttons -->
+        
         @auth('web')
             @php $authUser = auth('web')->user(); @endphp
             <div class="mob-item mob-plain"
@@ -2021,14 +2017,10 @@
         @endauth
     </nav>
 
-    <!-- ═══════════════════════════════════════════
-         MAIN CONTENT
-    ═══════════════════════════════════════════ -->
+    
     <main>@yield('content')</main>
 
-    <!-- ═══════════════════════════════════════════
-         FOOTER
-    ═══════════════════════════════════════════ -->
+    
     @php $storefront = \App\Models\Setting::getAll(); @endphp
     <footer class="site-footer">
         <div class="footer-inner">
@@ -2129,9 +2121,7 @@
         </div>
     </footer>
 
-    <!-- ═══════════════════════════════════════════
-         SCRIPTS
-    ═══════════════════════════════════════════ -->
+    
     <script>
         window.addEventListener('pageshow', (event) => {
             if (event.persisted) {

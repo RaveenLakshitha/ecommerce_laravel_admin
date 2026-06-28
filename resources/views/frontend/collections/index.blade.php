@@ -262,7 +262,7 @@
 </style>
 
 <div class="collections-page">
-    {{-- Breadcrumb --}}
+    
     <div class="breadcrumb-bar">
         <div class="breadcrumb-inner">
             <a href="{{ route('home') }}">Home</a>
@@ -271,7 +271,7 @@
         </div>
     </div>
 
-    {{-- Header --}}
+    
     <header class="page-header reveal">
         <p class="header-eyebrow">Curated Editions</p>
         <h1 class="header-title">Our Collections</h1>
@@ -280,7 +280,7 @@
         </p>
     </header>
 
-    {{-- Collections Grid --}}
+    
     <div class="collections-container">
         @if($collections->isNotEmpty())
             <div class="collections-grid">

@@ -18,7 +18,7 @@
 
     <div class="max-w-4xl mx-auto bg-white p-8 sm:p-12 shadow-sm rounded-lg border border-gray-200 print:shadow-none print:border-none print:p-0">
         
-        <!-- Action Buttons -->
+        
         <div class="flex justify-end gap-3 mb-8 no-print border-b pb-4">
             <button onclick="window.print()" class="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700 flex items-center gap-2 text-sm font-medium">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
@@ -29,7 +29,7 @@
             </a>
         </div>
 
-        <!-- Header -->
+        
         <div class="flex flex-col sm:flex-row justify-between items-start gap-6 border-b pb-8">
             <div>
                 <h1 class="text-3xl font-bold text-gray-900 tracking-tight">{{ __('file.invoice_title') }}</h1>
@@ -44,7 +44,7 @@
             </div>
         </div>
 
-        <!-- Details -->
+        
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 mt-8 border-b pb-8">
             <div>
                 <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">{{ __('file.billed_to') }}</h3>
@@ -94,7 +94,7 @@
             </div>
         </div>
 
-        <!-- Items -->
+        
         <div class="mt-8">
             <table class="w-full text-left border-collapse">
                 <thead>
@@ -127,7 +127,7 @@
             </table>
         </div>
 
-        <!-- Summary -->
+        
         <div class="mt-8 flex justify-end">
             <div class="w-full sm:w-1/3">
                 <table class="w-full text-right text-sm">
@@ -161,7 +161,7 @@
             </div>
         </div>
 
-        <!-- Footer Notes -->
+        
         <div class="mt-16 text-center text-sm text-gray-500 border-t pt-8">
             <p>{{ __('file.thank_you_for_your_business') }}</p>
             <p class="mt-1">{{ __('file.invoice_questions_contact_support') }}</p>

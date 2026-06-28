@@ -1,14 +1,11 @@
 <?php
-
 namespace App\Http\Controllers\Admin;
-
 use App\Http\Controllers\Controller;
 use App\Models\Admin;
 use Spatie\Permission\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
-
 class UserController extends Controller
 {
     public function __construct()
@@ -18,12 +15,10 @@ class UserController extends Controller
         $this->middleware('permission:users.edit', ['only' => ['edit', 'update']]);
         $this->middleware('permission:users.delete', ['only' => ['destroy', 'bulkDelete']]);
     }
-
     public function index(Request $request)
     {
         return view('admin.users.index');
     }
-
     public function datatable(Request $request)
     {
         $draw = $request->input('draw');
@@ -32,12 +27,10 @@ class UserController extends Controller
         $orderColumnIndex = $request->input('order.0.column');
         $orderDir = $request->input('order.0.dir', 'asc');
         $search = trim($request->input('search.value', ''));
-
         $role = $request->role;
         $status = $request->status;
         $from = $request->from;
         $to = $request->to;
-
         $query = Admin::query()
             ->with('roles')
             ->when(
@@ -54,10 +47,8 @@ class UserController extends Controller
                 $to ? $to . ' 23:59:59' : now()
             ]))
             ->where('is_deleted', false);
-
         $totalRecords = Admin::where('is_deleted', false)->count();
         $filteredRecords = (clone $query)->count();
-
         $orderColumn = match ((int) $orderColumnIndex) {
             1 => 'name',
             2 => 'email',
@@ -67,14 +58,11 @@ class UserController extends Controller
             default => 'name'
         };
         $query->orderBy($orderColumn, $orderDir);
-
         $users = $query->offset($start)->limit($length)->get();
-
         $data = $users->map(function ($user) {
             $statusHtml = $user->is_active
                 ? '<span class="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300">' . __('file.active') . '</span>'
                 : '<span class="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400">' . __('file.inactive') . '</span>';
-
             return [
                 'id' => $user->id,
                 'name' => $user->name,
@@ -88,7 +76,6 @@ class UserController extends Controller
                 'delete_url' => \Auth::user()->can('users.delete') ? route('users.destroy', $user) : null,
             ];
         });
-
         return response()->json([
             'draw' => (int) $draw,
             'recordsTotal' => $totalRecords,
@@ -96,13 +83,11 @@ class UserController extends Controller
             'data' => $data->toArray(),
         ]);
     }
-
     public function create()
     {
         $roles = Role::where('guard_name', 'admin')->get();
         return view('admin.users.create', compact('roles'));
     }
-
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -123,12 +108,10 @@ class UserController extends Controller
             'role' => 'required|string|exists:roles,name',
             'is_active' => 'sometimes|boolean',
         ]);
-
         $admin = Admin::withTrashed()->where(function ($q) use ($request) {
             $q->where('email', $request->email)
                 ->orWhere('phone', $request->phone);
         })->first();
-
         if ($admin) {
             if ($admin->trashed()) {
                 $admin->restore();
@@ -151,21 +134,16 @@ class UserController extends Controller
                 'is_deleted' => false,
             ]);
         }
-
         $admin->syncRoles([$request->role]);
-
         return redirect()->route('users.index')
             ->with('success', __('file.record_created'));
     }
-
     public function edit(Admin $user)
     {
         $roles = Role::where('guard_name', 'admin')->get();
         $currentRole = $user->roles->first()?->name ?? null;
-
         return view('admin.users.edit', compact('user', 'roles', 'currentRole'));
     }
-
     public function update(Request $request, Admin $user)
     {
         $request->validate([
@@ -186,7 +164,6 @@ class UserController extends Controller
             'role' => 'required|string|exists:roles,name',
             'is_active' => 'sometimes|boolean',
         ]);
-
         $user->update([
             'name' => $request->name,
             'email' => $request->email,
@@ -194,13 +171,10 @@ class UserController extends Controller
             'password' => $request->filled('password') ? Hash::make($request->password) : $user->password,
             'is_active' => $request->boolean('is_active', $user->is_active),
         ]);
-
         $user->syncRoles([$request->role]);
-
         return redirect()->route('users.index')
             ->with('success', __('file.record_updated'));
     }
-
     public function destroy(Admin $user)
     {
         if ($user->id === auth()->id()) {
@@ -209,42 +183,33 @@ class UserController extends Controller
             }
             return redirect()->back()->with('error', __('file.cannot_delete_yourself'));
         }
-
         if ($user->is_deleted) {
             if (request()->ajax()) {
                 return response()->json(['success' => false, 'message' => __('file.already_deleted')], 422);
             }
             return redirect()->back()->with('error', __('file.already_deleted'));
         }
-
         $user->update([
             'is_deleted' => true,
             'is_active' => false,
         ]);
-        $user->delete(); // Soft delete
-
+        $user->delete(); 
         if (request()->ajax()) {
             return response()->json(['success' => true, 'message' => __('file.record_deleted')]);
         }
-
         return redirect()->route('users.index')
             ->with('success', __('file.record_deleted'));
     }
-
     public function bulkDelete(Request $request)
     {
         $validated = $request->validate([
             'ids' => 'required|array',
             'ids.*' => 'required|integer|exists:admins,id',
         ]);
-
         $ids = $validated['ids'];
-
         $currentUserId = auth()->id();
-
         if (in_array($currentUserId, $ids)) {
             $ids = array_diff($ids, [$currentUserId]);
-
             if (empty($ids)) {
                 return response()->json([
                     'success' => false,
@@ -252,7 +217,6 @@ class UserController extends Controller
                 ], 403);
             }
         }
-
         $admins = Admin::whereIn('id', $ids)->get();
         foreach ($admins as $admin) {
             $admin->update([
@@ -261,7 +225,6 @@ class UserController extends Controller
             ]);
             $admin->delete();
         }
-
         return response()->json([
             'success' => true,
             'message' => __('file.bulk_deleted', ['count' => count($ids)]),

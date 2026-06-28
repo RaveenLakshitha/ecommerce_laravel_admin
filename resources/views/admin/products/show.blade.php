@@ -12,7 +12,7 @@
                 </a>
             </div>
 
-            {{-- Header --}}
+            
             <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
                 <div>
                     <div class="flex items-center gap-4">
@@ -47,10 +47,10 @@
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
 
-                {{-- Left Column --}}
+                
                 <div class="lg:col-span-2 space-y-4">
 
-                    {{-- General Information --}}
+                    
                     <div class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                         <div class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
                             <h2 class="text-sm font-bold text-gray-900 dark:text-white">{{ __('file.product_overview') }}</h2>
@@ -84,7 +84,7 @@
                         </div>
                     </div>
 
-                    {{-- Content Details --}}
+                    
                     <div class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                         <div class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
                             <h2 class="text-sm font-bold text-gray-900 dark:text-white">{{ __('file.detailed_description') }}</h2>
@@ -117,7 +117,7 @@
                         </div>
                     </div>
 
-                    {{-- Variants Table --}}
+                    
                     <div class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                         <div class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10 flex items-center justify-between">
                             <h2 class="text-sm font-bold text-gray-900 dark:text-white">{{ __('file.product_variants') }}</h2>
@@ -191,10 +191,10 @@
                     </div>
                 </div>
 
-                {{-- Right Column --}}
+                
                 <div class="col-span-1 space-y-4">
                     
-                    {{-- Search Engine Optimization --}}
+                    
                     <div class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                         <div class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
                             <h2 class="text-sm font-bold text-gray-900 dark:text-white">{{ __('file.seo_settings') }}</h2>
@@ -223,7 +223,7 @@
                         </div>
                     </div>
 
-                    {{-- Product Images --}}
+                    
                     <div class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                         <div class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10">
                             <h2 class="text-sm font-bold text-gray-900 dark:text-white">{{ __('file.product_gallery') }}</h2>
@@ -254,7 +254,7 @@
                         </div>
                     </div>
 
-                    {{-- Quick Inventory Stats --}}
+                    
                     <div class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden relative group p-4 transition-all">
                         <div class="absolute -right-4 -bottom-4 w-24 h-24 bg-indigo-500/10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700"></div>
                         <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-3">{{ __('file.inventory_summary') }}</h3>
@@ -272,7 +272,7 @@
                             </div>
                         </div>
                     </div>
-                    {{-- Barcode & Label Management --}}
+                    
                     <div class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                         <div class="px-4 py-3 border-b border-gray-100 dark:border-surface-tonal-a30 bg-gray-50 dark:bg-surface-tonal-a10 flex items-center justify-between">
                             <div class="flex items-center gap-3">

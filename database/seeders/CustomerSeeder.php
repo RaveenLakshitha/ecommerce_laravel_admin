@@ -1,15 +1,9 @@
 <?php
-
 namespace Database\Seeders;
-
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-
 class CustomerSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
         $faker = \Faker\Factory::create();
@@ -26,10 +20,7 @@ class CustomerSeeder extends Seeder
                 'last_order_at' => rand(0, 1) ? now()->subDays(rand(1, 30)) : null,
                 'lifetime_value' => rand(0, 1500),
             ]);
-            
-            // Random Tagging for VIP/Problematic, etc.
             if (rand(1, 10) > 7) {
-                // Ensure VIP tag exists
                 $vipTag = \App\Models\Tag::firstOrCreate(['slug' => 'vip'], ['name' => 'VIP']);
                 $customer->tags()->attach($vipTag->id);
             }

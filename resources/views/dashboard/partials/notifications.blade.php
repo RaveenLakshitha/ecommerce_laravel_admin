@@ -1,6 +1,4 @@
-{{-- dashboard/partials/notifications.blade.php
-Requires: $notifications (collection), $unreadCount, $primary_color
---}}
+
 <div class="max-w-3xl">
     <div class="flex items-center justify-between mb-6">
         <h2 class="text-xl font-bold text-gray-900 dark:text-primary-a0">
@@ -56,13 +54,13 @@ Requires: $notifications (collection), $unreadCount, $primary_color
                             data-id="{{ $notification->id }}"
                             style="{{ $isUnread ? 'border-left-color:' . $primary_color . '; border-color:' . $primary_color . '40' : '' }}">
                             <div class="{{ $isCondensed ? 'p-3' : 'p-4' }} flex items-start gap-4">
-                                {{-- Icon --}}
+                                
                                 <div class="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5"
                                     style="background: {{ $primary_color }}15; color: {{ $primary_color }}">
                                     <i class="fas fa-{{ $icon }}"></i>
                                 </div>
 
-                                {{-- Content --}}
+                                
                                 <div class="flex-1 min-w-0">
                                     <div class="flex items-start justify-between gap-2">
                                         <p class="text-sm font-semibold text-gray-900 dark:text-primary-a0 truncate">

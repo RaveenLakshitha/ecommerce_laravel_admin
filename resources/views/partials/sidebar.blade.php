@@ -1,8 +1,8 @@
-<!-- Sidebar -->
+
 <aside id="sidebar" class="fixed left-0 top-0 h-screen bg-white dark:bg-surface-tonal-a20 shadow-lg border-r border-gray-200 dark:border-surface-tonal-a30 transition-all duration-300 z-50 flex flex-col lg:translate-x-0 -translate-x-full"
 style="width: 16rem; max-height: 100vh;">
 
-    <!-- Logo -->
+    
     <div class="h-16 flex items-center justify-between px-4 border-b border-gray-200 dark:border-surface-tonal-a30 flex-shrink-0">
         <a href="{{ Route::has('admin.dashboard') ? route('admin.dashboard') : '#' }}" class="flex items-center space-x-3">
             @if(isset($site_logo) && $site_logo)
@@ -30,7 +30,7 @@ style="width: 16rem; max-height: 100vh;">
         </button>
     </div>
 
-    <!-- Navigation -->
+    
     <nav x-data="{ 
             activeGroup: '{{ 
                 request()->routeIs('orders.*') ? 'orders' : (
@@ -48,7 +48,7 @@ style="width: 16rem; max-height: 100vh;">
         class="p-4 space-y-1 overflow-y-auto overflow-x-hidden flex-1 pb-10">
         @auth
 
-            {{-- ── DASHBOARD ──────────────────────────────────────────────────────── --}}
+            
             @include('partials.sidebar-item', [
                 'route' => 'admin.dashboard',
                 'active' => request()->routeIs('admin.dashboard'),
@@ -60,12 +60,12 @@ style="width: 16rem; max-height: 100vh;">
 
             @if(auth('admin')->check() || (auth()->check() && auth()->user()->hasRole('admin')))
 
-                {{-- ──────────────── STORE MANAGEMENT ──────────────── --}}
+                
                 <div class="px-4 py-2 mt-4 text-[11px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest sidebar-text">
                     {{ __('file.store_management') }}
                 </div>
 
-                {{-- Orders --}}
+                
                 <div x-data="{ group: 'orders' }">
                     @include('partials.sidebar-group-btn', [
                         'name' => 'orders',
@@ -77,7 +77,7 @@ style="width: 16rem; max-height: 100vh;">
                     </div>
                 </div>
 
-                {{-- Catalog --}}
+                
                 @canany(['categories.index', 'brands.index', 'attributes.index', 'products.index', 'collections.index'])
                     <div x-data="{ group: 'catalog' }">
                         @include('partials.sidebar-group-btn', [
@@ -103,7 +103,7 @@ style="width: 16rem; max-height: 100vh;">
                     </div>
                 @endcanany
 
-                {{-- Inventory --}}
+                
                 <div x-data="{ group: 'inventory' }">
                     @include('partials.sidebar-group-btn', [
                         'name' => 'inventory',
@@ -115,7 +115,7 @@ style="width: 16rem; max-height: 100vh;">
                     </div>
                 </div>
 
-                {{-- Shipping & Delivery --}}
+                
                 <div x-data="{ group: 'shipping' }">
                     @include('partials.sidebar-group-btn', [
                         'name' => 'shipping',
@@ -132,12 +132,12 @@ style="width: 16rem; max-height: 100vh;">
                 </div>
 
 
-                {{-- ──────────────── CUSTOMERS & MARKETING ──────────────── --}}
+                
                 <div class="px-4 py-2 mt-6 border-t border-gray-100 dark:border-surface-tonal-a30 pt-4 text-[11px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest sidebar-text">
                     {{ __('file.customers_marketing') }}
                 </div>
 
-                {{-- CRM & Customers --}}
+                
                 <div x-data="{ group: 'crm' }">
                     @include('partials.sidebar-group-btn', [
                         'name' => 'crm',
@@ -151,7 +151,7 @@ style="width: 16rem; max-height: 100vh;">
                     </div>
                 </div>
 
-                {{-- Discounts & Promotions --}}
+                
                 <div x-data="{ group: 'promotions' }">
                     @include('partials.sidebar-group-btn', [
                         'name' => 'promotions',
@@ -165,12 +165,12 @@ style="width: 16rem; max-height: 100vh;">
                 </div>
 
 
-                {{-- ──────────────── FINANCE & SYSTEM ──────────────── --}}
+                
                 <div class="px-4 py-2 mt-6 border-t border-gray-100 dark:border-surface-tonal-a30 pt-4 text-[11px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest sidebar-text">
                     {{ __('file.system_settings') }}
                 </div>
 
-                {{-- Payments & Finances --}}
+                
                 <div x-data="{ group: 'finances' }">
                     @include('partials.sidebar-group-btn', [
                         'name' => 'finances',
@@ -183,7 +183,7 @@ style="width: 16rem; max-height: 100vh;">
                     </div>
                 </div>
 
-                {{-- Reports --}}
+                
                 @can('reports.index')
                     <div x-data="{ group: 'reports' }">
                         @include('partials.sidebar-group-btn', [
@@ -198,7 +198,7 @@ style="width: 16rem; max-height: 100vh;">
                     </div>
                 @endcan
 
-                {{-- Users, Roles & Settings --}}
+                
                 @canany(['users.index', 'roles.index', 'settings.index'])
                     <div x-data="{ group: 'admin' }">
                         @include('partials.sidebar-group-btn', [
@@ -234,7 +234,7 @@ style="width: 16rem; max-height: 100vh;">
         @endauth
     </nav>
     
-    {{-- ── USER PROFILE BUTTON (REPLACES LOGOUT) ──────────────────────────────────────────────────────────── --}}
+    
     @auth
         @php
             $user = auth('admin')->check() ? auth('admin')->user() : auth()->user();

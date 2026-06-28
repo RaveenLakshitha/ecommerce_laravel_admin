@@ -34,10 +34,10 @@
 
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
 
-                    {{-- Left Column --}}
+                    
                     <div class="lg:col-span-2 space-y-4">
 
-                        {{-- General Information --}}
+                        
                         <div
                             class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                             <div
@@ -87,7 +87,7 @@
                             </div>
                         </div>
 
-                        {{-- Products Selection --}}
+                        
                         <div
                             class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                             <div
@@ -174,7 +174,7 @@
                         </div>
                     </div>
 
-                    {{-- Right Column --}}
+                    
                     <div class="lg:col-span-1 space-y-4">
                         <div
                             class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden sticky top-24">

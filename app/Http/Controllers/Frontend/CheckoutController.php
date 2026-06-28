@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Http\Controllers\Frontend;
-
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\OrderItem;
@@ -18,19 +16,15 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Setting;
 use App\Models\PaymentGatewaySetting;
 use App\Services\StripeService;
-
-
 class CheckoutController extends Controller
 {
     protected DiscountService $discountService;
     protected StripeService $stripeService;
-
     public function __construct(DiscountService $discountService, StripeService $stripeService)
     {
         $this->discountService = $discountService;
         $this->stripeService   = $stripeService;
     }
-
     public function index()
     {
         $cart      = $this->getCart();
@@ -38,40 +32,25 @@ class CheckoutController extends Controller
         if ($cartItems->isEmpty()) {
             return redirect()->route('cart.index')->with('error', 'Your cart is empty.');
         }
-
         $subtotal = $cart->getSubTotal();
-
-        // Coupon discount (from session)
         $appliedCoupon  = $this->discountService->getAppliedCoupon();
         $couponDiscount = $this->discountService->getCouponDiscount();
-
-        // Automatic discount rules
         $autoDiscount = $this->discountService->calculateAutomaticDiscount($subtotal);
-
         $totalDiscount = $couponDiscount + $autoDiscount;
         $total         = max(0, $subtotal - $totalDiscount);
-
         $shippingRates = ShippingRate::with('zone')->where('is_active', true)->get();
-
         $user      = Auth::user();
         $addresses = $user ? $user->addresses : collect();
-
-        // Stripe configuration
         $stripeSetting = PaymentGatewaySetting::where('gateway', 'stripe')->active()->first();
         $stripePublicKey = $stripeSetting?->public_key ?? config('stripe.key');
-
-        // Currency formatting for JS
         $currency_position = Setting::getValue('currency_position', 'left');
         $currency_decimals = (int) Setting::getValue('number_of_decimals', 2);
-
         return view('frontend.checkout.index', compact(
             'cartItems', 'subtotal', 'total', 'shippingRates', 'addresses', 'user',
             'appliedCoupon', 'couponDiscount', 'autoDiscount', 'totalDiscount',
             'stripePublicKey', 'currency_position', 'currency_decimals'
         ));
-
     }
-
     public function process(Request $request)
     {
         $cart      = $this->getCart();
@@ -79,7 +58,6 @@ class CheckoutController extends Controller
         if ($cartItems->isEmpty()) {
             return redirect()->route('cart.index')->with('error', 'Your cart is empty.');
         }
-
         $request->validate([
             'first_name'       => 'required|string|max:255',
             'last_name'        => 'required|string|max:255',
@@ -93,28 +71,19 @@ class CheckoutController extends Controller
             'shipping_rate_id' => 'required|exists:shipping_rates,id',
             'payment_method'   => 'required|string|in:cod,bank_transfer,stripe',
         ]);
-
-        // Stripe redirection
         if ($request->payment_method === 'stripe') {
             return $this->initiateStripePayment($request);
         }
-
         try {
             DB::beginTransaction();
-
             $shippingRate = ShippingRate::findOrFail($request->shipping_rate_id);
             $subtotal     = $cart->getSubTotal();
             $shippingCost = $shippingRate->rate_amount;
-
-            // ── Discount Resolution ──────────────────────────────────────────
             $appliedCoupon  = $this->discountService->getAppliedCoupon();
             $couponDiscount = $this->discountService->getCouponDiscount();
             $autoDiscount   = $this->discountService->calculateAutomaticDiscount($subtotal);
             $totalDiscount  = round($couponDiscount + $autoDiscount, 2);
-
             $totalAmount = max(0, $subtotal - $totalDiscount) + $shippingCost;
-
-            // ── Create Order ─────────────────────────────────────────────────
             $order = Order::create([
                 'order_number'    => 'ORD-' . strtoupper(uniqid()),
                 'user_id'         => Auth::id(),
@@ -135,8 +104,6 @@ class CheckoutController extends Controller
                 'notes'           => $request->notes ?? null,
                 'placed_at'       => now(),
             ]);
-
-            // ── Log Payment Transaction ──────────────────────────────────────
             PaymentTransaction::create([
                 'order_id'      => $order->id,
                 'transaction_id'=> 'TXN-' . strtoupper(uniqid()),
@@ -147,8 +114,6 @@ class CheckoutController extends Controller
                 'payment_type'  => 'sale',
                 'is_manual'     => true,
             ]);
-
-            // ── Save Shipping Address ────────────────────────────────────────
             $address = null;
             if (Auth::check()) {
                 $address = Auth::user()->addresses()->create([
@@ -179,23 +144,18 @@ class CheckoutController extends Controller
                     'country'       => $request->country,
                 ]);
             }
-
             if ($address) {
                 $order->update([
                     'shipping_address_id' => $address->id,
                     'billing_address_id'  => $address->id,
                 ]);
             }
-
-            // ── Create Order Items & Adjust Inventory ────────────────────────
             foreach ($cartItems as $item) {
                 $variant = Variant::find($item->id);
-
                 if ($variant) {
                     if ($variant->stock_quantity < $item->quantity) {
                         throw new \Exception("Item {$item->name} does not have enough stock.");
                     }
-
                     OrderItem::create([
                         'order_id'               => $order->id,
                         'variant_id'             => $variant->id,
@@ -207,9 +167,7 @@ class CheckoutController extends Controller
                         'discount_amount'        => 0,
                         'total'                  => $item->price * $item->quantity,
                     ]);
-
                     $variant->decrement('stock_quantity', $item->quantity);
-
                     InventoryTransaction::create([
                         'variant_id'      => $variant->id,
                         'type'            => 'sale',
@@ -220,16 +178,11 @@ class CheckoutController extends Controller
                     ]);
                 }
             }
-
-            // ── Create Shipment ─────────────────────────────────────────────
             \App\Models\Shipment::create([
                 'order_id' => $order->id,
                 'status'   => 'pending',
             ]);
-
             DB::commit();
-
-            // ── Record Coupon Usage & Clear Cart ─────────────────────────────
             if ($appliedCoupon && isset($appliedCoupon['id'])) {
                 $this->discountService->recordUsage(
                     $appliedCoupon['id'],
@@ -237,33 +190,22 @@ class CheckoutController extends Controller
                     $couponDiscount
                 );
             }
-
             $cart->clear();
-
             return redirect()->route('checkout.success')->with('order_number', $order->order_number);
-
         } catch (\Exception $e) {
             DB::rollBack();
             return back()->with('error', 'Checkout failed: ' . $e->getMessage())->withInput();
         }
     }
-
     public function success()
     {
         $orderNumber = session('order_number');
         if (!$orderNumber) {
             return redirect()->route('home');
         }
-
         $order = Order::where('order_number', $orderNumber)->firstOrFail();
-
         return view('frontend.checkout.success', compact('order'));
     }
-
-    /**
-     * Called when payment_method=stripe is selected.
-     * Creates a Stripe PaymentIntent and stores order data in session.
-     */
     protected function initiateStripePayment(Request $request)
     {
         $cart           = $this->getCart();
@@ -276,15 +218,11 @@ class CheckoutController extends Controller
         $totalDiscount  = round($couponDiscount + $autoDiscount, 2);
         $totalAmount    = max(0, $subtotal - $totalDiscount) + $shippingCost;
         $currency       = Setting::getValue('currency', 'USD');
-
-        // Store checkout form data in session — retrieved after Stripe redirects back
         session([
             'stripe_checkout' => $request->except('_token'),
             'stripe_total'    => $totalAmount,
             'stripe_currency' => $currency,
         ]);
-
-        // Create a Stripe Checkout Session (hosted payment page on Stripe's servers)
         $checkoutSession = $this->stripeService->createCheckoutSession([
             'payment_method_types' => ['card'],
             'line_items'           => [[
@@ -302,76 +240,52 @@ class CheckoutController extends Controller
             'success_url'    => route('checkout.stripe.return') . '?session_id={CHECKOUT_SESSION_ID}',
             'cancel_url'     => route('checkout.index'),
         ]);
-
-        // Redirect customer to Stripe's hosted payment page
         return redirect($checkoutSession->url);
     }
-
-    /**
-     * GET /checkout/stripe/pay
-     * Renders the Stripe card form — always a GET so Stripe's 3DS redirect works.
-     */
     public function stripePayPage()
     {
         $clientSecret    = session('stripe_client_secret');
         $stripePublicKey = session('stripe_public_key');
         $totalAmount     = session('stripe_total');
         $currency        = session('stripe_currency');
-
         if (!$clientSecret || !$totalAmount) {
             return redirect()->route('checkout.index')
                 ->with('error', 'Payment session expired. Please try again.');
         }
-
         return view('frontend.checkout.stripe_confirm', compact(
             'clientSecret', 'stripePublicKey', 'totalAmount', 'currency'
         ));
     }
-
-    /**
-     * GET /checkout/stripe/return
-     * Stripe redirects here after payment on their hosted page.
-     * Verifies the Checkout Session and creates the order.
-     */
     public function stripeReturn(Request $request)
     {
         $sessionId = $request->query('session_id');
-
         if (!$sessionId) {
             return redirect()->route('checkout.index')
                 ->with('error', 'Payment could not be verified. Please try again.');
         }
-
-        // Retrieve & verify on the server — never trust the URL alone
         $checkoutSession = $this->stripeService->retrieveCheckoutSession($sessionId);
-
         if ($checkoutSession->payment_status !== 'paid') {
             return redirect()->route('checkout.index')
                 ->with('error', 'Payment was not completed. Status: ' . $checkoutSession->payment_status);
         }
-
         $stripeCheckout = session('stripe_checkout');
         if (!$stripeCheckout) {
             return redirect()->route('checkout.index')
                 ->with('error', 'Session expired. Please try again.');
         }
-
         $cart        = $this->getCart();
         $cartItems   = $cart->getContent();
         $totalAmount = session('stripe_total');
         $currency    = session('stripe_currency');
         $paymentIntentId = $checkoutSession->payment_intent->id ?? $checkoutSession->payment_intent;
-
         try {
             DB::beginTransaction();
-
             $shippingRate   = ShippingRate::findOrFail($stripeCheckout['shipping_rate_id']);
             $subtotal       = $cart->getSubTotal();
             $appliedCoupon  = $this->discountService->getAppliedCoupon();
             $couponDiscount = $this->discountService->getCouponDiscount();
             $autoDiscount   = $this->discountService->calculateAutomaticDiscount($subtotal);
             $totalDiscount  = round($couponDiscount + $autoDiscount, 2);
-
             $order = Order::create([
                 'order_number'    => 'ORD-' . strtoupper(uniqid()),
                 'user_id'         => Auth::id(),
@@ -392,7 +306,6 @@ class CheckoutController extends Controller
                 'notes'           => $stripeCheckout['notes'] ?? null,
                 'placed_at'       => now(),
             ]);
-
             PaymentTransaction::create([
                 'order_id'       => $order->id,
                 'transaction_id' => $paymentIntentId,
@@ -408,7 +321,6 @@ class CheckoutController extends Controller
                     'stripe_payment_status' => $checkoutSession->payment_status,
                 ],
             ]);
-
             $addressData = [
                 'type'          => 'shipping',
                 'first_name'    => $stripeCheckout['first_name'],
@@ -422,18 +334,15 @@ class CheckoutController extends Controller
                 'country'       => $stripeCheckout['country'],
                 'is_default'    => false,
             ];
-
             $address = Auth::check()
                 ? Auth::user()->addresses()->create($addressData)
                 : \App\Models\Address::create(array_merge($addressData, ['user_id' => null, 'type' => 'both']));
-
             if ($address) {
                 $order->update([
                     'shipping_address_id' => $address->id,
                     'billing_address_id'  => $address->id,
                 ]);
             }
-
             foreach ($cartItems as $item) {
                 $variant = Variant::find($item->id);
                 if ($variant) {
@@ -459,67 +368,46 @@ class CheckoutController extends Controller
                     ]);
                 }
             }
-
             \App\Models\Shipment::create(['order_id' => $order->id, 'status' => 'pending']);
-
             DB::commit();
-
             if ($appliedCoupon && isset($appliedCoupon['id'])) {
                 $this->discountService->recordUsage($appliedCoupon['id'], $order->id, $couponDiscount);
             }
-
             session()->forget(['stripe_checkout', 'stripe_total', 'stripe_currency']);
             $cart->clear();
-
             return redirect()->route('checkout.success')->with('order_number', $order->order_number);
-
         } catch (\Exception $e) {
             DB::rollBack();
             return redirect()->route('checkout.index')
                 ->with('error', 'Order creation failed: ' . $e->getMessage());
         }
     }
-
-    /**
-     * After Stripe.js confirms the card, the browser posts here.
-     * We verify on the server and then create the order.
-     */
     public function stripeConfirm(Request $request)
     {
         $request->validate([
             'payment_intent_id' => 'required|string',
         ]);
-
         $stripeCheckout = session('stripe_checkout');
         if (!$stripeCheckout) {
             return redirect()->route('checkout.index')->with('error', 'Session expired. Please try again.');
         }
-
-        // Verify payment with Stripe (server-side — never trust the frontend alone)
         $paymentIntent = $this->stripeService->retrievePaymentIntent($request->payment_intent_id);
-
         if ($paymentIntent->status !== 'succeeded') {
             return redirect()->route('checkout.index')
                 ->with('error', 'Payment was not completed. Status: ' . $paymentIntent->status);
         }
-
         $cart        = $this->getCart();
         $cartItems   = $cart->getContent();
         $totalAmount = session('stripe_total');
         $currency    = session('stripe_currency');
-
         try {
             DB::beginTransaction();
-
             $shippingRate = ShippingRate::findOrFail($stripeCheckout['shipping_rate_id']);
             $subtotal     = $cart->getSubTotal();
-
             $appliedCoupon  = $this->discountService->getAppliedCoupon();
             $couponDiscount = $this->discountService->getCouponDiscount();
             $autoDiscount   = $this->discountService->calculateAutomaticDiscount($subtotal);
             $totalDiscount  = round($couponDiscount + $autoDiscount, 2);
-
-            // ── Create Order ─────────────────────────────────────────────────
             $order = Order::create([
                 'order_number'    => 'ORD-' . strtoupper(uniqid()),
                 'user_id'         => Auth::id(),
@@ -540,8 +428,6 @@ class CheckoutController extends Controller
                 'notes'           => $stripeCheckout['notes'] ?? null,
                 'placed_at'       => now(),
             ]);
-
-            // ── Log Payment Transaction ──────────────────────────────────────
             PaymentTransaction::create([
                 'order_id'       => $order->id,
                 'transaction_id' => $paymentIntent->id,
@@ -556,8 +442,6 @@ class CheckoutController extends Controller
                     'stripe_status'         => $paymentIntent->status,
                 ],
             ]);
-
-            // ── Save Shipping Address ────────────────────────────────────────
             $address = null;
             if (Auth::check()) {
                 $address = Auth::user()->addresses()->create([
@@ -588,15 +472,12 @@ class CheckoutController extends Controller
                     'country'       => $stripeCheckout['country'],
                 ]);
             }
-
             if ($address) {
                 $order->update([
                     'shipping_address_id' => $address->id,
                     'billing_address_id'  => $address->id,
                 ]);
             }
-
-            // ── Create Order Items & Adjust Inventory ────────────────────────
             foreach ($cartItems as $item) {
                 $variant = Variant::find($item->id);
                 if ($variant) {
@@ -622,33 +503,22 @@ class CheckoutController extends Controller
                     ]);
                 }
             }
-
-            // ── Create Shipment ─────────────────────────────────────────────
             \App\Models\Shipment::create([
                 'order_id' => $order->id,
                 'status'   => 'pending',
             ]);
-
             DB::commit();
-
             if ($appliedCoupon && isset($appliedCoupon['id'])) {
                 $this->discountService->recordUsage($appliedCoupon['id'], $order->id, $couponDiscount);
             }
-
             session()->forget(['stripe_checkout', 'stripe_total', 'stripe_currency']);
             $cart->clear();
-
             return redirect()->route('checkout.success')->with('order_number', $order->order_number);
-
         } catch (\Exception $e) {
             DB::rollBack();
             return redirect()->route('checkout.index')->with('error', 'Checkout failed: ' . $e->getMessage());
         }
     }
-
-    /**
-     * Get the appropriate cart instance.
-     */
     private function getCart()
     {
         return Auth::check() ? Cart::session(Auth::id()) : Cart::getFacadeRoot();

@@ -1,5 +1,4 @@
 <?php
-
 return [
     'categories' => 'Categorías',
     'manage_categories' => 'Administrar Categorías',
@@ -31,8 +30,6 @@ return [
     'confirm_delete_item' => '¿Está seguro de que desea eliminar este elemento?',
     'category_updated_successfully' => 'Categoría actualizada con éxito!',
     'unauthorized' => 'Acción no autorizada.',
-
-    // Sidebar & Navigation
     'dashboard' => 'Panel de Control',
     'orders' => 'Pedidos',
     'orders_list' => 'Todos los Pedidos',
@@ -52,8 +49,6 @@ return [
     'roles_management' => 'Roles',
     'general_settings' => 'General',
     'log_in' => 'Iniciar sesión',
-
-    // Products & Catalog
     'manage_products' => 'Administrar Productos',
     'add_product' => 'Añadir Producto',
     'add_new_product' => 'Añadir Nuevo Producto',
@@ -141,8 +136,6 @@ return [
     'error_occurred_while_deleting_image' => 'Ocurrió un error al eliminar la imagen',
     'english' => 'Inglés',
     'spanish' => 'Español',
-
-    // Frontend Strings
     'home' => 'Inicio',
     'new_arrivals' => 'Novedades',
     'new' => 'Nuevo',
@@ -232,8 +225,6 @@ return [
     'added' => 'Añadido',
     'error_adding_to_cart' => 'No se pudo añadir al carrito.',
     'network_error' => 'Error de red — por favor, inténtalo de nuevo.',
-
-    // Error Pages
     'error_419_title' => 'Página Expirada',
     'error_419_message' => 'Tu sesión ha expirado. Por favor, recarga la página o vuelve a la página de inicio de sesión e inténtalo de nuevo.',
     'go_to_login' => 'Ir al Inicio de Sesión',
@@ -242,8 +233,6 @@ return [
     'my_orders' => 'Mis Pedidos',
     'sign_out' => 'Cerrar Sesión',
     'my_account' => 'Mi Cuenta',
-
-    // Cart Page
     'shopping_cart' => 'Carrito de Compras',
     'cart' => 'Carrito',
     'item' => 'artículo',
@@ -269,8 +258,6 @@ return [
     'your_cart_is_empty' => 'Tu carrito está vacío',
     'looks_like_you_havent_added_anything_yet' => 'Parece que aún no has añadido nada.',
     'explore_collection' => 'Explorar Colección',
-
-    // Checkout Page
     'secure_checkout' => 'Pago Seguro',
     'contact_information' => 'Información de Contacto',
     'first_name' => 'Nombre',
@@ -303,10 +290,6 @@ return [
     'order_number' => 'Número de Pedido',
     'total_amount' => 'Monto Total',
     'view_order_history' => 'Ver Historial de Pedidos',
-
-
-
-    // User Profile / Account
     'welcome_back' => 'Bienvenido de nuevo,',
     'dashboard' => 'Panel de Control',
     'order_history' => 'Historial de Pedidos',
@@ -656,8 +639,6 @@ return [
     'attribute_value_deleted_successfully' => 'Valor de atributo eliminado con éxito.',
     'core_parameters' => 'Parámetros Principales',
     'color_hex' => 'Color HEX',
-
-    // Shipping & Fulfillment
     'shipping_rates' => 'Tarifas de Envío',
     'shipping_zones' => 'Zonas de Envío',
     'logistics_providers' => 'Proveedores de Logística',
@@ -839,8 +820,6 @@ return [
     'none_in_store_pickup_logic' => 'Ninguno (Lógica de recogida en tienda)',
     'view_shipment' => 'Ver Envío',
     'no_tracking' => 'Sin Seguimiento',
-
-    // Customers & CRM
     'manage_customers' => 'Administrar Clientes',
     'customers_selected' => 'Clientes Seleccionados',
     'verified_identity' => 'Identidad Verificada',
@@ -861,22 +840,16 @@ return [
     'no_tags_assigned' => 'Sin etiquetas asignadas',
     'update_tags' => 'Actualizar Etiquetas',
     'sync_tags' => 'Sincronizar Etiquetas',
-
-    // Newsletters (Subscribers)
     'manage_subscribers' => 'Administrar Suscriptores del Boletín',
     'subscribers_selected' => 'Suscriptores Seleccionados',
     'search_subscribers' => 'Buscar Suscriptores...',
     'showing_subscribers' => 'Mostrando _START_ a _END_ de _TOTAL_ Suscriptores',
     'no_subscribers_found' => 'No se encontraron suscriptores',
-
-    // Product Reviews
     'manage_reviews' => 'Moderar comentarios de clientes',
     'reviews_selected' => 'Reseñas Seleccionadas',
     'search_reviews' => 'Buscar reseñas...',
     'showing_reviews' => 'Mostrando _START_ a _END_ de _TOTAL_ reseñas',
     'no_reviews_found' => 'No se encontraron reseñas',
-
-    // Promotions (Coupons & Discount Rules)
     'manage_coupons' => 'Gestionar códigos promocionales',
     'add_coupon' => 'Añadir Cupón',
     'coupons_selected' => 'Cupones Seleccionados',
@@ -1010,8 +983,6 @@ return [
     'transactions' => 'Transacciones',
     'gateways' => 'Pasarelas',
     'storefront' => 'Escaparate',
-
-    // Missing Translations (Added)
     'financial_report_subtitle' => 'Análisis de ingresos, transacciones y reembolsos',
     'inventory_report_subtitle' => 'Niveles de stock, valoración y alertas de reabastecimiento',
     'total_revenue' => 'Ingresos Totales',
@@ -1090,8 +1061,6 @@ return [
     'reason_for_refund' => 'Motivo del Reembolso',
     'submit_refund_request' => 'Enviar Solicitud de Reembolso',
     'e_g_item_damaged_wrong_size' => 'p. ej. Artículo dañado, talla incorrecta, etc.',
-
-    // Agregado de Tablas
     'id' => 'ID',
     'dt_{{_(' => '{{ __(',
     'dt_length_menu' => 'Mostrar _MENU_ entradas',
@@ -1122,8 +1091,6 @@ return [
     'dt_search_users' => 'Buscar usuarios...',
     'dt_no_users_found' => 'No se encontraron usuarios.',
     'refunds' => 'Reembolsos',
-
-    // Claves del Sistema de Configuración General
     'system_parametrics' => 'Parámetros del Sistema',
     'system_parametrics_subtitle' => 'Calibre la identidad principal de la tienda, la localización regional y los activos de marca corporativa.',
     'center_return' => 'Volver al Centro',
@@ -1136,8 +1103,6 @@ return [
     'chromatic_id_helper' => 'Nivel de saturación de la interfaz de usuario en todo el sistema. Afecta a los elementos interactivos principales y a los aspectos visuales destacados.',
     'commit_changes' => 'Confirmar Cambios',
     'abort_protocol' => 'Abortar Protocolo',
-
-    // Claves de la Barra Lateral y Pestañas de Configuración
     'general' => 'General',
     'store_info' => 'Información de la Tienda',
     'seo_meta' => 'SEO y Meta',
@@ -1154,8 +1119,6 @@ return [
     'upload_logo' => 'Subir Logo',
     'upload_favicon' => 'Subir Favicon',
     'upload_background' => 'Subir Fondo',
-
-    // Claves de Todas las Pestañas de la Vista de Configuración
     'store_information' => 'Información de la Tienda',
     'store_information_desc' => 'Detalles de contacto y dirección física.',
     'contact_email' => 'Correo de Contacto',
@@ -1245,8 +1208,6 @@ return [
     'maintenance_mode' => 'Modo de Mantenimiento',
     'maintenance_mode_desc' => 'Restringir el acceso público a la tienda',
     'maintenance_message' => 'Mensaje de Mantenimiento',
-
-    // Entradas de Claves de Pasarelas de Pago
     'payment_gateways_subtitle' => 'Configure protocolos de pago discretos, calibre credenciales API y gestione entornos de transacciones.',
     'environment' => 'Entorno',
     'sandbox_development' => 'Sandbox / Desarrollo',

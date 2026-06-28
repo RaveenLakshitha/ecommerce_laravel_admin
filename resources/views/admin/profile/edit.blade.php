@@ -6,7 +6,7 @@
     <div class="admin-page animate-fade-in-up">
         <div class="admin-page-inner">
 
-            {{-- Header Area --}}
+            
             <div class="mb-10 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-6 mt-10">
                 <div>
                     <h1 class="text-2xl font-bold tracking-tight text-gray-900 dark:text-white uppercase tracking-tighter">
@@ -28,7 +28,7 @@
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-1 gap-6 max-w-4xl">
-                {{-- Profile Information --}}
+                
                 <div
                     class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                     <div
@@ -41,7 +41,7 @@
                     </div>
                 </div>
 
-                {{-- Security recalibration --}}
+                
                 <div
                     class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                     <div
@@ -54,7 +54,7 @@
                     </div>
                 </div>
 
-                {{-- Decommission Protocol --}}
+                
                 <div
                     class="bg-rose-50/30 dark:bg-rose-950/10 rounded-lg shadow-sm border border-rose-100 dark:border-rose-950/30 overflow-hidden">
                     <div

@@ -1,10 +1,4 @@
-{{--
-Shared Variants Panel Partial
-Variables expected (passed from including view):
-$existingOptionsJson - JSON string: [{name: "Color", values: ["red","green"]}, ...]
-$existingVariantsJson - JSON string: [{id,sku,price,barcode,stock_quantity,opts:{0:"red",1:"L"},image_url}, ...]
-$basePrice - float: default price for new rows
---}}
+
 
 <div
     class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
@@ -17,10 +11,10 @@ $basePrice - float: default price for new rows
 
     <div class="p-4 space-y-4">
 
-        {{-- Option Rows (rendered by JS) --}}
+        
         <div id="vp-options-list" class="space-y-3"></div>
 
-        {{-- Add Option Button --}}
+        
         <button type="button" onclick="VariantsPanel.addOption()"
             class="inline-flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-surface-tonal-a30 rounded-xl hover:bg-gray-50 dark:hover:bg-surface-tonal-a30 transition-all">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -29,7 +23,7 @@ $basePrice - float: default price for new rows
             {{ __('file.add_another_option') }}
         </button>
 
-        {{-- Variants Table (shown when there are combos) --}}
+        
         <div id="vp-table-wrapper" class="hidden">
             <p class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
                 {{ __('file.modify_variants_to_be_created') }}</p>

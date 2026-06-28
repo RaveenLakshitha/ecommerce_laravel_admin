@@ -43,7 +43,7 @@
         <div x-data="orderManager({{ Js::from($orders) }})" class="flex flex-1 min-h-0 overflow-hidden flex-col md:flex-row"
             x-cloak>
 
-            <!-- Left Pane: Order List -->
+            
             <div
                 class="border-b md:border-b-0 md:border-r border-gray-200 dark:border-surface-tonal-a20 flex flex-col w-full md:w-80 lg:w-96 md:shrink-0 bg-white dark:bg-surface-tonal-a0 h-[40vh] md:h-auto overflow-hidden md:max-h-none">
                 <div
@@ -107,7 +107,7 @@
                 </div>
             </div>
 
-            <!-- Right Pane: Details -->
+            
             <div id="order-detail-pane"
                 class="flex flex-1 overflow-y-auto p-4 sm:p-6 bg-gray-50 dark:bg-surface-tonal-a10 flex-col relative w-full md:w-auto min-w-0">
                 <template x-if="!selectedOrder">
@@ -165,30 +165,30 @@
                             </div>
                         </div>
 
-                        <!-- Stepper & Actions -->
+                        
                         <div
                             class="bg-white dark:bg-surface-tonal-a0 border border-gray-200 dark:border-surface-tonal-a20 rounded-xl p-4 sm:p-5 shadow-sm">
 
-                            <!-- Stepper -->
+                            
                             <div class="relative flex items-start justify-between px-2 sm:px-6">
-                                <!-- Background connector line -->
+                                
                                 <div
                                     class="absolute top-4 left-[calc(12.5%+8px)] right-[calc(12.5%+8px)] h-[2px] bg-gray-200 dark:bg-surface-tonal-a20 z-0">
                                 </div>
 
                                 <template x-for="(step, index) in steps" :key="step.id">
                                     <div class="flex-1 flex flex-col items-center text-center relative z-10">
-                                        <!-- Active/completed line segment overlay -->
+                                        
                                         <template x-if="index < steps.length - 1">
                                             <div class="absolute top-4 left-1/2 w-full h-[2px] z-0 transition-colors duration-500"
                                                 :class="isStepComplete(index) ? 'bg-accent dark:bg-accent/80' : 'bg-gray-200 dark:bg-surface-tonal-a20'">
                                             </div>
                                         </template>
 
-                                        <!-- Step circle with inline SVG icon -->
+                                        
                                         <div class="relative z-10 w-8 h-8 rounded-full border-2 flex items-center justify-center mb-2 transition-all duration-300 shrink-0"
                                             :class="getStepClass(index)">
-                                            <!-- Placed icon -->
+                                            
                                             <template x-if="step.id === 'pending'">
                                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
                                                     stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -196,7 +196,7 @@
                                                     <path d="M12 6v6l4 2" />
                                                 </svg>
                                             </template>
-                                            <!-- Processing icon -->
+                                            
                                             <template x-if="step.id === 'processing'">
                                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
                                                     stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -210,7 +210,7 @@
                                                     <path d="m19.07 4.93-1.41 1.41" />
                                                 </svg>
                                             </template>
-                                            <!-- Shipped icon -->
+                                            
                                             <template x-if="step.id === 'shipped'">
                                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
                                                     stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -220,7 +220,7 @@
                                                     <circle cx="17.5" cy="17.5" r="2.5" />
                                                 </svg>
                                             </template>
-                                            <!-- Delivered icon -->
+                                            
                                             <template x-if="step.id === 'delivered'">
                                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
                                                     stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -283,7 +283,7 @@
 
                         <div class="grid grid-cols-1 xl:grid-cols-5 gap-4 sm:gap-6 flex-1">
 
-                            <!-- Order Items Column (3/5) -->
+                            
                             <div
                                 class="xl:col-span-3 bg-white dark:bg-surface-tonal-a0 border border-gray-200 dark:border-surface-tonal-a20 rounded-xl flex flex-col shadow-sm">
                                 <div
@@ -382,7 +382,7 @@
                                 </div>
                             </div>
 
-                            <!-- Sidebar Details Column (2/5) -->
+                            
                             <div class="xl:col-span-2 space-y-4">
                                 <div
                                     class="bg-white dark:bg-surface-tonal-a0 border border-gray-200 dark:border-surface-tonal-a20 rounded-xl p-4 sm:p-5 shadow-sm">
@@ -499,7 +499,7 @@
             </div>
         </div>
     </div>
-    <!-- Hidden iframe for printing -->
+    
     <iframe id="print-iframe" class="hidden" style="display:none;"></iframe>
 @endsection
 

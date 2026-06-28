@@ -84,7 +84,7 @@
                 class="bg-white dark:bg-transparent rounded-xl shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                 <div class="p-6 space-y-12">
 
-                    <!-- Branding Section -->
+                    
                     <div class="border-b border-gray-200 dark:border-surface-tonal-a30 pb-6">
                         <div class="flex items-center justify-between mb-6">
                             <h2 class="text-xl font-semibold text-gray-900 dark:text-primary-a0">Site Branding (Header Logo)</h2>
@@ -119,7 +119,7 @@
                         </div>
                     </div>
 
-                    <!-- Contact Info Section -->
+                    
                     <div class="border-b border-gray-200 dark:border-surface-tonal-a30 pb-6">
                         <h2 class="text-xl font-semibold text-gray-900 dark:text-primary-a0 mb-6">Contact Information</h2>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -138,7 +138,7 @@
                         </div>
                     </div>
 
-                    <!-- Offers Section -->
+                    
                     <div class="border-b border-gray-200 dark:border-surface-tonal-a30 pb-6">
                         <h2 class="text-xl font-semibold text-gray-900 dark:text-primary-a0 mb-6">Announcement Bar (Global
                             Top Bar)</h2>
@@ -164,7 +164,7 @@
                         </div>
                     </div>
 
-                    <!-- Marquee Section -->
+                    
                     <div class="border-b border-gray-200 dark:border-surface-tonal-a30 pb-6">
                         <h2 class="text-xl font-semibold text-gray-900 dark:text-primary-a0 mb-6">Home Page Marquee Bar</h2>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -188,7 +188,7 @@
                         </div>
                     </div>
 
-                    <!-- About Us Section -->
+                    
                     <div class="border-b border-gray-200 dark:border-surface-tonal-a30 pb-6">
                         <h2 class="text-xl font-semibold text-gray-900 dark:text-primary-a0 mb-6">About Us Section
                             (Footer/General)</h2>
@@ -210,7 +210,7 @@
                         </div>
                     </div>
 
-                    <!-- Our Story Section (About Page) -->
+                    
                     <div class="border-b border-gray-200 dark:border-surface-tonal-a30 pb-6">
                         <div class="flex items-center justify-between mb-6">
                             <h2 class="text-xl font-semibold text-gray-900 dark:text-primary-a0">Our Story (About Page)</h2>
@@ -259,7 +259,7 @@
                         </div>
                     </div>
 
-                    <!-- Stats Section -->
+                    
                     <div class="border-b border-gray-200 dark:border-surface-tonal-a30 pb-6">
                         <div class="flex items-center justify-between mb-6">
                             <div class="flex items-center gap-4">
@@ -308,7 +308,7 @@
                         </div>
                     </div>
 
-                    <!-- Trust Items Section -->
+                    
                     <div class="border-b border-gray-200 dark:border-surface-tonal-a30 pb-6">
                         <div class="flex items-center justify-between mb-6">
                             <div class="flex items-center gap-4">
@@ -371,7 +371,7 @@
                         </div>
                     </div>
 
-                    <!-- Delivery & Returns Section -->
+                    
                     <div class="border-b border-gray-200 dark:border-surface-tonal-a30 pb-6">
                         <div class="flex items-center justify-between mb-6">
                             <div class="flex items-center gap-4">
@@ -436,7 +436,7 @@
                         </div>
                     </div>
 
-                    <!-- Measurements Section -->
+                    
                     <div class="border-b border-gray-200 dark:border-surface-tonal-a30 pb-6">
                         <div class="flex items-center justify-between mb-6">
                             <div class="flex items-center gap-4">
@@ -509,7 +509,7 @@
                         </div>
                     </div>
 
-                    <!-- Size Guide Section -->
+                    
                     <div class="border-b border-gray-200 dark:border-surface-tonal-a30 pb-6">
                         <div class="flex items-center justify-between mb-6">
                             <div class="flex items-center gap-4">
@@ -557,7 +557,7 @@
                             ];
                         @endphp
 
-                        <!-- Size Table Column Headers -->
+                        
                         <div class="mb-6">
                             <h3 class="text-sm font-bold text-gray-700 dark:text-gray-300 mb-3">Table Column Headers (5 Columns)</h3>
                             <div class="grid grid-cols-5 gap-2">
@@ -584,7 +584,7 @@
                             </div>
                         </div>
 
-                        <!-- Dynamic Table Rows -->
+                        
                         <div class="mb-6 border-t border-gray-100 dark:border-gray-700 pt-4">
                             <div class="flex items-center justify-between mb-4">
                                 <h3 class="text-sm font-bold text-gray-700 dark:text-gray-300">Size Chart Rows</h3>
@@ -606,7 +606,7 @@
                             </div>
                         </div>
 
-                        <!-- How to Measure Instructions -->
+                        
                         <div class="mb-6 border-t border-gray-100 dark:border-gray-700 pt-4">
                             <h3 class="text-sm font-bold text-gray-700 dark:text-gray-300 mb-4">How to Measure Descriptions</h3>
                             <div class="space-y-4">
@@ -631,7 +631,7 @@
                             </div>
                         </div>
 
-                        <!-- Fit note for this style -->
+                        
                         <div class="mb-2 border-t border-gray-100 dark:border-gray-700 pt-4">
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Fit Note for this style</label>
                             <textarea name="storefront_size_guide_fit_note" rows="3"
@@ -640,7 +640,7 @@
                         </div>
                     </div>
 
-                    <!-- Navbar Category Order Section -->
+                    
                     <div class="border-b border-gray-200 dark:border-surface-tonal-a30 pb-6">
                         <h2 class="text-xl font-semibold text-gray-900 dark:text-primary-a0 mb-6">Navbar Category Order</h2>
                         <div class="bg-gray-50 dark:bg-surface-tonal-a10 rounded-xl p-4 border border-gray-100 dark:border-surface-tonal-a20">
@@ -666,7 +666,7 @@
                         </div>
                     </div>
 
-                    {{-- ── Video Section ──────────────────────────────────── --}}
+                    
                     <div class="border-b border-gray-200 dark:border-surface-tonal-a30 pb-6">
                         <div class="flex items-center justify-between mb-6">
                             <div class="flex items-center gap-4">
@@ -697,7 +697,7 @@
                             </p>
                         </div>
 
-                        {{-- Current video preview --}}
+                        
                         @if($setting->storefront_video_url)
                             <div class="mb-4 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-600 bg-black" style="max-height:220px;">
                                 <video src="{{ asset('storage/' . $setting->storefront_video_url) }}"
@@ -751,7 +751,7 @@
                         </div>
                     </div>
 
-                    {{-- ── Hero Banners / Sliders ─────────────────────────── --}}
+                    
                     <div>
                         <div class="flex items-center justify-between mb-6">
                             <h2 class="text-xl font-semibold text-gray-900 dark:text-primary-a0">Hero Banners / Sliders</h2>
@@ -767,7 +767,7 @@
                             @endphp
 
                             @if(count($banners) === 0)
-                                <!-- Empty state fallback handled by JS on load if needed, but let's output one blank -->
+                                
                                 <div
                                     class="banner-item border border-gray-200 dark:border-gray-600 p-4 rounded-lg relative bg-gray-50 dark:bg-surface-tonal-a10">
                                     <button type="button"
@@ -889,7 +889,7 @@
         </form>
     </div>
 
-    <!-- Banner Template for JS -->
+    
     <template id="banner-template">
         <div
             class="banner-item border border-gray-200 dark:border-gray-600 p-4 rounded-lg relative bg-gray-50 dark:bg-surface-tonal-a10">
@@ -928,7 +928,7 @@
         </div>
     </template>
 
-    <!-- Delivery Template for JS -->
+    
     <template id="delivery-template">
         <div
             class="delivery-item p-4 border border-gray-200 dark:border-gray-600 rounded-xl relative bg-gray-50 dark:bg-surface-tonal-a10">
@@ -951,7 +951,7 @@
         </div>
     </template>
 
-    <!-- Measurement Template for JS -->
+    
     <template id="measure-template">
         <div
             class="measure-item p-4 border border-gray-200 dark:border-gray-600 rounded-xl relative bg-gray-50 dark:bg-surface-tonal-a10">
@@ -976,7 +976,7 @@
         </div>
     </template>
 
-    <!-- Size Chart Row Template for JS -->
+    
     <template id="size-row-template">
         <div class="size-row-item p-3 border border-gray-200 dark:border-gray-600 rounded-xl relative bg-gray-50 dark:bg-surface-tonal-a10 flex items-center gap-2 flex-wrap sm:flex-nowrap">
             <input type="text" name="storefront_size_guide_rows[__INDEX__][]" placeholder="Col 1" class="w-full sm:w-1/5 px-2 py-1 text-sm border rounded dark:bg-transparent dark:text-primary-a0">

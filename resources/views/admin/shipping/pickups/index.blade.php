@@ -90,7 +90,7 @@
     </div>
 
     @push('drawers')
-        {{-- Pickup Location Drawer --}}
+        
         <div id="pickup-drawer" class="fixed inset-0 z-[9999] hidden overflow-hidden">
             <div id="pickup-drawer-overlay"
                 class="absolute inset-0 bg-black/40 backdrop-blur-sm opacity-0 transition-opacity duration-300"

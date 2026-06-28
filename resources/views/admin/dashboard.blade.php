@@ -6,7 +6,7 @@
     <div class="px-4 sm:px-6 lg:px-8 pb-10 pt-20">
         <div class="max-w-[1400px] mx-auto">
 
-            {{-- ── PAGE HEADER ────────────────────────────────────────────────────── --}}
+            
             <div class="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                 <div>
                     <p class="text-xs font-bold text-gray-400 dark:text-slate-500 uppercase tracking-widest mb-1">Overview</p>
@@ -32,10 +32,10 @@
                 </div>
             </div>
 
-            {{-- ── KPI CARDS ───────────────────────────────────────────────────────── --}}
+            
             <div class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-6 gap-4 mb-8">
 
-                {{-- Today's Sales --}}
+                
                 <div
                     class="bg-white dark:bg-[#1e2d40] rounded-xl shadow-sm border border-gray-100 dark:border-slate-700/60 p-5 flex flex-col gap-3 hover:shadow-md transition-all hover:border-gray-200 dark:hover:border-slate-600">
                     <div class="flex items-center justify-between">
@@ -53,7 +53,7 @@
                     <span class="text-xs text-gray-400 dark:text-slate-500">{{ __('file.revenue_today') }}</span>
                 </div>
 
-                {{-- Orders Today --}}
+                
                 <div
                     class="bg-white dark:bg-[#1e2d40] rounded-xl shadow-sm border border-gray-100 dark:border-slate-700/60 p-5 flex flex-col gap-3 hover:shadow-md transition-all hover:border-gray-200 dark:hover:border-slate-600">
                     <div class="flex items-center justify-between">
@@ -72,7 +72,7 @@
                     <span class="text-xs text-emerald-600 dark:text-emerald-400 font-semibold">{{ __('file.active_fulfillment') }}</span>
                 </div>
 
-                {{-- Pending Orders --}}
+                
                 <div
                     class="bg-white dark:bg-[#1e2d40] rounded-xl shadow-sm border border-gray-100 dark:border-slate-700/60 p-5 flex flex-col gap-3 hover:shadow-md transition-all hover:border-gray-200 dark:hover:border-slate-600">
                     <div class="flex items-center justify-between">
@@ -94,7 +94,7 @@
                     </div>
                 </div>
 
-                {{-- Low Stock --}}
+                
                 <div
                     class="bg-white dark:bg-[#1e2d40] rounded-xl shadow-sm border border-gray-100 dark:border-slate-700/60 p-5 flex flex-col gap-3 hover:shadow-md transition-all hover:border-gray-200 dark:hover:border-slate-600">
                     <div class="flex items-center justify-between">
@@ -113,7 +113,7 @@
                     <span class="text-xs text-rose-600 dark:text-rose-400 font-semibold">{{ __('file.needs_restocking') }}</span>
                 </div>
 
-                {{-- COD Pending --}}
+                
                 <div
                     class="bg-white dark:bg-[#1e2d40] rounded-xl shadow-sm border border-gray-100 dark:border-slate-700/60 p-5 flex flex-col gap-3 hover:shadow-md transition-all hover:border-gray-200 dark:hover:border-slate-600">
                     <div class="flex items-center justify-between">
@@ -132,7 +132,7 @@
                     <span class="text-xs text-violet-600 dark:text-violet-400 font-semibold">{{ __('file.cash_on_delivery') }}</span>
                 </div>
 
-                {{-- Monthly Revenue --}}
+                
                 <div
                     class="bg-white dark:bg-[#1e2d40] rounded-xl shadow-sm border border-gray-100 dark:border-slate-700/60 p-5 flex flex-col gap-3 hover:shadow-md transition-all hover:border-gray-200 dark:hover:border-slate-600">
                     <div class="flex items-center justify-between">
@@ -151,13 +151,13 @@
 
             </div>
 
-            {{-- ── MAIN GRID ───────────────────────────────────────────────────────── --}}
+            
             <div class="grid grid-cols-1 xl:grid-cols-12 gap-6">
 
-                {{-- LEFT: Recent Orders + Low Stock + Top Products --}}
+                
                 <div class="xl:col-span-8 space-y-6">
 
-                    {{-- Recent Orders Table --}}
+                    
                     <div
                         class="bg-white dark:bg-transparent rounded-xl shadow-sm border border-gray-100 dark:border-slate-700/60 overflow-hidden">
                         <div
@@ -262,10 +262,10 @@
                         </div>
                     </div>
 
-                    {{-- Low Stock + Top Products --}}
+                    
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-                        {{-- Low Stock Items --}}
+                        
                         <div
                             class="bg-white dark:bg-surface-tonal-a20 rounded-2xl shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                             <div
@@ -330,7 +330,7 @@
                             </div>
                         </div>
 
-                        {{-- Top Selling Products --}}
+                        
                         <div
                             class="bg-white dark:bg-surface-tonal-a20 rounded-2xl shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                             <div
@@ -393,10 +393,10 @@
                     </div>
                 </div>
 
-                {{-- RIGHT: Quick Actions + Pending Tasks --}}
+                
                 <div class="xl:col-span-4 space-y-6">
 
-                    {{-- Quick Actions --}}
+                    
                     <div
                         class="bg-white dark:bg-surface-tonal-a20 rounded-2xl shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                         <div
@@ -456,7 +456,7 @@
                         </div>
                     </div>
 
-                    {{-- Pending Tasks --}}
+                    
                     <div
                         class="bg-white dark:bg-surface-tonal-a20 rounded-2xl shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
                         <div
@@ -466,7 +466,7 @@
                         </div>
                         <div class="p-4 space-y-3">
 
-                            {{-- Pending Returns --}}
+                            
                             <div
                                 class="flex items-center gap-4 p-4 rounded-xl bg-orange-50/50 dark:bg-orange-500/5 border border-orange-100 dark:border-orange-500/20 hover:bg-orange-50 dark:hover:bg-orange-500/10 transition-colors">
                                 <div
@@ -486,7 +486,7 @@
                                 </span>
                             </div>
 
-                            {{-- Pending Shipments --}}
+                            
                             <div
                                 class="flex items-center gap-4 p-4 rounded-xl bg-blue-50/50 dark:bg-blue-500/5 border border-blue-100 dark:border-blue-500/20 hover:bg-blue-50 dark:hover:bg-blue-500/10 transition-colors">
                                 <div
@@ -506,7 +506,7 @@
                                 </span>
                             </div>
 
-                            {{-- Pending Reviews --}}
+                            
                             <div
                                 class="flex items-center gap-4 p-4 rounded-xl bg-violet-50/50 dark:bg-violet-500/5 border border-violet-100 dark:border-violet-500/20 hover:bg-violet-50 dark:hover:bg-violet-500/10 transition-colors">
                                 <div

@@ -6,7 +6,7 @@
     @endif
 
     <div class="space-y-4">
-        {{-- Brand Name --}}
+        
         <div>
             <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
                 {{ __('file.brand_name') }} <span class="text-red-500">*</span>
@@ -16,7 +16,7 @@
                 class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/100 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5">
         </div>
 
-        {{-- Slug --}}
+        
         <div>
             <label for="slug" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
                 {{ __('file.slug') }}
@@ -26,7 +26,7 @@
                 class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/100 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5 font-mono">
         </div>
 
-        {{-- Website URL --}}
+        
         <div>
             <label for="website_url" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
                 {{ __('file.website_url') }}
@@ -36,7 +36,7 @@
                 class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/100 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5">
         </div>
 
-        {{-- Sort Order --}}
+        
         <div>
             <label for="sort_order" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
                 {{ __('file.sort_order') }}
@@ -46,7 +46,7 @@
                 class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/100 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5">
         </div>
 
-        {{-- Description --}}
+        
         <div>
             <label for="description" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1.5">
                 {{ __('file.description') }}
@@ -56,7 +56,7 @@
                 class="block w-full rounded-xl border border-gray-200 dark:border-white/10 bg-gray-50/100 dark:bg-surface-tonal-a20 px-4 py-2.5 text-sm font-normal shadow-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white outline-none transition-all focus:bg-white dark:focus:bg-surface-tonal-a30 focus:border-primary/50 focus:ring-4 focus:ring-primary/5 resize-y">{{ $brand ? $brand->description : old('description') }}</textarea>
         </div>
 
-        {{-- Featured --}}
+        
         <div>
             <label
                 class="flex items-start p-3 rounded-xl border border-gray-100 dark:border-white/5 bg-gray-50/30 dark:bg-surface-tonal-a10 cursor-pointer hover:bg-gray-50 dark:hover:bg-surface-tonal-a20 transition-colors">
@@ -70,22 +70,22 @@
             </label>
         </div>
 
-        {{-- Logo Upload --}}
+        
         <div>
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 {{ __('file.brand_logo') }}
             </label>
 
-            {{-- Upload Zone --}}
+            
             <div class="relative w-full rounded-xl overflow-hidden border-2 border-dashed border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-surface-tonal-a10 cursor-pointer group/upload hover:border-primary transition-all"
                 style="min-height: 140px;" onclick="document.getElementById('drawer-logo-input').click()">
 
-                {{-- Preview image (hidden until selected or if brand has a logo) --}}
+                
                 <img id="drawer-logo-preview" src="{{ $brand && $brand->logo_url ? $brand->logo_url : '' }}"
                     class="w-full h-full object-contain p-4 {{ $brand && $brand->logo_url ? 'block' : 'hidden' }}"
                     style="max-height: 160px;" alt="Brand Logo Preview">
 
-                {{-- Placeholder (shown when no logo) --}}
+                
                 <div id="drawer-logo-placeholder"
                     class="absolute inset-0 flex flex-col items-center justify-center gap-2 {{ $brand && $brand->logo_url ? 'hidden' : '' }}">
                     <svg class="w-10 h-10 text-gray-300 dark:text-gray-600 group-hover/upload:text-primary transition-colors"
@@ -99,7 +99,7 @@
                     <p class="text-[9px] text-gray-300 dark:text-gray-600">PNG, JPG, SVG, WEBP</p>
                 </div>
 
-                {{-- Hover overlay when image is present --}}
+                
                 <div id="drawer-logo-hover"
                     class="absolute inset-0 bg-black/50 flex flex-col items-center justify-center gap-1 opacity-0 group-hover/upload:opacity-100 transition-opacity {{ $brand && $brand->logo_url ? '' : 'hidden' }}">
                     <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -125,7 +125,7 @@
             @endif
         </div>
 
-        {{-- SEO Settings (Optional in Drawer - maybe keep simple?) --}}
+        
         <div class="pt-4 border-t border-gray-100 dark:border-white/5 space-y-4">
             <h3 class="text-sm font-semibold text-gray-400">{{ __('file.seo_settings') }}</h3>
             <div>

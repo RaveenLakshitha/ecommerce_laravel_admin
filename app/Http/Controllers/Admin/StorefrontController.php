@@ -1,13 +1,10 @@
 <?php
-
 namespace App\Http\Controllers\Admin;
-
 use App\Http\Controllers\Controller;
 use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Cache;
-
 class StorefrontController extends Controller
 {
     public function __construct()
@@ -15,18 +12,15 @@ class StorefrontController extends Controller
         $this->middleware('permission:settings.index', ['only' => ['index']]);
         $this->middleware('permission:settings.edit', ['only' => ['update']]);
     }
-
     public function index()
     {
         $setting = Setting::getAll();
         $categories = \App\Models\Category::whereNull('parent_id')->orderBy('order')->get();
         return view('admin.storefront.index', compact('setting', 'categories'));
     }
-
     public function update(Request $request)
     {
         $setting = Setting::firstOrCreate([]);
-
         $validated = $request->validate([
             'phone' => 'nullable|string|max:20',
             'email' => 'nullable|email|max:255',
@@ -39,10 +33,8 @@ class StorefrontController extends Controller
             'storefront_our_story_title' => 'nullable|string|max:100',
             'storefront_our_story_content' => 'nullable|string',
             'storefront_our_story_image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:4096',
-            
             'storefront_logo_text' => 'nullable|string|max:50',
             'storefront_logo_subtext' => 'nullable|string|max:100',
-
             'storefront_our_story_show' => 'nullable|boolean',
             'storefront_stats_show' => 'nullable|boolean',
             'storefront_trust_show' => 'nullable|boolean',
@@ -51,29 +43,24 @@ class StorefrontController extends Controller
             'storefront_video_title' => 'nullable|string|max:100',
             'storefront_video_subtitle' => 'nullable|string|max:200',
             'storefront_video_show' => 'nullable|boolean',
-
             'storefront_stats' => 'nullable|array',
             'storefront_stats.*.number' => 'nullable|string|max:20',
             'storefront_stats.*.label' => 'nullable|string|max:50',
-
             'storefront_trust_items' => 'nullable|array',
             'storefront_trust_items.*.title' => 'nullable|string|max:50',
             'storefront_trust_items.*.subtitle' => 'nullable|string|max:120',
             'storefront_trust_items.*.svg' => 'nullable|string',
-
             'storefront_delivery_show' => 'nullable|boolean',
             'storefront_delivery_items' => 'nullable|array',
             'storefront_delivery_items.*.title' => 'nullable|string|max:50',
             'storefront_delivery_items.*.subtitle' => 'nullable|string|max:150',
             'storefront_delivery_items.*.svg' => 'nullable|string',
-
             'storefront_measure_show' => 'nullable|boolean',
             'storefront_measure_note' => 'nullable|string|max:255',
             'storefront_measure_items' => 'nullable|array',
             'storefront_measure_items.*.label' => 'nullable|string|max:50',
             'storefront_measure_items.*.cm' => 'nullable|string|max:20',
             'storefront_measure_items.*.inches' => 'nullable|string|max:20',
-
             'storefront_size_guide_show' => 'nullable|boolean',
             'storefront_size_guide_title' => 'nullable|string|max:255',
             'storefront_size_guide_headers' => 'nullable|array',
@@ -86,18 +73,15 @@ class StorefrontController extends Controller
             'storefront_size_guide_waist_desc' => 'nullable|string|max:500',
             'storefront_size_guide_hip_desc' => 'nullable|string|max:500',
             'storefront_size_guide_fit_note' => 'nullable|string|max:500',
-
             'banners' => 'nullable|array',
             'banners.*.tag' => 'nullable|string|max:25',
             'banners.*.title' => 'nullable|string|max:25',
             'banners.*.subtitle' => 'nullable|string|max:120',
             'banners.*.link' => 'nullable|string|max:255',
             'banners.*.image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:4096',
-
             'category_order' => 'nullable|array',
             'category_order.*' => 'integer',
         ]);
-
         $data = $request->only([
             'phone',
             'email',
@@ -131,10 +115,7 @@ class StorefrontController extends Controller
             'storefront_size_guide_hip_desc',
             'storefront_size_guide_fit_note',
         ]);
-
-        // Remove storefront_video_url from the data array — it is managed via file upload, not a text field
         unset($data['storefront_video_url']);
-
         $data['storefront_our_story_show'] = $request->boolean('storefront_our_story_show');
         $data['storefront_stats_show'] = $request->boolean('storefront_stats_show');
         $data['storefront_trust_show'] = $request->boolean('storefront_trust_show');
@@ -143,9 +124,7 @@ class StorefrontController extends Controller
         $data['storefront_delivery_show'] = $request->boolean('storefront_delivery_show');
         $data['storefront_measure_show'] = $request->boolean('storefront_measure_show');
         $data['storefront_size_guide_show'] = $request->boolean('storefront_size_guide_show');
-
         if ($request->hasFile('storefront_our_story_image')) {
-            // Delete old image if exists
             if ($setting->storefront_our_story_image) {
                 Storage::disk('public')->delete($setting->storefront_our_story_image);
             }
@@ -156,10 +135,7 @@ class StorefrontController extends Controller
             }
             $data['storefront_our_story_image'] = null;
         }
-
-        // ── Video file upload ────────────────────────────────────────────
         if ($request->hasFile('storefront_video_file')) {
-            // Delete old video if one exists
             if ($setting->storefront_video_url) {
                 Storage::disk('public')->delete($setting->storefront_video_url);
             }
@@ -170,32 +146,21 @@ class StorefrontController extends Controller
             }
             $data['storefront_video_url'] = null;
         }
-
         $banners = is_array($setting->storefront_banners) ? $setting->storefront_banners : [];
         $newBanners = [];
-
         if ($request->has('banners')) {
             foreach ($request->banners as $index => $bannerData) {
-                // Determine if there's an existing banner to keep its image
                 $existingImage = $banners[$index]['image'] ?? null;
                 $imagePath = $existingImage;
-
-                // Check if a new image was uploaded
                 if (isset($bannerData['image']) && $request->file("banners.{$index}.image")) {
                     $file = $request->file("banners.{$index}.image");
                     $imagePath = $file->store('banners', 'public');
-
-                    // If we have an existing image and we're replacing it, we would normally delete the old one.
-                    // But array restructuring might change indexes, so we just let it be or delete if we want.
                 } elseif (isset($bannerData['remove_image']) && $bannerData['remove_image'] == '1') {
                     $imagePath = null;
                 }
-
-                // If all fields are empty and no image, maybe skip it
                 if (empty($bannerData['title']) && empty($bannerData['subtitle']) && empty($bannerData['link']) && empty($imagePath)) {
                     continue;
                 }
-
                 $newBanners[] = [
                     'tag' => $bannerData['tag'] ?? '',
                     'title' => $bannerData['title'] ?? '',
@@ -205,20 +170,14 @@ class StorefrontController extends Controller
                 ];
             }
         }
-
         $data['storefront_banners'] = $newBanners;
-
         $setting->update($data);
-
-        // Update Category Orders
         if ($request->has('category_order')) {
             foreach ($request->category_order as $id => $order) {
                 \App\Models\Category::where('id', $id)->update(['order' => (int)$order]);
             }
         }
-
         Cache::forget('settings');
-
         return redirect()->route('admin.storefront.index')->with('success', 'Storefront settings updated successfully.');
     }
 }

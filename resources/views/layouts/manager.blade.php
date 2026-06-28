@@ -74,7 +74,7 @@
 
 <body class="h-screen overflow-hidden bg-gray-50 dark:bg-surface-tonal-a10 text-gray-900 dark:text-gray-100 transition-colors duration-300">
     <div class="flex h-screen overflow-hidden flex-col">
-        <!-- Header -->
+        
         <header class="bg-white dark:bg-surface-tonal-a20 shadow-sm border-b border-gray-200 dark:border-surface-tonal-a30 flex-shrink-0 z-40">
             <div class="flex items-center justify-between px-4 sm:px-6 py-2 h-12">
                 <div class="flex items-center gap-3 sm:gap-4">
@@ -89,7 +89,7 @@
                 </div>
                 
                 <div class="flex items-center gap-1 sm:gap-4">
-                    <!-- Language Changer -->
+                    
                     <div x-data="{ open: false }" x-init="open = false" class="relative">
                         <button @click="open = !open"
                             class="flex items-center space-x-1 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-accent focus:outline-none focus:ring-2 focus:ring-accent/30 rounded-md px-2 py-1 transition">
@@ -129,7 +129,7 @@
                         </div>
                     </div>
 
-                    <!-- Dark Mode Changer -->
+                    
                     <button id="theme-toggle-navbar"
                         class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-surface-tonal-a30 transition-colors text-gray-600 dark:text-gray-400 focus:outline-none focus:ring-2 focus:ring-accent/50 group">
                         <svg id="sun-icon-navbar" class="w-5 h-5 hidden group-hover:text-amber-500 transition-colors" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
@@ -148,7 +148,7 @@
                         </svg>
                     </button>
 
-                    <!-- Fullscreen Changer -->
+                    
                     <button id="fullscreen-toggle" aria-label="Toggle fullscreen"
                         class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-surface-tonal-a30 transition-colors text-gray-600 dark:text-gray-400 focus:outline-none focus:ring-2 focus:ring-accent/50">
                         <svg id="enter-fullscreen-icon" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -171,7 +171,7 @@
             </div>
         </header>
 
-        <!-- Main Content -->
+        
         <main class="flex-1 min-h-0 overflow-hidden bg-gray-50 dark:bg-surface-tonal-a10 flex flex-col">
             @yield('content')
         </main>
@@ -265,7 +265,7 @@
         });
     </script>
 
-    <!-- Dynamic Notifications Container -->
+    
     <div id="notification-container" class="fixed top-5 right-5 z-[9999] flex flex-col gap-3 pointer-events-none"></div>
 
     <script>

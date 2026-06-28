@@ -568,7 +568,7 @@
 
     <div class="cart-page-wrap">
 
-        {{-- ─── HEADER ─────────────────────────────────────────────── --}}
+        
         <div class="cart-header-wrap">
             <h1>{{ __('file.cart') }}</h1>
             <p>
@@ -577,7 +577,7 @@
             </p>
         </div>
 
-        {{-- ─── MAIN CONTAINER ──────────────────────────────────────── --}}
+        
         <div class="cart-container">
 
             @if(session('success'))
@@ -593,14 +593,14 @@
 
             @if($cartItems->count() > 0)
 
-                {{-- ─── LEFT: CART ITEMS ───────────────────────────────── --}}
+                
                 <div>
                     <p class="section-label">{{ __('file.cart_items') }}</p>
                     <div class="cart-items">
                         @foreach($cartItems as $item)
                             <div class="cart-item cart-item-row" data-id="{{ $item->id }}">
 
-                                {{-- Image --}}
+                                
                                 <div class="cart-item-img-wrap">
                                     @if(isset($item->attributes['image']) && $item->attributes['image'])
                                         <img src="{{ asset('storage/' . $item->attributes['image']) }}" alt="{{ $item->name }}"
@@ -610,7 +610,7 @@
                                     @endif
                                 </div>
 
-                                {{-- Details --}}
+                                
                                 <div class="cart-item-details">
                                     @if(isset($item->attributes['brand']) && $item->attributes['brand'])
                                         <p class="cart-item-brand">{{ $item->attributes['brand'] }}</p>
@@ -632,7 +632,7 @@
                                     </div>
                                 </div>
 
-                                {{-- Actions --}}
+                                
                                 <div class="cart-item-actions">
                                     <form action="{{ route('cart.update') }}" method="POST" class="cart-update-form">
                                         @csrf
@@ -660,7 +660,7 @@
                     </div>
                 </div>
 
-                {{-- ─── RIGHT: ORDER SUMMARY ────────────────────────────── --}}
+                
                 <div class="cart-summary">
 
                     <div class="summary-header">
@@ -669,7 +669,7 @@
 
                     <div class="summary-body">
 
-                        {{-- Line rows --}}
+                        
                         <div>
                             <div class="summary-row">
                                 <span class="s-label">{{ __('file.subtotal') }} ({{ $cartItems->sum('quantity') }}
@@ -704,7 +704,7 @@
                             </div>
                         </div>
 
-                        {{-- Promo Code --}}
+                        
                         <div class="promo-section" id="promo-input-section" style="{{ $couponDiscount > 0 ? 'display:none;' : '' }}">
                             <span class="promo-label">{{ __('file.promo_code') }}</span>
                             <div class="promo-row">
@@ -717,7 +717,7 @@
 
                         <div class="summary-divider"></div>
 
-                        {{-- Total --}}
+                        
                         <div class="summary-total-row">
                             <span class="summary-total-label">{{ __('file.total') }}</span>
                             <span class="summary-total-amount cart-total">
@@ -725,7 +725,7 @@
                             </span>
                         </div>
 
-                        {{-- CTA --}}
+                        
                         <a href="{{ route('checkout.index') }}" class="checkout-btn">
                             {{ __('file.proceed_to_checkout') }}
                         </a>
@@ -733,7 +733,7 @@
                             {{ __('file.continue_shopping') }}
                         </a>
 
-                        {{-- Trust signals --}}
+                        
                         <div class="trust-section">
                             <div class="secure-note">
                                 {!! __('file.secure_checkout_ssl') !!}
@@ -751,7 +751,7 @@
 
             @else
 
-                {{-- ─── EMPTY STATE ─────────────────────────────────────── --}}
+                
                 <div class="empty-cart">
                     <svg class="empty-cart-icon" viewBox="0 0 64 64" fill="none" stroke="#1a1a1a" stroke-width="2"
                         stroke-linecap="round" stroke-linejoin="round">
@@ -766,9 +766,9 @@
 
             @endif
 
-        </div>{{-- .cart-container --}}
+        </div>
 
-    </div>{{-- .cart-page-wrap --}}
+    </div>
 
     <script>
         /* ─── QTY UPDATE ──────────────────────────────────────────── */

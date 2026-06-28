@@ -1,4 +1,4 @@
-{{-- resources/views/components/sort-link.blade.php --}}
+
 @props(['field'])
 
 @php

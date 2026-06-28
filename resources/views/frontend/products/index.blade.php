@@ -1061,7 +1061,7 @@
         }
     </style>
 
-    {{-- ── BREADCRUMB ──────────────────────────────────────── --}}
+    
     <div class="breadcrumb-bar">
         <div class="breadcrumb-inner">
             <a href="{{ route('home') }}">Home</a>
@@ -1080,7 +1080,7 @@
         </div>
     </div>
 
-    {{-- ── SHOP BANNER SLIDER ────────────────────────────── --}}
+    
     <div class="shop-banner" id="shopBanner">
         <div class="banner-track" id="bannerTrack">
             @php
@@ -1126,11 +1126,11 @@
         @endif
     </div>
 
-    {{-- ── SHOP PAGE ───────────────────────────────────────── --}}
+    
     <div class="shop-page">
         <div class="shop-layout">
             
-            {{-- Filter Sidebar --}}
+            
             <aside class="shop-sidebar">
                 <form id="filterForm" onsubmit="event.preventDefault(); applyFilters();">
                     <div class="filter-group">
@@ -1237,7 +1237,7 @@
 
             <div class="products-main">
 
-            {{-- Toolbar --}}
+            
             <div class="products-toolbar">
                 <div class="toolbar-left">
                     <p class="product-total"><strong id="prodCount">{{ $products->total() }}</strong> &nbsp;Products</p>
@@ -1276,7 +1276,7 @@
                     </div>
                 </div>
                 
-                {{-- Sorting dropdown with elegant page-reload --}}
+                
                 <select class="sort-dd" name="sort" aria-label="Sort products" onchange="const url = new URL(window.location.href); url.searchParams.set('sort', this.value); window.location.href = url.toString();">
                     <option value="">Sort By</option>
                     <option value="az" {{ request('sort') == 'az' ? 'selected' : '' }}>Name: A–Z</option>
@@ -1289,7 +1289,7 @@
                 </select>
             </div>
 
-            {{-- Product Grid --}}
+            
             <div id="gridWrapper">
                 @include('frontend.products.partials.grid')
             </div>

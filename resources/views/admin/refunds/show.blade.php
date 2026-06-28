@@ -6,7 +6,7 @@
     <div class="admin-page animate-fade-in-up">
         <div class="admin-page-inner">
 
-            {{-- Breadcrumbs --}}
+            
             <div class="mb-4 mt-10">
                 <a href="{{ route('refunds.index') }}"
                     class="text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-500 transition-colors uppercase tracking-wider inline-block">
@@ -14,7 +14,7 @@
                 </a>
             </div>
 
-            {{-- Header Area --}}
+            
             <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
                 <div>
                     <div class="flex items-center gap-4">
@@ -62,7 +62,7 @@
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
-                {{-- Left Column: Refund Particulars --}}
+                
                 <div class="lg:col-span-2 space-y-4">
                     <div
                         class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">
@@ -111,7 +111,7 @@
                     </div>
                 </div>
 
-                {{-- Right Column: Structural Alignment --}}
+                
                 <div class="col-span-1 space-y-4">
                     <div
                         class="bg-white dark:bg-surface-tonal-a20 rounded-lg shadow-sm border border-gray-200 dark:border-surface-tonal-a30 overflow-hidden">

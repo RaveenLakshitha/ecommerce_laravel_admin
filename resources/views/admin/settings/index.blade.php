@@ -211,7 +211,7 @@
                 </a>
             </div>
 
-            {{-- Header --}}
+            
             <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8">
                 <div>
                     <div class="flex items-center gap-4">
@@ -231,7 +231,7 @@
                 </div>
             </div>
 
-            {{-- Success alert --}}
+            
             @if(session('success'))
                 <div
                     class="mb-6 flex items-center gap-3 bg-white dark:bg-gray-900 border border-emerald-200 dark:border-emerald-800/40 rounded-lg px-4 py-3 text-sm text-emerald-700 dark:text-emerald-400 shadow-sm">
@@ -242,7 +242,7 @@
                 </div>
             @endif
 
-            {{-- Error alert --}}
+            
             @if($errors->any())
                 <div
                     class="mb-6 bg-white dark:bg-gray-900 border border-red-200 dark:border-red-800/40 rounded-lg px-4 py-3 shadow-sm">
@@ -258,7 +258,7 @@
                 </div>
             @endif
 
-            {{-- ── Tab Bar ─────────────────────────────────────────────────────── --}}
+            
             @php
                 $tabs = [
                     'general' => __('file.general') ?? 'General',
@@ -281,18 +281,18 @@
 
 
 
-            {{-- ── Main Form ───────────────────────────────────────────────────── --}}
+            
             <form action="{{ route('settings.update') }}" method="POST" enctype="multipart/form-data" id="settings-form">
                 @csrf
                 @method('PUT')
 
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
-                    {{-- ── Left: Section Nav & Global Actions ────────────────────── --}}
+                    
                     <div class="lg:col-span-1 order-2 lg:order-1">
                         <div class="sticky top-24 space-y-6">
 
-                            {{-- Section Quick-Nav --}}
+                            
                             <div
                                 class="bg-white dark:bg-surface-tonal-a20 rounded-lg border border-gray-200 dark:border-surface-tonal-a30 shadow-sm overflow-hidden animate-fade-in-up delay-100">
                                 <div class="px-5 py-4 border-b border-gray-100 dark:border-surface-tonal-a30">
@@ -314,14 +314,14 @@
                         </div>
                     </div>
 
-                    {{-- ── Right: Content Panels ────────────────────────────────── --}}
+                    
                     <div class="lg:col-span-2 order-1 lg:order-2">
 
-                        {{-- General thru Payments (Already Inlined but now inside this col) --}}
-                        {{-- Inventory thru Maintenance (Already Inlined but now inside this col) --}}
-                        {{-- I will re-insert them correctly --}}
+                        
+                        
+                        
 
-                        {{-- ══════════════ GENERAL ══════════════ --}}
+                        
                         <div class="tab-panel" id="panel-general">
                             <div
                                 class="bg-white dark:bg-surface-tonal-a20 rounded-lg border border-gray-200 dark:border-surface-tonal-a30 shadow-sm overflow-hidden">
@@ -371,7 +371,7 @@
                                             class="text-sm font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-4">
                                             {{ __('file.brand_assets') ?? 'Brand Assets' }}</p>
                                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                                            {{-- Logo --}}
+                                            
                                             <div>
                                                 <label
                                                     class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Site
@@ -394,7 +394,7 @@
                                                 @error('site_logo')<p class="text-xs text-red-500 mt-1">{{ $message }}</p>
                                                 @enderror
                                             </div>
-                                            {{-- {{ __('file.favicon') ?? 'Favicon' }} --}}
+                                            
                                             <div>
                                                 <label
                                                     class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">{{ __('file.favicon') ?? 'Favicon' }}</label>
@@ -424,7 +424,7 @@
                             </div>
                         </div>
 
-                        {{-- ══════════════ STORE INFO ══════════════ --}}
+                        
                         <div class="tab-panel" id="panel-store">
                             <div
                                 class="bg-white dark:bg-surface-tonal-a20 rounded-lg border border-gray-200 dark:border-surface-tonal-a30 shadow-sm overflow-hidden">
@@ -495,7 +495,7 @@
 
 
 
-                        {{-- ══════════════ CURRENCY ══════════════ --}}
+                        
                         <div class="tab-panel" id="panel-currency">
                             <div
                                 class="bg-white dark:bg-surface-tonal-a20 rounded-lg border border-gray-200 dark:border-surface-tonal-a30 shadow-sm overflow-hidden">
@@ -573,7 +573,7 @@
                             </div>
                         </div>
 
-                        {{-- ══════════════ SEO ══════════════ --}}
+                        
                         <div class="tab-panel" id="panel-seo">
                             <div
                                 class="bg-white dark:bg-surface-tonal-a20 rounded-lg border border-gray-200 dark:border-surface-tonal-a30 shadow-sm overflow-hidden">
@@ -631,7 +631,7 @@
                             </div>
                         </div>
 
-                        {{-- ══════════════ SHIPPING ══════════════ --}}
+                        
                         <div class="tab-panel" id="panel-shipping">
                             <div
                                 class="bg-white dark:bg-surface-tonal-a20 rounded-lg border border-gray-200 dark:border-surface-tonal-a30 shadow-sm overflow-hidden">
@@ -717,7 +717,7 @@
                             </div>
                         </div>
 
-                        {{-- ══════════════ TAX ══════════════ --}}
+                        
                         <div class="tab-panel" id="panel-tax">
                             <div
                                 class="bg-white dark:bg-surface-tonal-a20 rounded-lg border border-gray-200 dark:border-surface-tonal-a30 shadow-sm overflow-hidden">
@@ -766,7 +766,7 @@
                             </div>
                         </div>
 
-                        {{-- ══════════════ PAYMENTS ══════════════ --}}
+                        
                         <div class="tab-panel" id="panel-payments">
                             <div
                                 class="bg-white dark:bg-surface-tonal-a20 rounded-lg border border-gray-200 dark:border-surface-tonal-a30 shadow-sm overflow-hidden">
@@ -838,7 +838,7 @@
                             </div>
                         </div>
 
-                        {{-- ══════════════ INVENTORY ══════════════ --}}
+                        
                         <div class="tab-panel" id="panel-inventory">
                             <div
                                 class="bg-white dark:bg-surface-tonal-a20 rounded-lg border border-gray-200 dark:border-surface-tonal-a30 shadow-sm overflow-hidden">
@@ -894,7 +894,7 @@
                             </div>
                         </div>
 
-                        {{-- ══════════════ CUSTOMERS ══════════════ --}}
+                        
                         <div class="tab-panel" id="panel-customers">
                             <div
                                 class="bg-white dark:bg-surface-tonal-a20 rounded-lg border border-gray-200 dark:border-surface-tonal-a30 shadow-sm overflow-hidden">
@@ -926,7 +926,7 @@
                             </div>
                         </div>
 
-                        {{-- ══════════════ FEATURES ══════════════ --}}
+                        
                         <div class="tab-panel" id="panel-features">
                             <div
                                 class="bg-white dark:bg-surface-tonal-a20 rounded-lg border border-gray-200 dark:border-surface-tonal-a30 shadow-sm overflow-hidden">
@@ -975,7 +975,7 @@
                             </div>
                         </div>
 
-                        {{-- ══════════════ MARKETING ══════════════ --}}
+                        
                         <div class="tab-panel" id="panel-marketing">
                             <div
                                 class="bg-white dark:bg-surface-tonal-a20 rounded-lg border border-gray-200 dark:border-surface-tonal-a30 shadow-sm overflow-hidden">
@@ -1002,7 +1002,7 @@
                             </div>
                         </div>
 
-                        {{-- ══════════════ SOCIAL ══════════════ --}}
+                        
                         <div class="tab-panel" id="panel-social">
                             <div
                                 class="bg-white dark:bg-surface-tonal-a20 rounded-lg border border-gray-200 dark:border-surface-tonal-a30 shadow-sm overflow-hidden">
@@ -1033,7 +1033,7 @@
                             </div>
                         </div>
 
-                        {{-- ══════════════ ANALYTICS ══════════════ --}}
+                        
                         <div class="tab-panel" id="panel-analytics">
                             <div
                                 class="bg-white dark:bg-surface-tonal-a20 rounded-lg border border-gray-200 dark:border-surface-tonal-a30 shadow-sm overflow-hidden">
@@ -1064,7 +1064,7 @@
                             </div>
                         </div>
 
-                        {{-- ══════════════ EMAIL ══════════════ --}}
+                        
                         <div class="tab-panel" id="panel-email">
                             <div
                                 class="bg-white dark:bg-surface-tonal-a20 rounded-lg border border-gray-200 dark:border-surface-tonal-a30 shadow-sm overflow-hidden">
@@ -1106,7 +1106,7 @@
                             </div>
                         </div>
 
-                        {{-- ══════════════ MAINTENANCE ══════════════ --}}
+                        
                         <div class="tab-panel" id="panel-maintenance">
                             <div
                                 class="bg-white dark:bg-surface-tonal-a20 rounded-lg border border-gray-200 dark:border-surface-tonal-a30 shadow-sm overflow-hidden">

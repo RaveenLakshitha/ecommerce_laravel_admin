@@ -9,13 +9,13 @@
 
     <link rel="icon" href="{{ $store_favicon ?? asset('images/favicon.ico') }}" type="image/x-icon">
     
-    <!-- Fonts -->
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
 
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <!-- Scripts -->
+    
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <style>
@@ -74,7 +74,7 @@
 <body class="antialiased text-slate-800 selection:bg-sky-200 selection:text-sky-900 overflow-hidden">
     
     <div class="flex min-h-screen bg-slate-50 relative">
-        <!-- Language Switcher & Controls Container -->
+        
 <div class="absolute top-5 right-6 lg:top-8 lg:right-10 z-50">
     <div x-data="{ langOpen: false }" class="relative">
         <button 
@@ -135,14 +135,14 @@
     </div>
 </div>
 
-        <!-- Background Pattern -->
+        
         <div class="absolute inset-0 bg-pattern z-0 pointer-events-none"></div>
 
-        <!-- Left Image Section (Hidden on Mobile) -->
+        
         <div class="hidden lg:flex lg:w-1/2 image-section relative items-center justify-center overflow-hidden">
             <div class="image-overlay"></div>
             
-            <!-- Floating Elements Animation -->
+            
             <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-white/10 rounded-full blur-3xl mix-blend-overlay animate-pulse" style="animation-duration: 4s;"></div>
             <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-sky-400/20 rounded-full blur-3xl mix-blend-overlay animate-pulse" style="animation-duration: 6s;"></div>
 
@@ -164,7 +164,7 @@
             </div>
         </div>
 
-        <!-- Right Form Section -->
+        
         <div class="w-full lg:w-1/2 flex items-center justify-center p-6 sm:p-12 relative z-10 overflow-y-auto">
             <div class="w-full max-w-md form-container">
                 {{ $slot }}

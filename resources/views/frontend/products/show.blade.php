@@ -1343,27 +1343,23 @@
 
     </style>
 
-    {{-- ════════════════════════════════════════════════════
-    TOAST NOTIFICATION
-    ════════════════════════════════════════════════════ --}}
+    
     <div class="pd-toast" id="pdToast">
         <span class="pd-toast-icon">✓</span>
         <span id="pdToastMsg">{{ __('product.item_added_to_cart') }}</span>
     </div>
 
-    {{-- ════════════════════════════════════════════════════
-    MAIN PRODUCT SECTION
-    ════════════════════════════════════════════════════ --}}
+    
     <section class="pd-section">
         <div class="pd-container">
 
-            {{-- ── LEFT: GALLERY ── --}}
+            
             <div class="pd-gallery fade-up">
                 <div class="pd-main-img-wrap" id="mainImgWrap">
                     @php
                         $inWishlist = auth()->check() && auth()->user()->wishlists()->where('product_id', $product->id)->exists();
                     @endphp
-                    {{-- Wishlist --}}
+                    
                     <button class="pd-wishlist-btn {{ $inWishlist ? 'active' : '' }}" id="wishlistBtnMain"
                         onclick="event.stopPropagation(); toggleWishlist(this, {{ $product->id }})" aria-label="Add to wishlist">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a1612" stroke-width="1.5">
@@ -1373,7 +1369,7 @@
                     </button>
 
 
-                    {{-- Main image --}}
+                    
                     @if($product->primaryImage)
                         <img id="mainProductImage" class="pd-main-img" src="{{ $product->primaryImage->url }}"
                             alt="{{ $product->name }}">
@@ -1386,7 +1382,7 @@
                     @endif
                 </div>
 
-                {{-- Thumbnails --}}
+                
                 <div class="pd-thumbs" id="thumbsContainer">
                     @if($product->images && $product->images->count() > 0)
                         @foreach($product->images as $index => $image)
@@ -1403,10 +1399,10 @@
                 </div>
             </div>
 
-            {{-- ── RIGHT: INFO ── --}}
+            
             <div class="pd-info fade-up" style="animation-delay:0.15s;">
 
-                {{-- Breadcrumb --}}
+                
                 <div class="pd-breadcrumbs">
                     <a href="{{ route('home') }}">{{ __('product.home') }}</a>
                     <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -1421,7 +1417,7 @@
 
                 <h1 class="pd-title">{{ $product->name }}</h1>
 
-                {{-- Star Rating --}}
+                
                 <div class="pd-rating-bar"
                     onclick="document.getElementById('reviewsSection').scrollIntoView({behavior:'smooth'})">
                     <div class="pd-stars" id="headerStars">
@@ -1438,7 +1434,7 @@
                         {{ __('product.reviews') }})</span>
                 </div>
 
-                {{-- Price --}}
+                
                 <div class="pd-price-wrap" id="pdPriceWrap">
                     @php
                         $defaultVariant = $product->variants->where('is_default', true)->first() ?? $product->variants->first();
@@ -1454,7 +1450,7 @@
                     @endif
                 </div>
 
-                {{-- Stock status --}}
+                
                 @php
                     $totalStock = $product->variants->sum('stock_quantity') ?? 0;
                     $stockClass = $totalStock > 10 ? 'in-stock' : ($totalStock > 0 ? 'low-stock' : 'out-stock');
@@ -1470,7 +1466,7 @@
                     {{ $product->short_description ?? 'A modern classic tailored for everyday elegance — crafted in breathable natural fibres, finished with precision.' }}
                 </p>
 
-                {{-- ── DYNAMIC ATTRIBUTE SELECTORS ── --}}
+                
                 @php
                     $productAttributes = collect();
                     foreach ($product->variants as $variant) {
@@ -1544,7 +1540,7 @@
                     </div>
                 @endif
 
-                {{-- ── FORM ── --}}
+                
                 <form id="addToCartForm" action="{{ route('cart.add', $product->variants->first()?->id ?? 0) }}"
                     method="POST">
                     @csrf
@@ -1575,7 +1571,7 @@
                     @endif
                 </form>
 
-                {{-- Session messages --}}
+                
                 @if(session('success'))
                     <div
                         style="margin-bottom:1.5rem;padding:0.9rem 1rem;background:rgba(122,158,126,0.1);border:1px solid var(--sage);color:var(--sage);font-size:0.85rem;display:flex;align-items:center;gap:0.5rem;">
@@ -1590,10 +1586,10 @@
                     </div>
                 @endif
 
-                {{-- ── ACCORDIONS ── --}}
+                
                 <div class="pd-accordions">
 
-                    {{-- Description --}}
+                    
                     <div class="pd-acc-item open" id="acc-desc">
                         <button class="pd-acc-btn" onclick="toggleAcc('acc-desc')">
                             <span>{{ __('product.description') }}</span>
@@ -1606,7 +1602,7 @@
                         </div>
                     </div>
 
-                    {{-- Fabric & Care --}}
+                    
                     <div class="pd-acc-item" id="acc-care">
                         <button class="pd-acc-btn" onclick="toggleAcc('acc-care')">
                             <span>{{ __('product.fabric_care') }}</span>
@@ -1631,7 +1627,7 @@
                     </div>
 
                     @if($storefront_measure_show ?? true)
-                    {{-- Measurements --}}
+                    
                     <div class="pd-acc-item" id="acc-measure">
                         <button class="pd-acc-btn" onclick="toggleAcc('acc-measure')">
                             <span>{{ __('product.measurements') }}</span>
@@ -1689,7 +1685,7 @@
                     @endif
 
                     @if($storefront_delivery_show ?? true)
-                    {{-- Delivery & Returns --}}
+                    
                     <div class="pd-acc-item" id="acc-delivery">
                         <button class="pd-acc-btn" onclick="toggleAcc('acc-delivery')">
                             <span>{{ __('product.delivery_returns') }}</span>
@@ -1745,17 +1741,15 @@
                     </div>
                     @endif
 
-                </div>{{-- end accordions --}}
+                </div>
 
-            </div>{{-- end pd-info --}}
-        </div>{{-- end pd-container --}}
+            </div>
+        </div>
     </section>
 
 
 
-    {{-- ════════════════════════════════════════════════════
-    REVIEWS SECTION
-    ════════════════════════════════════════════════════ --}}
+    
     <section class="pd-reviews-section" id="reviewsSection">
         <div class="pd-reviews-header">
             <div>
@@ -1807,7 +1801,7 @@
             </div>
         </div>
 
-        {{-- Review Cards --}}
+        
         <div class="pd-reviews-grid" id="reviewsGrid">
 
             @forelse($product->reviews as $review)
@@ -1857,9 +1851,7 @@
     </section>
 
 
-    {{-- ════════════════════════════════════════════════════
-    RELATED PRODUCTS
-    ════════════════════════════════════════════════════ --}}
+    
     @if(isset($relatedProducts) && $relatedProducts->count() > 0)
         <section class="pd-related-section">
             <div class="pd-related-inner">
@@ -1924,12 +1916,8 @@
     @endif
 
 
-    {{-- ════════════════════════════════════════════════════
-    SIZE CHART MODAL
-    ════════════════════════════════════════════════════ --}}
-    {{-- ════════════════════════════════════════════════════
-    SIZE CHART MODAL
-    ════════════════════════════════════════════════════ --}}
+    
+    
     @if($storefront_size_guide_show ?? true)
         @php
             $sgTitle = ($storefront_size_guide_title === 'Size Guide') ? __('product.size_guide_fit_chart') : ($storefront_size_guide_title ?? __('product.size_guide_fit_chart'));
@@ -1999,9 +1987,7 @@
 
 
 
-    {{-- ════════════════════════════════════════════════════
-    WRITE REVIEW MODAL
-    ════════════════════════════════════════════════════ --}}
+    
     <div class="modal-overlay" id="reviewModal" onclick="closeReviewModal(event)">
         <div class="modal-box">
             <button class="modal-close" onclick="closeReviewModalBtn()">×</button>
@@ -2039,9 +2025,7 @@
     </div>
 
 
-    {{-- ════════════════════════════════════════════════════
-    LIGHTBOX (review photos)
-    ════════════════════════════════════════════════════ --}}
+    
     <div class="modal-overlay" id="lightboxModal" onclick="closeLightbox()" style="z-index:9999;">
         <div style="position:relative;max-width:90vw;max-height:90vh;">
             <button class="modal-close" style="top:0;right:0;color:#fff;" onclick="closeLightbox()">×</button>
@@ -2050,9 +2034,7 @@
     </div>
 
 
-    {{-- ════════════════════════════════════════════════════
-    JAVASCRIPT
-    ════════════════════════════════════════════════════ --}}
+    
     <script>
         /* ── IMAGE GALLERY ─────────────────────────────── */
         function switchImage(src, btn) {

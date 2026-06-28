@@ -1,11 +1,8 @@
 <?php
-
 namespace App\Http\Controllers\Admin;
-
 use App\Http\Controllers\Controller;
 use App\Models\Subscriber;
 use Illuminate\Http\Request;
-
 class SubscriberController extends Controller
 {
     public function __construct()
@@ -13,12 +10,10 @@ class SubscriberController extends Controller
         $this->middleware('permission:subscribers.index', ['only' => ['index', 'datatable']]);
         $this->middleware('permission:subscribers.delete', ['only' => ['destroy', 'bulkDelete']]);
     }
-
     public function index()
     {
         return view('admin.subscribers.index');
     }
-
     public function datatable(Request $request)
     {
         $draw = $request->input('draw');
@@ -27,18 +22,14 @@ class SubscriberController extends Controller
         $orderIdx = $request->input('order.0.column', 0);
         $orderDir = $request->input('order.0.dir', 'desc');
         $searchValue = trim($request->input('search.value', ''));
-
         $query = Subscriber::query();
-
         if ($searchValue !== '') {
             $query->where('email', 'like', "%{$searchValue}%")
                 ->orWhere('first_name', 'like', "%{$searchValue}%")
                 ->orWhere('last_name', 'like', "%{$searchValue}%");
         }
-
         $totalRecords = Subscriber::count();
         $filteredRecords = (clone $query)->count();
-
         $sortColumn = match ((int) $orderIdx) {
             1 => 'email',
             2 => 'first_name',
@@ -47,16 +38,13 @@ class SubscriberController extends Controller
             5 => 'subscribed_at',
             default => 'created_at',
         };
-
         if ($sortColumn === 'created_at') {
             $query->orderBy('created_at', $orderDir);
         } else {
             $query->orderBy($sortColumn, $orderDir);
             $query->orderBy('created_at', 'desc');
         }
-
         $subscribers = $query->offset($start)->limit($length)->get();
-
         $data = $subscribers->map(function ($sub) {
             $statusHtml = '';
             if ($sub->status == 'subscribed') {
@@ -66,7 +54,6 @@ class SubscriberController extends Controller
             } else {
                 $statusHtml = '<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium uppercase bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-400">' . __('file.' . ($sub->status ?? 'unknown')) . '</span>';
             }
- 
             return [
                 'id' => $sub->id,
                 'email' => $sub->email,
@@ -77,7 +64,6 @@ class SubscriberController extends Controller
                 'delete_url' => route('subscribers.destroy', $sub->id)
             ];
         });
-
         return response()->json([
             'draw' => (int) $draw,
             'recordsTotal' => $totalRecords,
@@ -85,7 +71,6 @@ class SubscriberController extends Controller
             'data' => $data->toArray(),
         ]);
     }
-
     public function destroy($id)
     {
         Subscriber::findOrFail($id)->delete();
@@ -94,21 +79,16 @@ class SubscriberController extends Controller
         }
         return back()->with('success', __('file.item_deleted_successfully'));
     }
-
     public function bulkDelete(Request $request)
     {
         $ids = $request->input('ids');
-
         if (is_string($ids)) {
             $ids = array_filter(array_map('trim', explode(',', $ids ?? '')));
         }
-
         if (!is_array($ids) || empty($ids)) {
             return response()->json(['success' => false, 'message' => __('file.no_items_selected')], 400);
         }
-
         Subscriber::whereIn('id', $ids)->delete();
-
         return response()->json([
             'success' => true,
             'message' => __('file.selected_items_deleted_successfully')

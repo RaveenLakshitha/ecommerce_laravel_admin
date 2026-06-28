@@ -1,7 +1,5 @@
 @extends('layouts.app')
-
 @section('title', 'Order Fulfillment Manager')
-
 @section('content')
     <style>
         /* ── shadcn/ui CSS variable tokens ── */
@@ -30,7 +28,6 @@
             --font-sans: 'Geist', 'Inter', ui-sans-serif, system-ui, sans-serif;
             --font-mono: 'Geist Mono', 'JetBrains Mono', ui-monospace, monospace;
         }
-
         .dark {
             --background: 240 10% 3.9%;
             --foreground: 0 0% 98%;
@@ -46,13 +43,10 @@
             --accent-foreground: 0 0% 98%;
             --sidebar: 240 6% 7%;
         }
-
         @import url('https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap');
-
         * {
             box-sizing: border-box;
         }
-
         .ofm-wrap {
             font-family: var(--font-sans);
             display: flex;
@@ -63,7 +57,6 @@
             color: hsl(var(--foreground));
             overflow: hidden;
         }
-
         /* ── Header ── */
         .ofm-header {
             display: flex;
@@ -74,7 +67,6 @@
             margin-bottom: 1.25rem;
             flex-shrink: 0;
         }
-
         .ofm-header-left h1 {
             font-size: 1.375rem;
             font-weight: 600;
@@ -83,20 +75,17 @@
             color: hsl(var(--foreground));
             margin: 0 0 0.2rem;
         }
-
         .ofm-header-left p {
             font-size: 0.8125rem;
             color: hsl(var(--muted-foreground));
             margin: 0;
         }
-
         .ofm-header-right {
             display: flex;
             align-items: center;
             gap: 0.625rem;
             flex-wrap: wrap;
         }
-
         /* shadcn Badge */
         .badge {
             display: inline-flex;
@@ -109,13 +98,11 @@
             border: 1px solid transparent;
             line-height: 1;
         }
-
         .badge-outline {
             border-color: hsl(var(--border));
             color: hsl(var(--muted-foreground));
             background: transparent;
         }
-
         .badge-live-dot {
             width: 6px;
             height: 6px;
@@ -124,19 +111,15 @@
             box-shadow: 0 0 0 2px rgba(34, 197, 94, .25);
             animation: pulse-dot 2s ease-in-out infinite;
         }
-
         @keyframes pulse-dot {
-
             0%,
             100% {
                 opacity: 1;
             }
-
             50% {
                 opacity: 0.45;
             }
         }
-
         /* shadcn Button */
         .btn {
             display: inline-flex;
@@ -154,53 +137,43 @@
             text-decoration: none;
             white-space: nowrap;
         }
-
         .btn-outline {
             background: hsl(var(--background));
             border-color: hsl(var(--border));
             color: hsl(var(--foreground));
         }
-
         .btn-outline:hover {
             background: hsl(var(--accent));
         }
-
         .btn-primary {
             background: hsl(var(--primary));
             color: hsl(var(--primary-foreground));
         }
-
         .btn-primary:hover {
             opacity: 0.88;
         }
-
         .btn-secondary {
             background: hsl(var(--secondary));
             color: hsl(var(--secondary-foreground));
             border-color: hsl(var(--border));
         }
-
         .btn-secondary:hover {
             background: hsl(var(--muted));
         }
-
         .btn-ghost {
             background: transparent;
             color: hsl(var(--muted-foreground));
             border-color: transparent;
         }
-
         .btn-ghost:hover {
             background: hsl(var(--accent));
             color: hsl(var(--accent-foreground));
         }
-
         .btn-sm {
             padding: 0.3rem 0.6rem;
             font-size: 0.75rem;
             border-radius: calc(var(--radius) - 2px);
         }
-
         /* ── Kanban ── */
         .ofm-board {
             flex: 1;
@@ -210,27 +183,22 @@
             scrollbar-width: thin;
             scrollbar-color: hsl(var(--border)) transparent;
         }
-
         .ofm-board::-webkit-scrollbar {
             height: 5px;
         }
-
         .ofm-board::-webkit-scrollbar-track {
             background: transparent;
         }
-
         .ofm-board::-webkit-scrollbar-thumb {
             background: hsl(var(--border));
             border-radius: 99px;
         }
-
         .ofm-columns {
             display: flex;
             gap: 0.875rem;
             height: 100%;
             min-width: 900px;
         }
-
         /* ── Column ── */
         .kanban-col {
             display: flex;
@@ -242,7 +210,6 @@
             border-radius: calc(var(--radius) + 2px);
             overflow: hidden;
         }
-
         .col-header {
             display: flex;
             align-items: center;
@@ -253,20 +220,17 @@
             flex-shrink: 0;
             border-top: 3px solid var(--col-accent);
         }
-
         .col-header-left {
             display: flex;
             align-items: center;
             gap: 0.5rem;
         }
-
         .col-icon {
             width: 1rem;
             height: 1rem;
             color: var(--col-accent);
             flex-shrink: 0;
         }
-
         .col-title {
             font-size: 0.6875rem;
             font-weight: 600;
@@ -274,7 +238,6 @@
             text-transform: uppercase;
             color: hsl(var(--foreground));
         }
-
         .col-count {
             font-size: 0.6875rem;
             font-weight: 500;
@@ -284,7 +247,6 @@
             color: hsl(var(--muted-foreground));
             border: 1px solid hsl(var(--border));
         }
-
         .col-body {
             flex: 1;
             overflow-y: auto;
@@ -295,16 +257,13 @@
             scrollbar-width: thin;
             scrollbar-color: hsl(var(--border)) transparent;
         }
-
         .col-body::-webkit-scrollbar {
             width: 4px;
         }
-
         .col-body::-webkit-scrollbar-thumb {
             background: hsl(var(--border));
             border-radius: 99px;
         }
-
         /* ── Order Card ── */
         .order-card {
             background: hsl(var(--card));
@@ -316,7 +275,6 @@
             position: relative;
             overflow: hidden;
         }
-
         .order-card::before {
             content: '';
             position: absolute;
@@ -329,28 +287,23 @@
             opacity: 0;
             transition: opacity 150ms;
         }
-
         .order-card:hover {
             box-shadow: 0 4px 16px -4px rgba(0, 0, 0, .12);
             transform: translateY(-1px);
             border-color: hsl(var(--ring) / .3);
         }
-
         .order-card:hover::before {
             opacity: 1;
         }
-
         .order-card:active {
             cursor: grabbing;
         }
-
         .card-top {
             display: flex;
             align-items: center;
             justify-content: space-between;
             margin-bottom: 0.5rem;
         }
-
         .card-order-id {
             font-size: 0.8rem;
             font-weight: 600;
@@ -359,16 +312,13 @@
             font-family: var(--font-mono);
             letter-spacing: -0.01em;
         }
-
         .card-order-id:hover {
             text-decoration: underline;
         }
-
         .card-time {
             font-size: 0.6875rem;
             color: hsl(var(--muted-foreground));
         }
-
         .card-name {
             font-size: 0.8125rem;
             font-weight: 500;
@@ -376,7 +326,6 @@
             line-height: 1.3;
             margin: 0 0 0.2rem;
         }
-
         .card-meta {
             font-size: 0.6875rem;
             color: hsl(var(--muted-foreground));
@@ -385,12 +334,10 @@
             gap: 0.25rem;
             margin: 0;
         }
-
         .card-meta svg {
             width: 0.7rem;
             height: 0.7rem;
         }
-
         .card-footer {
             display: flex;
             align-items: center;
@@ -399,7 +346,6 @@
             padding-top: 0.5rem;
             border-top: 1px solid hsl(var(--border));
         }
-
         /* shadcn-style status badge */
         .status-badge {
             display: inline-flex;
@@ -410,22 +356,18 @@
             font-size: 0.6875rem;
             font-weight: 500;
         }
-
         .status-paid {
             background: #dcfce7;
             color: #166534;
         }
-
         .dark .status-paid {
             background: rgba(22, 101, 52, .2);
             color: #86efac;
         }
-
         /* Tracking bar */
         .tracking-wrap {
             margin-top: 0.5rem;
         }
-
         .tracking-labels {
             display: flex;
             justify-content: space-between;
@@ -433,21 +375,18 @@
             color: hsl(var(--muted-foreground));
             margin-bottom: 0.25rem;
         }
-
         .tracking-bar {
             height: 3px;
             background: hsl(var(--border));
             border-radius: 99px;
             overflow: hidden;
         }
-
         .tracking-fill {
             height: 100%;
             background: var(--col-accent);
             border-radius: 99px;
             transition: width 600ms ease;
         }
-
         /* Tracking number blur */
         .trk-num {
             font-family: var(--font-mono);
@@ -458,11 +397,9 @@
             transition: filter 200ms;
             cursor: pointer;
         }
-
         .trk-num:hover {
             filter: blur(0);
         }
-
         /* Carrier chip */
         .carrier-chip {
             font-size: 0.6875rem;
@@ -475,17 +412,14 @@
             border-radius: calc(var(--radius) - 4px);
             border: 1px solid hsl(var(--border));
         }
-
         /* Delivered card dimmed */
         .card-delivered {
             opacity: 0.6;
             transition: opacity 150ms;
         }
-
         .card-delivered:hover {
             opacity: 1;
         }
-
         .delivered-check {
             display: flex;
             align-items: center;
@@ -494,12 +428,10 @@
             font-weight: 500;
             color: #16a34a;
         }
-
         .delivered-check svg {
             width: 0.7rem;
             height: 0.7rem;
         }
-
         /* ── Responsive tweaks ── */
         @media (max-width: 768px) {
             .ofm-wrap {
@@ -507,29 +439,23 @@
                 height: auto;
                 overflow: visible;
             }
-
             .ofm-columns {
                 min-width: 680px;
             }
-
             .ofm-header-left h1 {
                 font-size: 1.125rem;
             }
         }
-
         @media (max-width: 480px) {
             .ofm-wrap {
                 padding: 0.75rem 0.625rem;
             }
-
             .ofm-header-right .badge {
                 display: none;
             }
         }
     </style>
-
     <div class="ofm-wrap">
-
         {{-- ── Header ── --}}
         <div class="ofm-header">
             <div class="ofm-header-left">
@@ -551,11 +477,9 @@
                 </a>
             </div>
         </div>
-
         {{-- ── Board ── --}}
         <div class="ofm-board">
             <div class="ofm-columns">
-
                 {{-- ── Column 1: New / Pending ── --}}
                 <div class="kanban-col" style="--col-accent:#f59e0b;">
                     <div class="col-header">
@@ -586,7 +510,6 @@
                         @endfor
                     </div>
                 </div>
-
                 {{-- ── Column 2: Packing ── --}}
                 <div class="kanban-col" style="--col-accent:#3b82f6;">
                     <div class="col-header">
@@ -623,7 +546,6 @@
                         @endfor
                     </div>
                 </div>
-
                 {{-- ── Column 3: In Transit ── --}}
                 <div class="kanban-col" style="--col-accent:#6366f1;">
                     <div class="col-header">
@@ -665,7 +587,6 @@
                         @endfor
                     </div>
                 </div>
-
                 {{-- ── Column 4: Delivered ── --}}
                 <div class="kanban-col" style="--col-accent:#22c55e;">
                     <div class="col-header">
@@ -698,7 +619,6 @@
                         @endfor
                     </div>
                 </div>
-
             </div>
         </div>
     </div>

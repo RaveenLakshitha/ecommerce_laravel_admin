@@ -1,7 +1,5 @@
 @extends('layouts.app')
-
 @section('title', 'Order Fulfillment Manager')
-
 @section('content')
 <div class="px-4 sm:px-6 lg:px-8 pb-4 sm:py-12 pt-20 h-[calc(100vh-4rem)] overflow-hidden flex flex-col">
     <!-- Header -->
@@ -25,11 +23,9 @@
             </a>
         </div>
     </div>
-
     <!-- Kanban Board -->
     <div class="flex-1 overflow-x-auto overflow-y-hidden">
         <div class="flex h-full gap-6 pb-4" style="min-width: 1200px;">
-
             <!-- Column 1: New Orders (Pending) -->
             <div
                 class="flex flex-col flex-1 bg-gray-100/50 dark:bg-gray-900/20 rounded-xl border border-gray-200 dark:border-gray-800">
@@ -71,7 +67,6 @@
                 @endfor
             </div>
         </div>
-
         <!-- Column 2: Accepted / Packing -->
         <div
             class="flex flex-col flex-1 bg-gray-100/50 dark:bg-gray-900/20 rounded-xl border border-gray-200 dark:border-gray-800">
@@ -121,7 +116,6 @@
             @endfor
         </div>
     </div>
-
     <!-- Column 3: Shipped / In Transit -->
     <div
         class="flex flex-col flex-1 bg-gray-100/50 dark:bg-gray-900/20 rounded-xl border border-gray-200 dark:border-gray-800">
@@ -153,7 +147,6 @@
                     <p class="text-xs text-gray-500 font-mono mt-1 blur-[1px] hover:blur-none transition-all">
                         TRK-99283{{ $i }}</p>
                 </div>
-
                 <!-- Tracking Progress -->
                 <div class="mt-3">
                     <div class="flex justify-between text-[10px] text-gray-500 mb-1">
@@ -164,7 +157,6 @@
                         <div class="bg-indigo-600 h-1.5 rounded-full" style="width: 75%"></div>
                     </div>
                 </div>
-
                 <div class="flex justify-end mt-4">
                     <button
                         class="px-3 py-1.5 bg-white border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 dark:bg-gray-800 text-xs font-medium rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition shadow-sm">
@@ -175,7 +167,6 @@
         @endfor
     </div>
 </div>
-
 <!-- Column 4: Delivered -->
 <div
     class="flex flex-col flex-1 bg-gray-100/50 dark:bg-gray-900/20 rounded-xl border border-gray-200 dark:border-gray-800 opacity-80">
@@ -210,7 +201,6 @@
     @endfor
 </div>
 </div>
-
 </div>
 </div>
 </div>

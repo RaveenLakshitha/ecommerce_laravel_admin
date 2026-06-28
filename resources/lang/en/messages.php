@@ -1,6 +1,4 @@
 <?php
-// resources/lang/en/file.php
-
 return [
     'UserName' => 'Username2222222222',
     'Email' => 'Email22222222222',

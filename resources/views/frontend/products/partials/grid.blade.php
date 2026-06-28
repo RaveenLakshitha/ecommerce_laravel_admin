@@ -57,7 +57,7 @@
     @endforeach
 </div>
 
-{{-- Pagination --}}
+
 <nav class="custom-pagination-wrapper" aria-label="Page navigation" style="display:block; text-align:center;">
     {{ $products->links('pagination::bootstrap-4') }}
 </nav>
