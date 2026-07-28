@@ -43,7 +43,7 @@ return Application::configure(basePath: dirname(__DIR__))
             }
 
             // Redirect admins to the admin login; customers to the shop login.
-            $isAdmin = $request->is('admin*') || $request->getHost() === 'admin.karbnzol.com' || $request->routeIs('admin.*') || $request->segment(1) === 'admin';
+            $isAdmin = $request->is('admin*') || $request->getHost() === 'admin.karbnzol.cloud' || $request->routeIs('admin.*') || $request->segment(1) === 'admin';
 
             return $isAdmin
                 ? redirect()->route('admin.login')

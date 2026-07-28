@@ -5,11 +5,11 @@ use App\Http\Controllers\Auth\GoogleAuthController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Admin\Auth\LoginController as AdminLoginController;
-Route::domain('karbnzol.com')->group(function () {
-    Route::redirect('/', 'http://shop.karbnzol.com', 301);
-    Route::redirect('/{any}', 'http://shop.karbnzol.com/{any}', 301)->where('any', '.*');
+Route::domain('karbnzol.cloud')->group(function () {
+    Route::redirect('/', 'http://shop.karbnzol.cloud', 301);
+    Route::redirect('/{any}', 'http://shop.karbnzol.cloud/{any}', 301)->where('any', '.*');
 });
-Route::domain('shop.karbnzol.com')->group(function () {
+Route::domain('shop.karbnzol.cloud')->group(function () {
     Route::get('/', [App\Http\Controllers\Frontend\HomeController::class, 'index'])->name('home');
     Route::get('/about', [App\Http\Controllers\Frontend\HomeController::class, 'about'])->name('frontend.about');
     Route::get('/products', [App\Http\Controllers\Frontend\ProductController::class, 'index'])->name('frontend.products.index');
@@ -59,7 +59,7 @@ Route::domain('shop.karbnzol.com')->group(function () {
 });
 Route::post('/language', [LanguageController::class, 'switch'])->name('language.switch');
 Route::post('/stripe/webhook', [App\Http\Controllers\Frontend\StripeWebhookController::class, 'handle'])->name('stripe.webhook');
-Route::domain('admin.karbnzol.com')->group(function () {
+Route::domain('admin.karbnzol.cloud')->group(function () {
     Route::get('/', function () {
         return auth('admin')->check()
             ? redirect()->route('admin.dashboard')

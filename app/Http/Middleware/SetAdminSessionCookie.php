@@ -7,7 +7,7 @@ class SetAdminSessionCookie
 {
     public function handle(Request $request, Closure $next): Response
     {
-        $isAdmin = $request->is('admin*') || $request->getHost() === 'admin.karbnzol.com' || $request->routeIs('admin.*') || $request->segment(1) === 'admin';
+        $isAdmin = $request->is('admin*') || $request->getHost() === 'admin.karbnzol.cloud' || $request->routeIs('admin.*') || $request->segment(1) === 'admin';
         if ($isAdmin) {
             config(['session.cookie' => 'admin_session']);
         }

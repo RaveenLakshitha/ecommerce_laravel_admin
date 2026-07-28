@@ -1675,11 +1675,15 @@
                     </li>
 
                     
+                    @php
+                        // Helper: strip leading dashes / em-dashes / spaces from category names
+                        $cleanName = fn(string $n): string => trim(preg_replace('/^[\-–—\s]+/', '', $n));
+                    @endphp
                     @foreach($globalCategories as $category)
                         <li class="nav-item {{ $category->children->count() > 0 ? 'has-drop has-mega' : '' }}">
                             <a href="{{ route('frontend.products.index', ['category' => $category->slug]) }}"
                                 class="{{ request('category') == $category->slug ? 'active' : '' }}">
-                                {{ $category->name }}
+                                {{ $cleanName($category->name) }}
                                 @if($category->children->count() > 0)
                                     <svg class="nav-chevron" viewBox="0 0 10 6" fill="none" stroke="currentColor"
                                         stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -1688,18 +1692,23 @@
                                 @endif
                             </a>
                             @if($category->children->count() > 0)
+                                @php
+                                    // Determine if ALL children are leaf nodes (no grandchildren)
+                                    $allLeaf = $category->children->every(fn($c) => $c->children->isEmpty());
+                                @endphp
                                 <div class="nav-dropdown mega" role="menu">
                                     <div class="dd-inner">
-                                        
+
+                                        {{-- Promo panel --}}
                                         <div class="dd-promo">
                                             <div class="dd-promo-img"
                                                 style="background-image: url('{{ $category->image_url ?? ($category->banner_urls[0] ?? '') }}'); @if(!$category->image_url && empty($category->banner_urls)) background-image: url('@placeholder($category->id)'); @endif">
                                             </div>
-                                            <p class="dd-promo-label">{{ $category->name }}</p>
+                                            <p class="dd-promo-label">{{ $cleanName($category->name) }}</p>
                                             <p class="dd-promo-title">NEW<br>SEASON</p>
                                             <a href="{{ route('frontend.products.index', ['category' => $category->slug]) }}"
                                                 class="dd-promo-cta">
-                                                Shop {{ $category->name }}
+                                                Shop {{ $cleanName($category->name) }}
                                                 <svg width="10" height="10" viewBox="0 0 24 24" fill="none"
                                                     stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
                                                     stroke-linejoin="round">
@@ -1707,36 +1716,60 @@
                                                 </svg>
                                             </a>
                                         </div>
-                                        
-                                        <div class="dd-cols" style="flex-wrap: wrap; gap: 1rem 0;">
-                                            @foreach($category->children as $child)
-                                                @php
-                                                    $grandchildChunks = $child->children->isNotEmpty() ? $child->children->chunk(8) : collect([collect()]);
-                                                @endphp
-                                                @foreach($grandchildChunks as $index => $chunk)
-                                                    <div class="dd-col" style="min-width: 200px; flex: 0 0 auto; margin-bottom: 1rem;">
-                                                        <p class="dd-col-head">
-                                                            <a href="{{ route('frontend.products.index', ['category' => $child->slug]) }}"
-                                                                style="text-decoration:none; color:inherit; {{ $index > 0 ? 'visibility:hidden;' : '' }}">{{ $child->name }}</a>
-                                                        </p>
-                                                        @if($chunk->isNotEmpty())
-                                                            <ul>
-                                                                @foreach($chunk as $grandchild)
-                                                                    <li><a
-                                                                            href="{{ route('frontend.products.index', ['category' => $grandchild->slug]) }}">{{ $grandchild->name }}
-                                                                            <span class="dd-arrow"><svg width="11" height="11"
-                                                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                                                    stroke-width="2.5" stroke-linecap="round"
-                                                                                    stroke-linejoin="round">
-                                                                                    <path d="M5 12h14M12 5l7 7-7 7" />
-                                                                                </svg></span></a></li>
-                                                                @endforeach
-                                                            </ul>
-                                                        @endif
-                                                    </div>
+
+                                        @if($allLeaf)
+                                            {{-- All children are leaf nodes: show as a compact icon-tile grid --}}
+                                            <div class="dd-cols" style="align-items: flex-start; padding: 1.75rem 2rem;">
+                                                <div class="dd-col" style="flex: 1; border-right: none; padding: 0;">
+
+                                                    <ul style="display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 0.25rem 1.5rem; list-style: none;">
+                                                        @foreach($category->children as $child)
+                                                            <li>
+                                                                <a href="{{ route('frontend.products.index', ['category' => $child->slug]) }}"
+                                                                   style="display: flex; align-items: center; gap: 0.5rem; padding: 0.45rem 0.6rem; font-size: 0.88rem; color: var(--silver); border-radius: 3px; transition: color 0.15s, background 0.15s, padding-left 0.2s;"
+                                                                   onmouseover="this.style.color='var(--off-white)';this.style.background='var(--bg-3)';this.style.paddingLeft='1rem';"
+                                                                   onmouseout="this.style.color='var(--silver)';this.style.background='';this.style.paddingLeft='0.6rem';">
+                                                                    <svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;opacity:0.7;">
+                                                                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                                                                    </svg>
+                                                                    {{ $cleanName($child->name) }}
+                                                                </a>
+                                                            </li>
+                                                        @endforeach
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        @else
+                                            {{-- Mixed / deep hierarchy: show grouped columns --}}
+                                            <div class="dd-cols" style="flex-wrap: wrap; gap: 1rem 0;">
+                                                @foreach($category->children as $child)
+                                                    @php
+                                                        $grandchildChunks = $child->children->isNotEmpty()
+                                                            ? $child->children->chunk(8)
+                                                            : collect([collect()]);
+                                                    @endphp
+                                                    @foreach($grandchildChunks as $index => $chunk)
+                                                        <div class="dd-col" style="min-width: 180px; flex: 0 0 auto; margin-bottom: 1rem;">
+                                                            <p class="dd-col-head">
+                                                                <a href="{{ route('frontend.products.index', ['category' => $child->slug]) }}"
+                                                                    style="text-decoration:none; color:inherit; {{ $index > 0 ? 'visibility:hidden;' : '' }}">{{ $cleanName($child->name) }}</a>
+                                                            </p>
+                                                            @if($chunk->isNotEmpty())
+                                                                <ul>
+                                                                    @foreach($chunk as $grandchild)
+                                                                        <li><a href="{{ route('frontend.products.index', ['category' => $grandchild->slug]) }}">
+                                                                            {{ $cleanName($grandchild->name) }}
+                                                                            <span class="dd-arrow"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+                                                                        </a></li>
+                                                                    @endforeach
+                                                                </ul>
+                                                            @endif
+                                                        </div>
+                                                    @endforeach
                                                 @endforeach
-                                            @endforeach
-                                        </div>
+                                            </div>
+                                        @endif
+
                                     </div>
                                 </div>
                             @endif
@@ -1913,7 +1946,7 @@
                 <div class="mob-item" id="mob-cat-{{ $category->id }}">
                     <div class="mob-item-head" onclick="toggleMob('mob-cat-{{ $category->id }}')">
                         <a href="{{ route('frontend.products.index', ['category' => $category->slug]) }}"
-                            onclick="return false;">{{ $category->name }}</a>
+                            onclick="return false;">{{ $cleanName($category->name) }}</a>
                         <svg class="mob-chevron" viewBox="0 0 10 6" fill="none" stroke="currentColor" stroke-width="1.8"
                             stroke-linecap="round" stroke-linejoin="round">
                             <polyline points="1 1 5 5 9 1" />
@@ -1924,23 +1957,22 @@
                             @foreach($category->children as $child)
                                 <p class="mob-sub-head" style="margin-top: {{ $loop->first ? '0' : '0.5rem' }};"><a
                                         href="{{ route('frontend.products.index', ['category' => $child->slug]) }}"
-                                        style="text-decoration:none; color:inherit;">{{ $child->name }}</a></p>
+                                        style="text-decoration:none; color:inherit;">{{ $cleanName($child->name) }}</a></p>
                                 @foreach($child->children as $grandchild)
-                                    <a
-                                        href="{{ route('frontend.products.index', ['category' => $grandchild->slug]) }}">{{ $grandchild->name }}</a>
+                                    <a href="{{ route('frontend.products.index', ['category' => $grandchild->slug]) }}">{{ $cleanName($grandchild->name) }}</a>
                                 @endforeach
                                 @if(!$loop->last)
                                 <div class="mob-sub-divider"></div>@endif
                             @endforeach
                             <div class="mob-sub-divider"></div>
                             <a href="{{ route('frontend.products.index', ['category' => $category->slug]) }}"
-                                style="color:var(--gold);font-weight:600;">View All {{ $category->name }} →</a>
+                                style="color:var(--gold);font-weight:600;">View All {{ $cleanName($category->name) }} →</a>
                         </div>
                     </div>
                 </div>
             @else
                 <div class="mob-item mob-plain"><a
-                        href="{{ route('frontend.products.index', ['category' => $category->slug]) }}">{{ $category->name }}</a>
+                        href="{{ route('frontend.products.index', ['category' => $category->slug]) }}">{{ $cleanName($category->name) }}</a>
                 </div>
             @endif
         @endforeach
@@ -2074,9 +2106,9 @@
                     <div class="ft-contact">
                         <a
                             href="tel:{{ $storefront->contact_phone ?? $storefront->phone ?? '+94112345678' }}">{{ $storefront->contact_phone ?? $storefront->phone ?? '+94 11 234 5678' }}</a><br>
-                        <a href="mailto:{{ $storefront->contact_email ?? $storefront->email ?? 'hello@karbnzol.com' }}">{{
+                        <a href="mailto:{{ $storefront->contact_email ?? $storefront->email ?? 'hello@karbnzol.cloud' }}">{{
                             $storefront->contact_email ?? $storefront->email ??
-                            'hello@karbnzol.com' }}</a><br>
+                            'hello@karbnzol.cloud' }}</a><br>
                         @if($storefront->address)
                             <div style="margin-top: 10px; color: var(--dim); font-size: 0.85rem; line-height: 1.4;">
                                 {{ $storefront->address }}<br>

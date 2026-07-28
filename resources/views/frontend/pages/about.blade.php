@@ -41,10 +41,10 @@
             </h2>
             <div style="margin-bottom: 20px;">
                 <p style="margin-bottom: 15px;"><strong style="color: var(--white);">Email:</strong> <br><a
-                        href="mailto:{{ $storefront->contact_email ?? $storefront->email ?? 'hello@karbnzol.com' }}"
+                        href="mailto:{{ $storefront->contact_email ?? $storefront->email ?? 'hello@karbnzol.cloud' }}"
                         style="color: var(--gold); text-decoration: none; font-size: 1.25rem;">{{ $storefront->contact_email
                         ?? $storefront->email ??
-                        'hello@karbnzol.com' }}</a></p>
+                        'hello@karbnzol.cloud' }}</a></p>
                 <p style="margin-bottom: 15px;"><strong style="color: var(--white);">Phone:</strong> <br><a
                         href="tel:{{ $storefront->contact_phone ?? $storefront->phone ?? '+94112345678' }}"
                         style="color: var(--gold); text-decoration: none; font-size: 1.25rem;">{{ $storefront->contact_phone ?? $storefront->phone ?? '+94 11 234 5678' }}</a>

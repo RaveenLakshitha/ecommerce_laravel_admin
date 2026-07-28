@@ -18,7 +18,7 @@
             </div>
             <div>
                 @php
-                    $isAdmin = request()->is('admin*') || request()->getHost() === 'admin.karbnzol.com' || request()->routeIs('admin.*') || request()->segment(1) === 'admin';
+                    $isAdmin = request()->is('admin*') || request()->getHost() === 'admin.karbnzol.cloud' || request()->routeIs('admin.*') || request()->segment(1) === 'admin';
                 @endphp
                 <a href="{{ $isAdmin ? (auth('admin')->check() ? route('admin.dashboard') : route('admin.login')) : (auth('web')->check() ? route('account.dashboard') : route('login')) }}"
                    class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700">
